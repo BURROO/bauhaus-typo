@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="de">
+	<head>
+		<meta charset="UTF-8" />
+		<title>Drop Them Baselines</title>
+
+		<link rel="stylesheet" href="style.css" />
+
+		<!-- Paper.js -->
+		<script
+			type="text/javascript"
+			src="https://unpkg.com/paper@0.12.17/dist/paper-full.js"
+		></script>
+	</head>
+
+	<body>
+		<div id="controls">
+			<button id="renderBtn">Render Text</button>
+			<button id="exportBtn">Export SVG</button>
+			<label for="SliderFontSize">Font Size</label>
+			<input type="range" min="10" max="200" value="30" id="SliderFontSize" />
+			<label for="SliderForceStrength">Force Strength</label>
+			<input
+				type="range"
+				min="0"
+				max="0.3"
+				value="0.025"
+				step="0.005"
+				id="SliderForceStrength"
+			/>
+
+			<label for="SliderRadius">Mouse Radius</label>
+			<input type="range" min="10" max="200" value="120" id="SliderRadius" />
+
+			<label>Shape</label>
+			<span>
+				<input
+					type="radio"
+					id="shapeCircle"
+					name="shape"
+					value="circle"
+					checked
+				/>
+				<label for="shapeCircle">Circle</label>
+			</span>
+			<span>
+				<input type="radio" id="shapeSquare" name="shape" value="square" />
+				<label for="shapeSquare">Square</label>
+			</span>
+
+			<label>Force Type</label>
+			<span>
+				<input type="radio" id="push" name="force" value="push" checked />
+				<label for="push">PUSH</label>
+			</span>
+			<span>
+				<input type="radio" id="pull" name="force" value="pull" />
+				<label for="pull">PULL</label>
+			</span>
+			<span>
+				<input type="radio" id="spin" name="force" value="spin" />
+				<label for="spin">SPIN</label>
+			</span>
+		</div>
+
+		<textarea
+			id="overlayTextarea"
+			placeholder="Die Galaktische Republik wird von Unruhen erschüttert. Die Besteuerung der Handelsrouten zu weit entfernten Sternensystemen ist der Auslöser. In der Hoffnung, die Angelegenheit durch eine Blockade mit mächtigen Kampfschiffen zu beseitigen, hat die unersättliche Handelsföderation jeglichen Transport zu dem kleinen Planeten Naboo eingestellt. Während der Kongreß der Republik endlose Debatten über diese beunruhigende Kette von Ereignissen führt, entsandte der Oberste Kanzler insgeheim zwei Jedi-Ritter, Wächter des Friedens und der Gerechtigkeit, um den Konflikt beizulegen...."
+			spellcheck="false"
+		></textarea>
+
+		<canvas id="canvas" resize></canvas>
+
+		<script type="module" src="js/main.js"></script>
+	</body>
+</html>

@@ -1,0 +1,33 @@
+
+.transcodingTypography{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.transcodingTypography iframe{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: gainsboro;
+  border: none;
+  outline: none;
+  border: 2px solid white;
+}
+
+
+.type{
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  background: red;
+  padding: 10px;
+  border-radius: 10px;
+  z-index: 10;
+}

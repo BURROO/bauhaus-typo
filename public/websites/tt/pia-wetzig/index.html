@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>PROTOTYPE</title>
+    <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="theme-2">
+
+<main id="container">
+   
+    <section id="preview">
+        <div id="text-layer" contenteditable="true">...</div>
+        <div id="object-layer"></div>
+    </section>
+
+    <aside id="svg-panel">
+        <h3>SHAPES</h3>
+        <div id="svg-list"></div>
+    </aside>
+</main>
+
+<div id="controls">
+    <label>
+        FONT SIZE
+        <input type="range" id="control-font-size" min="50" max="300" value="200" />
+    </label>
+
+    <label>
+        FONT WEIGHT
+        <input type="range" id="control-wght" min="300" max="800" value="400" />
+    </label>
+
+    <label id="label-scale" style="display:none;">
+        SCALE
+        <input type="range" id="control-scale" min="10" max="500" value="100" />
+    </label>
+
+    <label id="label-rotate" style="display:none;">
+        ROTATE
+        <input type="range" id="control-rotate" min="0" max="360" value="0" />
+    </label>
+</div>
+
+
+<script src="script.js"></script>
+<script src="dragdrop.js"></script>
+</body>
+</html>

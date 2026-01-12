@@ -1,0 +1,101 @@
+@font-face {
+  font-family: "BrutGrotesque-Book";
+  src: url("BrutGrotesque-Book.otf") format("opentype")
+}
+
+
+*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: "BrutGrotesque-Book", monospace;
+    font-weight: normal;
+}
+
+
+button{
+    background: white;
+    border: 1px solid black;
+    padding: 4px;
+}
+
+/*Textblock als Klasse*/
+.textblock-wrapper {
+    background: lightgray;
+    position: absolute;
+
+    width: 300px;
+    height: 150px;
+
+    padding: 4px;
+
+    resize: both;
+    overflow: auto;
+
+    cursor: move;
+
+    box-sizing: border-box;
+
+}
+
+
+.textblock-wrapper:hover{
+    border: 1px solid gray;
+    background: lightgray;
+}
+
+/*Textblock als Klasse*/
+.textblock {
+
+    background: transparent;
+
+    width: 100%;   
+    height: 100%;
+
+    border: none;
+    resize: none;
+
+    padding: 4px;
+
+    box-sizing: border-box;
+    font-size: 14px;
+
+    transition: background 0.1s ease;
+}
+
+
+.textblock-wrapper input { 
+    margin-top: 0; 
+}
+
+/*optional*/
+.textblock-wrapper:hover { 
+    background: red;
+}
+
+#main {
+   position: relative;
+   width: 100%;
+   padding: 10px;
+}
+
+#button-textblock {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+
+}
+
+header {
+    background-color: lightgray;
+    padding: 10px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+
+
+
+
+

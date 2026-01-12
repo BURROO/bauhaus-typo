@@ -1,0 +1,138 @@
+/* page reset / base */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html,body { height: 100%; background: #000; font-family: Arial, Helvetica, sans-serif; }
+
+/* Outer black frame with a white interior that has an inner black border */
+.frame {
+  min-height: 100vh;
+  padding: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* The printable page area (white) with inner black border */
+.page {
+  width: min(1100px, 94vw);
+  background: #fff;
+  border: 10px solid #000;   /* inner black border */
+  padding: 36px;
+  display: flex;
+  flex-direction: column;
+  gap: 36px;
+}
+
+/* Header / top */
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+}
+
+/* Fancy title */
+.title {
+  font-family: 'Great Vibes', fantasy;
+  font-size: 48px;
+  font-weight: 400;
+  color: #000;
+  letter-spacing: 1px;
+  margin-top: 6px;
+}
+
+.top-inputs {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 20px;
+  padding: 0 30px;
+}
+.top-input { display:flex; justify-content:center; }
+.top-input input[type="text"] {
+  width: 220px;
+  padding: 8px 12px;
+  border: 2px solid #bdbdbd;
+  border-radius: 10px;
+  background: transparent;
+  text-align: center;
+  font-size: 16px;
+  color: #222;
+}
+
+/* Main content area */
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  align-items: center;
+  padding: 10px 0 40px;
+}
+
+/* Container for the text and canvas */
+.text-lines {
+  width: 80%;
+  max-width: 880px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 8px;
+  position: relative;
+}
+
+/* Wrapper that holds the canvas; canvas covers the whole area */
+.line-wrapper {
+  position: relative;
+  width: 100%;
+  height: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: visible;
+}
+
+/* canvas used to render the pixel text + distortion */
+#metaball-canvas {
+  width: 100%;
+  height: 500px; /* visible height (CSS). JS sizes actual resolution for DPR */
+  display: block;
+  background: transparent;
+}
+
+/* Footer sliders area */
+.footer {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  align-items: start;
+  padding: 8px 24px 4px;
+}
+
+/* Each slider block */
+.slider-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding-bottom: 6px;
+}
+
+.slider-bar { width: 120px; height: 16px; background: #bfbfbf; border-radius: 2px; }
+.slider-label { margin-top: 6px; font-size: 14px; font-weight: 700; letter-spacing: 0.02px; text-align: center;}
+.slider-sub { margin-top: 6px; font-size: 10px; color: #666; text-align: center; line-height: 1; }
+.range { width: 140px; }
+
+@media (max-width: 900px) {
+  .page { padding: 20px; gap: 20px; }
+  .title { font-size: 36px; }
+  .top-input input[type="text"] { width: 180px; }
+  .footer { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 520px) {
+  .top-inputs { grid-template-columns: 1fr; gap: 12px; padding: 0 12px; }
+  .footer { grid-template-columns: 1fr; }
+  .range { width: 90%; }
+  .top-input input[type="text"] { width: 100%; }
+}

@@ -1,0 +1,189 @@
+@font-face {
+    font-family: 'FunnelDisplay';
+    src: url(FunnelDisplay-VariableFont_wght.ttf);
+}
+
+/* Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Container mit zwei Spalten: Preview und SVG-Panel rechts */
+#container {
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    height: calc(100vh - 90px); /* Controls unten abziehen */
+    width: 100vw;
+    background: white;
+}
+
+/* Preview-Bereich */
+#preview {
+    position: relative;
+    background: white;
+    border-right: 1px solid #ddd;
+    overflow: hidden;
+}
+
+/* Text-Layer: editierbarer Text */
+#text-layer {
+    position: absolute;
+    inset: 0;
+    font-family: 'FunnelDisplay';
+    font-size: 200px;
+    font-variation-settings: "wght" 400;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+    pointer-events: auto;
+}
+
+/* Object Layer: SVGs frei positioniert */
+#object-layer {
+    position: absolute;
+    inset: 0;
+    z-index: 10;
+    pointer-events: none; /* Objekt Layer ignoriert Klicks, außer Kinder */
+}
+
+/* SVGs in Object Layer müssen pointer-events aktivieren */
+.draggable-svg {
+    position: absolute;
+    width: 120px;
+    cursor: grab;
+    pointer-events: auto;
+
+    transform-origin: center center;
+}
+
+/* SVG Panel rechts */
+#svg-panel {
+    background: lightgray;
+    border-left: 1px solid black;
+    padding: 20px;
+    overflow-y: auto;
+    height: 100%;
+}
+
+#svg-panel h3 {
+    margin-bottom: 20px;
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+/* SVG-Liste im Panel */
+#svg-list {
+    /* display: flex;
+    flex-direction: column; */
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(30px, 1fr));
+    gap: 15px;
+}
+
+/* SVG Thumbnails */
+.svg-thumb {
+    width: 30px;
+    cursor: pointer;
+    user-select: auto;
+    transition: opacity 0.5s;
+}
+
+.svg-thumb:hover {
+    opacity: 0.8;
+}
+
+/* Controls unten */
+
+/*********** Baseline, reset styles ***********/
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  cursor: pointer;
+  width: 20rem;
+}
+
+/* Removes default focus */
+input[type="range"]:focus {
+  outline: none;
+}
+
+/******** Chrome, Safari, Opera and Edge Chromium styles ********/
+/* slider track */
+input[type="range"]::-webkit-slider-runnable-track {
+  background-color: #000000;
+  border-radius: 0rem;
+  height: 0.3rem;
+}
+
+/* slider thumb */
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none; /* Override default look */
+  appearance: none;
+  margin-top: -9.6px; /* Centers thumb on the track */
+  background-color: #000000;
+  border-radius: 3rem;
+  height: 1.5rem;
+  width: 1.5rem;
+}
+
+input[type="range"]:focus::-webkit-slider-thumb {
+  outline: 3px solid #000000;
+  outline-offset: 0.125rem;
+}
+
+/*********** Firefox styles ***********/
+/* slider track */
+input[type="range"]::-moz-range-track {
+  background-color: #000000;
+  border-radius: 0rem;
+  height: 0.3rem;
+}
+
+/* slider thumb */
+input[type="range"]::-moz-range-thumb {
+  background-color: #000000;
+  border: none; /*Removes extra border that FF applies*/
+  border-radius: 3rem;
+  height: 1.5rem;
+  width: 1.5rem;
+}
+
+input[type="range"]:focus::-moz-range-thumb{
+  outline: 3px solid #000000;
+  outline-offset: 0.125rem;
+}
+#controls {
+    height: 90px;
+    background: lightgray;
+    border-top: 1px solid black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 60px;
+}
+
+#controls label {
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 100px;
+    
+}
+
+
+input[type="range"] {
+    width: 200px;
+}
+
+
+.theme-2 #preview{
+    /* background: red; */
+    
+}

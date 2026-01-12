@@ -1,0 +1,27 @@
+
+.inOrderOfMeaning{
+  /* background: yellow; */
+  width: 100vw;
+  height: 100vh;
+  background: rgb(100,100,100);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.inOrderOfMeaning div{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.infoOverlay{
+  position: fixed;
+  bottom: 10px;
+  left: 10px;
+  right: 10px;
+  background: gainsboro;
+  color: darkgray;
+  border-radius: 9px;
+  padding: 10px;
+}
