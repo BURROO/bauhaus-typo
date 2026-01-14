@@ -1,0 +1,262 @@
+import { useEffect, useRef, useState } from 'react'
+import styles from './InfinityScroll.module.css'
+import Link from 'next/link';
+import { TypeProject } from '@/types/project-type';
+import Overlay from './Overlay';
+
+interface Props {
+    data: TypeProject[];
+    activeIndex: null|number;
+    setActiveIndex: (value: number|null) => void;
+}
+
+const hexEncode = function(input: string){
+    var hex, i;
+
+    var result = "";
+    for (i=0; i<input.length; i++) {
+        hex = input.charCodeAt(i).toString(16);
+        result += ("000"+hex).slice(-4);
+    }
+
+    return result
+}
+
+
+const InfinityScroll = ({ data, setActiveIndex, activeIndex }: Props) => {
+
+
+    const scrollPos = useRef(2000)
+    const refContainer = useRef<HTMLDivElement>(null)
+
+    const itemHeight = 60
+
+    const [renderedData, setRenderedData] = useState([...data, ...data, ...data])
+
+
+    const dataRef = useRef(renderedData)
+
+
+    useEffect(() => {
+        dataRef.current = renderedData
+        // if(refContainer.current) refContainer.current.scrollTop = scrollPos.current
+        // if(refContainer.current) refContainer.current.scrollTo({
+        //     top: scrollPos.current,
+        //     behavior: 'smooth'
+        // })
+    }, [renderedData, refContainer.current])
+
+    useEffect(() => {
+
+        const handleScroll = (e: any) => {
+
+            const scrollInc = e.deltaY
+
+            // const dir = Math.sign(scrollInc)
+
+            const itemsToRemove = 1 + Math.floor(Math.abs(scrollInc)/10)
+            // const itemsToRemove = 1 
+
+            scrollPos.current = scrollInc+scrollPos.current
+
+            if(refContainer.current){
+
+                if(scrollPos.current >= itemHeight){
+
+                    // scrollPos.current -= itemHeight
+                    scrollPos.current = 0
+
+                    setRenderedData([
+                        ...dataRef.current.slice(itemsToRemove, dataRef.current.length),
+                        ...dataRef.current.slice(0, itemsToRemove)
+                    ])
+                }else if(scrollPos.current <= -itemHeight){
+                    // scrollPos.current += itemHeight
+                    scrollPos.current = 0
+                    
+                    setRenderedData([
+                        // dataRef.current[dataRef.current.length-1],
+                        ...dataRef.current.slice(dataRef.current.length-itemsToRemove-1, dataRef.current.length),
+                        ...dataRef.current.slice(0, dataRef.current.length-itemsToRemove-1),
+                    ])
+                }else{
+                    // scrollPos.current = 0
+                }
+                // refContainer.current.scrollTop += 200
+            }
+
+            // 
+            e.preventDefault()
+        }
+
+        window.addEventListener('wheel', handleScroll, { 
+            passive: false
+        })
+
+        return () => {
+
+            window.removeEventListener('wheel', handleScroll)
+        }
+
+    }, [])
+
+
+
+    const allCourses = new Set((data.map(item => item.Kurs)))
+
+    // console.log("allCourses", allCourses)
+
+
+
+
+    const [rowHeight, setRowHeight] = useState(15)
+
+    useEffect(() => {
+        // Read height and calc element based on height
+
+
+
+
+        const handleResize = () => {
+            const divider = Math.floor(window.innerHeight / 15)
+
+            setRowHeight(window.innerHeight / divider)
+        }
+
+        handleResize()
+
+
+        window.addEventListener("resize", handleResize)
+
+        return () => {
+
+            window.removeEventListener("resize", handleResize)
+        }
+
+
+    }, [])
+
+
+    return (
+        <div className={styles.scrollWrapper} ref={refContainer}>
+            {
+                activeIndex !== null &&
+                <Overlay item={renderedData[activeIndex]} />
+            }
+            <ul>
+                <li
+                className={`${styles.row} ${styles.header}`}
+                style={{ height: rowHeight}}
+                >
+                    <div>Nr</div>
+                    <div>Name</div>
+                    <div>Title</div>
+                    <div>Medium</div>
+                    <div>Format</div>
+                    <div>Course</div>
+                    <div>Supervision</div>
+                    <div>ID</div>
+                </li>
+                <li
+                className={`${styles.row} ${styles.footer}`}
+                style={{ height: rowHeight*3}}
+                >
+                    <div>Search: </div>
+                    <div></div>
+                    <div>Filter</div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </li>
+                {
+                    renderedData.map((row: any, i: number, all: any[]) => {
+
+
+                        // const slug = row.
+
+                        const kurs = row.Kurs.split(" ").map((w: string) => w.toLowerCase()).join("-")
+                        const studierende = row.Studierende.split(" ").map((w: string) => w.toLowerCase()).join("-")
+// 
+                        // console.log(Array.from(allCourses))
+
+                        const courseIndex = Array.from(allCourses).indexOf(row.Kurs)
+                        const isPrevSameCourse = all[i-1]?.Kurs === row.Kurs
+
+                        const supervision: { [key: string]: string} = {
+                            'Transcoding Typography': 'Philipp Koller',
+                            'In Order Of Meaning ': 'Marcel Saidov',
+                            'Punk Zine': 'Hjördis Lyn Behncken & Insa Deist'
+                        }
+
+                        const format: { [key: string]: string} = {
+                            'Transcoding Typography': 'Webtool',
+                            'In Order Of Meaning ': 'Publication',
+                            'Punk Zine': 'Website'
+                        }
+
+                        return (
+                            <li
+                            key={i}
+                            className={styles.row}
+                            // style={{ height: itemHeight }}
+                            onMouseEnter={() => setActiveIndex(i)}
+                            onMouseLeave={() => setActiveIndex(null)}
+                            style={{
+                                height: rowHeight
+                                // opacity: activeIndex !== null && activeIndex !== i ? 0.6 : 1,
+                                // borderBottom: activeIndex !== i ? '1px solid transparent' : `1px solid white`,
+                                // borderTop: activeIndex !== i ? '1px solid transparent' : `1px solid white`
+                            }}
+                            >
+                                    {/* NUMBER */}
+                                    <div className={i % 2 == 1 ? styles.rowGray : ''}>{(row.index).toString().padStart(2, "0")}</div>
+                                    {/* STUDENT */}
+                                    <div className={i % 2 == 0 ? styles.rowGray : ''}>
+
+                                        <Link 
+                                        href={`/${kurs}/${studierende}`}
+                                      
+                                        >
+                                            <div>{row["Studierende"]}</div>
+                                        </Link>
+                                        
+                                    </div>
+                                    {/* TITLE */}
+                                    <div className={i % 2 == 0 ? styles.rowGray : ''}>
+                                        <div>{row["Title"]}</div>
+                                    </div>
+                                    {/* MEDIUM */}
+                                    <div className={courseIndex % 2 == 1 ? styles.rowGray : ''}>
+                                        {!isPrevSameCourse && (format[row["Kurs"]] || 'TBD') || ''}
+                                    </div>
+                                    {/* FORMAT */}
+                                    <div className={courseIndex % 2 == 1 ? styles.rowGray : ''}>
+                                       {row.Format}
+                                    </div>
+                                    {/* COURSE */}
+                                    <div className={courseIndex % 2 == 0 ? styles.rowGray : ''}>
+                                        <div>{!isPrevSameCourse && row["Kurs"]}</div>
+                                    </div>
+                                    {/* SUPERVISION */}
+                                    <div className={courseIndex % 2 == 1 ? styles.rowGray : ''}>
+                                        <div>{!isPrevSameCourse && (supervision[row['Kurs']] || 'TBD') || ''}</div>
+                                    </div>
+                                    <div className={i % 2 == 0 ? styles.rowGray : ''}>
+                                        {hexEncode(row["Studierende"]).slice(0, 6)}
+                                        {/* {(row["Kurs"].split(" ").map((word: string) => word.charAt(0)))} */}
+                                    </div>
+                            </li>
+                        )
+                    })
+                }
+            </ul>
+        </div>
+    )
+}
+
+export default InfinityScroll
+
+
+
