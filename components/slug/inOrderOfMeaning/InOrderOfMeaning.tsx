@@ -18,22 +18,12 @@ const InOrderOfMeaning = ({ item }: Props) => {
 
     const index = item.Studierende.length % 2 + 1
 
-    // console.log("index", index)
-
-    // const frontUrl = `/images/ioom/_test${index}/front.jpg`;
-    // const backUrl = `/images/ioom/_test${index}/back.jpg`;
-    // const spineUrl = `/images/ioom/_test${index}/spine.jpg`;
-    item["book"] = {
-        front: `/images/ioom/_test${index}/front.jpg`,
-        back: `/images/ioom/_test${index}/back.jpg`,
-        spine: `/images/ioom/_test${index}/spine.jpg`,
-    }
 
 
     return (
         <>
             <div className={styles.inOrderOfMeaning}>
-                {view === "cover" && <ParametricBook item={item} onClick={() => setView('content')}/>}
+                {view === "cover" && <ParametricBook type="interact" item={item} onClick={() => setView('content')}/>}
                 {view === "content" && <BookContent item={item} onClick={() => setView('cover')}/>}
             </div>
         

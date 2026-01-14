@@ -1,7 +1,6 @@
 'use client'
 
 import styles from "./PageWrapper.module.css";
-// import List from "@/components/List";
 
 import TranscodingTypography from "@/components/slug/transcodingTypography/TranscodingTypography";
 import InOrderOfMeaning from "@/components/slug/inOrderOfMeaning/InOrderOfMeaning";

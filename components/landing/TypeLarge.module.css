@@ -1,0 +1,20 @@
+.typeLarge{
+  /*  */
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 100;
+  pointer-events: none;
+  padding: 20px;
+}
+.typeLarge h1,
+.typeLarge h2{
+  /*  */
+  font-size: 180px;
+  text-align: center;
+  font-family: "UfficioMono";
+  letter-spacing: -1rem;
+  line-height: 0.9;
+}

@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useMemo, useState } from "react";
-import { Canvas } from "@react-three/fiber";
+import { CameraProps, Canvas } from "@react-three/fiber";
 import { useTexture, Environment, OrbitControls } from "@react-three/drei";
 import { TypeProject } from "@/types/project-type";
 import styles from './ParametricBook.module.css'
@@ -10,6 +10,7 @@ import  * as THREE from 'three'
 interface Props{
     item: TypeProject;
     onClick: () => void;
+    type: 'orbit' | 'interact'
 }
 
 
@@ -114,43 +115,23 @@ function Book({
     );
 }
 
-export default function ParametricBook({ item, onClick }: Props) {
+export default function ParametricBook({ item, onClick, type = "interact" }: Props) {
 
 
-    const index = 2
+    item["book"] = {
+        front: `/images/ioom/_test1/front.jpg`,
+        back: `/images/ioom/_test1/back.jpg`,
+        spine: `/images/ioom/_test1/spine.jpg`,
+    }
 
     const frontUrl = item.book!.front;
     const backUrl = item.book!.back;
     const spineUrl = item.book!.spine;
 
-    // Calculate these!
-    //   const width = 0.16;
-    //   const height = 0.24;
-    //   const spine = 0.028;
 
     const [width, setWidth]   = useState(0.16);
     const [height, setHeight] = useState(0.24);
     const [spine, setSpine]   = useState(0.028);
-
-    // function handleCoverDims({
-    //     pxWidth,
-    //     pxHeight,
-    //     aspect 
-    // }) {
-
-    //     // choose a reference physical height (meters)
-    //     // const targetHeight = 0.24; // 24cm = typical A5-ish book
-    //     const targetHeight = 0.24*2; // 24cm = typical A5-ish book
-
-    //     // derive width from aspect
-    //     const computedWidth = targetHeight * aspect;
-
-    //     setHeight(targetHeight);
-    //     setWidth(computedWidth);
-    //     // setSpine()
-
-    //     // TODO later: derive spine from pages 🙂
-    // }
 
     function handleCoverDims({ front, spine }: { front: any; spine: any; }) {
         const targetHeight = 0.24 * 2; // your chosen physical height
@@ -158,12 +139,8 @@ export default function ParametricBook({ item, onClick }: Props) {
         // Front cover
         const coverWidth = targetHeight * front.aspect;
 
-        // Spine thickness (VERY IMPORTANT)
-        // spine image is usually tall & thin:
-        // width / height gives thickness ratio
         const spineThickness = targetHeight * spine.aspect;
 
-        // const totalWidth = coverWidth + spineThickness;
         const totalWidth = coverWidth;
 
         setHeight(targetHeight);
@@ -174,6 +151,22 @@ export default function ParametricBook({ item, onClick }: Props) {
 
     const [showButton, setShowButton] = useState(false)
 
+
+    const orbitCam: CameraProps = {
+        zoom: 20,          // higher = closer
+        // position: [0, 0.4, 0.6],
+        position: [0, 4, 6],
+        near: 0.1,
+        far: 10,
+    }
+
+    const interactCam: CameraProps = {
+        position: [0.02, 0.4, 0.6], 
+        fov: 45 
+    }
+
+    const camSettings = type === 'orbit' ? orbitCam : interactCam
+
     return (
         <>
             {showButton && <button 
@@ -181,47 +174,58 @@ export default function ParametricBook({ item, onClick }: Props) {
             onClick={onClick}
             className={styles.button}>Look inside</button>}
             <Canvas
-            shadows
-            camera={{ position: [0.02, 0.4, 0.6], fov: 45 }}
+            // shadows
+            camera={camSettings}
             // camera={{ position: [0.02, 0.4, 0.6], fov: 80 }}
             style={{ height: "100%" }}
             >
             {/* <ambientLight intensity={0.15} /> */}
             {/* <directionalLight castShadow position={[1.2, 1.6, 1.2]} intensity={0.9} /> */}
 
-            <group 
-            onPointerEnter={() => setShowButton(true)}
-            onPointerLeave={() => setShowButton(false)}
-            >
-                <Book
-                width={width}
-                height={height}
-                spine={spine}
-                frontUrl={frontUrl}
-                backUrl={backUrl}
-                spineUrl={spineUrl}
-                onDimensions={handleCoverDims}
-                />
-            </group>
+                <group 
+                onPointerEnter={() => setShowButton(true)}
+                onPointerLeave={() => setShowButton(false)}
+                >
+                    <Book
+                    width={width}
+                    height={height}
+                    spine={spine}
+                    frontUrl={frontUrl}
+                    backUrl={backUrl}
+                    spineUrl={spineUrl}
+                    onDimensions={handleCoverDims}
+                    />
+                </group>
 
-            <mesh
-                receiveShadow
-                rotation={[-Math.PI / 2, 0, 0]}
-                position={[0, -height / 2 - 0.002, 0]}
-            >
-                <planeGeometry args={[2, 2]} />
-                <shadowMaterial opacity={0.25} />
-            </mesh>
+                <mesh
+                    receiveShadow
+                    rotation={[-Math.PI / 2, 0, 0]}
+                    position={[0, -height / 2 - 0.002, 0]}
+                >
+                    <planeGeometry args={[2, 2]} />
+                    <shadowMaterial opacity={0.25} />
+                </mesh>
 
-            <Environment preset="studio" environmentIntensity={0.16} />
+                <Environment preset="studio" environmentIntensity={0.16} />
 
             {/* rotation + zoom controls */}
-            <OrbitControls
+            {type === 'interact' ? 
+                <OrbitControls
                 makeDefault
                 // enablePan
                 enableZoom={false}
                 enableRotate
-            />
+                />
+                :
+                <OrbitControls
+                makeDefault 
+                autoRotate
+                autoRotateSpeed={20}   // adjust speed
+                enableRotate={false}
+                enableZoom={false}
+                enablePan={false}
+                />
+            }
             </Canvas>
         </>
     );
