@@ -9,6 +9,19 @@ interface Props {
     setActiveIndex: (value: number|null) => void;
 }
 
+const hexEncode = function(input: string){
+    var hex, i;
+
+    var result = "";
+    for (i=0; i<input.length; i++) {
+        hex = input.charCodeAt(i).toString(16);
+        result += ("000"+hex).slice(-4);
+    }
+
+    return result
+}
+
+
 const InfinityScroll = ({ data, setActiveIndex, activeIndex }: Props) => {
 
 
@@ -36,7 +49,6 @@ const InfinityScroll = ({ data, setActiveIndex, activeIndex }: Props) => {
 
         const handleScroll = (e: any) => {
 
-            console.log("handle scroll", scrollPos.current)
 
             const scrollInc = e.deltaY*2
 
@@ -84,12 +96,38 @@ const InfinityScroll = ({ data, setActiveIndex, activeIndex }: Props) => {
 
 
 
+    const allCourses = new Set((data.map(item => item.Kurs)))
+
+    console.log("allCourses", allCourses)
+
+
     return (
         <div className={styles.scrollWrapper} ref={refContainer}>
-            <ul 
-            style={{
-                // transform: `translate(0, calc(50vh - 50%))`
-            }}>
+            {
+                // activeIndex !== null &&
+                <Overlay activeIndex={1} item={renderedData[1]} />
+            }
+            <ul>
+                <li
+                className={styles.row}
+                style={{ 
+                    position: "fixed",
+                    background: "black",
+                    color: "white",
+                    zIndex: 10,
+                    left: 0,
+                    right: 0,
+                    textTransform: "uppercase"
+                }}> 
+                    <div>Nr</div>
+                    <div>Name</div>
+                    <div>Title</div>
+                    <div>Medium</div>
+                    <div>Format</div>
+                    <div>Course</div>
+                    <div>Supervision</div>
+                    <div>ID</div>
+                </li>
                 {
                     renderedData.map((row: any, i: number, all: any[]) => {
 
@@ -98,9 +136,24 @@ const InfinityScroll = ({ data, setActiveIndex, activeIndex }: Props) => {
 
                         const kurs = row.Kurs.split(" ").map((w: string) => w.toLowerCase()).join("-")
                         const studierende = row.Studierende.split(" ").map((w: string) => w.toLowerCase()).join("-")
+// 
+                        // console.log(Array.from(allCourses))
 
-                        // console.log(row)
+                        const courseIndex = Array.from(allCourses).indexOf(row.Kurs)
+                        const isPrevSameCourse = all[i-1]?.Kurs === row.Kurs
 
+                        // console.log("courseIndex", courseIndex)
+                        const supervision: { [key: string]: string} = {
+                            'Transcoding Typography': 'Philipp Koller',
+                            'In Order Of Meaning': 'Marcel Saidov',
+                            'Punk Zine': 'Hjördis Lyn Behncken & Insa Deist'
+                        }
+
+                        const format: { [key: string]: string} = {
+                            'Transcoding Typography': 'Webtool',
+                            'In Order Of Meaning': 'Publication',
+                            'Punk Zine': 'Website'
+                        }
 
                         return (
                             <li
@@ -110,13 +163,15 @@ const InfinityScroll = ({ data, setActiveIndex, activeIndex }: Props) => {
                             onMouseEnter={() => setActiveIndex(i)}
                             onMouseLeave={() => setActiveIndex(null)}
                             style={{
-                                opacity: activeIndex !== null && activeIndex !== i ? 0.6 : 1,
-                                borderBottom: activeIndex !== i ? '1px solid transparent' : `1px solid white`,
-                                borderTop: activeIndex !== i ? '1px solid transparent' : `1px solid white`
+                                // opacity: activeIndex !== null && activeIndex !== i ? 0.6 : 1,
+                                // borderBottom: activeIndex !== i ? '1px solid transparent' : `1px solid white`,
+                                // borderTop: activeIndex !== i ? '1px solid transparent' : `1px solid white`
                             }}
                             >
-                                    <div>{row.index}</div>
-                                    <div>
+                                    {/* NUMBER */}
+                                    <div className={i % 2 == 1 ? styles.rowGray : ''}>{(row.index).toString().padStart(2, "0")}</div>
+                                    {/* STUDENT */}
+                                    <div className={i % 2 == 0 ? styles.rowGray : ''}>
 
                                         <Link 
                                         href={`/${kurs}/${studierende}`}
@@ -126,24 +181,35 @@ const InfinityScroll = ({ data, setActiveIndex, activeIndex }: Props) => {
                                         </Link>
                                         
                                     </div>
-                                    <div>
+                                    {/* TITLE */}
+                                    <div className={i % 2 == 0 ? styles.rowGray : ''}>
                                         <div>{row["Title"]}</div>
                                     </div>
-                                    <div>
-                                        <div><i>{row["Kurs"]}</i></div>
+                                    {/* MEDIUM */}
+                                    <div className={courseIndex % 2 == 1 ? styles.rowGray : ''}>
+                                        {!isPrevSameCourse && (format[row["Kurs"]] || 'TBD') || ''}
                                     </div>
-                                    <div>
-                                        {row["Kurs"].split(" ").map((word: string) => word.charAt(0))}
+                                    {/* FORMAT */}
+                                    <div className={courseIndex % 2 == 1 ? styles.rowGray : ''}>
+                                        X
+                                    </div>
+                                    {/* COURSE */}
+                                    <div className={courseIndex % 2 == 0 ? styles.rowGray : ''}>
+                                        <div>{!isPrevSameCourse && row["Kurs"]}</div>
+                                    </div>
+                                    {/* SUPERVISION */}
+                                    <div className={i % 2 == 0 ? styles.rowGray : ''}>
+                                        <div>{!isPrevSameCourse && (supervision[row['Kurs']] || 'TBD') || ''}</div>
+                                    </div>
+                                    <div className={i % 2 == 0 ? styles.rowGray : ''}>
+                                        {hexEncode(row["Studierende"]).slice(0, 6)}
+                                        {/* {(row["Kurs"].split(" ").map((word: string) => word.charAt(0)))} */}
                                     </div>
                             </li>
                         )
                     })
                 }
             </ul>
-            {
-                activeIndex !== null &&
-                <Overlay activeIndex={activeIndex} item={renderedData[activeIndex]} />
-            }
         </div>
     )
 }
@@ -151,24 +217,46 @@ const InfinityScroll = ({ data, setActiveIndex, activeIndex }: Props) => {
 export default InfinityScroll
 
 
+
+
+const thumbnails: { [key: string]: string } = {
+    'Yuqing Liu': `yuqing_liu_thumbnail.mov`,
+    'Alice Aydin': `alice_aydin_thumbnail.mp4`,
+    'Florian Meisner': `helene_dennewitz_thumbnail.gif`,
+    'Helene Dennewitz': `florian_meisner_thumbnail.mp4`,
+    'Sophia Boni': `sofia_boni_thumbnail.mp4`, // Falsch geschrieben!! --> Sofia!
+    'Difei Song': `difei_song_thumbnail.mp4`,
+    'Yu Ji': `yu_ji_thumbnail.mp4`,
+}
+
+
 const Overlay = ({ activeIndex, item }: {activeIndex: number; item: any; }) => {
 
-    // const x = Math.sin(activeIndex) 
-    // const y = Math.cos(activeIndex)
+    const img = thumbnails[item.Studierende] && `/images/tt/${thumbnails[item.Studierende]}` || `/images/tt/florian_meisner_thumbnail.gif`
 
-    // const xTrans = `calc(${x} * (50vw - 150px) - 50%)`
-    // const yTrans = `calc(${y} * (50vh - 150px) - 50%)`
+    const split = img.split(".")
+    const type = split.pop()
+    const isMovie = type?.match(/mov|mp4/ig)
+    // console.log("type", type)
 
-    // renderedData
-    // console.log("item", item.Image)
 
     return (
             <div 
             className={styles.overlay}
             >
-                <img
-                src={`images/${item.Image}`}
-              />
+                {
+                    isMovie ?
+                    <video
+                    src={img}
+                    autoPlay
+                    loop
+                    />
+                    :
+                    <img
+                    src={img}
+                    />
+
+                }
             </div>
     )
 }

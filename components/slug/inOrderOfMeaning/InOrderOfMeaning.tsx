@@ -18,7 +18,7 @@ const InOrderOfMeaning = ({ item }: Props) => {
 
     const index = item.Studierende.length % 2 + 1
 
-    console.log("index", index)
+    // console.log("index", index)
 
     // const frontUrl = `/images/ioom/_test${index}/front.jpg`;
     // const backUrl = `/images/ioom/_test${index}/back.jpg`;
@@ -28,7 +28,6 @@ const InOrderOfMeaning = ({ item }: Props) => {
         back: `/images/ioom/_test${index}/back.jpg`,
         spine: `/images/ioom/_test${index}/spine.jpg`,
     }
-    console.log("index", index)
 
 
     return (

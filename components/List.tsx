@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import styles from './List.module.css'
 import InfinityScroll from './InfinityScroll'
+import TypeLarge from "./TypeLarge";
 
 
 interface Props {
@@ -37,9 +38,7 @@ const List = ({ data }: Props) => {
             activeIndex={activeIndex}
             setActiveIndex={setActiveIndex}
             />
-            <div>
-
-            </div>
+            <TypeLarge text={`Typography & Type Design`} />
         </div>
     )
 }

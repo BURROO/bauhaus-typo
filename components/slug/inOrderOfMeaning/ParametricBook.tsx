@@ -123,8 +123,6 @@ export default function ParametricBook({ item, onClick }: Props) {
     const backUrl = item.book!.back;
     const spineUrl = item.book!.spine;
 
-    console.log("item.book", item.book)
-
     // Calculate these!
     //   const width = 0.16;
     //   const height = 0.24;
