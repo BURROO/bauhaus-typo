@@ -75,7 +75,7 @@ const TranscodingTypography = ({ item }: Props) => {
             className={styles.type}
             style={{
                 background: isLocal ? 'green' : 'red'
-            }}>{isLocal ? 'Local' : 'Remote'}{prefereLocal.toString()}</div>
+            }}>{isLocal ? 'Local' : 'Remote'}</div>
             <iframe 
             src={src}
             ></iframe>

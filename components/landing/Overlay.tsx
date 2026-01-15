@@ -22,6 +22,8 @@ const Overlay = ({ item }: {item: TypeProject; }) => {
 
     // console.log("item", item)
 
+    if(typeof item === "undefined") return <></>
+
 
     return (
             <div 

@@ -27,7 +27,7 @@ const List = ({ data }: Props) => {
         })
         .map((d, i) => ({ ...d, index: i }))
 
-        return [...sortedData, ...sortedData]
+        return [...sortedData]
     }, [data])
 
 
@@ -45,6 +45,8 @@ const List = ({ data }: Props) => {
         }
     }, [])
 
+    // console.log("sortedData", sortedData.length)
+    // console.log("sortedData", sortedData)
 
     return (
         <div className={styles.list}>
