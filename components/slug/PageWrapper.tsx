@@ -76,9 +76,12 @@ const PageWrapper = ({ item }: Props) => {
                     borderRadius: isHovered ? 5 : 0,
                     transform: introStyle.opacity === 1 || isHovered ? `scale(0.9)` : ''
                 }}>
-                    {item.Kurs === "Transcoding Typography" && <TranscodingTypography item={item} />}
+                    {/* {item.Kurs === "Transcoding Typography" && <TranscodingTypography item={item} />}
                     {item.Kurs === "In Order Of Meaning " && <InOrderOfMeaning item={item} />}
-                    {item.Kurs === "Punk Zine" && <PunkZine item={item} />}
+                    {item.Kurs === "Punk Zine" && <PunkZine item={item} />} */}
+                    {item.Type === "WWW" && <TranscodingTypography item={item} />}
+                    {item.Type === "BOOK" && <InOrderOfMeaning item={item} />}
+                    {item.Type === "WWW" && <PunkZine item={item} />}
                 </div>
             </main>
         </div>

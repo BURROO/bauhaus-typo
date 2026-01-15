@@ -1,13 +1,24 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import styles from './InfinityScroll.module.css'
 import Link from 'next/link';
 import { TypeProject } from '@/types/project-type';
 import Overlay from './Overlay';
+import ListFooter from './ListFooter';
+import { render } from '@react-pdf/renderer';
 
 interface Props {
     data: TypeProject[];
     activeIndex: null|number;
     setActiveIndex: (value: number|null) => void;
+}
+
+interface Sorting {
+    column: 'Name' | 'Title' | 'Course';
+    direction: 'asc' | 'desc'
+}
+
+interface Filter {
+
 }
 
 const hexEncode = function(input: string){
@@ -25,25 +36,69 @@ const hexEncode = function(input: string){
 
 const InfinityScroll = ({ data, setActiveIndex, activeIndex }: Props) => {
 
+    const doublicatedData = useMemo(() => [...data, ...data], data)
+
 
     const scrollPos = useRef(2000)
     const refContainer = useRef<HTMLDivElement>(null)
 
+    // 
+    const [filter, setFilter ] = useState('')
+    // 
+    const [sorting, setSorting ] = useState<Sorting>({
+        column: 'Name',
+        direction: 'asc'
+    })
+
+    // 
+    const [searchTerm, setSearchTerm ] = useState("")
+
     const itemHeight = 60
 
-    const [renderedData, setRenderedData] = useState([...data, ...data, ...data])
+    const [renderedData, setRenderedData] = useState(doublicatedData)
 
+    console.log("renderData", renderedData.length)
 
     const dataRef = useRef(renderedData)
+
+    useEffect(() => {
+
+
+        if(filter !== "" || searchTerm !== ''){
+        console.log("data", data.length)
+            setRenderedData(
+                data
+                .filter(d => {
+
+                    if(filter === "") return true
+
+
+                    const found = Object.values(d).find(value => value && value.toString().match(new RegExp(filter, 'ig')))
+
+                    return found
+                })
+                .filter(d => {
+
+                    if(searchTerm === "") return true
+
+
+
+                    const found = Object.values(d).find(value => value && value.toString().match(new RegExp(searchTerm, 'ig')))
+
+
+                    console.log("filter by searchterm", searchTerm, found)
+                    return found
+                })
+            )
+        }else{
+            setRenderedData(doublicatedData)
+        }
+
+    }, [filter, sorting, searchTerm, data])
 
 
     useEffect(() => {
         dataRef.current = renderedData
-        // if(refContainer.current) refContainer.current.scrollTop = scrollPos.current
-        // if(refContainer.current) refContainer.current.scrollTo({
-        //     top: scrollPos.current,
-        //     behavior: 'smooth'
-        // })
     }, [renderedData, refContainer.current])
 
     useEffect(() => {
@@ -76,8 +131,8 @@ const InfinityScroll = ({ data, setActiveIndex, activeIndex }: Props) => {
                     
                     setRenderedData([
                         // dataRef.current[dataRef.current.length-1],
-                        ...dataRef.current.slice(dataRef.current.length-itemsToRemove-1, dataRef.current.length),
-                        ...dataRef.current.slice(0, dataRef.current.length-itemsToRemove-1),
+                        ...dataRef.current.slice(dataRef.current.length-itemsToRemove, dataRef.current.length),
+                        ...dataRef.current.slice(0, dataRef.current.length-itemsToRemove),
                     ])
                 }else{
                     // scrollPos.current = 0
@@ -143,7 +198,7 @@ const InfinityScroll = ({ data, setActiveIndex, activeIndex }: Props) => {
                 activeIndex !== null &&
                 <Overlay item={renderedData[activeIndex]} />
             }
-            <ul>
+            <ul style={{ paddingTop: rowHeight}}>
                 <li
                 className={`${styles.row} ${styles.header}`}
                 style={{ height: rowHeight}}
@@ -158,17 +213,30 @@ const InfinityScroll = ({ data, setActiveIndex, activeIndex }: Props) => {
                     <div>ID</div>
                 </li>
                 <li
-                className={`${styles.row} ${styles.footer}`}
-                style={{ height: rowHeight*3}}
+                className={`${styles.row}`}
+                style={{ height: rowHeight}}
                 >
-                    <div>Search: </div>
-                    <div></div>
-                    <div>Filter</div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
+                    <div>Nr</div>
+                    <div>Name</div>
+                    <div>Title</div>
+                    <div>Medium</div>
+                    <div>Format</div>
+                    <div>Course</div>
+                    <div>Supervision</div>
+                    <div>ID</div>
+                </li>
+                <li
+                className={`${styles.footer}`}
+                style={{ height: rowHeight*3, display: "flex", gap: 10, alignItems: "center" }}
+                >
+                    <ListFooter
+                    setFilter={setFilter}
+                    filter={filter}
+                    setSorting={setSorting}
+                    sorting={sorting}
+                    setSearchTerm={setSearchTerm}
+                    searchTerm={searchTerm}
+                    />
                 </li>
                 {
                     renderedData.map((row: any, i: number, all: any[]) => {
@@ -232,7 +300,7 @@ const InfinityScroll = ({ data, setActiveIndex, activeIndex }: Props) => {
                                         {!isPrevSameCourse && (format[row["Kurs"]] || 'TBD') || ''}
                                     </div>
                                     {/* FORMAT */}
-                                    <div className={courseIndex % 2 == 1 ? styles.rowGray : ''}>
+                                    <div className={i % 2 == 1 ? styles.rowGray : ''}>
                                        {row.Format}
                                     </div>
                                     {/* COURSE */}

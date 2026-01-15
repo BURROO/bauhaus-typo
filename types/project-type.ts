@@ -4,6 +4,7 @@ export interface TypeProject {
     Title: string;
     Image: string;
     Link: string;
+    Type: 'WWW' | 'BOOK' | 'PRINT'
     // in order of meaning!
     book?: {
         front: string;
