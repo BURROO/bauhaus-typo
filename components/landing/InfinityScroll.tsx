@@ -187,13 +187,13 @@ const InfinityScroll = ({ data, setActiveIndex, activeIndex }: Props) => {
                         const supervision: { [key: string]: string} = {
                             'Transcoding Typography': 'Philipp Koller',
                             'In Order Of Meaning ': 'Marcel Saidov',
-                            'Punk Zine': 'Hjördis Lyn Behncken & Insa Deist'
+                            'Handmade Websites as Punk Zines': 'Hjördis Lyn Behncken & Insa Deist'
                         }
 
                         const format: { [key: string]: string} = {
                             'Transcoding Typography': 'Webtool',
                             'In Order Of Meaning ': 'Publication',
-                            'Punk Zine': 'Website'
+                            'Handmade Websites as Punk Zines': 'Website'
                         }
 
                         return (
