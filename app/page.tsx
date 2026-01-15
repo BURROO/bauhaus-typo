@@ -17,6 +17,7 @@ export default function Home() {
   const { data }: { data: TypeProject[] } = Papa.parse(csv, { header: true });
 
   const listData = data
+    .filter(data => data.Kurs !== "")
     .sort((a, b) => a.Studierende.localeCompare(b.Studierende))
     .sort((a, b) => a.Kurs.localeCompare(b.Kurs))
     .map(data => {
