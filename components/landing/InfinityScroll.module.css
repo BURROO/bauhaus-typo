@@ -144,7 +144,7 @@
 }
 
 .row > .rowGray{
-  background: rgba(230,230,230, 0.9) !important;
+  background: rgba(230,230,230, 0.95) !important;
   position: relative;
   /* background: transparent; */
   /* border-radius: 12px; */
