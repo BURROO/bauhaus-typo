@@ -5,20 +5,61 @@
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: 100;
+  /* z-index: 100; */
+  z-index: -1;
   pointer-events: none;
   padding: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
+  mix-blend-mode: multiply;
 }
+
+.typeLarge span{
+  /* background: black; */
+  color: white;
+}
+
 .typeLarge h1,
-.typeLarge h2{
+.typeLarge h2,
+.typeLarge h1 > span,
+.typeLarge h2 > span{
   /*  */
-  font-size: 180px;
+  font-family: "UfficioMono";
+  font-size: 9vw;
+  text-align: center;
+  /* letter-spacing: -1rem; */
+  line-height: 0.9;
+  line-height: 1;
+  /* line-height: 1.0; */
+  text-transform: uppercase;
+  position: relative;
+
+}
+/* .typeLarge h1 > span,
+.typeLarge h2 > span{
   text-align: center;
   font-family: "UfficioMono";
-  letter-spacing: -1rem;
-  line-height: 0.9;
+  text-transform: uppercase;
+  position: relative;
+} */
+
+.typeLarge  span::before{
+  content: "";
+  position: absolute;
+  top: 5%;
+  left: 0;
+  bottom: 20%;
+  right: 0;
+  background: black;
+  z-index: -1;
+}
+
+.typeLarge > h2{
+  padding: 1vw 0;
+}
+.typeLarge > h2:nth-of-type(2n-2) span{
+  background: white;
+  color: black;
 }

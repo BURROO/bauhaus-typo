@@ -10,7 +10,7 @@ const PunkZine = ({ item }: Props) => {
 
     return (
         <div className={styles.punkZine}>
-            <iframe src={item.Link}></iframe>
+            {/* {item.Link && <iframe src={item.Link}></iframe>} */}
             <h1>{item.Studierende}</h1>
             Punk Zine
         </div>

@@ -16,8 +16,8 @@
   right: 0;
   bottom: 0;
   overflow-y: scroll;
-  transition: 0.3s;
-  background: rgb(200,200,200);
+  /* transition: 0.3s; */
+  /* background: rgb(200,200,200); */
   /* background: red; */
   /* font-family: monospace; */
   /* background: linear-gradient(
@@ -37,16 +37,15 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(120,120,120, 0.5);
+  /* background: rgba(120,120,120, 0.5); */
 }
-.scrollWrapper:before {
+/* .scrollWrapper:before {
   content: "";
   top: 0;
   transform: translateX(100%) rotate(var(--shine-deg));
   width: 300%;
   height: 300%;
   position: absolute;
-  /* z-index: 1; */
   background: linear-gradient(
     30deg,
     transparent 20%,
@@ -56,14 +55,13 @@
     transparent 70%,
     transparent 100%
   );
-  /* background: red; */
   transition: transform 0.3s ease-in;
   transform: translateX(100%) rotate(var(--shine-deg));
 }
 
 .scrollWrapper:before {
   animation: shine 1s infinite ease-in;
-}
+} */
 
 
 .scrollWrapper{
@@ -123,8 +121,10 @@
 .row:hover > div{
   /* background: white;
   mix-blend-mode: difference; */
-  background: black;
+  background: black !important;
   color: white;
+  background: rgb(50, 221, 240) !important;
+  color: black;
   mix-blend-mode: normal;
 }
 
@@ -138,15 +138,30 @@
   padding: 0 3px;
   align-items: center;
   background: white;
+  background: transparent;
   /* border-radius: 2px; */
 
 }
 
 .row > .rowGray{
-  /* background: rgb(230,230,230) !important; */
-  background: transparent;
+  background: rgba(230,230,230, 0.9) !important;
+  position: relative;
+  /* background: transparent; */
   /* border-radius: 12px; */
 }
+
+.row > .rowGray::after{
+  filter: url(#screenPrintEffect);
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+  background-color: gray;
+}
+
 
 
 

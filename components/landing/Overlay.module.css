@@ -6,7 +6,7 @@
   right: 0;
   bottom: 0;
   overflow-y: scroll;
-  transition: 0.3s;
+  /* transition: 0.3s; */
   background: rgb(248,248,248);
   /* background: red; */
   /* font-family: monospace; */
@@ -28,7 +28,7 @@
 }
 
 .row{
-  transition: 0.1s;
+  /* transition: 0.1s; */
   cursor: pointer;
   display: grid;
   grid-template-columns: 50px 1fr 1fr 100px 100px  1fr 1fr 70px;
