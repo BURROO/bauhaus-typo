@@ -43,7 +43,9 @@ const List = ({ data }: Props) => {
             activeIndex={activeIndex}
             setActiveIndex={setActiveIndex}
             />
-           <TypeLarge text={`Typography & Type Design\\Exhibition\\06.–0.8.02.2026`} />
+            <TypeLarge text={`Typography & Type Design\\Exhibition\\06.–0.8.02.2026`} />
+           {/* {activeIndex === null && 
+           <TypeLarge text={`Typography & Type Design\\Exhibition\\06.–0.8.02.2026`} />} */}
         </div>
     )
 }
