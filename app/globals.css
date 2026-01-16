@@ -11,6 +11,12 @@
 } */
 
 @font-face {
+  font-family: "UfficioMono-Normal";
+  src: url(/fonts/UfficioMono-400.woff2);
+}
+
+
+@font-face {
   font-family: "UfficioMono";
   src: url(/fonts/UfficioMono-600.woff2);
 }
@@ -39,6 +45,7 @@ h1, h2, h3 , h4, h5, h6{
   font-size: 12px;
   font-family: "UfficioMono";
   font-family: Arial, Helvetica, sans-serif;
+  font-family: "UfficioMono-Normal";
   font-weight: 500;
 }
 

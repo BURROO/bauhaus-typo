@@ -13,7 +13,6 @@ interface Props{
     type: 'orbit' | 'interact'
 }
 
-
 interface BookProps {
     width: number;
     height: number;
@@ -22,9 +21,6 @@ interface BookProps {
     backUrl: string;
     spineUrl: string;
     onDimensions: (data : {
-        // pxWidth: number;
-        // pxHeight: number;
-        // aspect: number;
         front: any;
         spine: any
     }) => void;
@@ -43,9 +39,9 @@ function Book({
     // Load only when values exist
     const [front, back, spineTex, pagesTex, pagesTopText, pagesBottomText] = useTexture(
         [
-            frontUrl,
-            backUrl,
-            spineUrl,
+            `${frontUrl}`,
+            `${backUrl}`,
+            `${spineUrl}`,
             `/images/ioom/_general/pages.jpg`,
             `/images/ioom/_general/pages-top.jpg`,
             `/images/ioom/_general/pages-bottom.jpg`
@@ -53,22 +49,14 @@ function Book({
     );
 
     useEffect(() => {
+        // 
         if (!front || !front.image) return;
 
-        const img = front.image as HTMLImageElement;
-
-        // onDimensions?.({
-        //     pxWidth: img.naturalWidth,
-        //     pxHeight: img.naturalHeight,
-        //     aspect: img.naturalWidth / img.naturalHeight
-        // });
-
-    // }, [front, onDimensions]);
-
-
+        // 
         const frontImg = front.image as HTMLImageElement;
         const spineImg = spineTex.image as HTMLImageElement;
 
+        // 
         onDimensions({
             front: {
                 w: frontImg.naturalWidth,
@@ -81,9 +69,12 @@ function Book({
                 aspect: spineImg.naturalWidth / spineImg.naturalHeight,
             },
         });
+
     }, [front, spineTex, onDimensions]);
 
     const materials = useMemo(() => {
+
+        // Defining the texture
         const m = (map?: THREE.Texture) => ({
             map,
             roughness: 0.8,
@@ -91,18 +82,16 @@ function Book({
             envMapIntensity: 0.4,
         });
 
+        // 
         return [
-        m(spineTex),     // Pos 1 === Spine
-        m(pagesTex),
-        // { color: "#ffffff" }, // Pos 2 === Pages Oposite of Spine
-        // { color: "#ffffff" },// Pos 2 === Pages Oposite of Spine
-        // { color: "#ffffff" },     // Pos 3 === Oben
-        m(pagesTopText),
-        m(pagesBottomText),
-        m(back),  // --> Pos. 4 = Front?
-        m(front),  // --> Pos. 5 == Front
-        //   { color: "#ffff00" }
+            m(spineTex),     // Pos 1 === Spine
+            m(pagesTex),
+            m(pagesTopText),
+            m(pagesBottomText),
+            m(back),  // --> Pos. 4 = Front?
+            m(front),  // --> Pos. 5 == Front
         ];
+
     }, [front, back, spineTex]);
 
     return (
@@ -117,30 +106,36 @@ function Book({
 
 export default function ParametricBook({ item, onClick, type = "interact" }: Props) {
 
+    // 
+    // const filename = item.Studierende.toLowerCase().split(" ").join("_")
+    const filename = 'mona_kerntke'
 
+    // 
     item["book"] = {
-        front: `/images/ioom/_test1/front.jpg`,
-        back: `/images/ioom/_test1/back.jpg`,
-        spine: `/images/ioom/_test1/spine.jpg`,
+        front: `/images/ioom/cover/${filename}_front.jpg`,
+        back: `/images/ioom/cover/${filename}_back.jpg`,
+        spine: `/images/ioom/cover/${filename}_spine.jpg`,
     }
 
+    // 
     const frontUrl = item.book!.front;
     const backUrl = item.book!.back;
     const spineUrl = item.book!.spine;
 
-
+    //
     const [width, setWidth]   = useState(0.16);
     const [height, setHeight] = useState(0.24);
     const [spine, setSpine]   = useState(0.028);
 
+    // 
     function handleCoverDims({ front, spine }: { front: any; spine: any; }) {
-        const targetHeight = 0.24 * 2; // your chosen physical height
+
+         // your chosen physical height
+        const targetHeight = 0.24 * 2;
 
         // Front cover
         const coverWidth = targetHeight * front.aspect;
-
         const spineThickness = targetHeight * spine.aspect;
-
         const totalWidth = coverWidth;
 
         setHeight(targetHeight);
@@ -148,40 +143,48 @@ export default function ParametricBook({ item, onClick, type = "interact" }: Pro
         setSpine(spineThickness);
     }
 
-
+    // 
     const [showButton, setShowButton] = useState(false)
 
-
+    // 
     const orbitCam: CameraProps = {
-        zoom: 20,          // higher = closer
+        zoom: 15,          // higher = closer
         // position: [0, 0.4, 0.6],
         position: [0, 4, 6],
         near: 0.1,
         far: 10,
     }
 
+    // 
     const interactCam: CameraProps = {
         position: [0.02, 0.4, 0.6], 
         fov: 45 
     }
 
-    const camSettings = type === 'orbit' ? orbitCam : interactCam
+    // 
+    const camSettings = type === 'orbit' 
+        ? orbitCam 
+        : interactCam
 
+    // 
     return (
         <>
-            {showButton && <button 
-            onMouseOver={() => setShowButton(true)}
-            onClick={onClick}
-            className={styles.button}>Look inside</button>}
+            {
+                showButton && 
+                <button 
+                onMouseOver={() => setShowButton(true)}
+                onClick={onClick}
+                className={styles.button}
+                >
+                    Look inside
+                </button>
+            }
             <Canvas
             // shadows
             camera={camSettings}
             // camera={{ position: [0.02, 0.4, 0.6], fov: 80 }}
             style={{ height: "100%" }}
             >
-            {/* <ambientLight intensity={0.15} /> */}
-            {/* <directionalLight castShadow position={[1.2, 1.6, 1.2]} intensity={0.9} /> */}
-
                 <group 
                 onPointerEnter={() => setShowButton(true)}
                 onPointerLeave={() => setShowButton(false)}
@@ -206,26 +209,27 @@ export default function ParametricBook({ item, onClick, type = "interact" }: Pro
                     <shadowMaterial opacity={0.25} />
                 </mesh>
 
+                {/*  */}
                 <Environment preset="studio" environmentIntensity={0.16} />
 
-            {/* rotation + zoom controls */}
-            {type === 'interact' ? 
-                <OrbitControls
-                makeDefault
-                // enablePan
-                enableZoom={false}
-                enableRotate
-                />
-                :
-                <OrbitControls
-                makeDefault 
-                autoRotate
-                autoRotateSpeed={20}   // adjust speed
-                enableRotate={false}
-                enableZoom={false}
-                enablePan={false}
-                />
-            }
+                {/* rotation + zoom controls */}
+                {type === 'interact' ? 
+                    <OrbitControls
+                    makeDefault
+                    // enablePan
+                    enableZoom={false}
+                    enableRotate
+                    />
+                    :
+                    <OrbitControls
+                    makeDefault 
+                    autoRotate
+                    autoRotateSpeed={20}   // adjust speed
+                    enableRotate={false}
+                    enableZoom={false}
+                    enablePan={false}
+                    />
+                }
             </Canvas>
         </>
     );

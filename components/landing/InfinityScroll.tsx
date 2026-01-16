@@ -193,12 +193,21 @@ const InfinityScroll = ({ data, setActiveIndex, activeIndex }: Props) => {
 
 
     return (
-        <div className={styles.scrollWrapper} ref={refContainer}>
+        <div
+        className={styles.scrollWrapper}
+        ref={refContainer}
+        >
+            <div
+            className={styles.scrollWrapperInner}
+            style={{ filter: `url(#screenPrintEffect)` }}
+            />
             {
                 activeIndex !== null &&
                 <Overlay item={renderedData[activeIndex]} />
             }
-            <ul style={{ paddingTop: rowHeight}}>
+            <ul 
+            // style={{ paddingTop: rowHeight}}
+            >
                 <li
                 className={`${styles.row} ${styles.header}`}
                 style={{ height: rowHeight}}
@@ -224,19 +233,6 @@ const InfinityScroll = ({ data, setActiveIndex, activeIndex }: Props) => {
                     <div>Course</div>
                     <div>Supervision</div>
                     <div>ID</div>
-                </li>
-                <li
-                className={`${styles.footer}`}
-                style={{ height: rowHeight*3, display: "flex", gap: 10, alignItems: "center" }}
-                >
-                    <ListFooter
-                    setFilter={setFilter}
-                    filter={filter}
-                    setSorting={setSorting}
-                    sorting={sorting}
-                    setSearchTerm={setSearchTerm}
-                    searchTerm={searchTerm}
-                    />
                 </li>
                 {
                     renderedData.map((row: any, i: number, all: any[]) => {
@@ -320,6 +316,36 @@ const InfinityScroll = ({ data, setActiveIndex, activeIndex }: Props) => {
                     })
                 }
             </ul>
+    
+            <ListFooter
+            height={rowHeight*3}
+            setFilter={setFilter}
+            filter={filter}
+            setSorting={setSorting}
+            sorting={sorting}
+            setSearchTerm={setSearchTerm}
+            searchTerm={searchTerm}
+            />
+            <svg width="0" height="0">
+                <filter id="screenPrintEffect">
+                    {/* <!-- Generate noise pattern --> */}
+                    <feTurbulence type="turbulence" baseFrequency="0.95" numOctaves="3" result="turbulence"/>
+                    
+                    {/* <!-- Convert to grayscale and boost contrast --> */}
+                    <feColorMatrix in="turbulence" type="matrix" values="0.33 0.33 0.33 0 0
+                                                                        0.33 0.33 0.33 0 0
+                                                                        0.33 0.33 0.33 0 0
+                                                                        0 0 0 0.8 0" result="grayscale"/>
+                    
+                    {/* <!-- Apply threshold to create sharp black/white dots --> */}
+                    <feComponentTransfer in="grayscale" result="thresholded">
+                    <feFuncA type="discrete" tableValues="0 1"/>
+                    </feComponentTransfer>
+                    
+                    {/* <!-- Use the pattern as a mask or displacement map --> */}
+                    <feComposite in="SourceGraphic" in2="thresholded" operator="in" result="screenPrinted"/>
+                </filter>
+            </svg>
         </div>
     )
 }

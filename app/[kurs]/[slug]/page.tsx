@@ -17,8 +17,8 @@ export default async function Project({ params }: any) {
 
   const item: TypeProject|undefined =  data.find(row => {
 
-    const rowKurs = row.Kurs.toLowerCase().split(" ").join("-")
-    const rowStudierende = row.Studierende.toLowerCase().split(" ").join("-")
+    const rowKurs = row.Kurs?.toLowerCase().split(" ").join("-")
+    const rowStudierende = row.Studierende?.toLowerCase().split(" ").join("-")
     
     return rowKurs === kurs && rowStudierende === slug
   })

@@ -14,19 +14,21 @@ interface Props {
     setSorting: (value: any) => void;
     sorting: Sorting
     setSearchTerm: (value: string) => void;
-    searchTerm: string
+    searchTerm: string;
+    height: number;
 }
 
-const ListFooter = ({ setFilter, filter, setSorting, sorting, setSearchTerm, searchTerm }: Props) => {
+const ListFooter = ({ setFilter, filter, setSorting, sorting, setSearchTerm, searchTerm, height }: Props) => {
 
 
     return (
         <div
         className={styles.footer}
+        style={{ height }}
         >
             <div>Search: <input type="text" onChange={(e) => setSearchTerm(e.currentTarget.value)}></input></div>
             <div style={{ display: "flex"}}>
-                Filter:
+                <span>Filter:</span>
                 {
                     [
                         "Transcoding Typography", 

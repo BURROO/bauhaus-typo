@@ -3,12 +3,26 @@
   display: flex; 
   gap: 10;
   align-items: center;
+  justify-content: center;
+  position: fixed;
+  z-index: 10;
+  left:0;
+  bottom: 0;
+  right: 0;
+  background: black;
+  color: white;
+}
+
+.footer span{
+  display: flex; 
+  align-items: center;
 }
 
 .tag{
-  border: 1px solid white;
+  border-left: 2px solid white;
+  border-right: 2px solid white;
   padding: 2px 7px;
-  border-radius: 10px;
+  /* border-radius: 10px; */
   cursor: pointer;
   margin: 3px;
 }
