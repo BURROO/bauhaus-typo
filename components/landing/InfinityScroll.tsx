@@ -5,6 +5,7 @@ import { TypeProject } from '@/types/project-type';
 import Overlay from './Overlay';
 import ListFooter from './ListFooter';
 import { render } from '@react-pdf/renderer';
+import TypeLarge from '../layer2/TypeLarge';
 
 interface Props {
     data: TypeProject[];
@@ -192,6 +193,8 @@ const InfinityScroll = ({ data, setActiveIndex, activeIndex }: Props) => {
     }, [])
 
 
+    const name = activeIndex !== null && renderedData[activeIndex]?.Studierende || null
+
     return (
         <div
         className={styles.scrollWrapper}
@@ -325,6 +328,7 @@ const InfinityScroll = ({ data, setActiveIndex, activeIndex }: Props) => {
             setSearchTerm={setSearchTerm}
             searchTerm={searchTerm}
             />
+            <TypeLarge text={`Typography\\& Type Design\\Exhibition\\06.–0.8.02.2026\\${name ? `\\${name}` : ''}`} />
             <svg width="0" height="0">
                 <filter id="screenPrintEffect">
                     {/* <!-- Generate noise pattern --> */}
