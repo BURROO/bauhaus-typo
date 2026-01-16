@@ -53,25 +53,25 @@ const OverlayTranscoding = ({ item }: { item: TypeProject }) => {
 
 
     return (
-            <div 
-            className={styles.overlay}
-            >
-                {
-                    isMovie ?
-                    <video
-                    key={img}
-                    src={img}
-                    autoPlay={true}
-                    loop={true}
-                    muted={true}
-                    />
-                    :
-                    <img
-                    src={img}
-                    />
+        <div 
+        className={styles.overlay}
+        >
+            {
+                isMovie ?
+                <video
+                key={img}
+                src={img}
+                autoPlay={true}
+                loop={true}
+                muted={true}
+                />
+                :
+                <img
+                src={img}
+                />
 
-                }
-            </div>
+            }
+        </div>
     )
 }
 
@@ -80,7 +80,7 @@ const OverlayOrderOfMeaning = ({ item }: { item: TypeProject }) => {
     // Handle
 
     return (
-        <div style={{ height: 400, padding: 50 }}>
+        <div style={{ height: 400 }}>
             <ParametricBook type="orbit" onClick={() => {}} item={item} />
         </div>
     )

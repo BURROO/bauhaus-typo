@@ -8,6 +8,10 @@
   z-index: 100;
   pointer-events: none;
   padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
 }
 .typeLarge h1,
 .typeLarge h2{

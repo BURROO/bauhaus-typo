@@ -8,6 +8,7 @@ import PunkZine from "@/components/slug/punkZine/PunkZine";
 import Link from "next/link";
 import { TypeProject } from "@/types/project-type";
 import { useEffect, useState } from "react";
+import TypeLarge from "../layer2/TypeLarge";
 
 interface Props{
     item: TypeProject;
@@ -19,26 +20,26 @@ const PageWrapper = ({ item }: Props) => {
 
     // console.log("item", item)
 
-    const [introStyle, setIntroStyle] = useState({
-        opacity: 1,
-        display: "flex"
-    })
+    // const [introStyle, setIntroStyle] = useState({
+    //     opacity: 1,
+    //     display: "flex"
+    // })
 
-    useEffect(() => {
+    // useEffect(() => {
 
-        const timeout1 = setTimeout(() => {
+    //     const timeout1 = setTimeout(() => {
 
-            setIntroStyle({
-                opacity: 0,
-                display: "flex"
-            })
-        }, 1000)
+    //         setIntroStyle({
+    //             opacity: 0,
+    //             display: "flex"
+    //         })
+    //     }, 1000)
 
 
-        // return () => {
-        //     clearTimeout(timeout1)
-        // }
-    }, [])
+    //     // return () => {
+    //     //     clearTimeout(timeout1)
+    //     // }
+    // }, [])
 
     return (
         <div className={styles.page}>
@@ -62,11 +63,14 @@ const PageWrapper = ({ item }: Props) => {
                 </div>
             </div>
 
-            <div className={styles.intro} style={introStyle}>
-                <div>
+            <div 
+            // className={styles.intro} 
+            >
+                {/* <div>
                     <h1>{item.Studierende}</h1>
                     <h2>{item.Kurs}</h2>
-                </div>
+                </div> */}
+                <TypeLarge text={`${item.Studierende} ${item.Kurs}`} />
             </div>
             <main className={styles.main}>
                 {/* <List data={data} /> */}
@@ -74,7 +78,6 @@ const PageWrapper = ({ item }: Props) => {
                     // width: isHovered ? '80vw' : '',
                     // height: isHovered ? '90vh' : '',
                     borderRadius: isHovered ? 5 : 0,
-                    transform: introStyle.opacity === 1 || isHovered ? `scale(0.9)` : ''
                 }}>
                     {/* {item.Kurs === "Transcoding Typography" && <TranscodingTypography item={item} />}
                     {item.Kurs === "In Order Of Meaning " && <InOrderOfMeaning item={item} />}

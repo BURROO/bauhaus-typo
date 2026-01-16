@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import styles from './List.module.css'
 import InfinityScroll from './InfinityScroll'
-import TypeLarge from "./TypeLarge";
+import TypeLarge from "../layer2/TypeLarge";
 
 
 interface Props {
@@ -31,19 +31,7 @@ const List = ({ data }: Props) => {
     }, [data])
 
 
-    const [showIntro, setShowIntro] = useState(true)
 
-    useEffect(() => {
-        const timeout = setTimeout(() => {
-
-            setShowIntro(false)
-
-        }, 1000)
-
-        return () => {
-            clearTimeout(timeout)
-        }
-    }, [])
 
     // console.log("sortedData", sortedData.length)
     // console.log("sortedData", sortedData)
@@ -55,7 +43,7 @@ const List = ({ data }: Props) => {
             activeIndex={activeIndex}
             setActiveIndex={setActiveIndex}
             />
-           {showIntro && <TypeLarge text={`Typography & Type Design`} />}
+           <TypeLarge text={`Typography & Type Design\\Exhibition\\06.–0.8.02.2026`} />
         </div>
     )
 }
