@@ -76,9 +76,9 @@ const TranscodingTypography = ({ item }: Props) => {
             style={{
                 background: isLocal ? 'green' : 'red'
             }}>{isLocal ? 'Local' : 'Remote'}</div>
-            <iframe 
+            {src && <iframe 
             src={src}
-            ></iframe>
+            ></iframe>}
         </div>
     )
 }

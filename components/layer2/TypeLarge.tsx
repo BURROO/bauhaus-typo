@@ -10,29 +10,44 @@ const TypeLarge = ({ text }: Props) => {
 
     const [showIntro, setShowIntro] = useState(true)
 
-    useEffect(() => {
-        const timeout = setTimeout(() => {
+    // useEffect(() => {
+    //     const timeout = setTimeout(() => {
 
-            setShowIntro(false)
+    //         setShowIntro(false)
 
-        }, 1000)
+    //     }, 1000)
 
-        return () => {
-            clearTimeout(timeout)
-        }
-    }, [])
+    //     return () => {
+    //         clearTimeout(timeout)
+    //     }
+    // }, [])
 
 
-    if(!showIntro) return <></>
+    // if(!showIntro) return <></>
 
     return (
         <div className={styles.typeLarge}>
-            {text.split("\\").map((txt, i) => <h2 key={i}>{txt}</h2>)}
+            {text.split("\\").map((txt, i, all) => (
+                <h2 key={i}>
+                    {txt.split('').map((ltr, j) => (
+                        <span key={j}
+                        style={{
+                            // background: i % 2 !== 0 ? "white" : "black",
+                            // color: i % 2 === 0 ? "white" : "black"
+                        }}
+                        
+                        >{ltr}</span>
+                    ))}
+                
+                    {/* {i < all.length-1 && <><br/><br/></>} */}
+                </h2>
+            ))}
             {/* <h1>Typography & Type Design</h1>
             <h2>Exhibition</h2>
             <h2>06.–0.8.02.2026</h2> */}
             {/* <h2>Typography & Type Design</h2> */}
             {/* Handle Type large */}
+            {/* <SVG /> */}
             
         </div>
     )
@@ -61,6 +76,7 @@ const SVG = () => {
             })
         }
 
+        handleResize()
         window.addEventListener("resize", handleResize)
 
 

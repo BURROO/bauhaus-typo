@@ -45,17 +45,18 @@
   left: 50%;
   transform: translate(-50%, -50%); */
   z-index: 10;
-  background: rgba(0,0,0,0.6);
+  /* background: rgba(0,0,0,0.6); */
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  display: flex;
+  /* display: flex;
   align-items: center;
   justify-content: center;
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px); */
   transition: 0.3s;
   pointer-events: none;
+  mix-blend-mode: multiply;
 }
 
 .intro *{

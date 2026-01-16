@@ -199,7 +199,6 @@ const InfinityScroll = ({ data, setActiveIndex, activeIndex }: Props) => {
         >
             <div
             className={styles.scrollWrapperInner}
-            style={{ filter: `url(#screenPrintEffect)` }}
             />
             {
                 activeIndex !== null &&
@@ -261,30 +260,29 @@ const InfinityScroll = ({ data, setActiveIndex, activeIndex }: Props) => {
                         }
 
                         return (
-                            <li
+                            <Link 
                             key={i}
-                            className={styles.row}
-                            // style={{ height: itemHeight }}
-                            onMouseEnter={() => setActiveIndex(i)}
-                            onMouseLeave={() => setActiveIndex(null)}
-                            style={{
-                                height: rowHeight
-                                // opacity: activeIndex !== null && activeIndex !== i ? 0.6 : 1,
-                                // borderBottom: activeIndex !== i ? '1px solid transparent' : `1px solid white`,
-                                // borderTop: activeIndex !== i ? '1px solid transparent' : `1px solid white`
-                            }}
+                            href={`/${kurs}/${studierende}`}
                             >
+                                <li
+                                className={styles.row}
+                                // style={{ height: itemHeight }}
+                                onMouseEnter={() => setActiveIndex(i)}
+                                onMouseLeave={() => setActiveIndex(null)}
+                                style={{
+                                    height: rowHeight
+                                    // opacity: activeIndex !== null && activeIndex !== i ? 0.6 : 1,
+                                    // borderBottom: activeIndex !== i ? '1px solid transparent' : `1px solid white`,
+                                    // borderTop: activeIndex !== i ? '1px solid transparent' : `1px solid white`
+                                }}
+                                >
                                     {/* NUMBER */}
                                     <div className={i % 2 == 1 ? styles.rowGray : ''}>{(row.index).toString().padStart(2, "0")}</div>
                                     {/* STUDENT */}
                                     <div className={i % 2 == 0 ? styles.rowGray : ''}>
 
-                                        <Link 
-                                        href={`/${kurs}/${studierende}`}
-                                      
-                                        >
                                             <div>{row["Studierende"]}</div>
-                                        </Link>
+                                    
                                         
                                     </div>
                                     {/* TITLE */}
@@ -297,7 +295,7 @@ const InfinityScroll = ({ data, setActiveIndex, activeIndex }: Props) => {
                                     </div>
                                     {/* FORMAT */}
                                     <div className={i % 2 == 1 ? styles.rowGray : ''}>
-                                       {row.Format}
+                                        {row.Format}
                                     </div>
                                     {/* COURSE */}
                                     <div className={courseIndex % 2 == 0 ? styles.rowGray : ''}>
@@ -311,7 +309,8 @@ const InfinityScroll = ({ data, setActiveIndex, activeIndex }: Props) => {
                                         {hexEncode(row["Studierende"]).slice(0, 6)}
                                         {/* {(row["Kurs"].split(" ").map((word: string) => word.charAt(0)))} */}
                                     </div>
-                            </li>
+                                </li>
+                            </Link>
                         )
                     })
                 }
@@ -335,7 +334,7 @@ const InfinityScroll = ({ data, setActiveIndex, activeIndex }: Props) => {
                     <feColorMatrix in="turbulence" type="matrix" values="0.33 0.33 0.33 0 0
                                                                         0.33 0.33 0.33 0 0
                                                                         0.33 0.33 0.33 0 0
-                                                                        0 0 0 0.8 0" result="grayscale"/>
+                                                                        0 0 0 0.6 0" result="grayscale"/>
                     
                     {/* <!-- Apply threshold to create sharp black/white dots --> */}
                     <feComponentTransfer in="grayscale" result="thresholded">

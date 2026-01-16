@@ -63,30 +63,22 @@ const PageWrapper = ({ item }: Props) => {
                 </div>
             </div>
 
-            <div 
-            // className={styles.intro} 
-            >
-                {/* <div>
-                    <h1>{item.Studierende}</h1>
-                    <h2>{item.Kurs}</h2>
-                </div> */}
-                <TypeLarge text={`${item.Studierende} ${item.Kurs}`} />
-            </div>
             <main className={styles.main}>
-                {/* <List data={data} /> */}
                 <div className={styles.wrapper} style={{
                     // width: isHovered ? '80vw' : '',
                     // height: isHovered ? '90vh' : '',
                     borderRadius: isHovered ? 5 : 0,
                 }}>
-                    {/* {item.Kurs === "Transcoding Typography" && <TranscodingTypography item={item} />}
-                    {item.Kurs === "In Order Of Meaning " && <InOrderOfMeaning item={item} />}
-                    {item.Kurs === "Punk Zine" && <PunkZine item={item} />} */}
+                    {item.Kurs === "Punk Zine" && <PunkZine item={item} />} 
                     {item.Type === "WWW" && <TranscodingTypography item={item} />}
                     {item.Type === "BOOK" && <InOrderOfMeaning item={item} />}
-                    {item.Type === "WWW" && <PunkZine item={item} />}
                 </div>
             </main>
+            <div 
+            className={styles.intro} 
+            >
+                <TypeLarge text={`${item.Studierende}\\${item.Title}`} />
+            </div>
         </div>
     )
 }
