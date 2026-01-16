@@ -289,7 +289,7 @@ const InfinityScroll = ({ data, setActiveIndex, activeIndex }: Props) => {
                                         
                                     </div>
                                     {/* TITLE */}
-                                    <div className={i % 2 == 0 ? styles.rowGray : ''}>
+                                    <div className={i % 2 == 1 ? styles.rowGray : ''}>
                                         <div>{row["Title"]}</div>
                                     </div>
                                     {/* MEDIUM */}
