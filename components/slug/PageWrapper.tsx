@@ -9,6 +9,7 @@ import Link from "next/link";
 import { TypeProject } from "@/types/project-type";
 import { useEffect, useState } from "react";
 import TypeLarge from "../layer2/TypeLarge";
+import ProjectInfo from "./ProjectInfo";
 
 interface Props{
     item: TypeProject;
@@ -18,28 +19,27 @@ const PageWrapper = ({ item }: Props) => {
 
     const [isHovered, setIsHovered] = useState(false)
 
-    // console.log("item", item)
 
-    // const [introStyle, setIntroStyle] = useState({
-    //     opacity: 1,
-    //     display: "flex"
-    // })
+    const [introStyle, setIntroStyle] = useState({
+        opacity: 1,
+        display: "flex"
+    })
 
-    // useEffect(() => {
+    useEffect(() => {
 
-    //     const timeout1 = setTimeout(() => {
+        const timeout1 = setTimeout(() => {
 
-    //         setIntroStyle({
-    //             opacity: 0,
-    //             display: "flex"
-    //         })
-    //     }, 1000)
+            setIntroStyle({
+                opacity: 0,
+                display: "flex"
+            })
+        }, 1000)
 
 
-    //     // return () => {
-    //     //     clearTimeout(timeout1)
-    //     // }
-    // }, [])
+        return () => {
+            clearTimeout(timeout1)
+        }
+    }, [])
 
     return (
         <div className={styles.page}>
@@ -69,16 +69,20 @@ const PageWrapper = ({ item }: Props) => {
                     // height: isHovered ? '90vh' : '',
                     borderRadius: isHovered ? 5 : 0,
                 }}>
-                    {item.Kurs === "Punk Zine" && <PunkZine item={item} />} 
+                    {item.Kurs === "Handmade Websites as Punk Zines" && <PunkZine item={item} />} 
                     {item.Type === "WWW" && <TranscodingTypography item={item} />}
                     {item.Type === "BOOK" && <InOrderOfMeaning item={item} />}
                 </div>
             </main>
-            <div 
+
+            {/* <div 
             className={styles.intro} 
+            style={introStyle}
             >
                 <TypeLarge text={`${item.Studierende}\\${item.Title}`} />
-            </div>
+            </div> */}
+            
+            <ProjectInfo project={item} />
         </div>
     )
 }

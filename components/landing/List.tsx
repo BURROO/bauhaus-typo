@@ -1,9 +1,7 @@
 'use client'
 
-import { useEffect, useMemo, useState } from "react";
-import styles from './List.module.css'
+import { useMemo, useState } from "react";
 import InfinityScroll from './InfinityScroll'
-import TypeLarge from "../layer2/TypeLarge";
 
 
 interface Props {
@@ -32,20 +30,12 @@ const List = ({ data }: Props) => {
 
 
 
-
-    // console.log("sortedData", sortedData.length)
-    // console.log("sortedData", sortedData)
-
     return (
-        <div className={styles.list}>
-            <InfinityScroll 
-            data={sortedData} 
-            activeIndex={activeIndex}
-            setActiveIndex={setActiveIndex}
-            />
-           {/* {activeIndex === null && 
-           <TypeLarge text={`Typography & Type Design\\Exhibition\\06.–0.8.02.2026`} />} */}
-        </div>
+        <InfinityScroll 
+        data={sortedData} 
+        activeIndex={activeIndex}
+        setActiveIndex={setActiveIndex}
+        />
     )
 }
 

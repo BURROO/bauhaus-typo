@@ -34,6 +34,7 @@ const TypeLarge = ({ text }: Props) => {
                         style={{
                             // background: i % 2 !== 0 ? "white" : "black",
                             // color: i % 2 === 0 ? "white" : "black"
+                            color: ltr === "§" ? 'black' : ''
                         }}
                         
                         >{ltr}</span>

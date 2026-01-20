@@ -1,5 +1,31 @@
+export type TypeCourses = 
+'Transcoding Typography' | 
+'In Order Of Meaning' | 
+'Handmade Websites as Punk Zines' | 
+'Bauhaus Master Lectures' |
+'First Year Introduction' |
+// 'Introduction Typography' |
+'Independent Project' |
+'204 Type-Gazette Issue 06'
+
+
+type TypeCourseShort = {
+  [K in TypeCourses]: string
+}
+
+export const courseShort: TypeCourseShort = {
+    'Transcoding Typography': 'TT',
+    'In Order Of Meaning': 'OM',
+    'Bauhaus Master Lectures': 'BM',
+    'Handmade Websites as Punk Zines': 'PZ',
+    // 'Introduction Typography': 'IT',
+    'First Year Introduction': 'IT',
+    'Independent Project': 'IP',
+    '204 Type-Gazette Issue 06': 'TG'
+}
+
 export interface TypeProject {
-    Kurs: 'Transcoding Typography' | 'In Order Of Meaning ' | 'Punk Zine' | '';
+    Kurs: TypeCourses;
     Studierende: string;
     Title: string;
     Image: string;
@@ -10,5 +36,7 @@ export interface TypeProject {
         front: string;
         back: string;
         spine: string;
-    }
+    };
+    "Text DE": string;
+    "Text EN": string;
 }

@@ -1,0 +1,64 @@
+.projectInfo{
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+
+
+.projectInfoList{
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr 2fr 1fr;
+  list-style: none;
+}
+
+.projectInfoList li{
+  padding: 3px;
+}
+
+/* A */
+/* .projectInfoList > li:nth-child(8n-7){
+  background: rgba(230,230,230, 0.95);
+}
+
+.projectInfoList > li:nth-child(8n-5){
+  background: rgba(230,230,230, 0.95);
+}
+.projectInfoList > li:nth-child(8n-2){
+  background: rgba(230,230,230, 0.95);
+}
+.projectInfoList > li:nth-child(8n-0){
+  background: rgba(230,230,230, 0.95);
+} */
+/* B */
+
+.projectInfoList > li:nth-child(10n+1){
+  background: rgba(230,230,230, 0.95);
+}
+.projectInfoList > li:nth-child(10n+3){
+  background: rgba(230,230,230, 0.95);
+}
+.projectInfoList > li:nth-child(10n+5){
+  background: rgba(230,230,230, 0.95);
+}
+.projectInfoList > li:nth-child(10n+7){
+  background: rgba(230,230,230, 0.95);
+}
+.projectInfoList > li:nth-child(10n+9){
+  background: rgba(230,230,230, 0.95);
+/* }
+.projectInfoList > li:nth-child(9n+8){
+  background: rgba(230,230,230, 0.95);
+} */
+
+
+
+/* .projectInfoList > li:nth-child(8n-6){
+  background: rgba(230,230,230, 0.95);
+}
+.projectInfoList > li:nth-child(8n-3){
+  background: rgba(230,230,230, 0.95);
+}
+.projectInfoList > li:nth-child(8n-1){
+  background: rgba(230,230,230, 0.95);
+} */

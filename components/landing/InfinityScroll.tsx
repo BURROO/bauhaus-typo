@@ -1,11 +1,11 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useContext, useEffect, useMemo, useRef, useState } from 'react'
 import styles from './InfinityScroll.module.css'
 import Link from 'next/link';
-import { TypeProject } from '@/types/project-type';
+import { courseShort, TypeProject } from '@/types/project-type';
 import Overlay from './Overlay';
 import ListFooter from './ListFooter';
-import { render } from '@react-pdf/renderer';
 import TypeLarge from '../layer2/TypeLarge';
+import { ContextMenu } from '../context/ContextMenu';
 
 interface Props {
     data: TypeProject[];
@@ -22,16 +22,20 @@ interface Filter {
 
 }
 
-const hexEncode = function(input: string){
-    var hex, i;
 
-    var result = "";
-    for (i=0; i<input.length; i++) {
-        hex = input.charCodeAt(i).toString(16);
-        result += ("000"+hex).slice(-4);
-    }
 
-    return result
+const getID = (item: TypeProject, nr: string) => {
+
+
+    const pt1 = courseShort[item['Kurs']]
+    
+    const nameSplit = item["Studierende"].split(' ').map(char => char.charAt(0))
+
+    const pt2 = `${nameSplit[0]}${nameSplit[nameSplit.length-1]}`
+
+
+    return `${pt1}/${pt2}/${nr}`
+
 }
 
 
@@ -40,7 +44,11 @@ const InfinityScroll = ({ data, setActiveIndex, activeIndex }: Props) => {
     const doublicatedData = useMemo(() => [...data, ...data], data)
 
 
+    const { screenHeight } = useContext(ContextMenu)
+
+
     const scrollPos = useRef(2000)
+    const [ofst, setOfst] = useState(0)
     const refContainer = useRef<HTMLDivElement>(null)
 
     // 
@@ -58,15 +66,12 @@ const InfinityScroll = ({ data, setActiveIndex, activeIndex }: Props) => {
 
     const [renderedData, setRenderedData] = useState(doublicatedData)
 
-    console.log("renderData", renderedData.length)
-
     const dataRef = useRef(renderedData)
 
     useEffect(() => {
 
 
         if(filter !== "" || searchTerm !== ''){
-        console.log("data", data.length)
             setRenderedData(
                 data
                 .filter(d => {
@@ -87,7 +92,6 @@ const InfinityScroll = ({ data, setActiveIndex, activeIndex }: Props) => {
                     const found = Object.values(d).find(value => value && value.toString().match(new RegExp(searchTerm, 'ig')))
 
 
-                    console.log("filter by searchterm", searchTerm, found)
                     return found
                 })
             )
@@ -115,6 +119,11 @@ const InfinityScroll = ({ data, setActiveIndex, activeIndex }: Props) => {
 
             scrollPos.current = scrollInc+scrollPos.current
 
+            const newOfst = ofst > 1000 ? 0 : ofst+Math.floor((Math.abs(scrollInc)/10))
+
+            setOfst(newOfst)
+
+
             if(refContainer.current){
 
                 if(scrollPos.current >= itemHeight){
@@ -136,6 +145,7 @@ const InfinityScroll = ({ data, setActiveIndex, activeIndex }: Props) => {
                         ...dataRef.current.slice(0, dataRef.current.length-itemsToRemove),
                     ])
                 }else{
+
                     // scrollPos.current = 0
                 }
                 // refContainer.current.scrollTop += 200
@@ -154,7 +164,7 @@ const InfinityScroll = ({ data, setActiveIndex, activeIndex }: Props) => {
             window.removeEventListener('wheel', handleScroll)
         }
 
-    }, [])
+    }, [ofst])
 
 
 
@@ -165,33 +175,39 @@ const InfinityScroll = ({ data, setActiveIndex, activeIndex }: Props) => {
 
 
 
-    const [rowHeight, setRowHeight] = useState(15)
 
-    useEffect(() => {
-        // Read height and calc element based on height
+    // const [rowHeight, setRowHeight] = useState(15)
 
-
-
-
-        const handleResize = () => {
-            const divider = Math.floor(window.innerHeight / 15)
-
-            setRowHeight(window.innerHeight / divider)
-        }
-
-        handleResize()
+    // useEffect(() => {
+    //     // Read height and calc element based on height
 
 
-        window.addEventListener("resize", handleResize)
-
-        return () => {
-
-            window.removeEventListener("resize", handleResize)
-        }
 
 
-    }, [])
+    //     const handleResize = () => {
+    //         const divider = Math.floor( screenHeight / 15)
 
+    //         setRowHeight(window.innerHeight / divider)
+    //     }
+
+    //     handleResize()
+
+
+    //     window.addEventListener("resize", handleResize)
+
+    //     return () => {
+
+    //         window.removeEventListener("resize", handleResize)
+    //     }
+
+
+    // }, [])
+
+    // console.log("screenHeight", screenHeight)
+
+    const divider = screenHeight !== null ? Math.floor( screenHeight / 15) :  1
+
+    const rowHeight = screenHeight !== null ? (screenHeight / divider) : 0
 
     const name = activeIndex !== null && renderedData[activeIndex]?.Studierende || null
 
@@ -262,6 +278,13 @@ const InfinityScroll = ({ data, setActiveIndex, activeIndex }: Props) => {
                             'Handmade Websites as Punk Zines': 'Website'
                         }
 
+                        const nr = (row.index).toString().padStart(2, "0")
+
+                        const id = getID(row, nr)
+                        // const id = hexEncode(row["Studierende"]).slice(0, 6)
+
+                        const fieldIsTooLong = row["Studierende"].length > 20 || row["Title"].length > 20
+
                         return (
                             <Link 
                             key={i}
@@ -273,43 +296,45 @@ const InfinityScroll = ({ data, setActiveIndex, activeIndex }: Props) => {
                                 onMouseEnter={() => setActiveIndex(i)}
                                 onMouseLeave={() => setActiveIndex(null)}
                                 style={{
-                                    height: rowHeight
+                                    height: fieldIsTooLong ? rowHeight*2 : rowHeight
                                     // opacity: activeIndex !== null && activeIndex !== i ? 0.6 : 1,
                                     // borderBottom: activeIndex !== i ? '1px solid transparent' : `1px solid white`,
                                     // borderTop: activeIndex !== i ? '1px solid transparent' : `1px solid white`
                                 }}
                                 >
                                     {/* NUMBER */}
-                                    <div className={i % 2 == 1 ? styles.rowGray : ''}>{(row.index).toString().padStart(2, "0")}</div>
+                                    {/* <div className={i % 2 == 1 ? styles.rowGray : ''}>
+                                        <span>{nr}</span>
+                                    </div> */}
                                     {/* STUDENT */}
-                                    <div className={i % 2 == 0 ? styles.rowGray : ''}>
+                                    <div className={i % 2 == 1 ? styles.rowGray : ''}>
 
-                                            <div>{row["Studierende"]}</div>
+                                            <span>{row["Studierende"]}</span>
                                     
                                         
                                     </div>
                                     {/* TITLE */}
                                     <div className={i % 2 == 1 ? styles.rowGray : ''}>
-                                        <div>{row["Title"]}</div>
+                                        <span>{row["Title"]}</span>
                                     </div>
                                     {/* MEDIUM */}
                                     <div className={courseIndex % 2 == 1 ? styles.rowGray : ''}>
-                                        {!isPrevSameCourse && (format[row["Kurs"]] || 'TBD') || ''}
+                                        <span>{!isPrevSameCourse && (format[row["Kurs"]] || 'TBD') || ''}</span>
                                     </div>
                                     {/* FORMAT */}
                                     <div className={i % 2 == 1 ? styles.rowGray : ''}>
-                                        {row.Format}
+                                        <span>{row.Format}</span>
                                     </div>
                                     {/* COURSE */}
                                     <div className={courseIndex % 2 == 0 ? styles.rowGray : ''}>
-                                        <div>{!isPrevSameCourse && row["Kurs"]}</div>
+                                        <span>{!isPrevSameCourse && row["Kurs"]}</span>
                                     </div>
                                     {/* SUPERVISION */}
                                     <div className={courseIndex % 2 == 1 ? styles.rowGray : ''}>
-                                        <div>{!isPrevSameCourse && (supervision[row['Kurs']] || 'TBD') || ''}</div>
+                                        <span>{!isPrevSameCourse && (supervision[row['Kurs']] || 'TBD') || ''}</span>
                                     </div>
-                                    <div className={i % 2 == 0 ? styles.rowGray : ''}>
-                                        {hexEncode(row["Studierende"]).slice(0, 6)}
+                                    <div className={i % 2 == 1 ? styles.rowGray : ''}>
+                                        <span>{id}</span>
                                         {/* {(row["Kurs"].split(" ").map((word: string) => word.charAt(0)))} */}
                                     </div>
                                 </li>
@@ -317,18 +342,119 @@ const InfinityScroll = ({ data, setActiveIndex, activeIndex }: Props) => {
                         )
                     })
                 }
+                {
+                    filter.length > 0 &&
+                    <>
+                        <li
+                        className={styles.rowCourse}
+                        // style={{ height: itemHeight }}
+                        // onMouseEnter={() => setActiveIndex(i)}
+                        // onMouseLeave={() => setActiveIndex(null)}
+                        style={{
+                            height: screenHeight ? (rowHeight * 3) : 0
+                        }}
+                        >
+                            <div className={`${styles.rowGray}`}>
+                                <br/>
+                                <br/>
+                                {filter}                               
+                            </div>
+                            {/* TITLE */}
+                            <div className={``}>
+                            </div>
+                            {/* MEDIUM */}
+                            <div className={``}>
+                            </div>
+                            {/* FORMAT */}
+                            <div className={`${styles.rowGray}`}>
+                            </div>
+                            {/* COURSE */}
+                            <div className={``}>
+                            </div>
+                            {/* SUPERVISION */}
+                            <div className={``}>
+                            </div>
+                            <div className={``}>
+                            </div>
+                        </li>
+                        <li
+                        className={styles.rowCourse}
+                        // style={{ height: itemHeight }}
+                        // onMouseEnter={() => setActiveIndex(i)}
+                        // onMouseLeave={() => setActiveIndex(null)}
+                        style={{
+                            height: screenHeight ? screenHeight - (rowHeight * renderedData.length - 3) : 0
+                        }}
+                        >
+                            <div className={``}>                            
+                            </div>
+                            {/* TITLE */}
+                            <div className={`${styles.rowGray}`}>
+                                Text on current project       
+                            </div>
+                            {/* MEDIUM */}
+                            <div className={`${styles.rowGray}`}>
+                            </div>
+                            {/* FORMAT */}
+                            <div className={``}>
+                            </div>
+                            {/* COURSE */}
+                            <div className={`${styles.rowGray}`}>
+                            </div>
+                            {/* SUPERVISION */}
+                            <div className={`${styles.rowGray}`}>
+                            </div>
+                            <div className={``}>
+                            </div>
+                        </li>
+                    </>
+                }
             </ul>
-    
-            <ListFooter
-            height={rowHeight*3}
-            setFilter={setFilter}
-            filter={filter}
-            setSorting={setSorting}
-            sorting={sorting}
-            setSearchTerm={setSearchTerm}
-            searchTerm={searchTerm}
-            />
-            <TypeLarge text={`Typography\\& Type Design\\Exhibition\\06.–0.8.02.2026\\${name ? `\\${name}` : ''}`} />
+                <div className={styles.footer}>
+                    <ListFooter
+                    height={rowHeight*3}
+                    setFilter={setFilter}
+                    filter={filter}
+                    setSorting={setSorting}
+                    sorting={sorting}
+                    setSearchTerm={setSearchTerm}
+                    searchTerm={searchTerm}
+                    />
+                </div>
+                <div style={{ 
+                    // transform: `translate(-100%, -100%) rotate(-90deg) `, 
+                    // transform: `translate(-100%, -100%)`, 
+                    // maxHeight: "58vh",
+                    overflow: "hidden",
+                    position: "fixed", 
+                    lineHeight: 0.8,
+                    // padding: `5vh 0 -10px 0`,
+                    top: 0, 
+                    left: 0,
+                    width: "50vw",
+                    height: "100vh", 
+                    background: "black", 
+                    // paddingLeft: "6vw",
+                    // transform: `translateX(-50vw)`,
+                    zIndex: -1,
+                }}>
+                    <div style={{
+                        display: "flex",
+                        alignItems: "center",
+                        // justifyContent: "center",
+                        writingMode: "vertical-rl",
+                        transform: `translate(-4%, calc(${-ofst/30}%)) rotate(180deg)`, 
+                        fontSize: "65vw", 
+                        padding: 0,
+                        margin: 0,
+                        fontFamily: `UfficioMono-Black`,
+                        color: "white",
+                        lineHeight: 1
+                    }}>TYPOTYPOTYPO</div>
+                </div>
+
+            {/* <TypeLarge text={`Typography\\& Type Design\\${name ? `\\${name}` : ''}\\Exhibition\\6.–8.2.2026`} /> */}
+           {/* <TypeLarge text={`Typography\\& Type Design\\§§§§§§§\\Exhibition\\06.–0.8.02.2026\\§§§§§\\${name ? `\\${name}` : ''}`} /> */}
             <svg width="0" height="0">
                 <filter id="screenPrintEffect">
                     {/* <!-- Generate noise pattern --> */}

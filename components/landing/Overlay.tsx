@@ -1,6 +1,7 @@
 import { TypeProject } from '@/types/project-type';
 import styles from './Overlay.module.css'
 import ParametricBook from '../slug/inOrderOfMeaning/ParametricBook';
+import Scene from './three/Scene';
 
 
 
@@ -14,7 +15,8 @@ const thumbnails: { [key: string]: string } = {
     'Yu Ji': `yu_ji_thumbnail.mp4`,
     'Sophia Rhein': `sophia_rhein_thumbnail.mp4`,
     'Hannes Altmann': `hannes_altmann_thumbnail.mov`,
-    'Phuong Mai Do': `phuong_mai_do_thumbnail.mp4`
+    'Phuong Mai Do': `phuong_mai_do_thumbnail.mp4`,
+    'Linda Piekniewski': `linda_piekniewski_thumbnail.mp4`
 }
 
 
@@ -30,7 +32,7 @@ const Overlay = ({ item }: {item: TypeProject; }) => {
             className={styles.overlay}
             >
                 {item["Kurs"] === "Transcoding Typography" && <OverlayTranscoding item={item} />}
-                {item["Kurs"] === "In Order Of Meaning " && <OverlayOrderOfMeaning item={item} />}
+                {item["Kurs"] === "In Order Of Meaning" && <OverlayOrderOfMeaning item={item} />}
                 {/* {item["Kurs"] === "Transcoding Typography" && <OverlayTranscoding item={item} />} */}
             </div>
     )
@@ -42,13 +44,14 @@ export default Overlay
 const OverlayTranscoding = ({ item }: { item: TypeProject }) => {
     // Handle
 
-    const img = thumbnails[item.Studierende] && `/images/tt/thumbnail/${thumbnails[item.Studierende]}` || null
+    // const img = thumbnails[item.Studierende] && `/images/tt/thumbnail/${thumbnails[item.Studierende]}` || null
 
-    if(!img) return <div className={styles.overlay} />
+    console.log("item", item)
+    // if(!img) return <div className={styles.overlay} />
 
-    const split = img.split(".")
-    const type = split.pop()
-    const isMovie = type?.match(/mov|mp4/ig)
+    // const split = img.split(".")
+    // const type = split.pop()
+    // const isMovie = type?.match(/mov|mp4/ig)
 
 
 
@@ -56,7 +59,8 @@ const OverlayTranscoding = ({ item }: { item: TypeProject }) => {
         <div 
         className={styles.overlay}
         >
-            {
+            <Scene />
+            {/* {
                 isMovie ?
                 <video
                 key={img}
@@ -70,7 +74,7 @@ const OverlayTranscoding = ({ item }: { item: TypeProject }) => {
                 src={img}
                 />
 
-            }
+            } */}
         </div>
     )
 }

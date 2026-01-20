@@ -4,13 +4,18 @@
   gap: 10;
   align-items: center;
   justify-content: center;
-  position: fixed;
+  /* position: fixed; */
   z-index: 10;
   left:0;
   bottom: 0;
-  right: 0;
+  /* background: black; */
+  /* color: white; */
+}
+
+.footer input{
+  outline: none;
+  border: none;
   background: black;
-  color: white;
 }
 
 .footer span{
@@ -19,16 +24,17 @@
 }
 
 .tag{
-  border-left: 2px solid white;
-  border-right: 2px solid white;
+  border-left: 1px solid black;
+  border-right: 1px solid black;
   padding: 2px 7px;
   /* border-radius: 10px; */
   cursor: pointer;
   margin: 3px;
+  mix-blend-mode: multiply;
 }
 
 .tag.active,
 .tag:hover{
-  background: white;
-  color: black;
+  background: black;
+  color: white;
 }

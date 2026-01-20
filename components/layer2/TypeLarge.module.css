@@ -26,14 +26,15 @@
 .typeLarge h1 > span,
 .typeLarge h2 > span{
   /*  */
-  font-family: "UfficioMono";
+  font-family: "UfficioMono-Black";
   /* font-family: Arial, Helvetica, sans-serif; */
   font-weight: bold;
-  font-size: 8vw;
+  font-size: 9vw;
+  font-size: 11vw;
   text-align: center;
   /* letter-spacing: -1rem; */
   line-height: 0.9;
-  line-height: 1;
+  /* line-height: 1; */
   /* line-height: 1.0; */
   text-transform: uppercase;
   position: relative;
@@ -52,14 +53,16 @@
   position: absolute;
   top: 5%;
   left: 0;
-  bottom: 20%;
+  bottom: 15%;
+  /* bottom: 0; */
   right: 0;
   background: black;
+  /* background: rgb(50, 221, 240) !important; */
   z-index: -1;
 }
 
 .typeLarge > h2{
-  padding: 1vw 0;
+  /* padding: 1vw 0; */
   width: 300%;
   position: relative;
   left: 0;
