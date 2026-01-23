@@ -2,14 +2,30 @@
 
 import styles from "./PageWrapper.module.css";
 
-import TranscodingTypography from "@/components/slug/transcodingTypography/TranscodingTypography";
-import InOrderOfMeaning from "@/components/slug/inOrderOfMeaning/InOrderOfMeaning";
-import PunkZine from "@/components/slug/punkZine/PunkZine";
+// import TranscodingTypography from "@/components/slug/transcodingTypography/TranscodingTypography";
+// import InOrderOfMeaning from "@/components/slug/inOrderOfMeaning/InOrderOfMeaning";
+// import PunkZine from "@/components/slug/punkZine/PunkZine";
 import Link from "next/link";
 import { TypeProject } from "@/types/project-type";
 import { useEffect, useState } from "react";
-import TypeLarge from "../layer2/TypeLarge";
+// import TypeLarge from "../layer2/TypeLarge";
 import ProjectInfo from "./ProjectInfo";
+import dynamic from 'next/dynamic'
+
+const InOrderOfMeaning = dynamic(
+  () => import("@/components/slug/inOrderOfMeaning/InOrderOfMeaning"),
+  { ssr: false }
+);
+
+const TranscodingTypography = dynamic(
+  () => import("@/components/slug/transcodingTypography/TranscodingTypography"),
+  { ssr: false }
+);
+
+const PunkZine = dynamic(
+  () => import("@/components/slug/punkZine/PunkZine"),
+  { ssr: false }
+);
 
 interface Props{
     item: TypeProject;
@@ -69,7 +85,6 @@ const PageWrapper = ({ item }: Props) => {
                     // height: isHovered ? '90vh' : '',
                     borderRadius: isHovered ? 5 : 0,
                 }}>
-                    {item.Kurs === "Handmade Websites as Punk Zines" && <PunkZine item={item} />} 
                     {item.Type === "WWW" && <TranscodingTypography item={item} />}
                     {item.Type === "BOOK" && <InOrderOfMeaning item={item} />}
                 </div>

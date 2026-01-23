@@ -1,5 +1,7 @@
+'use client'
+
 // import { useRouter } from 'next/router';
-import React, { ReactNode, useEffect, useMemo, useRef, useState } from 'react';
+import React, { ReactNode, useEffect, useMemo, useState } from 'react';
 
 interface IContext {
   screenWidth: number|null;

@@ -3,6 +3,7 @@
   left: 0;
   bottom: 0;
   right: 0;
+  transition: 0.2s;
 }
 
 
@@ -32,6 +33,18 @@
 } */
 /* B */
 
+.projectInfoList {
+  background: rgba(230,230,230, 0.50);
+  backdrop-filter: blur(20px);
+}
+/* 
+.projectInfoList > li{
+  background: rgba(230,230,230, 0.50);
+  backdrop-filter: blur(20px);
+} */
+
+/* 
+
 .projectInfoList > li:nth-child(10n+1){
   background: rgba(230,230,230, 0.95);
 }
@@ -46,10 +59,10 @@
 }
 .projectInfoList > li:nth-child(10n+9){
   background: rgba(230,230,230, 0.95);
-/* }
+}
 .projectInfoList > li:nth-child(9n+8){
   background: rgba(230,230,230, 0.95);
-} */
+}  */
 
 
 

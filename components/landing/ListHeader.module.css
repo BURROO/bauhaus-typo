@@ -1,0 +1,15 @@
+
+.header {
+  position: fixed;
+  color: black;
+  z-index: 10000;
+  left: 0;
+  right: 0;
+  text-transform: uppercase;
+  background: rgba(230,230,230, 0.97) ;
+}
+
+.header > div{
+  /* background: black; */
+  color: black;
+}

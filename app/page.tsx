@@ -29,12 +29,22 @@ export default function Home() {
         Format: `${Math.floor(Math.random()*100)}×${Math.floor(Math.random()*100)}`
       })
     })
+        
+  const sortedData = data
+  // .sort((a, b) => b["Studierende"]?.localeCompare(a["Studierende"]) )
+  .filter((item: any) => {
+
+      if(typeof item["Studierende"] === "undefined") return false
+
+      return true
+  })
+  .map((d, i) => ({ ...d, index: i }))
 
 
   return (
     <div className={styles.page}>
       <main className={styles.main}>
-        <List data={listData} />
+        <List data={sortedData} />
       </main>
     </div>
   );

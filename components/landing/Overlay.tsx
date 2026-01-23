@@ -31,8 +31,10 @@ const Overlay = ({ item }: {item: TypeProject; }) => {
             <div 
             className={styles.overlay}
             >
-                {item["Kurs"] === "Transcoding Typography" && <OverlayTranscoding item={item} />}
+                {item["Type"] === "WWW" && <OverlayTranscoding item={item} />}
                 {item["Kurs"] === "In Order Of Meaning" && <OverlayOrderOfMeaning item={item} />}
+                {/* {item["Kurs"] === "Transcoding Typography" && <OverlayTranscoding item={item} />}
+                {item["Kurs"] === "In Order Of Meaning" && <OverlayOrderOfMeaning item={item} />} */}
                 {/* {item["Kurs"] === "Transcoding Typography" && <OverlayTranscoding item={item} />} */}
             </div>
     )
@@ -46,7 +48,7 @@ const OverlayTranscoding = ({ item }: { item: TypeProject }) => {
 
     // const img = thumbnails[item.Studierende] && `/images/tt/thumbnail/${thumbnails[item.Studierende]}` || null
 
-    console.log("item", item)
+    // console.log("item", item)
     // if(!img) return <div className={styles.overlay} />
 
     // const split = img.split(".")

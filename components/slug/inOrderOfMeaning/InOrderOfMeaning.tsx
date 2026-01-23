@@ -1,3 +1,5 @@
+'use client'
+
 import { TypeProject } from "@/types/project-type"
 import styles from './InOrderOfMeaning.module.css'
 import ParametricBook from "./ParametricBook"

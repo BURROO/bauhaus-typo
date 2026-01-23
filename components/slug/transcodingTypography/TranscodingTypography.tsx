@@ -1,3 +1,5 @@
+'use client'
+
 import { TypeProject } from '@/types/project-type'
 import styles from './TranscodingTypography.module.css'
 import { useEffect, useState } from 'react'
@@ -21,7 +23,7 @@ const TranscodingTypography = ({ item }: Props) => {
     const [src, setSrc] = useState<string>(`/websites/tt/${cleanedSnippet}/index.html`)
     const [isLocal, setIsLocal ] = useState(true)
 
-    const [prefereLocal, setPrefereLocal] = useState(true)
+    const [prefereLocal, setPrefereLocal] = useState(false)
 
 
     useEffect(() => {
@@ -68,17 +70,45 @@ const TranscodingTypography = ({ item }: Props) => {
         }
     }, [item.Link, src, prefereLocal])
 
+
+    const [view, setView] = useState<'video'|'iframe'>('video')
+
+
+
+
     return (
         <div className={styles.transcodingTypography}>
+            <button 
+            className={styles.switch}
+            
+            
+            onClick={() => setView(view === "iframe" ? "video" : "iframe")}>{
+                view === "video" ? "Try Website" : "See Showcase"}
+            </button>
+            {
+                view === 'iframe' && src &&(
+                    <>
+                        <iframe 
+                        src={src}
+                        ></iframe>
+                     </>
+                )
+            }
+            {
+                view === "video" && (
+                    <div className={styles.preview}>
+
+                    
+                    </div>
+                )
+            }
             <div
             onClick={() => setPrefereLocal(!prefereLocal)}
             className={styles.type}
             style={{
                 background: isLocal ? 'green' : 'red'
             }}>{isLocal ? 'Local' : 'Remote'}</div>
-            {src && <iframe 
-            src={src}
-            ></iframe>}
+        
         </div>
     )
 }

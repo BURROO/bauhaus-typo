@@ -6,7 +6,8 @@ export type TypeCourses =
 'First Year Introduction' |
 // 'Introduction Typography' |
 'Independent Project' |
-'204 Type-Gazette Issue 06'
+'204 Type-Gazette Issue 06' |
+'Bauhaus Inhouse'
 
 
 type TypeCourseShort = {
@@ -17,6 +18,7 @@ export const courseShort: TypeCourseShort = {
     'Transcoding Typography': 'TT',
     'In Order Of Meaning': 'OM',
     'Bauhaus Master Lectures': 'BM',
+    'Bauhaus Inhouse': 'BI',
     'Handmade Websites as Punk Zines': 'PZ',
     // 'Introduction Typography': 'IT',
     'First Year Introduction': 'IT',
@@ -26,6 +28,7 @@ export const courseShort: TypeCourseShort = {
 
 export interface TypeProject {
     Kurs: TypeCourses;
+    Supervision: string;
     Studierende: string;
     Title: string;
     Image: string;
@@ -39,4 +42,7 @@ export interface TypeProject {
     };
     "Text DE": string;
     "Text EN": string;
+    // Automated:
+    Format: string;
+    index: number;
 }

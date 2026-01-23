@@ -1,83 +1,5 @@
 
-@-webkit-keyframes shine {
-  0% {
-    transform: translateX(100%) rotate(var(--shine-deg));
-  }
-  100% {
-    transform: translateX(-100%) rotate(var(--shine-deg));
-  }
-}
 
-.scrollWrapper{
-  /* --shine-deg: 45deg; */
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  overflow-y: scroll;
-  /* transition: 0.3s; */
-  /* background: rgb(200,200,200); */
-  /* background: red; */
-  /* font-family: monospace; */
-  /* background: linear-gradient(
-    135deg, 
-    #C0C0C0 0%, 
-    #F5F5F5 25%, 
-    #808080 50%, 
-    #C0C0C0 75%, 
-    #F5F5F5 100%
-  ); */
-  
-}
-
-.scrollWrapperInner{
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  /* background: rgba(120,120,120, 0.5); */
-}
-/* .scrollWrapper:before {
-  content: "";
-  top: 0;
-  transform: translateX(100%) rotate(var(--shine-deg));
-  width: 300%;
-  height: 300%;
-  position: absolute;
-  background: linear-gradient(
-    30deg,
-    transparent 20%,
-    transparent 40%,
-    rgb(255, 255, 255, 0.5) 50%,
-    rgb(255, 255, 255, 0.5) 55%,
-    transparent 70%,
-    transparent 100%
-  );
-  transition: transform 0.3s ease-in;
-  transform: translateX(100%) rotate(var(--shine-deg));
-}
-
-.scrollWrapper:before {
-  animation: shine 1s infinite ease-in;
-} */
-
-
-.scrollWrapper{
-  color: black;
-  /* border-bottom: 1px solid white; */
-  /* border-bottom: 1px solid black; */
-
-}
-
-.scrollWrapper ul{
-  position: relative;
-  grid-template-rows: repeat(auto-fit, minmax(32px, 10vh));
-}
-
-.scrollWrapper ul > li:nth-of-type(2n){
-}
 
 .row, .rowCourse{
   /* transition: 0.1s; */
@@ -124,21 +46,6 @@
   .rowCourse > *:nth-child(7){ display: none;}
 }
 
-.row:hover{
-  /* background: white;
-  mix-blend-mode: difference; */
-  mix-blend-mode: normal;
-}
-.row:hover > div{
-  /* background: white;
-  mix-blend-mode: difference; */
-  background: black !important;
-  background: rgb(0, 134, 243) !important; 
-  color: black;
-  /* mix-blend-mode: difference; */
-  mix-blend-mode: normal;
-  /* filter: drop-shadow(0 0 10px rgb(0, 157, 255)); */
-}
 
 .row > div:nth-child(1){
   text-align: left;
@@ -148,16 +55,13 @@
   display: flex;
   text-align: left;
   padding: 0 3px;
-  /* align-items: center; */
   background: transparent;
-  color: rgba(230,230,230, 0.97);
-  /* color: black; */
-
 }
 
 .row div span{
   padding-top: 1px;
   display: inline-block;
+  color: rgba(180,180,180, 0.97);
 }
 
 .rowCourse > .rowGray,
@@ -172,6 +76,15 @@
 .row > .rowGray span{
   
   color: black;
+}
+
+.row > .isActive {
+  background: cyan;
+  background: black;
+}
+.row > .isActive span{
+  color: black;
+  color: white;
 }
 
 .row > .rowGray::after{
