@@ -58,33 +58,37 @@
   background: transparent;
 }
 
+.row div,
 .row div span{
   padding-top: 1px;
   display: inline-block;
-  color: rgba(180,180,180, 0.97);
+  color: var(--grayFont);
 }
 
 .rowCourse > .rowGray,
 .row > .rowGray{
-  background: rgba(230,230,230, 0.97) !important;
+  background: var(--gray) !important;
   position: relative;
   mix-blend-mode: normal;
-  color: black;
-  /* background: transparent; */
-  /* border-radius: 12px; */
+  color: white;
+  /* isolation: isolate;
+  mix-blend-mode: destination-out;
+  -webkit-mix-blend-mode: destination-out; */
 }
 .row > .rowGray span{
-  
   color: black;
+  color: white;
 }
 
 .row > .isActive {
   background: cyan;
-  background: black;
+  /* background: black; */
+  color: white;
+  color: black;
 }
 .row > .isActive span{
   color: black;
-  color: white;
+  /* color: white; */
 }
 
 .row > .rowGray::after{
@@ -119,7 +123,7 @@
   left: 0;
   right: 0;
   text-transform: uppercase;
-  background: rgba(230,230,230, 0.97) !important;
+  background: var(--gray) !important;
 }
 
 .header > div{

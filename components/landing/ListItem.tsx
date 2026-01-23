@@ -129,7 +129,9 @@ const Column = ({ isGray, content, isActive}: { isGray: boolean; content: string
 
     return (
         <div className={isActive ? styles.isActive : (isGray ? styles.rowGray : '')}>
-            <span>{content}</span>
+            {/* <span> */}
+                {content}
+                {/* </span> */}
         </div>
 
     )

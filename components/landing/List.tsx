@@ -11,6 +11,7 @@ import ListItem from './ListItem';
 import ListHeader from './ListHeader';
 import { render } from '@react-pdf/renderer';
 import ListCourse from './ListCourse';
+import Background from './Background';
 
 interface Props {
     data: TypeProject[];
@@ -285,13 +286,24 @@ const List = ({ data}: Props) => {
                     searchTerm={searchTerm}
                     />
                 </div>
+                <div style={{ 
+                    position: "fixed", 
+                    zIndex: -1,
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                }}>
+                    <Background text={"Bauhaus Typography"} dir={1}/>
+                    <Background text={"EXHIBITION"} dir={-1}/>
+                </div>
                 {/* <div style={{ 
                     overflow: "hidden",
                     position: "fixed", 
                     lineHeight: 0.8,
                     top: 0, 
                     left: 0,
-                    width: "50vw",
+                    width: "100vw",
                     height: "100vh", 
                     background: "black", 
                     zIndex: -1,
@@ -299,9 +311,8 @@ const List = ({ data}: Props) => {
                     <div style={{
                         display: "flex",
                         alignItems: "center",
-                        writingMode: "vertical-rl",
-                        transform: `translate(-4%, calc(${-ofst/30}%)) rotate(180deg)`, 
-                        fontSize: "65vw", 
+                        transform: `translate(calc(${-ofst/30}%))`, 
+                        fontSize: "56vh", 
                         padding: 0,
                         margin: 0,
                         fontFamily: `UfficioMono-Black`,

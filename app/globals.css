@@ -1,6 +1,9 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  /* --gray: rgba(230,230,230, 0.97); */
+  --gray: rgba(200,200,200, 0.95);
+  --grayFont: rgba(180,180,180, 0.97);
 }
 
 /* @media (prefers-color-scheme: dark) {
