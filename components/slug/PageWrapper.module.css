@@ -4,11 +4,13 @@
   background: black;
   color: white;
   height: 100lvh;
-  position: relative;
+  /* position: relative; */
+  position: fixed;
   width: 100lvw;
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
 }
 
 
@@ -19,6 +21,7 @@
   top: 0;
   /* right: 0; */
   transition: 0.3s;
+  overflow: hidden;
 }
 
 .overlay{

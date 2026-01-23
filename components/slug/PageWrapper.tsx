@@ -12,8 +12,8 @@ import { useEffect, useState } from "react";
 import ProjectInfo from "./ProjectInfo";
 import dynamic from 'next/dynamic'
 
-const InOrderOfMeaning = dynamic(
-  () => import("@/components/slug/inOrderOfMeaning/InOrderOfMeaning"),
+const Book = dynamic(
+  () => import("@/components/slug/book/Book"),
   { ssr: false }
 );
 
@@ -22,10 +22,10 @@ const TranscodingTypography = dynamic(
   { ssr: false }
 );
 
-const PunkZine = dynamic(
-  () => import("@/components/slug/punkZine/PunkZine"),
-  { ssr: false }
-);
+// const PunkZine = dynamic(
+//   () => import("@/components/slug/__punkZine/PunkZine"),
+//   { ssr: false }
+// );
 
 interface Props{
     item: TypeProject;
@@ -59,7 +59,7 @@ const PageWrapper = ({ item }: Props) => {
 
     return (
         <div className={styles.page}>
-            <div
+            {/* <div
             className={styles.overlay}
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
@@ -77,7 +77,7 @@ const PageWrapper = ({ item }: Props) => {
                     <br/>
                     <Link href={`/`}>← Go Back</Link>
                 </div>
-            </div>
+            </div> */}
 
             <main className={styles.main}>
                 <div className={styles.wrapper} style={{
@@ -86,7 +86,7 @@ const PageWrapper = ({ item }: Props) => {
                     borderRadius: isHovered ? 5 : 0,
                 }}>
                     {item.Type === "WWW" && <TranscodingTypography item={item} />}
-                    {item.Type === "BOOK" && <InOrderOfMeaning item={item} />}
+                    {item.Type === "BOOK" && <Book item={item} />}
                 </div>
             </main>
 

@@ -1,11 +1,31 @@
 .projectInfo{
   position: fixed;
   left: 0;
-  bottom: 0;
+  top: 0;
   right: 0;
   transition: 0.2s;
+  min-height: 33vh;
+  background: var(--grayTransparent);
+  background: rgba(255,255,255,0.4);
+  backdrop-filter: blur(20px);
 }
 
+.projectInfo button{
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
+
+.projectInfo a{
+  position: absolute;
+  bottom: 0;
+  background: var(--color);
+  height: 20px;
+  display: inline-block;
+  display: flex;
+  align-items: end;
+  padding: 0 10px;
+}
 
 .projectInfoList{
   display: grid;
@@ -34,8 +54,6 @@
 /* B */
 
 .projectInfoList {
-  background: var(--gray);
-  backdrop-filter: blur(20px);
 }
 /* 
 .projectInfoList > li{

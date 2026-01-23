@@ -20,7 +20,7 @@
   border: none;
   outline: none;
   /* border: 2px solid white; */
-  filter: drop-shadow(0 0 20px black);
+  filter: var(--dropShadow);
   border-radius: 10px;
 }
 

@@ -1,7 +1,7 @@
 'use client'
 
 import { TypeProject } from "@/types/project-type"
-import styles from './InOrderOfMeaning.module.css'
+import styles from './Book.module.css'
 import ParametricBook from "./ParametricBook"
 import { useState } from "react"
 import BookContent from "./BookContent"
@@ -11,7 +11,7 @@ interface Props {
     item: TypeProject
 }
 
-const InOrderOfMeaning = ({ item }: Props) => {
+const Book = ({ item }: Props) => {
 
 
 
@@ -24,7 +24,7 @@ const InOrderOfMeaning = ({ item }: Props) => {
 
     return (
         <>
-            <div className={styles.inOrderOfMeaning}>
+            <div className={styles.book}>
                 {view === "cover" && (
                     <ParametricBook
                     type="interact"
@@ -53,7 +53,7 @@ const InOrderOfMeaning = ({ item }: Props) => {
     )
 }
 
-export default InOrderOfMeaning
+export default Book
 
 
 

@@ -1,7 +1,7 @@
 
 .bookContent{
-  background-color: white;
-  background: black;
+  /* background-color: white; */
+  overflow: hidden;
 }
 
 .slideshow{
@@ -16,6 +16,23 @@
   display: flex;
   align-items: center;
   justify-content: start;
+  overflow: hidden;
+}
+
+.goLeft, .goRight{
+  position: absolute;
+  height: 100%;
+  width: calc(50vw - 50px);
+  /* background-color: red; */
+}
+
+.goLeft{
+  left: 0;
+  cursor: w-resize;
+}
+.goRight{
+  right: 0;
+  cursor: e-resize;
 }
 
 .wrapper{
@@ -23,8 +40,9 @@
   display: flex;
   align-items: start;
   gap: 0;
-  background: black;
+  /* background: black; */
   transition: 0.3s;
+  overflow: hidden;
 }
 
 .slide{
@@ -38,6 +56,7 @@
 
 .slide img{
   height: 100%;
+  filter: var(--dropShadow);
 }
 
 
@@ -45,7 +64,8 @@
   position: fixed;
   bottom: 0;
   gap: 50px;
-  background: black;
+  left: 0;
+  right: 0;
   /* height: 80px; */
   padding: 10px 0 40px 0;
   cursor: pointer;
@@ -53,12 +73,14 @@
   align-items: center;
   justify-content: center;
   width: 100%;
+  user-select: none;
 }
 
 .thumbnailItem{
   position: relative;
   height: 80px;
   opacity: 0.7;
+  user-select: none;
 }
 
 
@@ -68,15 +90,35 @@
 
 .thumbnailItem img{
   height: 100%;
+  user-select: none;
+  pointer-events: none
 }
 
 .button{
   padding: 10px;
-  background-color: gainsboro;
   position: absolute;
   top: 10px;
   left: 10px;
   z-index: 10;
   cursor: pointer;
   background: var(--color);
+}
+
+.shadowLeft,
+.shadowRight{
+  position: absolute;
+  width: 40px;
+  height: 100%;
+}
+.shadowLeft{
+  left: 50%;
+  transform: translateX(-100%);
+  background-color: red;
+  background: linear-gradient(to right, rgba(217,217,217, 0) 0%, rgba(0,0,0, 0.5) 100%);
+  mix-blend-mode: multiply;
+}
+.shadowRight{
+  left: 50%;
+  background: linear-gradient(to left, rgba(217,217,217, 0) 0%, rgba(20,20,20, 0.5) 100%);
+  /* background-color: red; */
 }

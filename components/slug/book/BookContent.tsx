@@ -44,6 +44,16 @@ const BookContent = ({ item, setShowButton }: Props) => {
     const [activeSlide, setActiveSlide ] = useState(0)
 
 
+    const goNext = () => {
+
+        setActiveSlide((activeSlide + 1) % slides.length)
+    }
+    const goPrev = () => {
+
+        setActiveSlide((activeSlide - 1 + slides.length) % slides.length)
+    }
+
+
     return (
         <div className={styles.bookContent}>
             <div className={styles.slideshow}>
@@ -59,23 +69,28 @@ const BookContent = ({ item, setShowButton }: Props) => {
                             >
                                 <img src={`${slide}`} />
 
-                            </div>
-                        ))
-                    }
-                </div>
-                <div className={styles.thumbails}>
-                    {
-                        slides.map((slide, i) => (
-                            <div 
-                            className={`${styles.thumbnailItem} ${i === activeSlide ? styles.active : ""}`} 
-                            onClick={() => setActiveSlide(i)}
-                            >
-                                <img src={`${slide}`} />
+                                <div className={styles.shadowLeft} />
+                                <div className={styles.shadowRight} />
 
                             </div>
                         ))
                     }
                 </div>
+                {activeSlide > 0 && <div className={styles.goLeft} onClick={() => goPrev()}/>}
+                {activeSlide < slides.length-1 && <div className={styles.goRight} onClick={() => goNext()} />}
+            </div>
+            <div className={styles.thumbails}>
+                {
+                    slides.map((slide, i) => (
+                        <div 
+                        className={`${styles.thumbnailItem} ${i === activeSlide ? styles.active : ""}`} 
+                        onClick={() => setActiveSlide(i)}
+                        >
+                            <img src={`${slide}`} />
+
+                        </div>
+                    ))
+                }
             </div>
         </div>
     )
