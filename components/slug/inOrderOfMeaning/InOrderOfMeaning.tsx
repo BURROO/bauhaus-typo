@@ -19,15 +19,36 @@ const InOrderOfMeaning = ({ item }: Props) => {
 
 
     const index = item.Studierende.length % 2 + 1
-
+    const [showButton, setShowButton] = useState(false)
 
 
     return (
         <>
             <div className={styles.inOrderOfMeaning}>
-                {view === "cover" && <ParametricBook type="interact" item={item} onClick={() => setView('content')}/>}
-                {view === "content" && <BookContent item={item} onClick={() => setView('cover')}/>}
+                {view === "cover" && (
+                    <ParametricBook
+                    type="interact"
+                    item={item}
+                    setShowButton={setShowButton}
+                    />
+                )}
+                {view === "content" && (
+                    <BookContent
+                    item={item}
+                    setShowButton={setShowButton}
+                    />
+                )}
             </div>
+            {
+                showButton && 
+                <button 
+                onMouseOver={() => setShowButton(true)}
+                onClick={() => setView(view === "content" ? "cover" : "content")}
+                className={styles.button}
+                >
+                   Look {view === "content" ? "outside" : "inside"}
+                </button>
+            }
         </>
     )
 }

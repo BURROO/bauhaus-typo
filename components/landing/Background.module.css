@@ -21,6 +21,7 @@
   /* height: 100vh;  */
   background: black; 
   z-index: -1;
+  transition:  0.6s;
 }
 
 .backgroundWrapper {

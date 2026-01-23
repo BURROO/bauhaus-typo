@@ -3,40 +3,34 @@
 import { TypeProject } from '@/types/project-type'
 import styles from './BookContent.module.css'
 import { useEffect, useMemo, useState } from 'react';
-// import { pdfjs } from 'react-pdf';
-// import { Document, Page } from 'react-pdf';
-import { fromPath } from "pdf2pic";
 
 
 import 'react-pdf/dist/Page/AnnotationLayer.css'
+import { fileDataIO } from '@/data/fileData';
 
 
 interface Props{
     item: TypeProject;
-    onClick: () => void;
+    setShowButton: (value: boolean) => void;
 }
 
 
-
-const data = {
-    mona_kerntke: {
-        dir: `/images/ioom/content/mona_kerntke`,
-        count: 5,
-    }
-}
-
-const BookContent = ({ item, onClick }: Props) => {
+const BookContent = ({ item, setShowButton }: Props) => {
 
 
     // }, [])
 
 
     const slides = useMemo(() => {
+
+
+        const student = item.Studierende.toLowerCase().split(" ").join("_")
         // 
         const slides = []
-
-        const count = data["mona_kerntke"].count
-        const dir = data["mona_kerntke"].dir
+        // @ts-ignore
+        const count = (fileDataIO[student] || fileDataIO["mona_kerntke"]).count
+        // @ts-ignore
+        const dir = (fileDataIO[student] || fileDataIO["mona_kerntke"]).dir
 
         for(let i = 1; i <= count;i++){
 
@@ -52,14 +46,17 @@ const BookContent = ({ item, onClick }: Props) => {
 
     return (
         <div className={styles.bookContent}>
-            <div className={styles.button} onClick={onClick}>Cover</div>
             <div className={styles.slideshow}>
                 <div className={styles.wrapper} style={{
                     transform: `translateX(${-activeSlide * 100}vw)`
                 }}>
                     {
                         slides.map((slide) => (
-                            <div className={styles.slide}>
+                            <div
+                            className={styles.slide}
+                            onMouseEnter={() => setShowButton(true)}
+                            onMouseLeave={() => setShowButton(false)}
+                            >
                                 <img src={`${slide}`} />
 
                             </div>

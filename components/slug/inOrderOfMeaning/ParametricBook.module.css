@@ -9,7 +9,7 @@
   padding: 10px;
   cursor: pointer;
   border: none;
-  background: var(--gray);
+  background: var(--color);
   border-radius: 3px;
   backdrop-filter: blur(20px);
 }

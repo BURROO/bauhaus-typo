@@ -87,7 +87,7 @@ const OverlayOrderOfMeaning = ({ item }: { item: TypeProject }) => {
 
     return (
         <div style={{ height: 400 }}>
-            <ParametricBook type="orbit" onClick={() => {}} item={item} />
+            <ParametricBook type="orbit" item={item} setShowButton={() => {}}/>
         </div>
     )
 }

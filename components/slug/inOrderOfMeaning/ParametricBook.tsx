@@ -6,11 +6,12 @@ import { useTexture, Environment, OrbitControls } from "@react-three/drei";
 import { TypeProject } from "@/types/project-type";
 import styles from './ParametricBook.module.css'
 import  * as THREE from 'three'
+import { fileDataIO } from "@/data/fileData";
 
 interface Props{
     item: TypeProject;
-    onClick: () => void;
-    type: 'orbit' | 'interact'
+    type: 'orbit' | 'interact';
+    setShowButton: (value: boolean) => void;
 }
 
 interface BookProps {
@@ -104,17 +105,26 @@ function Book({
     );
 }
 
-export default function ParametricBook({ item, onClick, type = "interact" }: Props) {
+export default function ParametricBook({ item, type = "interact",  setShowButton }: Props) {
 
+    const filenameFallback = 'mona_kerntke'
     // 
-    // const filename = item.Studierende.toLowerCase().split(" ").join("_")
-    const filename = 'mona_kerntke'
+    const filename = item.Studierende.toLowerCase().split(" ").join("_") || filenameFallback 
+
+    // @ts-ignore
+    const data = fileDataIO[filename] || fileDataIO["mona_kerntke"]
 
     // 
     item["book"] = {
-        front: `/images/ioom/cover/${filename}_front.jpg`,
-        back: `/images/ioom/cover/${filename}_back.jpg`,
-        spine: `/images/ioom/cover/${filename}_spine.jpg`,
+        // front: `/images/ioom/cover/mona_kerntke_front.jpg`,
+        // back: `/images/ioom/cover/mona_kerntke_back.jpg`,
+        // spine: `/images/ioom/cover/mona_kerntke_spine.jpg`,
+        // front: `/images/ioom/cover/${filename}_front.jpg`,
+        // back: `/images/ioom/cover/${filename}_back.jpg`,
+        // spine: `/images/ioom/cover/${filename}_spine.jpg`,
+        front: data.front,
+        back: data.back,
+        spine: data.spine,
     }
 
     // 
@@ -144,11 +154,10 @@ export default function ParametricBook({ item, onClick, type = "interact" }: Pro
     }
 
     // 
-    const [showButton, setShowButton] = useState(false)
 
     // 
     const orbitCam: CameraProps = {
-        zoom: 15,          // higher = closer
+        zoom: 17,          // higher = closer
         // position: [0, 0.4, 0.6],
         position: [0, 4, 6],
         near: 0.1,
@@ -169,16 +178,6 @@ export default function ParametricBook({ item, onClick, type = "interact" }: Pro
     // 
     return (
         <>
-            {
-                showButton && 
-                <button 
-                onMouseOver={() => setShowButton(true)}
-                onClick={onClick}
-                className={styles.button}
-                >
-                    Look inside
-                </button>
-            }
             <Canvas
             // shadows
             camera={camSettings}
