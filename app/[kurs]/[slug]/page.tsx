@@ -4,6 +4,7 @@ import path from "path";
 import Papa from "papaparse";
 import { TypeProject } from "@/types/project-type";
 import PageWrapper from "@/components/slug/PageWrapper";
+import { sanitizeForUrl } from "@/util/sanitizeForUrl";
 // import dynamicImport from "next/dynamic";
 
 // const PageWrapper = dynamicImport(
@@ -23,8 +24,11 @@ export default async function Project({ params }: any) {
 
   const item: TypeProject|undefined =  data.find(row => {
 
-    const rowKurs = row.Kurs?.toLowerCase().split(" ").join("-")
-    const rowStudierende = row.Studierende?.toLowerCase().split(" ").join("-")
+    // const rowKurs = row.Kurs?.toLowerCase().split(" ").join("-")
+    // const rowStudierende = row.Studierende?.toLowerCase().split(" ").join("-")
+
+    const rowKurs = sanitizeForUrl(row.Kurs)
+    const rowStudierende = sanitizeForUrl(row.Studierende)
     
     return rowKurs === kurs && rowStudierende === slug
   })
@@ -50,7 +54,7 @@ export async function generateStaticParams() {
   return data
     .filter(row => row.Kurs && row.Studierende)
     .map(row => ({
-      kurs: row.Kurs!.toLowerCase().split(" ").join("-"),
+      kurs: row.Kurs.toLowerCase().split(" ").join("-"),
       slug: row.Studierende!.toLowerCase().split(" ").join("-"),
     }));
 }

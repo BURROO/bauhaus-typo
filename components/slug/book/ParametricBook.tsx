@@ -4,9 +4,9 @@ import { useEffect, useMemo, useState } from "react";
 import { CameraProps, Canvas } from "@react-three/fiber";
 import { useTexture, Environment, OrbitControls } from "@react-three/drei";
 import { TypeProject } from "@/types/project-type";
-import styles from './ParametricBook.module.css'
 import  * as THREE from 'three'
 import { fileDataIO } from "@/data/fileData";
+import { sanitizeForUrl } from "@/util/sanitizeForUrl";
 
 interface Props{
     item: TypeProject;
@@ -109,7 +109,8 @@ export default function ParametricBook({ item, type = "interact",  setShowButton
 
     const filenameFallback = 'mona_kerntke'
     // 
-    const filename = item.Studierende.toLowerCase().split(" ").join("_") || filenameFallback 
+    const filename = item.Studierende && item.Studierende.toLowerCase().split(" ").join("_") || filenameFallback 
+    // const filename = sanitizeForUrl(item.Studierende) || filenameFallback 
 
     // @ts-ignore
     const data = fileDataIO[filename] || fileDataIO["mona_kerntke"]

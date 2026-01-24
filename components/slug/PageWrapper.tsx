@@ -17,8 +17,13 @@ const Book = dynamic(
   { ssr: false }
 );
 
-const TranscodingTypography = dynamic(
-  () => import("@/components/slug/transcodingTypography/TranscodingTypography"),
+const Poster = dynamic(
+  () => import("@/components/slug/poster/Poster"),
+  { ssr: false }
+);
+
+const Website = dynamic(
+  () => import("@/components/slug/website/Website"),
   { ssr: false }
 );
 
@@ -85,7 +90,15 @@ const PageWrapper = ({ item }: Props) => {
                     // height: isHovered ? '90vh' : '',
                     borderRadius: isHovered ? 5 : 0,
                 }}>
-                    {item.Type === "WWW" && <TranscodingTypography item={item} />}
+                    {/* Special */}
+                    {item.Title === "Bauhaus Master Lectures" && <Poster item={item} />}
+                    {item.Title === "204 Type-Gazette Issue 06" && <Poster item={item} />}
+
+
+                    {item.Kurs === "First Year Introduction" && <Poster item={item} />}
+                    {item.Kurs === "Independent Project" && <Poster item={item} />}
+                    {/* Generic from courses!! */}
+                    {item.Type === "WWW" && <Website item={item} />}
                     {item.Type === "BOOK" && <Book item={item} />}
                 </div>
             </main>

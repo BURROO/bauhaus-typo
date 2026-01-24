@@ -2,6 +2,7 @@
 import styles from './ListItem.module.css'
 import Link from 'next/link';
 import { courseShort, TypeCourses, TypeProject } from '@/types/project-type';
+import { sanitizeForUrl } from '@/util/sanitizeForUrl';
 
 interface Props {
     row: TypeProject;
@@ -45,17 +46,22 @@ const ListItem = ({
     const activeElement = activeIndex && all[activeIndex]
 
     // const slug = row.
-    const kurs = row.Kurs.split(" ").map((w: string) => w.toLowerCase()).join("-")
-    const studierende = row.Studierende.split(" ").map((w: string) => w.toLowerCase()).join("-")
+    // const kurs = row.Kurs.split(" ").map((w: string) => w.toLowerCase()).join("-")
+    // const studierende = row.Studierende.split(" ").map((w: string) => w.toLowerCase()).join("-")
+    const kurs = sanitizeForUrl(row.Kurs)
+    const studierende = sanitizeForUrl(row.Studierende)
+
+    // const rowKurs = sanitizeForUrl(row.Kurs)
+    // const rowStudierende = sanitizeForUrl(row.Studierende)
 
     const courseIndex = Array.from(allCourses).indexOf(row.Kurs)
     const isPrevSameCourse = all[currentIndex-1]?.Kurs === row.Kurs
 
-    const supervision: { [key: string]: string} = {
-        'Transcoding Typography': 'Philipp Koller',
-        'In Order Of Meaning ': 'Marcel Saidov',
-        'Handmade Websites as Punk Zines': 'Hjördis Lyn Behncken & Insa Deist'
-    }
+    // const supervision: { [key: string]: string} = {
+    //     'Transcoding Typography': 'Philipp Koller',
+    //     'In Order Of Meaning ': 'Marcel Saidov',
+    //     'Handmade Websites as Punk Zines': 'Hjördis Lyn Behncken & Insa Deist'
+    // }
 
     const format: { [key: string]: string} = {
         'Transcoding Typography': 'Webtool',

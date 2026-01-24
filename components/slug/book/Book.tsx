@@ -4,7 +4,7 @@ import { TypeProject } from "@/types/project-type"
 import styles from './Book.module.css'
 import ParametricBook from "./ParametricBook"
 import { useState } from "react"
-import BookContent from "./BookContent"
+import Slideshow from "../../general/Slideshow"
 
 
 interface Props {
@@ -33,7 +33,7 @@ const Book = ({ item }: Props) => {
                     />
                 )}
                 {view === "content" && (
-                    <BookContent
+                    <Slideshow
                     item={item}
                     setShowButton={setShowButton}
                     />
