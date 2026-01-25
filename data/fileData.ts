@@ -26,7 +26,7 @@ export const fileDataTT = {
         showcase: `/images/tt/showcase/linda_piekniewski_showcase.webm`
     },
     yuqing_liu: {
-        showcase: `/images/tt/showcase/yuqing_liu_showcase.mov`
+        showcase: `/images/tt/showcase/yuqing_liu_showcase.webm`
     },
     alice_aydin: {
         showcase: `/images/tt/showcase/alice_aydin_showcase.webm`
@@ -35,10 +35,10 @@ export const fileDataTT = {
         showcase: `/images/tt/showcase/sophia_rhein_showcase.webm`
     },
     sophia_boni: {
-        showcase: `/images/tt/showcase/sophia_boni_showcase.mov`
+        showcase: `/images/tt/showcase/sophia_boni_showcase.webm`
     },
     yu_ji: {
-        showcase: `/images/tt/showcase/yu_ji_showcase.mov`
+        showcase: `/images/tt/showcase/yu_ji_showcase.webm`
     },
     difei_song: {
         showcase: `/images/tt/showcase/difei_song_showcase.webm`

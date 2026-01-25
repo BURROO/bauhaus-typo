@@ -26,10 +26,7 @@ export default function Scene({ item, rotationSpeed }: Props) {
   const src = `/images/tt/showcase/${filename}_showcase.webm`
   // const src = fileDataTT[filename]?.showcase || `/images/tt/showcase/phuong_mai_do_showcase.mp4`
 
-
   const screensOfst = 0.087
-
-
 
   const orbitCam: CameraProps = {
       zoom: 17,     
