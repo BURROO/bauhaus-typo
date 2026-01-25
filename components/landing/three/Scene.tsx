@@ -23,7 +23,7 @@ export default function Scene({ item, rotationSpeed }: Props) {
   // console.log("filename", filename, fileDataTT[filename]?.showcase)
 
   // @ts-ignore
-  const src = `/images/tt/showcase/${filename}_showcase.mp4`
+  const src = `/images/tt/showcase/${filename}_showcase.webm`
   // const src = fileDataTT[filename]?.showcase || `/images/tt/showcase/phuong_mai_do_showcase.mp4`
 
 

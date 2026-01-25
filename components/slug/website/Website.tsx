@@ -20,6 +20,9 @@ const Website = ({ item }: Props) => {
         ?.pop()
 
 
+
+    // const showcaseSource = 
+
     const [src, setSrc] = useState<string>(`/websites/tt/${cleanedSnippet}/index.html`)
     const [isLocal, setIsLocal ] = useState(true)
 
@@ -97,7 +100,7 @@ const Website = ({ item }: Props) => {
                 view === "video" && (
                     <div className={styles.preview}>
 
-                    
+                        <video src={``}/>
                     </div>
                 )
             }

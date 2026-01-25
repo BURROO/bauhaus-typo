@@ -10,27 +10,29 @@ export const fileDataBML = {
 }
 
 
+
+
 export const fileDataTT = {
     hannes_altmann: {
-        showcase: `/images/tt/showcase/hannes_altmann_showcase.mp4`
+        showcase: `/images/tt/showcase/hannes_altmann_showcase.webm`
     },
     phuong_mai_do: {
-        showcase: `/images/tt/showcase/phuong_mai_do_showcase.mp4`
+        showcase: `/images/tt/showcase/phuong_mai_do_showcase.webm`
     },
     helene_dennewitz: {
-        showcase: `/images/tt/showcase/helene_dennewitz_showcase.mp4`
+        showcase: `/images/tt/showcase/helene_dennewitz_showcase.webm`
     },
     linda_piekniewski: {
-        showcase: `/images/tt/showcase/linda_piekniewski_showcase.mp4`
+        showcase: `/images/tt/showcase/linda_piekniewski_showcase.webm`
     },
     yuqing_liu: {
         showcase: `/images/tt/showcase/yuqing_liu_showcase.mov`
     },
     alice_aydin: {
-        showcase: `/images/tt/showcase/alice_aydin_showcase.mp4`
+        showcase: `/images/tt/showcase/alice_aydin_showcase.webm`
     },
     sophia_rhein: {
-        showcase: `/images/tt/showcase/sophia_rhein_showcase.mp4`
+        showcase: `/images/tt/showcase/sophia_rhein_showcase.webm`
     },
     sophia_boni: {
         showcase: `/images/tt/showcase/sophia_boni_showcase.mov`
@@ -39,7 +41,7 @@ export const fileDataTT = {
         showcase: `/images/tt/showcase/yu_ji_showcase.mov`
     },
     difei_song: {
-        showcase: `/images/tt/showcase/difei_song_showcase.mp4`
+        showcase: `/images/tt/showcase/difei_song_showcase.webm`
     }
 }
 
