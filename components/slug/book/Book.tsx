@@ -34,6 +34,7 @@ const Book = ({ item }: Props) => {
                 )}
                 {view === "content" && (
                     <Slideshow
+                    isBook={true}
                     item={item}
                     setShowButton={setShowButton}
                     />

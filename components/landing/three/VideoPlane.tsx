@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
 import * as THREE from 'three'
 
 type Props = {
@@ -19,26 +19,39 @@ export default function VideoPlane({
 }: Props) {
   const videoRef = useRef<HTMLVideoElement | null>(null)
 
-  useEffect(() => {
+
+  // 1️⃣ Create video ONCE
+  if (!videoRef.current) {
     const video = document.createElement('video')
-    video.src = src
     video.crossOrigin = 'anonymous'
     video.loop = true
     video.muted = true
     video.playsInline = true
     video.autoplay = true
+    video.preload = 'auto'
+    videoRef.current = video
+  }
+
+  // 2️⃣ Update src ONLY when it changes
+  useEffect(() => {
+    const video = videoRef.current!
+    video.src = src
+    video.currentTime = 0
 
     video.play().catch(() => {
-      console.warn('Video playback blocked (needs user interaction)')
+      console.warn('Video playback blocked')
     })
-
-    videoRef.current = video
   }, [src])
 
-  if (!videoRef.current) return null
-
-  const texture = new THREE.VideoTexture(videoRef.current)
-  texture.colorSpace = THREE.SRGBColorSpace
+  // 3️⃣ Create texture ONCE
+  const texture = useMemo(() => {
+    const tex = new THREE.VideoTexture(videoRef.current!)
+    tex.colorSpace = THREE.SRGBColorSpace
+    tex.minFilter = THREE.LinearFilter
+    tex.magFilter = THREE.LinearFilter
+    tex.generateMipmaps = false
+    return tex
+  }, [])
 
   return (
     <mesh position={position} rotation={rotate}>

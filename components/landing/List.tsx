@@ -178,7 +178,7 @@ const List = ({ data}: Props) => {
             />
             {
                 activeIndex !== null &&
-                <Overlay item={renderedData[activeIndex]} />
+                <Overlay item={renderedData[activeIndex]} autoRotateSpeed={6}/>
             }
             <ul 
             // style={{ paddingTop: rowHeight}}

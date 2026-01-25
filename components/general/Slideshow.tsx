@@ -12,10 +12,11 @@ import { fileDataIO } from '@/data/fileData';
 interface Props{
     item: TypeProject;
     setShowButton: (value: boolean) => void;
+    isBook?: boolean;
 }
 
 
-const Slideshow = ({ item, setShowButton }: Props) => {
+const Slideshow = ({ item, setShowButton, isBook }: Props) => {
 
 
     // }, [])
@@ -68,9 +69,14 @@ const Slideshow = ({ item, setShowButton }: Props) => {
                             onMouseLeave={() => setShowButton(false)}
                             >
                                 <img src={`${slide}`} />
-
-                                <div className={styles.shadowLeft} />
-                                <div className={styles.shadowRight} />
+                                {
+                                    isBook && (
+                                        <>
+                                            <div className={styles.shadowLeft} />
+                                            <div className={styles.shadowRight} />
+                                        </>
+                                    )
+                                }
 
                             </div>
                         ))

@@ -12,6 +12,7 @@ interface Props{
     item: TypeProject;
     type: 'orbit' | 'interact';
     setShowButton: (value: boolean) => void;
+    autoRotateSpeed?: number;
 }
 
 interface BookProps {
@@ -105,7 +106,7 @@ function Book({
     );
 }
 
-export default function ParametricBook({ item, type = "interact",  setShowButton }: Props) {
+export default function ParametricBook({ item, type = "interact",  setShowButton, autoRotateSpeed = 1 }: Props) {
 
     const filenameFallback = 'mona_kerntke'
     // 
@@ -160,7 +161,7 @@ export default function ParametricBook({ item, type = "interact",  setShowButton
     const orbitCam: CameraProps = {
         zoom: 17,          // higher = closer
         // position: [0, 0.4, 0.6],
-        position: [0, 4, 6],
+        position: [0, 2, 6],
         near: 0.1,
         far: 10,
     }
@@ -210,7 +211,7 @@ export default function ParametricBook({ item, type = "interact",  setShowButton
                 </mesh>
 
                 {/*  */}
-                <Environment preset="studio" environmentIntensity={0.16} />
+                <Environment preset="studio" environmentIntensity={0.3} />
 
                 {/* rotation + zoom controls */}
                 {type === 'interact' ? 
@@ -224,7 +225,7 @@ export default function ParametricBook({ item, type = "interact",  setShowButton
                     <OrbitControls
                     makeDefault 
                     autoRotate
-                    autoRotateSpeed={20}   // adjust speed
+                    autoRotateSpeed={autoRotateSpeed}   // adjust speed
                     enableRotate={false}
                     enableZoom={false}
                     enablePan={false}

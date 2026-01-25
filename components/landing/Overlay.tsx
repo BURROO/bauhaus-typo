@@ -2,6 +2,7 @@ import { TypeProject } from '@/types/project-type';
 import styles from './Overlay.module.css'
 import ParametricBook from '../slug/book/ParametricBook';
 import Scene from './three/Scene';
+import { useEffect, useState } from 'react';
 // import dynamic from 'next/dynamic';
 
 
@@ -11,7 +12,24 @@ import Scene from './three/Scene';
 // );
 
 
-const Overlay = ({ item }: {item: TypeProject; }) => {
+const Overlay = ({ item, autoRotateSpeed }: {item: TypeProject; autoRotateSpeed: number }) => {
+
+
+
+    const [currentRotation, setCurrentRotation] = useState(0)
+
+    useEffect(() => {
+
+        const timeout = setTimeout(() => {
+            setCurrentRotation(currentRotation+1)
+        }, 10)
+
+
+        return () => {
+            clearTimeout(timeout)
+        }
+
+    }, [])
 
 
     if(typeof item === "undefined") return <></>
@@ -20,8 +38,8 @@ const Overlay = ({ item }: {item: TypeProject; }) => {
             <div 
             className={styles.overlay}
             >
-                {item["Type"] === "WWW" && <OverlayTranscoding item={item} />}
-                {item["Kurs"] === "In Order Of Meaning" && <OverlayOrderOfMeaning item={item} />}
+                {item["Type"] === "WWW" && <OverlayTranscoding item={item} autoRotateSpeed={autoRotateSpeed}/>}
+                {item["Kurs"] === "In Order Of Meaning" && <OverlayOrderOfMeaning item={item} autoRotateSpeed={autoRotateSpeed}/>}
             </div>
     )
 }
@@ -29,7 +47,7 @@ const Overlay = ({ item }: {item: TypeProject; }) => {
 export default Overlay
 
 
-const OverlayTranscoding = ({ item }: { item: TypeProject }) => {
+const OverlayTranscoding = ({ item, autoRotateSpeed }: { item: TypeProject, autoRotateSpeed: number; }) => {
     // Handle
 
 
@@ -38,18 +56,18 @@ const OverlayTranscoding = ({ item }: { item: TypeProject }) => {
         <div 
         className={styles.overlay}
         >
-            <Scene item={item}/>
+            <Scene item={item} rotationSpeed={6}/>
         </div>
     )
 }
 
 
-const OverlayOrderOfMeaning = ({ item }: { item: TypeProject }) => {
+const OverlayOrderOfMeaning = ({ item, autoRotateSpeed }: { item: TypeProject; autoRotateSpeed: number; }) => {
     // Handle
 
     return (
         <div style={{ height: 400 }}>
-            <ParametricBook type="orbit" item={item} setShowButton={() => {}}/>
+            <ParametricBook type="orbit" item={item} setShowButton={() => {}} autoRotateSpeed={autoRotateSpeed}/>
         </div>
     )
 }

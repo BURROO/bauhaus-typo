@@ -33,6 +33,7 @@
 'use client'
 
 import { useGLTF } from '@react-three/drei'
+import { useMemo } from 'react'
 import * as THREE from 'three'
 
 type Props = {
@@ -50,16 +51,36 @@ export default function GltfModel({
 }: Props) {
   const { scene } = useGLTF(url)
 
-  scene.traverse((child) => {
+
+  // 🔑 CLONE the scene
+  const clonedScene = useMemo(() => {
+    return scene.clone(true)
+  }, [scene])
+
+  // Optional: fix materials per instance
+  clonedScene.traverse((child) => {
+    if ((child as THREE.Mesh).isMesh) {
+      child.castShadow = true
+      child.receiveShadow = true
+    }
+  })
+
+  clonedScene.traverse((child) => {
     if ((child as THREE.Mesh).isMesh) {
       const mesh = child as THREE.Mesh
 
       // optional: override material
       mesh.material = new THREE.MeshStandardMaterial({
-        color: '#ffffff',
+        // color: '#1f1f1f',
+        color: '#363636',
+        // roughness: 0.4,
+        // metalness: 0.1,
         roughness: 0.4,
         metalness: 0.1,
+        side: THREE.DoubleSide
       })
+
+      // mesh.material.side = THREE.DoubleSide
 
       mesh.castShadow = true
       mesh.receiveShadow = true
@@ -69,7 +90,7 @@ export default function GltfModel({
   return (
     <primitive
       scale={0.018}
-      object={scene}
+      object={clonedScene}
       position={position}
       rotation={rotation}
       // scale={scale}
