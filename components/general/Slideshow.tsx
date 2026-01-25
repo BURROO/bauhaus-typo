@@ -7,6 +7,7 @@ import {  useMemo, useState } from 'react';
 
 import 'react-pdf/dist/Page/AnnotationLayer.css'
 import { fileDataIO } from '@/data/fileData';
+import { sanitizeForUrl } from '@/util/sanitizeForUrl';
 
 
 interface Props{
@@ -19,27 +20,33 @@ interface Props{
 const Slideshow = ({ item, setShowButton, isBook }: Props) => {
 
 
-    // }, [])
-
 
     const slides = useMemo(() => {
 
 
-        const student = item.Studierende.toLowerCase().split(" ").join("_")
+        // const student = item.Studierende.toLowerCase().split(" ").join("_")
+        const student = sanitizeForUrl( item.Studierende).split("-").join("_")
+
+
+        // console.log("student", student)
         // 
         const slides = []
         // @ts-ignore
         const count = (fileDataIO[student] || fileDataIO["mona_kerntke"]).count
         // @ts-ignore
         const dir = (fileDataIO[student] || fileDataIO["mona_kerntke"]).dir
+        // @ts-ignore
+        const fileType = (fileDataIO[student] || fileDataIO["mona_kerntke"]).fileType
 
         for(let i = 1; i <= count;i++){
 
-            slides.push(`${dir}/slide-${i}.png`)
+            slides.push(`${dir}/slide-${i}.${fileType}`)
         }
 
         return slides
     }, [])
+
+    // console.log("slides", slides)
 
 
     const [activeSlide, setActiveSlide ] = useState(0)

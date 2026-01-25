@@ -10,6 +10,9 @@ interface Props {
     item: TypeProject
 }
 
+
+
+
 const Poster = ({ item }: Props) => {
 
 
@@ -27,6 +30,7 @@ const Poster = ({ item }: Props) => {
                  <Slideshow
                 item={item}
                 setShowButton={setShowButton}
+                isBook={false}
                 />
             </div>
             {/* {

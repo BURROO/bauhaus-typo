@@ -62,27 +62,11 @@ const PageWrapper = ({ item }: Props) => {
         }
     }, [])
 
+    console.log("item", item)
+
     return (
         <div className={styles.page}>
-            {/* <div
-            className={styles.overlay}
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
-            style={{
-                width: isHovered ? 'auto' : '30px',
-                height: isHovered ? '100px' : '30px',
-                overflow: "hidden",
-                borderRadius: isHovered ? 5 : 20
-
-            }}
-            >
-                <div style={{ opacity: isHovered ? 1 : 0}}>
-                    <h1>{item.Studierende}</h1>
-                    <h2>{item.Kurs}</h2>
-                    <br/>
-                    <Link href={`/`}>← Go Back</Link>
-                </div>
-            </div> */}
+       
 
             <main className={styles.main}>
                 <div className={styles.wrapper} style={{
@@ -91,7 +75,7 @@ const PageWrapper = ({ item }: Props) => {
                     borderRadius: isHovered ? 5 : 0,
                 }}>
                     {/* Special */}
-                    {item.Title === "Bauhaus Master Lectures" && <Poster item={item} />}
+                    {item.Kurs === "Bauhaus Master Lectures" && <Poster item={item} />}
                     {item.Title === "204 Type-Gazette Issue 06" && <Poster item={item} />}
 
 
@@ -117,3 +101,24 @@ const PageWrapper = ({ item }: Props) => {
 
 
 export default PageWrapper
+
+
+/* <div
+className={styles.overlay}
+onMouseEnter={() => setIsHovered(true)}
+onMouseLeave={() => setIsHovered(false)}
+style={{
+    width: isHovered ? 'auto' : '30px',
+    height: isHovered ? '100px' : '30px',
+    overflow: "hidden",
+    borderRadius: isHovered ? 5 : 20
+
+}}
+>
+    <div style={{ opacity: isHovered ? 1 : 0}}>
+        <h1>{item.Studierende}</h1>
+        <h2>{item.Kurs}</h2>
+        <br/>
+        <Link href={`/`}>← Go Back</Link>
+    </div>
+</div> */

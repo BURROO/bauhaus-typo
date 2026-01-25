@@ -51,11 +51,13 @@ export async function generateStaticParams() {
     data: TypeProject[];
   };
 
+  // console.log(data)
+
   return data
     .filter(row => row.Kurs && row.Studierende)
     .map(row => ({
-      kurs: row.Kurs.toLowerCase().split(" ").join("-"),
-      slug: row.Studierende!.toLowerCase().split(" ").join("-"),
+      kurs: sanitizeForUrl(row.Kurs),
+      slug: sanitizeForUrl(row.Studierende),
     }));
 }
 

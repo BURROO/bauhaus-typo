@@ -53,6 +53,7 @@ export const fileDataIO = {
         back: `/images/ioom/cover/mona_kerntke/mona_kerntke_back.jpg`,
         spine: `/images/ioom/cover/mona_kerntke/mona_kerntke_spine.jpg`,
         count: 8,
+        fileType: 'png'
     },
     sophia_rhein: {
         dir: `/images/ioom/content/sophia_rhein`,
@@ -60,6 +61,7 @@ export const fileDataIO = {
         back: `/images/ioom/cover/sophia_rhein/sophia_rhein_back.jpg`,
         spine: `/images/ioom/cover/sophia_rhein/sophia_rhein_spine.jpg`,
         count: 2,
+        fileType: 'png'
     },
     helene_dennewitz: {
         dir: `/images/ioom/content/helene_dennewitz`,
@@ -67,6 +69,7 @@ export const fileDataIO = {
         back: `/images/ioom/cover/helene_dennewitz/helene_dennewitz_back.jpg`,
         spine: `/images/ioom/cover/helene_dennewitz/helene_dennewitz_spine.jpg`,
         count: 2,
+        fileType: 'png'
     },
     james_brummelhuis: {
         dir: `/images/ioom/content/james_brummelhuis`,
@@ -74,5 +77,12 @@ export const fileDataIO = {
         back: `/images/ioom/cover/james_brummelhuis/james_brummelhuis_back.jpg`,
         spine: `/images/ioom/cover/james_brummelhuis/james_brummelhuis_spine.jpg`,
         count: 2,
+        fileType: 'png'
+    },
+    'susan_arian_julide_nur_alemdar': {
+        dir: `/images/bml`,
+        count: 5,
+        fileType: 'jpg'
+
     }
 }
