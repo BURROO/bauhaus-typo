@@ -8,13 +8,6 @@ import Link from "next/link";
 import { sanitizeForUrl } from "@/util/sanitizeForUrl";
 
 import { useRouter } from "next/navigation"
-// grid-template-columns: 2fr 2fr 1fr 1fr  2fr 2fr 1fr;
-
-// @media screen and (max-width: 1300){
-// grid-template-columns: 2fr 2fr 1fr 1fr 69px;
-
-// @media screen and (max-width: 1000){
-// grid-template-columns: 2fr 2fr 100px 69px;
 
 // const gray = `rgba(200,200,200, 0.97)`;
 const gray = `rgb(200,200,200)`;
@@ -37,39 +30,78 @@ interface Props {
 }
 
 
-const columns: { [key: string]: { col: number; text: string, fill: boolean; }[]} = {
-    'large': [
-        {
-            col: 2/11,
-            text: 'Studierende',
-            fill: false,
-        },{
-            col: 2/11,
-            text: 'Title',
-            fill: false,
-        }, {
-            col: 1/11,
-            text: 'Type',
-            fill: false,
-        }, {
-            col: 1/11,
-            text: 'Format',
-            fill: false,
-        }, {
-            col: 2/11,
-            text: 'Kurs',
-            fill: false,
-        }, {
-            col: 2/11,
-            text: 'Supervision',
-            fill: true,
-        }, {
-            col: 1/11,
-            text: 'Id',
-            fill: false,
-        }
-    ]
-}
+// const columns: { [key: string]: { col: number; text: string, fill: boolean; }[]} = {
+//     'large': [
+//         {
+//             col: 2/11,
+//             text: 'Studierende',
+//             fill: false,
+//         },{
+//             col: 2/11,
+//             text: 'Title',
+//             fill: false,
+//         }, {
+//             col: 1/11,
+//             text: 'Type',
+//             fill: false,
+//         }, {
+//             col: 1/11,
+//             text: 'Format',
+//             fill: false,
+//         }, {
+//             col: 2/11,
+//             text: 'Kurs',
+//             fill: false,
+//         }, {
+//             col: 2/11,
+//             text: 'Supervision',
+//             fill: true,
+//         }, {
+//             col: 1/11,
+//             text: 'Id',
+//             fill: false,
+//         }
+//     ],
+//     'medium': [
+//         {
+//             col: 2/7,
+//             text: 'Studierende',
+//             fill: false,
+//         },{
+//             col: 2/7,
+//             text: 'Title',
+//             fill: false,
+//         }, {
+//             col: 1/7,
+//             text: 'Type',
+//             fill: false,
+//         }, 
+//         // {
+//         //     col: 1/7,
+//         //     text: 'Format',
+//         //     fill: false,
+//         // }, 
+//         {
+//             col: 2/7,
+//             text: 'Kurs',
+//             fill: false,
+//         }, 
+//         // {
+//         //     col: 2/7,
+//         //     text: 'Supervision',
+//         //     fill: true,
+//         // },
+//          {
+//             col: 1/7,
+//             text: 'Id',
+//             fill: false,
+//         }
+//     ]
+
+
+
+// // grid-template-columns: 2fr 2fr 1fr 1fr 69px;
+// }
 
 const ListSVG = ({ dataStudents, dataCourses, filter, searchTerm, firstIndex, setActiveIndex, activeIndex }: Props) => {
 

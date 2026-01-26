@@ -2,6 +2,13 @@ import { txtLeftOfst, txtTopOfst } from "@/components/landing/ListSVG";
 import { TypeCoursesNames, TypeProject, TypeProjectForSVG } from "@/types/project-type";
 
 
+// grid-template-columns: 2fr 2fr 1fr 1fr  2fr 2fr 1fr;
+
+// @media screen and (max-width: 1300){
+// grid-template-columns: 2fr 2fr 1fr 1fr 69px;
+
+// @media screen and (max-width: 1000){
+// grid-template-columns: 2fr 2fr 100px 69px;
 const columns: { 
     [key: string]: { 
         col: number; 
@@ -38,6 +45,45 @@ const columns: {
             text: 'Id',
             fill: false,
         }
+    ],
+
+    'medium': [
+        {
+            col: 2/7,
+            text: 'Studierende',
+            fill: false,
+        },{
+            col: 2/7,
+            text: 'Title',
+            fill: false,
+        }, 
+        // {
+        //     col: 1/7,
+        //     text: 'Type',
+        //     fill: false,
+        // }, 
+        {
+            col: 2/7,
+            text: 'Kurs',
+            fill: false,
+        }, 
+         {
+            col: 1/7,
+            text: 'Id',
+            fill: false,
+        }
+    ],
+    'small': [
+        {
+            col: 1/2,
+            text: 'Studierende',
+            fill: false,
+        },{
+            col: 1/2,
+            text: 'Title',
+            fill: false,
+        }, 
+        
     ]
 }
 
@@ -67,7 +113,10 @@ export const convertTableToSVG = ({ data, screenWidth, screenHeight, rowHeight, 
 
     const textToRender: TypeProjectForSVG[][]= []
 
-    let colsActive = columns["large"].map(() => true)
+
+    const screenType = screenWidth > 1300 ? 'large' : screenWidth < 800 ? 'small' : 'medium'
+
+    let colsActive = columns[screenType].map(() => true)
 
 
     data.forEach((item: TypeProject, i, all) => {
@@ -77,7 +126,7 @@ export const convertTableToSVG = ({ data, screenWidth, screenHeight, rowHeight, 
         const prevItem = all[i-1]
         // 
 
-        const cols = columns["large"]
+        const cols = columns[screenType]
 
         const y = i * rowHeight
 

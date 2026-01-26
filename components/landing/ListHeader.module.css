@@ -8,9 +8,11 @@
   text-transform: uppercase;
   background: transparent;
   /* background: var(--gray) ; */
+  font-family: "UfficioMono-Bold";
 }
 
 .header > div{
   /* background: black; */
   color: black;
+  font-family: "UfficioMono-Bold";
 }

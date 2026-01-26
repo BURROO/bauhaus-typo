@@ -14,6 +14,8 @@
   justify-content: start;
 }
 
+
+
 .goLeft, .goRight{
   position: absolute;
   height: 100%;
