@@ -11,7 +11,7 @@ const ListHeader = ({ rowHeight }: Props) => {
     return (
         <>
             <li
-            className={`${styles.row} ${styles.header}`}
+            className={`${styles.header}`}
             style={{ height: rowHeight, background: "none" }}
             >
                 <div>Name</div>

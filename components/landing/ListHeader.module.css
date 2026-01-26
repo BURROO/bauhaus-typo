@@ -9,6 +9,10 @@
   background: transparent;
   /* background: var(--gray) ; */
   font-family: "UfficioMono-Bold";
+  pointer-events: none;
+  user-select: none;
+  display: grid;
+  grid-template-columns: 2fr 2fr 1fr 1fr  2fr 2fr 1fr;
 }
 
 .header > div{
@@ -16,3 +20,38 @@
   color: black;
   font-family: "UfficioMono-Bold";
 }
+
+/* 
+@media screen and (max-width: 1300){
+.header > div:nth{}
+  
+} */
+
+@media screen and (max-width: 1300){
+    
+  .header{
+    /* grid-template-columns: 69px 1fr 1fr 100px 100px  1fr 1fr 69px; */
+    /* grid-template-columns: 30px 2fr 2fr 1fr 1fr 69px; */
+    /* grid-template-columns: 2fr 2fr 1fr 1fr 69px; */
+    grid-template-columns: 2fr 2fr 2fr  1fr;
+    background: red;
+  }
+  .header > *:nth-child(3){ display: none;}
+  .header > *:nth-child(4){ display: none;}
+  .header > *:nth-child(6){ display: none;}
+}
+
+@media screen and (max-width: 800){
+    
+  .header{
+    /* grid-template-columns: 30px 1fr 1fr 100px 100px  1fr 1fr 69px; */
+    /* grid-template-columns: 30px 2fr 2fr 100px 69px; */
+    grid-template-columns: 1fr 1fr ;
+  }
+  .header > *:nth-child(2){ display: none;}
+  .header > *:nth-child(3){ display: none;}
+  .header > *:nth-child(4){ display: none;}
+  .header > *:nth-child(6){ display: none;}
+  .header > *:nth-child(7){ display: none;}
+}
+

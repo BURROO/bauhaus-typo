@@ -36,7 +36,6 @@ export const getUrlVideo = (item: TypeProject) => {
     // @ts-ignore
     const src = `/images/${kursShort}/showcase/${student}_showcase.webm`
 
-    console.log(src)
 
   // console.log("filename", filename, fileDataTT[filename]?.showcase)
     return src

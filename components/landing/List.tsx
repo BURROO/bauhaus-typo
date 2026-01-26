@@ -127,30 +127,14 @@ const List = ({ dataStudents, dataCourses}: Props) => {
 
                 if(scrollPos.current >= itemHeight){
 
-                    // scrollPos.current -= itemHeight
                     scrollPos.current = 0
-
-                    // setFirstIndex((firstIndex + 1) % dataStudents.length)
                     setFirstIndex((firstIndex+itemsToRemove) % dataRef.current.length)
 
-                    // setRenderedData([
-                    //     ...dataRef.current.slice(itemsToRemove, dataRef.current.length),
-                    //     ...dataRef.current.slice(0, itemsToRemove)
-                    // ])
                 }else if(scrollPos.current <= -itemHeight){
-                    // scrollPos.current += itemHeight
+                    
                     scrollPos.current = 0
-
-
-                    // setFirstIndex((firstIndex - 1) % dataStudents.length)
-                    // setFirstIndex(itemsToRemove)
                     setFirstIndex((firstIndex-itemsToRemove) % dataRef.current.length)
                     
-                    // setRenderedData([
-                    //     // dataRef.current[dataRef.current.length-1],
-                    //     ...dataRef.current.slice(dataRef.current.length-itemsToRemove, dataRef.current.length),
-                    //     ...dataRef.current.slice(0, dataRef.current.length-itemsToRemove),
-                    // ])
                 }else{
 
                     // scrollPos.current = 0
@@ -194,30 +178,13 @@ const List = ({ dataStudents, dataCourses}: Props) => {
                 className={styles.scrollWrapperInner}
                 />
                 {
-                    activeProject &&
+                    activeProject !== null &&
                     <Overlay item={activeProject} autoRotateSpeed={6}/>
                 }
                 <ul 
-                // style={{ paddingTop: rowHeight}}
                 >
                     <ListHeader rowHeight={rowHeight} />
-                    {/* { false &&
-                        renderedData.map((row: any, i: number, all: any[]) => {
-
-                            return (
-                                <ListItem
-                                key={i}
-                                row={row}
-                                currentIndex={i}
-                                rowHeight={rowHeight}
-                                activeIndex={activeIndex}
-                                setActiveIndex={setActiveIndex}
-                                all={all}
-                                allCourses={allCourses}
-                                />
-                            )
-                        })
-                    } */}
+                
                 </ul>
                 {
                     screenHeight && rowHeight && filter !== "" &&

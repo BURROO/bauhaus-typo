@@ -30,79 +30,6 @@ interface Props {
 }
 
 
-// const columns: { [key: string]: { col: number; text: string, fill: boolean; }[]} = {
-//     'large': [
-//         {
-//             col: 2/11,
-//             text: 'Studierende',
-//             fill: false,
-//         },{
-//             col: 2/11,
-//             text: 'Title',
-//             fill: false,
-//         }, {
-//             col: 1/11,
-//             text: 'Type',
-//             fill: false,
-//         }, {
-//             col: 1/11,
-//             text: 'Format',
-//             fill: false,
-//         }, {
-//             col: 2/11,
-//             text: 'Kurs',
-//             fill: false,
-//         }, {
-//             col: 2/11,
-//             text: 'Supervision',
-//             fill: true,
-//         }, {
-//             col: 1/11,
-//             text: 'Id',
-//             fill: false,
-//         }
-//     ],
-//     'medium': [
-//         {
-//             col: 2/7,
-//             text: 'Studierende',
-//             fill: false,
-//         },{
-//             col: 2/7,
-//             text: 'Title',
-//             fill: false,
-//         }, {
-//             col: 1/7,
-//             text: 'Type',
-//             fill: false,
-//         }, 
-//         // {
-//         //     col: 1/7,
-//         //     text: 'Format',
-//         //     fill: false,
-//         // }, 
-//         {
-//             col: 2/7,
-//             text: 'Kurs',
-//             fill: false,
-//         }, 
-//         // {
-//         //     col: 2/7,
-//         //     text: 'Supervision',
-//         //     fill: true,
-//         // },
-//          {
-//             col: 1/7,
-//             text: 'Id',
-//             fill: false,
-//         }
-//     ]
-
-
-
-// // grid-template-columns: 2fr 2fr 1fr 1fr 69px;
-// }
-
 const ListSVG = ({ dataStudents, dataCourses, filter, searchTerm, firstIndex, setActiveIndex, activeIndex }: Props) => {
 
 
@@ -203,7 +130,7 @@ const ListSVG = ({ dataStudents, dataCourses, filter, searchTerm, firstIndex, se
 
     const courseInfo: TypeCourse|null = dataCourses.find(k => k.Kurs === filter) || null
 
-    console.log("filter", filter, dataCourses, courseInfo)
+    // console.log("filter", filter, dataCourses, courseInfo)
 
     return (
         <div
