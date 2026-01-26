@@ -76,7 +76,7 @@ const PageWrapper = ({ item }: Props) => {
                 }}>
                     {/* Special */}
                     {item.Kurs === "Bauhaus Master Lectures" && <Poster item={item} />}
-                    {item.Title === "204 Type-Gazette Issue 06" && <Poster item={item} />}
+                    {item.Title === "204 Type-Gazette Issue 06" && <Book item={item} />}
 
 
                     {item.Kurs === "First Year Introduction" && <Poster item={item} />}

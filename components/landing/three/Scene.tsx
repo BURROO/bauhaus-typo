@@ -6,6 +6,7 @@ import ObjModel from './ObjModel'
 import VideoPlane from './VideoPlane'
 import { TypeProject } from '@/types/project-type'
 import { fileDataTT } from '@/data/fileData'
+import { getUrlVideo } from '@/util/sanitizeForUrl'
 
 
 
@@ -23,7 +24,8 @@ export default function Scene({ item, rotationSpeed }: Props) {
   // console.log("filename", filename, fileDataTT[filename]?.showcase)
 
   // @ts-ignore
-  const src = `/images/tt/showcase/${filename}_showcase.webm`
+  // const src = `/images/tt/showcase/${filename}_showcase.webm`
+  const src = getUrlVideo(item)
   // const src = fileDataTT[filename]?.showcase || `/images/tt/showcase/phuong_mai_do_showcase.mp4`
 
   const screensOfst = 0.087

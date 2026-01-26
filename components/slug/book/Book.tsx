@@ -12,7 +12,7 @@ interface Props {
 }
 
 const Book = ({ item }: Props) => {
-
+    console.log("book", item)
 
 
     const [view, setView] = useState<'cover'|'content'>('cover')

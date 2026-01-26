@@ -5,7 +5,6 @@ import styles from './Slideshow.module.css'
 import {  useMemo, useState } from 'react';
 
 
-import 'react-pdf/dist/Page/AnnotationLayer.css'
 import { fileDataIO } from '@/data/fileData';
 import { sanitizeForUrl } from '@/util/sanitizeForUrl';
 
@@ -25,10 +24,10 @@ const Slideshow = ({ item, setShowButton, isBook }: Props) => {
 
 
         // const student = item.Studierende.toLowerCase().split(" ").join("_")
+        const kurs = sanitizeForUrl( item.Kurs).split("-").join("_")
         const student = sanitizeForUrl( item.Studierende).split("-").join("_")
 
-
-        // console.log("student", student)
+        // console.log("student",item.Studierende,student, fileDataIO[student])
         // 
         const slides = []
         // @ts-ignore

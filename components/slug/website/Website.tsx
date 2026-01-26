@@ -3,6 +3,7 @@
 import { TypeProject } from '@/types/project-type'
 import styles from './Website.module.css'
 import { useEffect, useState } from 'react'
+import { getUrlVideo, sanitizeForUrl } from '@/util/sanitizeForUrl'
 
 interface Props {
     item: TypeProject
@@ -21,62 +22,75 @@ const Website = ({ item }: Props) => {
 
 
 
+
+
+    const name = sanitizeForUrl(item.Studierende).split("-").join("_")
     // const showcaseSource = 
 
-    const [src, setSrc] = useState<string>(`/websites/tt/${cleanedSnippet}/index.html`)
+    const subFulter = item.Kurs === 'Transcoding Typography' ? 'tt' : 'pz'
+
+
+    // const [src, setSrc] = useState<string>(`/websites/${subFulter}/${cleanedSnippet}/index.html`)
+    const [src, setSrc] = useState<string>(`/websites/${subFulter}/${name}/index.html`)
+
+    // console.log("src", `/websites/${subFulter}/${cleanedSnippet}/index.html`)
     const [isLocal, setIsLocal ] = useState(true)
 
-    const [prefereLocal, setPrefereLocal] = useState(false)
+    // const [prefereLocal, setPrefereLocal] = useState(false)
+    const [prefereLocal, setPrefereLocal] = useState(true)
 
 
-    useEffect(() => {
-        let cancelled = false
+    // useEffect(() => {
+    //     let cancelled = false
 
 
-        if(!prefereLocal){
+    //     if(!prefereLocal){
 
-            setIsLocal(true)
-            setSrc(item.Link);
+    //         setIsLocal(true)
+    //         setSrc(item.Link);
 
-            return 
-        }else{
-            async function resolveSource() {
-                if (!src) {
-                    setSrc(item.Link)
-                    setIsLocal(false)
-                    return
-                }
+    //         return 
+    //     }else{
+    //         async function resolveSource() {
+    //             if (!src) {
+    //                 setSrc(item.Link)
+    //                 setIsLocal(false)
+    //                 return
+    //             }
 
-                try {
-                    // 2. Check if local file exists
-                    const res = await fetch(src, { method: 'HEAD' })
+    //             try {
+    //                 // 2. Check if local file exists
+    //                 const res = await fetch(src, { method: 'HEAD' })
 
-                    if (!cancelled) {
-                        setSrc(res.ok ? src : item.Link)
-                        if(!res.ok) setIsLocal(false)
-                    }
-                } catch {
-                    if (!cancelled) {
-                        setSrc(item.Link)
-                        setIsLocal(false)
-                    }
-                }
-            }
+    //                 if (!cancelled) {
+    //                     setSrc(res.ok ? src : item.Link)
+    //                     if(!res.ok) setIsLocal(false)
+    //                 }
+    //             } catch {
+    //                 if (!cancelled) {
+    //                     setSrc(item.Link)
+    //                     setIsLocal(false)
+    //                 }
+    //             }
+    //         }
 
-            resolveSource()
+    //         resolveSource()
 
-        }
+    //     }
 
 
-        return () => {
-            cancelled = true
-        }
-    }, [item.Link, src, prefereLocal])
+    //     return () => {
+    //         cancelled = true
+    //     }
+    // }, [item.Link, src, prefereLocal])
 
 
     // const [view, setView] = useState<'video'|'iframe'>('video')
     const [view, setView] = useState<'video'|'iframe'>('iframe')
 
+
+
+    const videoUrl = getUrlVideo(item)
 
     return (
         <div className={styles.website}>
@@ -100,7 +114,7 @@ const Website = ({ item }: Props) => {
                 view === "video" && (
                     <div className={styles.preview}>
 
-                        <video src={``}/>
+                        <video src={videoUrl} muted autoPlay loop={true}/>
                     </div>
                 )
             }

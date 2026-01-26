@@ -24,6 +24,31 @@
   border-radius: 10px;
 }
 
+.website .preview{
+  position: absolute;
+  /* width: 80%; */
+  height: 80%;
+  background: gainsboro;
+  border: none;
+  outline: none;
+  /* border: 2px solid white; */
+  filter: var(--dropShadow);
+  border-radius: 10px;
+  font-size: 0;
+  overflow: hidden;
+}
+.website .preview video{
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform: scale(1.001);
+  /* background: gainsboro;
+  border: none;
+  outline: none;
+  /* border: 2px solid white; */
+  /* filter: var(--dropShadow);
+  border-radius: 10px; */ 
+}
 
 .type{
   position: fixed;

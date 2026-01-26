@@ -1,4 +1,4 @@
-import { TypeProject } from "@/types/project-type";
+import { courseShort, TypeProject } from "@/types/project-type";
 
 export const sanitizeForUrl = (text: string) => {
 
@@ -21,4 +21,24 @@ export const getUrlFromProject = (item: TypeProject) => {
 
 
     // 
+}
+
+
+
+
+export const getUrlVideo = (item: TypeProject) => {
+
+
+    const kursShort = courseShort[item.Kurs].toLowerCase()
+    const student = sanitizeForUrl(item.Studierende).split("-").join("_")
+
+
+    // @ts-ignore
+    const src = `/images/${kursShort}/showcase/${student}_showcase.webm`
+
+    console.log(src)
+
+  // console.log("filename", filename, fileDataTT[filename]?.showcase)
+    return src
+  // @ts-ignore
 }

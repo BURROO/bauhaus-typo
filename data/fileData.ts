@@ -5,6 +5,9 @@
 // pdftoppm public/images/ioom/content/mona_kerntke/mona_kerntke_content.pdf public/images/ioom/content/mona_kerntke/slide -png
 
 
+// pdftoppm public/images/tg/content/Glutig_Motsch_Content.pdf public/images/tg/content/slide -png
+
+
 export const fileDataBML = {
     
 }
@@ -83,5 +86,10 @@ export const fileDataIO = {
         dir: `/images/bml`,
         count: 10,
         fileType: 'jpg'
+    },
+    'franziska_glutig_luise_motsch': {
+        dir: `/images/tg/content`,
+        count: 3,
+        fileType: 'png'
     }
 }
