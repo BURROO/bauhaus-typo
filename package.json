@@ -14,6 +14,7 @@
     "@react-pdf/renderer": "^4.3.2",
     "@react-three/drei": "^10.7.7",
     "@react-three/fiber": "^9.5.0",
+    "lodash": "^4.17.23",
     "next": "16.1.0",
     "papaparse": "^5.5.3",
     "pdf-poppler": "^0.2.3",
@@ -24,6 +25,7 @@
     "urlify": "^0.3.6"
   },
   "devDependencies": {
+    "@types/lodash": "^4.17.23",
     "@types/node": "^20",
     "@types/papaparse": "^5.5.2",
     "@types/react": "^19",

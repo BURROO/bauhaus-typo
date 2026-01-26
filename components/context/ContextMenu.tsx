@@ -6,11 +6,13 @@ import React, { ReactNode, useEffect, useMemo, useState } from 'react';
 interface IContext {
   screenWidth: number|null;
   screenHeight: number|null;
+  rowHeight: number|null;
 }
 
 export const ContextMenu = React.createContext<IContext>({
   screenWidth: null,
   screenHeight: null,
+  rowHeight: null
 });
 
 
@@ -24,6 +26,11 @@ export const ContextMenuProvider = ({
   // Set the initial mode
   const [screenWidth, setScreenWidth] = useState<number|null>(null);
   const [screenHeight, setScreenHeight] = useState<number|null>(null);
+
+
+  const divider = screenHeight !== null ? Math.floor( screenHeight / 15) :  1
+
+  const rowHeight = screenHeight !== null ? (screenHeight / divider) : 0
   
 
   useEffect(() => {
@@ -47,11 +54,13 @@ export const ContextMenuProvider = ({
   const value = useMemo(
     () => ({
       screenWidth,
-      screenHeight
+      screenHeight,
+      rowHeight
     }),
     [
       screenWidth,
-      screenHeight
+      screenHeight,
+      rowHeight
     ]
   );
 

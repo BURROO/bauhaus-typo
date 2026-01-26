@@ -1,4 +1,4 @@
-export type TypeCourses = 
+export type TypeCoursesNames = 
 'Transcoding Typography' | 
 'In Order Of Meaning' | 
 'Handmade Websites as Punk Zines' | 
@@ -11,7 +11,7 @@ export type TypeCourses =
 
 
 type TypeCourseShort = {
-  [K in TypeCourses]: string
+  [K in TypeCoursesNames]: string
 }
 
 export const courseShort: TypeCourseShort = {
@@ -27,7 +27,7 @@ export const courseShort: TypeCourseShort = {
 }
 
 export interface TypeProject {
-    Kurs: TypeCourses;
+    Kurs: TypeCoursesNames;
     Supervision: string;
     Studierende: string;
     Title: string;
@@ -45,4 +45,31 @@ export interface TypeProject {
     // Automated:
     Format: string;
     index: number;
+    id: string;
+}
+
+
+
+export interface TypeProjectForSVG {
+    text: string;
+    hideText: boolean;
+    // text: item[col.text],
+    x: number,
+    y: number,
+    width: number;
+    height: number;
+    path: string,
+    // isPrevSame: 
+    fill: boolean;
+    index: number;
+    isActive: boolean;
+    data: TypeProject;
+}
+
+export interface TypeCourse {
+    Kurs: string;
+    Supervision: string;
+    "Text DE": string;
+    "Text EN": string;
+
 }

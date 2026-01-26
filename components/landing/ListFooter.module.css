@@ -3,7 +3,8 @@
   display: flex; 
   gap: 10;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
+  justify-content: flex-end;
   position: fixed;
   z-index: 10;
   left:0;
@@ -11,19 +12,22 @@
   right: 0;
   background: var(--gray);
   text-transform: uppercase;
-  /* background: black; */
-  /* color: white; */
+  background: black;
+  color: white;
 }
 
 .footer input{
   outline: none;
   border: none;
-  background: black;
+  background: white;
+  
+
 }
 
 .footer span{
   display: flex; 
   align-items: center;
+  color: white;
 }
 
 .tag{
@@ -33,7 +37,8 @@
   /* border-radius: 10px; */
   cursor: pointer;
   margin: 3px;
-  mix-blend-mode: multiply;
+  /* mix-blend-mode: multiply; */
+  color: white;
 }
 
 /* .tag.active,

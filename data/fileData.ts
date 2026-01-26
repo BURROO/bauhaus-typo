@@ -81,8 +81,7 @@ export const fileDataIO = {
     },
     'susan_arian_julide_nur_alemdar': {
         dir: `/images/bml`,
-        count: 5,
+        count: 10,
         fileType: 'jpg'
-
     }
 }

@@ -6,7 +6,8 @@
   left: 0;
   right: 0;
   text-transform: uppercase;
-  background: var(--gray) ;
+  background: transparent;
+  /* background: var(--gray) ; */
 }
 
 .header > div{

@@ -2,19 +2,23 @@
 
 import { useContext, useEffect, useMemo, useRef, useState } from 'react'
 import styles from './List.module.css'
-import { courseShort, TypeProject } from '@/types/project-type';
+import { courseShort, TypeCourse, TypeCoursesNames, TypeProject } from '@/types/project-type';
 import Overlay from './Overlay';
 import ListFooter from './ListFooter';
-import TypeLarge from '../layer2/TypeLarge';
+// import TypeLarge from '../layer2/TypeLarge';
 import { ContextMenu } from '../context/ContextMenu';
 import ListItem from './ListItem';
 import ListHeader from './ListHeader';
-import { render } from '@react-pdf/renderer';
+// import { render } from '@react-pdf/renderer';
 import ListCourse from './ListCourse';
 import Background from './Background';
+import ListSVG from './ListSVG';
+import { convertTableToSVG } from '@/util/convertTableToSVG';
+import { cloneDeep} from 'lodash'
 
 interface Props {
-    data: TypeProject[];
+    dataStudents: TypeProject[];
+    dataCourses: TypeCourse[]
     // activeIndex: null|number;
     // setActiveIndex: (value: number|null) => void;
 }
@@ -29,13 +33,13 @@ interface Filter {
 }
 
 
-const List = ({ data}: Props) => {
+const List = ({ dataStudents, dataCourses}: Props) => {
 
     const [activeIndex, setActiveIndex] = useState<number|null>(null)
-    const doublicatedData = useMemo(() => [...data, ...data], data)
+    const doublicatedData = useMemo(() => [...cloneDeep(dataStudents), ...cloneDeep(dataStudents)], dataStudents)
 
 
-    const { screenHeight } = useContext(ContextMenu)
+    const { screenHeight, screenWidth, rowHeight } = useContext(ContextMenu)
 
 
     const scrollPos = useRef(2000)
@@ -64,7 +68,7 @@ const List = ({ data}: Props) => {
 
         if(filter !== "" || searchTerm !== ''){
             setRenderedData(
-                data
+                dataStudents
                 .filter(d => {
 
                     if(filter === "") return true
@@ -90,12 +94,15 @@ const List = ({ data}: Props) => {
             setRenderedData(doublicatedData)
         }
 
-    }, [filter, sorting, searchTerm, data])
+    }, [filter, sorting, searchTerm, dataStudents])
 
 
     useEffect(() => {
         dataRef.current = renderedData
     }, [renderedData, refContainer.current])
+
+
+    const [firstIndex, setFirstIndex] = useState(0)
 
     useEffect(() => {
 
@@ -117,24 +124,33 @@ const List = ({ data}: Props) => {
 
             if(refContainer.current){
 
+
                 if(scrollPos.current >= itemHeight){
 
                     // scrollPos.current -= itemHeight
                     scrollPos.current = 0
 
-                    setRenderedData([
-                        ...dataRef.current.slice(itemsToRemove, dataRef.current.length),
-                        ...dataRef.current.slice(0, itemsToRemove)
-                    ])
+                    // setFirstIndex((firstIndex + 1) % dataStudents.length)
+                    setFirstIndex((firstIndex+itemsToRemove) % dataRef.current.length)
+
+                    // setRenderedData([
+                    //     ...dataRef.current.slice(itemsToRemove, dataRef.current.length),
+                    //     ...dataRef.current.slice(0, itemsToRemove)
+                    // ])
                 }else if(scrollPos.current <= -itemHeight){
                     // scrollPos.current += itemHeight
                     scrollPos.current = 0
+
+
+                    // setFirstIndex((firstIndex - 1) % dataStudents.length)
+                    // setFirstIndex(itemsToRemove)
+                    setFirstIndex((firstIndex-itemsToRemove) % dataRef.current.length)
                     
-                    setRenderedData([
-                        // dataRef.current[dataRef.current.length-1],
-                        ...dataRef.current.slice(dataRef.current.length-itemsToRemove, dataRef.current.length),
-                        ...dataRef.current.slice(0, dataRef.current.length-itemsToRemove),
-                    ])
+                    // setRenderedData([
+                    //     // dataRef.current[dataRef.current.length-1],
+                    //     ...dataRef.current.slice(dataRef.current.length-itemsToRemove, dataRef.current.length),
+                    //     ...dataRef.current.slice(0, dataRef.current.length-itemsToRemove),
+                    // ])
                 }else{
 
                     // scrollPos.current = 0
@@ -158,123 +174,62 @@ const List = ({ data}: Props) => {
     }, [ofst])
 
 
+    const allCourses: Set<TypeCoursesNames> = new Set((dataStudents.map((item: TypeProject) => item.Kurs)))
 
-    const allCourses = new Set((data.map(item => item.Kurs)))
+    // const course = filter && dataCourses.find(course => course.Kurs) || null
 
+    const activeProject = activeIndex && renderedData.find(d => d.index === activeIndex)
 
-    const divider = screenHeight !== null ? Math.floor( screenHeight / 15) :  1
+    const courseInfo: TypeCourse|null = dataCourses.find(k => k.Kurs === filter) || null
 
-    const rowHeight = screenHeight !== null ? (screenHeight / divider) : 0
-
-    const name = activeIndex !== null && renderedData[activeIndex]?.Studierende || null
+    if(rowHeight === null) return <></>
 
     return (
-        <div
-        className={styles.scrollWrapper}
-        ref={refContainer}
-        >
+        <>
             <div
-            className={styles.scrollWrapperInner}
-            />
-            {
-                activeIndex !== null &&
-                <Overlay item={renderedData[activeIndex]} autoRotateSpeed={6}/>
-            }
-            <ul 
-            // style={{ paddingTop: rowHeight}}
+            className={styles.scrollWrapper}
+            ref={refContainer}
             >
-                <ListHeader rowHeight={rowHeight} />
+                <div
+                className={styles.scrollWrapperInner}
+                />
                 {
-                    renderedData.map((row: any, i: number, all: any[]) => {
-
-                        return (
-                            <ListItem
-                            key={i}
-                            row={row}
-                            currentIndex={i}
-                            rowHeight={rowHeight}
-                            activeIndex={activeIndex}
-                            setActiveIndex={setActiveIndex}
-                            all={all}
-                            allCourses={allCourses}
-                            />
-                        )
-                    })
+                    activeProject &&
+                    <Overlay item={activeProject} autoRotateSpeed={6}/>
                 }
+                <ul 
+                // style={{ paddingTop: rowHeight}}
+                >
+                    <ListHeader rowHeight={rowHeight} />
+                    {/* { false &&
+                        renderedData.map((row: any, i: number, all: any[]) => {
+
+                            return (
+                                <ListItem
+                                key={i}
+                                row={row}
+                                currentIndex={i}
+                                rowHeight={rowHeight}
+                                activeIndex={activeIndex}
+                                setActiveIndex={setActiveIndex}
+                                all={all}
+                                allCourses={allCourses}
+                                />
+                            )
+                        })
+                    } */}
+                </ul>
                 {
-                    screenHeight && filter !== "" &&
+                    screenHeight && rowHeight && filter !== "" &&
                     <ListCourse
                     rowHeight={rowHeight}
-                    renderedData={renderedData}
+                    course={courseInfo}
                     screenHeight={screenHeight}
-                    filter={filter}
+                    renderedData={renderedData}
+                    // filter={filter}
                     />
-                    // <li>
-                    //     <li
-                    //     className={styles.rowCourse}
-                    //     // style={{ height: itemHeight }}
-                    //     // onMouseEnter={() => setActiveIndex(i)}
-                    //     // onMouseLeave={() => setActiveIndex(null)}
-                    //     style={{
-                    //         height: screenHeight ? (rowHeight * 3) : 0
-                    //     }}
-                    //     >
-                    //         <div className={`${styles.rowGray}`}>
-                    //             <br/>
-                    //             <br/>
-                    //             {filter}                               
-                    //         </div>
-                    //         {/* TITLE */}
-                    //         <div className={``}>
-                    //         </div>
-                    //         {/* MEDIUM */}
-                    //         <div className={``}>
-                    //         </div>
-                    //         {/* FORMAT */}
-                    //         <div className={`${styles.rowGray}`}>
-                    //         </div>
-                    //         {/* COURSE */}
-                    //         <div className={``}>
-                    //         </div>
-                    //         {/* SUPERVISION */}
-                    //         <div className={``}>
-                    //         </div>
-                    //         <div className={``}>
-                    //         </div>
-                    //     </li>
-                    //     <li
-                    //     className={styles.rowCourse}
-                    //     // style={{ height: itemHeight }}
-                    //     // onMouseEnter={() => setActiveIndex(i)}
-                    //     // onMouseLeave={() => setActiveIndex(null)}
-                    //     style={{
-                    //         height: screenHeight ? screenHeight - (rowHeight * renderedData.length - 3) : 0
-                    //     }}
-                    //     >
-                    //         <div className={styles.rowGray}>                       
-                    //         </div>
-                    //         {/* TITLE */}
-                    //         <div className={styles.rowGray}>
-                    //             Text on current project       
-                    //         </div>
-                    //         {/* MEDIUM */}
-                    //         <div className={styles.rowGray}>
-                    //         </div>
-                    //         {/* FORMAT */}
-                    //         <div className={styles.rowGray}>
-                    //         </div>
-                    //         {/* COURSE */}
-                    //         <div className={styles.rowGray}>
-                    //         </div>
-                    //         {/* SUPERVISION */}
-                    //         <div className={styles.rowGray}>
-                    //         </div>
-                    //         <div className={styles.rowGray}>
-                    //         </div>
-                    //     </li>
-                    // </li>
+                
                 }
-            </ul>
                 <div className={styles.footer}>
                     <ListFooter
                     height={rowHeight*3}
@@ -286,7 +241,8 @@ const List = ({ data}: Props) => {
                     searchTerm={searchTerm}
                     />
                 </div>
-                <div style={{ 
+                <div 
+                style={{ 
                     position: "fixed", 
                     zIndex: -1,
                     top: 0,
@@ -297,53 +253,25 @@ const List = ({ data}: Props) => {
                     <Background text={"Bauhaus Typography"} dir={1}/>
                     <Background text={"EXHIBITION"} dir={-1}/>
                 </div>
-                {/* <div style={{ 
-                    overflow: "hidden",
-                    position: "fixed", 
-                    lineHeight: 0.8,
-                    top: 0, 
-                    left: 0,
-                    width: "100vw",
-                    height: "100vh", 
-                    background: "black", 
-                    zIndex: -1,
-                }}>
-                    <div style={{
-                        display: "flex",
-                        alignItems: "center",
-                        transform: `translate(calc(${-ofst/30}%))`, 
-                        fontSize: "56vh", 
-                        padding: 0,
-                        margin: 0,
-                        fontFamily: `UfficioMono-Black`,
-                        color: "white",
-                        lineHeight: 1
-                    }}>TYPOTYPOTYPO</div>
-                </div> */}
+                
 
-            {/* <TypeLarge text={`Typography\\& Type Design\\${name ? `\\${name}` : ''}\\Exhibition\\6.–8.2.2026`} /> */}
-           {/* <TypeLarge text={`Typography\\& Type Design\\§§§§§§§\\Exhibition\\06.–0.8.02.2026\\§§§§§\\${name ? `\\${name}` : ''}`} /> */}
-            <svg width="0" height="0">
-                <filter id="screenPrintEffect">
-                    {/* <!-- Generate noise pattern --> */}
-                    <feTurbulence type="turbulence" baseFrequency="0.95" numOctaves="3" result="turbulence"/>
-                    
-                    {/* <!-- Convert to grayscale and boost contrast --> */}
-                    <feColorMatrix in="turbulence" type="matrix" values="0.33 0.33 0.33 0 0
-                                                                        0.33 0.33 0.33 0 0
-                                                                        0.33 0.33 0.33 0 0
-                                                                        0 0 0 0.6 0" result="grayscale"/>
-                    
-                    {/* <!-- Apply threshold to create sharp black/white dots --> */}
-                    <feComponentTransfer in="grayscale" result="thresholded">
-                    <feFuncA type="discrete" tableValues="0 1"/>
-                    </feComponentTransfer>
-                    
-                    {/* <!-- Use the pattern as a mask or displacement map --> */}
-                    <feComposite in="SourceGraphic" in2="thresholded" operator="in" result="screenPrinted"/>
-                </filter>
-            </svg>
-        </div>
+
+
+
+            </div>
+
+
+            <ListSVG
+            dataStudents={dataStudents}
+            dataCourses={dataCourses}
+            filter={filter}
+            searchTerm={searchTerm}
+            firstIndex={firstIndex}
+            setActiveIndex={setActiveIndex}
+            activeIndex={activeIndex}/>
+
+
+       </>
     )
 }
 

@@ -3,6 +3,8 @@ import styles from './Overlay.module.css'
 import ParametricBook from '../slug/book/ParametricBook';
 import Scene from './three/Scene';
 import { useEffect, useState } from 'react';
+import { sanitizeForUrl } from '@/util/sanitizeForUrl';
+import { fileDataTT } from '@/data/fileData';
 // import dynamic from 'next/dynamic';
 
 
@@ -34,20 +36,26 @@ const Overlay = ({ item, autoRotateSpeed }: {item: TypeProject; autoRotateSpeed:
 
     if(typeof item === "undefined") return <></>
 
+
+    // 
+    const notBookNotWeb = item["Type"] !== "WWW" && item["Type"] !== "BOOK"
+
     return (
-            <div 
-            className={styles.overlay}
-            >
-                {item["Type"] === "WWW" && <OverlayTranscoding item={item} autoRotateSpeed={autoRotateSpeed}/>}
-                {item["Kurs"] === "In Order Of Meaning" && <OverlayOrderOfMeaning item={item} autoRotateSpeed={autoRotateSpeed}/>}
-            </div>
+        <div 
+        className={styles.overlay}
+        >
+            {notBookNotWeb && <OverlayImage item={item} autoRotateSpeed={autoRotateSpeed}/>}
+            {/* <h2 style={{ color: "white"}}>{item.Studierende} {item.index}</h2> */}
+            {item["Type"] === "WWW" && <OverlayMac item={item} autoRotateSpeed={autoRotateSpeed}/>}
+            {item["Kurs"] === "In Order Of Meaning" && <OverlayBook item={item} autoRotateSpeed={autoRotateSpeed}/>}
+        </div>
     )
 }
 
 export default Overlay
 
 
-const OverlayTranscoding = ({ item, autoRotateSpeed }: { item: TypeProject, autoRotateSpeed: number; }) => {
+const OverlayMac = ({ item, autoRotateSpeed }: { item: TypeProject, autoRotateSpeed: number; }) => {
     // Handle
 
 
@@ -62,12 +70,28 @@ const OverlayTranscoding = ({ item, autoRotateSpeed }: { item: TypeProject, auto
 }
 
 
-const OverlayOrderOfMeaning = ({ item, autoRotateSpeed }: { item: TypeProject; autoRotateSpeed: number; }) => {
+const OverlayBook = ({ item, autoRotateSpeed }: { item: TypeProject; autoRotateSpeed: number; }) => {
     // Handle
 
     return (
         <div style={{ height: 400 }}>
             <ParametricBook type="orbit" item={item} setShowButton={() => {}} autoRotateSpeed={autoRotateSpeed}/>
+        </div>
+    )
+}
+
+
+const OverlayImage = ({ item, autoRotateSpeed }: { item: TypeProject; autoRotateSpeed: number; }) => {
+    // Handle
+
+    const url = sanitizeForUrl(item["Studierende"])
+
+    // @ts-ignore
+    const src = fileDataTT[url] || null
+
+    return (
+        <div style={{ height: 400 }}>
+            <img src={src} style={{ width: "100%", height: "100%", objectFit: "contain" }} />
         </div>
     )
 }

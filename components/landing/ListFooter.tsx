@@ -34,7 +34,7 @@ const ListFooter = ({ setFilter, filter, setSorting, sorting, setSearchTerm, sea
                         { short: "TT", name: "Transcoding Typography" }, 
                         { short: "OM", name: "In Order Of Meaning" }, 
                         { short: "PZ", name: "Handmade Websites as Punk Zines" },
-                        { short: "FP", name: "Free Project" }
+                        // { short: "FP", name: "Free Project" }
                     ].map((course, i, allCourses) => (
                         <span 
                         onClick={(() => setFilter(course.name === filter ? "" : course.name))}

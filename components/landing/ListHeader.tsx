@@ -12,9 +12,8 @@ const ListHeader = ({ rowHeight }: Props) => {
         <>
             <li
             className={`${styles.row} ${styles.header}`}
-            style={{ height: rowHeight}}
+            style={{ height: rowHeight, background: "none" }}
             >
-                {/* <div>Nr</div> */}
                 <div>Name</div>
                 <div>Title</div>
                 <div>Medium</div>
@@ -23,12 +22,11 @@ const ListHeader = ({ rowHeight }: Props) => {
                 <div>Supervision</div>
                 <div>ID</div>
             </li>
-            <li
+            {/* <li
             // Just to offset the list!
             className={`${styles.row}`}
-            style={{ height: rowHeight}}
+            style={{ height: rowHeight, background: "none" }}
             >
-                {/* <div>Nr</div> */}
                 <div>Name</div>
                 <div>Title</div>
                 <div>Medium</div>
@@ -36,7 +34,7 @@ const ListHeader = ({ rowHeight }: Props) => {
                 <div>Course</div>
                 <div>Supervision</div>
                 <div>ID</div>
-            </li>
+            </li> */}
         </>
 
     )

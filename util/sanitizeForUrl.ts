@@ -1,3 +1,4 @@
+import { TypeProject } from "@/types/project-type";
 
 export const sanitizeForUrl = (text: string) => {
 
@@ -13,4 +14,11 @@ export const sanitizeForUrl = (text: string) => {
         .replace(/\s+/g, "-")              // spaces → dashes
         .replace(/-+/g, "-");              // collapse dashes
     // Handle url sanitizing
+}
+
+
+export const getUrlFromProject = (item: TypeProject) => {
+
+
+    // 
 }

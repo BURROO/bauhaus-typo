@@ -1,13 +1,13 @@
 
 import styles from './ListItem.module.css'
 import Link from 'next/link';
-import { courseShort, TypeCourses, TypeProject } from '@/types/project-type';
+import { courseShort, TypeCoursesNames, TypeProject } from '@/types/project-type';
 import { sanitizeForUrl } from '@/util/sanitizeForUrl';
 
 interface Props {
     row: TypeProject;
     all: TypeProject[];
-    allCourses: Set<TypeCourses>;
+    allCourses: Set<TypeCoursesNames>;
     currentIndex: number;
     activeIndex: number|null;
     setActiveIndex: (index: number|null ) => void;
@@ -17,19 +17,19 @@ interface Props {
 }
 
 
-const getID = (item: TypeProject, nr: string) => {
+// const getID = (item: TypeProject, nr: string) => {
 
 
-    const pt1 = courseShort[item['Kurs']]
+//     const pt1 = courseShort[item['Kurs']]
     
-    const nameSplit = item["Studierende"].split(' ').map(char => char.charAt(0))
+//     const nameSplit = item["Studierende"].split(' ').map(char => char.charAt(0))
 
-    const pt2 = `${nameSplit[0]}${nameSplit[nameSplit.length-1]}`
+//     const pt2 = `${nameSplit[0]}${nameSplit[nameSplit.length-1]}`
 
 
-    return `${pt1}/${pt2}/${nr}`
+//     return `${pt1}/${pt2}/${nr}`
 
-}
+// }
 
 
 const ListItem = ({
@@ -42,46 +42,25 @@ const ListItem = ({
     rowHeight
 }: Props) => {
 
-
     const activeElement = activeIndex && all[activeIndex]
 
-    // const slug = row.
-    // const kurs = row.Kurs.split(" ").map((w: string) => w.toLowerCase()).join("-")
-    // const studierende = row.Studierende.split(" ").map((w: string) => w.toLowerCase()).join("-")
     const kurs = sanitizeForUrl(row.Kurs)
     const studierende = sanitizeForUrl(row.Studierende)
 
-    // const rowKurs = sanitizeForUrl(row.Kurs)
-    // const rowStudierende = sanitizeForUrl(row.Studierende)
-
     const courseIndex = Array.from(allCourses).indexOf(row.Kurs)
     const isPrevSameCourse = all[currentIndex-1]?.Kurs === row.Kurs
+    const isPrevSameFormat = all[currentIndex-1]?.Format === row.Format
+    const isPrevSameType = all[currentIndex-1]?.Type === row.Type
 
-    // const supervision: { [key: string]: string} = {
-    //     'Transcoding Typography': 'Philipp Koller',
-    //     'In Order Of Meaning ': 'Marcel Saidov',
-    //     'Handmade Websites as Punk Zines': 'Hjördis Lyn Behncken & Insa Deist'
-    // }
+    // const nr = (row.index).toString().padStart(2, "0")
 
-    const format: { [key: string]: string} = {
-        'Transcoding Typography': 'Webtool',
-        'In Order Of Meaning ': 'Publication',
-        'Handmade Websites as Punk Zines': 'Website'
-    }
-
-    const nr = (row.index).toString().padStart(2, "0")
-
-    const id = getID(row, nr)
-    // const id = hexEncode(row["Studierende"]).slice(0, 6)
+    // const id = getID(row, nr)
 
     const fieldIsTooLong = row["Studierende"].length > 20 || row["Title"].length > 20
-
 
     const isActive = activeIndex === currentIndex
     const isActiveCourse = activeElement && activeElement.Kurs === row.Kurs || false
     const isActiveSupervision = activeElement && activeElement.Supervision === row.Supervision || false
-
-    // console.log((activeElement?.Kurs === row.Kurs).toString(), activeElement?.Kurs, row.Kurs)
 
     return (
         <Link 
@@ -93,6 +72,7 @@ const ListItem = ({
             onMouseEnter={() => setActiveIndex(currentIndex)}
             onMouseLeave={() => setActiveIndex(null)}
             style={{
+                opacity: 0,
                 // background: isActiveCourse ? "red" : "",
                 height: fieldIsTooLong ? rowHeight*2 : rowHeight
                 // opacity: activeIndex !== null && activeIndex !== currentIndex ? 0.6 : 1,
@@ -105,7 +85,7 @@ const ListItem = ({
                 {/* TITLE */}
                 <Column isGray={currentIndex % 2 == 1} isActive={isActive} content={row["Title"]} />
                 {/* MEDIUM */}
-                <Column isGray={courseIndex % 2 == 1} isActive={isActiveCourse} content={!isPrevSameCourse && (format[row["Kurs"]]) || ''} />
+                <Column isGray={courseIndex % 2 == 1} isActive={isActiveCourse} content={!isPrevSameType && row["Type"] || ""} />
                 {/* FORMAT */}
                 <Column isGray={currentIndex % 2 == 1} isActive={isActive} content={row["Format"]} />
                 {/* COURSE */}
@@ -119,7 +99,7 @@ const ListItem = ({
                 {/* <div className={(courseIndex % 2 == 11 ) ? styles.rowGray : ''}></div>
                     <span>{!isPrevSameCourse && (supervision[row['Kurs']] || 'TBD') || ''}</span>
                 </div> */}
-                <Column isGray={courseIndex % 2 == 1} isActive={isActive} content={id} />
+                <Column isGray={courseIndex % 2 == 1} isActive={isActive} content={row.id} />
                 {/* <div className={currentIndex % 2 == 1 ? styles.rowGray : ''}>
                     <span>{id}</span>
                 </div> */}

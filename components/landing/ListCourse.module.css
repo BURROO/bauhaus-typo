@@ -1,3 +1,32 @@
 .listCourse{
   /*  */
+  position: fixed;
+  /* display: flex; */
+  /* background: var(--gray); */
+  /* background: red; */
+  z-index: 9;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  font-family: 'UfficioMono-Bold';
+  text-transform: uppercase;
+}
+
+
+.text{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  /* gap: 40px; */
+}
+
+.text > div{
+  padding-right: 30px;
+}
+
+
+.listCourse h2,
+.listCourse h3,
+.listCourse p{
+
+  font-family: 'UfficioMono-Bold';
 }

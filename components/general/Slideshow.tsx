@@ -71,6 +71,7 @@ const Slideshow = ({ item, setShowButton, isBook }: Props) => {
                     {
                         slides.map((slide) => (
                             <div
+                            key={slide}
                             className={styles.slide}
                             onMouseEnter={() => setShowButton(true)}
                             onMouseLeave={() => setShowButton(false)}
@@ -96,6 +97,7 @@ const Slideshow = ({ item, setShowButton, isBook }: Props) => {
                 {
                     slides.map((slide, i) => (
                         <div 
+                        key={i}
                         className={`${styles.thumbnailItem} ${i === activeSlide ? styles.active : ""}`} 
                         onClick={() => setActiveSlide(i)}
                         >
