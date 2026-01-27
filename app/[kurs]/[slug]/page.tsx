@@ -24,11 +24,8 @@ export default async function Project({ params }: any) {
 
   const item: TypeProject|undefined =  data.find(row => {
 
-    // const rowKurs = row.Kurs?.toLowerCase().split(" ").join("-")
-    // const rowStudierende = row.Studierende?.toLowerCase().split(" ").join("-")
-
-    const rowKurs = sanitizeForUrl(row.Kurs)
-    const rowStudierende = sanitizeForUrl(row.Studierende)
+    const rowKurs = sanitizeForUrl(row.COURSE)
+    const rowStudierende = sanitizeForUrl(row.NAME)
     
     return rowKurs === kurs && rowStudierende === slug
   })
@@ -54,41 +51,12 @@ export async function generateStaticParams() {
   // console.log(data)
 
   return data
-    .filter(row => row.Kurs && row.Studierende)
+    .filter(row => row.COURSE && row.NAME)
     .map(row => ({
-      kurs: sanitizeForUrl(row.Kurs),
-      slug: sanitizeForUrl(row.Studierende),
+      kurs: sanitizeForUrl(row.COURSE),
+      slug: sanitizeForUrl(row.NAME),
     }));
 }
-
-
-
-// export const getStaticPaths = async (ctx) => {
-
-//   console.log(ctx)
-
-//   const filePath = path.join(process.cwd(), "public/bauhaus-typo-studis.csv");
-
-//   const csv = fs.readFileSync(filePath, "utf8");
-
-//   const { data } = Papa.parse(csv, { header: true });
-
-//   const item =  data.find(row => row.Kurs === 'test')
-
-
-
-//   return {
-//     paths: [
-//       {
-//         params: {
-//           course: 'next.js',
-//         },
-//       }, // See the "paths" section below
-//     ],
-//     fallback: true, // false or "blocking"
-//   }
-
-// }
 
 
 // export const getStaticProps = async (context) => {

@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>BofiTool</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/jpg" href="sources/favicon.jpg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playwrite+RO:wght@100..400&display=swap" rel="stylesheet">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sofia+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+        
+
+    <!-- Pulsanti in alto a destra -->
+    <div class="top-buttons">
+        <img src="sources/landing page 2.jpg" class="btn" id="B" data-panel="Beginning">
+        <img src="sources/landing page 3.jpg" class="btn" id="O" data-panel="Originals">
+        <img src="sources/landing page 4.jpg" class="btn" id="F" data-panel="Fonts">
+        <img src="sources/landing page 5.jpg" class="btn" id="I" data-panel="Interact">
+    </div>
+    
+
+    
+    
+    <!-- Pannello a tendina -->
+    <div id="side-panel">
+        <div id="panel-content">
+            <div id="Beginning">
+                <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> 
+                <h2>Beginning</h2> <br> <br>
+                <p class="frame_text">Welcome to the Bofi tool, <br> an online archive of all the letters, signs, graffiti, writings, books, tags... written, displayed or shown in public places or objects that have been 
+                    waited long times stored in my personal archive. In here, you will be able to explore the letter and their source and also play and download your creations!</p> <br> 
+                <!-- <label>Type something...</label>
+                <input type="text" value="Hello"><br>
+                <button class="button" style="background-color: #CC2936;">Randomize</button>
+                <button class="button" style="background-color: #CC2936;">Stop</button> <br> <br>
+                <label>Size</label>
+                <input type="range"  class="size-slider"  name="size"  min="0"  max="200"  value="100"><br><br>
+                <label>Letter Distance</label>
+                <input type="range"  class="distance-slider"  name="size"  min="0"  max="200"  value="100"><br> <br>  -->
+                <br><br><br><br><br>
+                <p class="watermark"><a href="https://www.instagram.com/esse.o.effe.i.a/"><b>Project by Sofia Boni</b></a><br>
+                Transcoding Typography - professor Phillipp Koller<br>
+                Bauhaus Universitat 2025 - All rights reserved</p>
+
+            
+                
+                
+                
+                <!--<input type="number" id="fontSize">miao</input>-->
+            </div>
+
+            <div id="Originals">
+                <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> 
+                <h2>Originals</h2> <br> <br>
+                <p class="frame_text">In here you'll find all the pictures of the archive, collected in over six years around the world. 
+                    Try sorting them by selecting the categories: what kind of signs are there in the Netherlands? 
+                    <br>How do spanish packages look like?</p> <br> <br>
+                
+                <p style="font-family: Playwrite RO;font-weight: bold;">Category</p>
+                    <div class="filters_text">
+                   
+                        <label>
+                            <input type="checkbox" id="signs"> Signs
+                        </label>
+
+                        <label>
+                            <input type="checkbox" id="posters"> Posters
+                        </label>
+
+                        <label>
+                            <input type="checkbox" id="packages"> Packages
+                        </label>
+
+                        <label>
+                            <input type="checkbox" id="books"> Books
+                        </label>
+
+                        <label>
+                            <input type="checkbox" id="tags"> Tags
+                        </label>
+
+                        <label>
+                            <input type="checkbox" id="inscriptions"> Inscriptions
+                        </label>
+                    </div><br> 
+
+                    <p style="font-family: Playwrite RO;font-weight: bold;">Origin</p>
+                    
+                    <div class="filters_text">
+                   
+                        <label>
+                            <input type="checkbox" id="ITA"> Italy
+                        </label>
+
+                        <label>
+                            <input type="checkbox" id="DE"> Germany
+                        </label>
+
+                        <label>
+                            <input type="checkbox" id="JP"> Japan
+                        </label>
+
+                        <label>
+                            <input type="checkbox" id="FR"> France
+                        </label>
+
+                        <label>
+                            <input type="checkbox" id="ES"> Spain
+                        </label>
+
+                        <label>
+                            <input type="checkbox" id="ROM"> Romania
+                        </label>
+
+                         <label>
+                            <input type="checkbox" id="NL"> Netherlands
+                        </label>
+
+                        <label>
+                            <input type="checkbox" id="CZ"> Czech Rep
+                        </label>
+                    </div>
+
+                                    
+                    <!-- MODALE -->
+                    <div id="image-modal" class="hidden">
+                        <span id="close-modal">&times;</span>
+                        <img id="modal-img">    </div>
+            </div>
+
+            <!--allora questo di seguito serve per il sorting , puo essere che vadano cambiate le classi e il nome degli elementi-->
+            <!--<div class="items">
+                    <div class="item signs scripts">Elemento A</div>
+                    <div class="item objects graffiti">Elemento B</div>
+                    <div class="item packages">Elemento C</div>
+                    <div class="item tumbstones signs">Elemento D</div>
+            </div>-->
+
+            <div id="Fonts">
+                <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> 
+                <h2>Font</h2> <br> <br>
+                <p class="frame_text" id="font_text">All the letters in here <br>
+                     had been manually reconsructed and retraced from the archive's pictures.<br>
+                     Feel free to take a closer look to them before start playing.<br>
+                     Each one of them has a unique story </p> <br> <br>
+                <!-- <p style="font-family: Playwrite RO;font-weight: bold;">Category</p>
+                      <div class="filters_text">
+                   
+                        <label>
+                            <input type="checkbox"> Signs
+                        </label>
+
+                        <label>
+                            <input type="checkbox"> Posters
+                        </label>
+
+                        <label>
+                            <input type="checkbox"> Packages
+                        </label>
+
+                        <label>
+                            <input type="checkbox"> Books
+                        </label>
+
+                        <label>
+                            <input type="checkbox"> Tags
+                        </label>
+
+                        <label>
+                            <input type="checkbox"> Inscriptions
+                        </label>
+                    </div><br> -->
+
+                    
+
+            </div>
+
+             <div id="Interact">
+                <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> 
+                <h2>Interact!</h2> <br> <br>
+                <label>Type something...</label>
+                <input type="text" id="textInput" placeholder="Hello"><br>
+                <button class="button" id="randomizeBtn" style="background-color: #F3B61F;">Randomize</button>
+                <br><br><br><br>
+                <!-- <button class="button" style="background-color: #F3B61F;">Stop</button> <br> <br> -->
+                <label>Size</label>
+                <input type="range" class="size-slider"  id="fontSize" name="size"  min="0"  max="250"  value="120"><br><br><br>
+                <label>Letter Distance</label>
+                <input type="range"  class="distance-slider" id="fontDistance" name="distance"  min="-20"  max="100"  value="0"><br> <br> <br>
+                <input type="checkbox">Show references <br> <br>
+                <button class="button" id="downloadBtn" style="background-color: #F3B61F;">Download</button>
+                <br><br><br><br><br>
+                
+                <p class="watermark"><a href="https://www.instagram.com/esse.o.effe.i.a/"><b>Project by Sofia Boni</b></a><br>
+                Transcoding Typography - professor Phillipp Koller<br>
+                Bauhaus Universitat 2025 - All rights reserved</p>
+        
+            </div>
+            
+        </div>
+       
+    </div>
+    
+   
+
+     <!-- CANVAS -->
+    <div id="canvasO" class="canvas"></div>
+    <div id="canvasF" class="canvas"></div>
+
+    <!-- MODALE -->
+    <div id="image-modalO" class="hidden">
+        <span id="close-modalO">&times;</span>
+        <img id="modal-imgO">
+    </div>
+
+    <div id="image-modalF" class="hidden">
+        <span id="close-modalF">&times;</span>
+        <img id="modal-imgF">
+    </div>
+
+
+     <div id="canvas">
+             <div id="textWrapper"></div>
+             <video poster="sources/welcome.gif" id="introvideo" autoplay muted loop playsinline>
+    <source src="sources/welcome.gif" type="video/gif"></video>
+    </div>
+
+ 
+     <script src="scriptDebuggato copy.js"></script>
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script> 
+
+</body>
+</html>

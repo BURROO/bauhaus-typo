@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Archive - Brutalist Product Catalog</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --vw21: calc(100vw / 21);
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #ffffff;
+            color: #000000;
+            font-family: 'Almarai', sans-serif;
+            font-size: 9pt;
+            line-height: 7pt;
+            overflow-x: hidden;
+        }
+
+        .container {
+            position: relative;
+            width: 100%;
+            min-height: 100vh;
+            padding-right: calc(var(--vw21) * 7);
+            padding-left: calc(var(--vw21) * 1);
+            padding-top: 50px;
+        }
+
+        .corner-logo {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: calc(var(--vw21) * 1);
+            height: auto;
+            z-index: 10;
+        }
+
+        .black-column {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: calc(var(--vw21) * 7);
+            height: 100vh;
+            background: #000000;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .black-bar-nav {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 0;
+            margin: 0;
+            font-family: 'Almarai', sans-serif;
+            font-size: 9pt;
+            line-height: 7pt;
+            font-weight: normal;
+            letter-spacing: 0;
+            transform: scaleY(1.45);
+            transform-origin: bottom left;
+        }
+
+        .black-bar-nav a {
+            display: block;
+            color: #ffffff;
+            text-decoration: none;
+            padding: 0;
+            margin: 0;
+            text-transform: lowercase;
+        }
+
+        .black-bar-nav a:hover {
+            text-decoration: underline;
+        }
+
+        .content {
+            max-width: calc(var(--vw21) * 14);
+            font-family: 'Almarai', sans-serif;
+            font-size: 9pt;
+            line-height: 7pt;
+            font-weight: normal;
+            letter-spacing: 0;
+            transform: scaleY(1.45);
+            transform-origin: top left;
+        }
+
+        h1 {
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+        }
+
+        .back-link {
+            display: inline-block;
+            color: #0000FF;
+            text-decoration: none;
+            margin-bottom: 30px;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img src="cinlogo2.png" alt="CIN Logo" class="corner-logo">
+
+        <div class="black-column">
+            <nav class="black-bar-nav">
+                <a href="archive.html">archive</a>
+                <a href="https://www.instagram.com" target="_blank">instagram</a>
+                <a href="imprint.html">imprint</a>
+            </nav>
+        </div>
+
+        <div class="content">
+            <a href="index.html" class="back-link">← back</a>
+            <h1>Archive</h1>
+            <p>Archive content coming soon...</p>
+        </div>
+    </div>
+</body>
+</html>

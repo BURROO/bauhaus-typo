@@ -1,4 +1,4 @@
-export function exportSVG(paper, textField, handle, radiusCircle) {
+ function exportSVG(paper, textField, handle, radiusCircle) {
     // UI-Elemente ausblenden
     textField.visible = false;
     handle.visible = false;

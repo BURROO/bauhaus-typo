@@ -1,0 +1,19 @@
+I'll let here some notes on the current progress of the site and on the problem
+I'm facing right now. For clarity sake I'll divide the notes according to the four buttons:
+
+BEGINNING
+    I decided to keep the panel simple, with just the description of the project and the short video appearing at the beginning 
+
+ORIGINALS
+    in this section I wanted to make a scrollable gallery but i'm still managing how to make it scrollable because by now it's still. Also I need to figure out how to make the modal (opening of one single picture at a time) working and how to divide the pictures in categories
+
+FONT
+    my plan was to make a scrollable gallery also in this section but somehow is not working even if the code should be alright and iven if i tested it in a differnt file (it was working)
+    also, i decided, due to the really short time available, to delete the category-sorting of the images in this section.
+
+INTERACT
+     I made this section almost fully work, I'm still missing just the "references" part
+
+
+
+A problem I'm now facing is how to make the letters from the interact section diappear when going back to the previous ones

@@ -38,6 +38,8 @@ const ListSVG = ({ dataStudents, dataCourses, filter, searchTerm, firstIndex, se
     const router = useRouter()
 
     const originalOrder = useMemo(() => {
+
+        console.log("dataStudents", dataStudents)
         
         const textToRender = convertTableToSVG({ 
             data: [...dataStudents], 
@@ -46,6 +48,8 @@ const ListSVG = ({ dataStudents, dataCourses, filter, searchTerm, firstIndex, se
             rowHeight,
             activeIndex
         })
+
+        console.log("textToRender", textToRender)
 
 
         return textToRender
@@ -128,9 +132,15 @@ const ListSVG = ({ dataStudents, dataCourses, filter, searchTerm, firstIndex, se
     if(screenHeight === null || screenWidth === null || rowHeight === null) return <></>
 
 
-    const courseInfo: TypeCourse|null = dataCourses.find(k => k.Kurs === filter) || null
+    const courseInfo: TypeCourse|null = dataCourses.find(k => k.COURSE === filter) || null
 
-    // console.log("filter", filter, dataCourses, courseInfo)
+    console.log("renderDarta", renderData)
+
+
+    // const fontSize = rowHeight
+    // const fontSize = 12
+    const fontSize = rowHeight * 0.8
+    // const topFontOfst = txtTopOfst
 
     return (
         <div
@@ -281,7 +291,6 @@ const ListSVG = ({ dataStudents, dataCourses, filter, searchTerm, firstIndex, se
                             .map((row, i) => {
 
 
-                                if(i === 0) return <g key={i}></g>
                                 
                                     
                                 return (
@@ -291,12 +300,13 @@ const ListSVG = ({ dataStudents, dataCourses, filter, searchTerm, firstIndex, se
 
                                                 <text
                                                 style={{
-                                                    textTransform: "uppercase"
+                                                    textTransform: "uppercase",
+                                                    fontSize
                                                 }}
                                                 key={k}
                                                 x={d.x}
                                                 y={d.y}
-                                                fontSize={48}
+                                                fontSize={fontSize}
                                                 fontWeight="bold"
                                                 fill={"black"}
                                                 >
@@ -320,53 +330,22 @@ const ListSVG = ({ dataStudents, dataCourses, filter, searchTerm, firstIndex, se
                         height={screenHeight}
                         fill="white"
                         />
-                            {/* <text
-                            style={{
-                                textTransform: "uppercase"
-                            }}
-                            x={txtLeftOfst}
-                            y={txtTopOfst+rowHeight}
-                            fontSize={48}
-                            fontWeight="bold"
-                            fill={"black"}
-                            >
-                                { courseInfo.Title}
-                            </text>
-                            <g transform={`translate(0 ${txtTopOfst+rowHeight})`}>
-                                {
-                                    splitEveryNWords(courseInfo["Text DE"]).map((snipper, i) => (
-                                        <text
-                                        key={i}
-                                        style={{
-                                            textTransform: "uppercase"
-                                        }}
-                                        x={txtLeftOfst}
-                                        y={txtTopOfst+rowHeight + i * rowHeight}
-                                        fontSize={48}
-                                        fontWeight="bold"
-                                        fill={"black"}
-                                        >
-                                            {snipper}
-                                        </text>
-
-                                    ))
-                                }
-                            </g> */}
-
                     </mask>}
                 </defs>
 
                 <path
-                d={`M 0 ${0} L ${screenWidth} ${0} L ${screenWidth} ${rowHeight} L 0 ${rowHeight}`}
+                d={`M 0 ${0} L ${screenWidth} ${0} L ${screenWidth} ${rowHeight+1} L 0 ${rowHeight+1}`}
                 fill={`url(#${gradientId})`}
-                mask={`url(#${maskId})`}
+                // mask={`url(#${maskId})`}
                 />
                 <g  transform={`translate(0 ${rowHeight})`}>
                     {
                         renderData
                         // .slice(12,200)
                         .map((row, i) => {
-                            
+
+
+                            // if(i === 0 )return <g key={i}/>
 
                         
                             return (
@@ -378,14 +357,15 @@ const ListSVG = ({ dataStudents, dataCourses, filter, searchTerm, firstIndex, se
                                             key={k}
                                             x={d.x}
                                             y={d.y}
-                                            fontSize={48}
+                                            fontSize={fontSize}
                                             fontWeight="bold"
                                             // fill={d.isActive ? "black" : !d.fill ? gray : "transparent"}
                                             // fill={!d.fill && i !== 0  ? grayFont : "transparent"}
                                             fill={!d.fill  ? grayFont : "transparent"}
 
                                             style={{
-                                                textTransform: "uppercase"
+                                                textTransform: "uppercase",
+                                                fontSize
                                             }}
                                             >
 
@@ -441,7 +421,6 @@ const ListSVG = ({ dataStudents, dataCourses, filter, searchTerm, firstIndex, se
                         renderData.map((row, i) => {
                             
 
-
                         
                             return (
                                 <g key={i}>
@@ -454,12 +433,13 @@ const ListSVG = ({ dataStudents, dataCourses, filter, searchTerm, firstIndex, se
                                             key={i}
                                             x={d.x}
                                             y={d.y}
-                                            fontSize={48}
+                                            fontSize={fontSize}
                                             fontWeight="bold"
                                             fill={"black"}
 
                                             style={{
-                                                textTransform: "uppercase"
+                                                textTransform: "uppercase",
+                                                fontSize
                                             }}
                                             >
 
@@ -478,8 +458,8 @@ const ListSVG = ({ dataStudents, dataCourses, filter, searchTerm, firstIndex, se
                         renderData.map((row, i) => {
 
 
-                            const kurs = sanitizeForUrl(row[0].data?.Kurs)
-                            const studierende = sanitizeForUrl(row[0].data?.Studierende)
+                            const kurs = sanitizeForUrl(row[0].data?.COURSE)
+                            const studierende = sanitizeForUrl(row[0].data?.NAME)
                             
                             return (
                                 <g

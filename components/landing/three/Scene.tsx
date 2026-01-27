@@ -19,7 +19,7 @@ export default function Scene({ item, rotationSpeed }: Props) {
 
   // const src = `/images/tt/showcase/mai_do_showcase.mp4`
 
-  const filename = item.Studierende.toLowerCase().split(" ").join("_")
+  const filename = item.NAME.toLowerCase().split(" ").join("_")
 
   // console.log("filename", filename, fileDataTT[filename]?.showcase)
 

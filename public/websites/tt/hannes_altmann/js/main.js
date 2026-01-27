@@ -1,10 +1,10 @@
-import { exportSVG } from "./export.js";
-import { applyCirclePushForce, applyCirclePullForce, applyCircleSpinForce, applySquarePushForce, applySquarePullForce, applySquareSpinForce } from "./force.js";
-import { renderText, applyDragTranslationToLetters } from "./text.js";
-import { state } from "./state.js";
-import { initInteractions } from "./interactions.js";
-import { initControls } from "./controls.js";
-import { initTextEdit } from "./textEdit.js";
+// import { exportSVG } from "./export.js";
+// import { applyCirclePushForce, applyCirclePullForce, applyCircleSpinForce, applySquarePushForce, applySquarePullForce, applySquareSpinForce } from "./force.js";
+// import { renderText, applyDragTranslationToLetters } from "./text.js";
+// import { state } from "./state.js";
+// import { initInteractions } from "./interactions.js";
+// import { initControls } from "./controls.js";
+// import { initTextEdit } from "./textEdit.js";
 
 // Init Paper.js
 paper.setup(document.getElementById("canvas"));

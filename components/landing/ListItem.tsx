@@ -16,22 +16,6 @@ interface Props {
     // setActiveIndex: (value: number|null) => void;
 }
 
-
-// const getID = (item: TypeProject, nr: string) => {
-
-
-//     const pt1 = courseShort[item['Kurs']]
-    
-//     const nameSplit = item["Studierende"].split(' ').map(char => char.charAt(0))
-
-//     const pt2 = `${nameSplit[0]}${nameSplit[nameSplit.length-1]}`
-
-
-//     return `${pt1}/${pt2}/${nr}`
-
-// }
-
-
 const ListItem = ({
     row,
     all,
@@ -44,23 +28,23 @@ const ListItem = ({
 
     const activeElement = activeIndex && all[activeIndex]
 
-    const kurs = sanitizeForUrl(row.Kurs)
-    const studierende = sanitizeForUrl(row.Studierende)
+    const kurs = sanitizeForUrl(row.COURSE)
+    const studierende = sanitizeForUrl(row.NAME)
 
-    const courseIndex = Array.from(allCourses).indexOf(row.Kurs)
-    const isPrevSameCourse = all[currentIndex-1]?.Kurs === row.Kurs
-    const isPrevSameFormat = all[currentIndex-1]?.Format === row.Format
-    const isPrevSameType = all[currentIndex-1]?.Type === row.Type
+    const courseIndex = Array.from(allCourses).indexOf(row.COURSE)
+    const isPrevSameCourse = all[currentIndex-1]?.COURSE === row.COURSE
+    const isPrevSameFormat = all[currentIndex-1]?.FORMAT === row.FORMAT
+    const isPrevSameMedium = all[currentIndex-1]?.MEDIUM === row.MEDIUM
 
     // const nr = (row.index).toString().padStart(2, "0")
 
     // const id = getID(row, nr)
 
-    const fieldIsTooLong = row["Studierende"].length > 20 || row["Title"].length > 20
+    const fieldIsTooLong = row["NAME"].length > 20 || row["TITLE"].length > 20
 
     const isActive = activeIndex === currentIndex
-    const isActiveCourse = activeElement && activeElement.Kurs === row.Kurs || false
-    const isActiveSupervision = activeElement && activeElement.Supervision === row.Supervision || false
+    const isActiveCourse = activeElement && activeElement.COURSE === row.COURSE || false
+    const isActiveSupervision = activeElement && activeElement.SUPERVISION === row.SUPERVISION || false
 
     return (
         <Link 
@@ -81,25 +65,24 @@ const ListItem = ({
             }}
             >
                 {/* NUMBER */}
-                <Column isGray={currentIndex % 2 == 1} isActive={isActive} content={row["Studierende"]} />
+                <Column isGray={currentIndex % 2 == 1} isActive={isActive} content={row["NAME"]} />
                 {/* TITLE */}
-                <Column isGray={currentIndex % 2 == 1} isActive={isActive} content={row["Title"]} />
+                <Column isGray={currentIndex % 2 == 1} isActive={isActive} content={row["TITLE"]} />
                 {/* MEDIUM */}
-                <Column isGray={courseIndex % 2 == 1} isActive={isActiveCourse} content={!isPrevSameType && row["Type"] || ""} />
+                <Column isGray={courseIndex % 2 == 1} isActive={isActiveCourse} content={!isPrevSameMedium && row["MEDIUM"] || ""} />
                 {/* FORMAT */}
-                <Column isGray={currentIndex % 2 == 1} isActive={isActive} content={row["Format"]} />
+                <Column isGray={currentIndex % 2 == 1} isActive={isActive} content={row["FORMAT"]} />
                 {/* COURSE */}
-                <Column isGray={courseIndex % 2 == 0} isActive={isActiveCourse} content={!isPrevSameCourse && row["Kurs"] || ''}/>
+                <Column isGray={courseIndex % 2 == 0} isActive={isActiveCourse} content={!isPrevSameCourse && row["COURSE"] || ''}/>
                 {/* <div className={courseIndex % 2 == 0 ? styles.rowGray : ''}>
-                    <span>{!isPrevSameCourse && row["Kurs"]}</span>
+                    <span>{!isPrevSameCourse && row["COURSE"]}</span>
                 </div> */}
                 {/* SUPERVISION */}
-                {/* <Column isGray={courseIndex % 2 == 1} isActive={isActiveSupervision} content={!isPrevSameCourse && (supervision[row['Kurs']] || 'TBD') || ''} /> */}
-                <Column isGray={courseIndex % 2 == 1} isActive={isActiveSupervision} content={!isPrevSameCourse && (row['Supervision'] || 'TBD') || ''} />
+                <Column isGray={courseIndex % 2 == 1} isActive={isActiveSupervision} content={!isPrevSameCourse && (row['SUPERVISION'] || 'TBD') || ''} />
                 {/* <div className={(courseIndex % 2 == 11 ) ? styles.rowGray : ''}></div>
                     <span>{!isPrevSameCourse && (supervision[row['Kurs']] || 'TBD') || ''}</span>
                 </div> */}
-                <Column isGray={courseIndex % 2 == 1} isActive={isActive} content={row.id} />
+                <Column isGray={courseIndex % 2 == 1} isActive={isActive} content={row.ID} />
                 {/* <div className={currentIndex % 2 == 1 ? styles.rowGray : ''}>
                     <span>{id}</span>
                 </div> */}

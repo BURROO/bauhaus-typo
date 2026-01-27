@@ -23,11 +23,11 @@ const Slideshow = ({ item, setShowButton, isBook }: Props) => {
     const slides = useMemo(() => {
 
 
-        // const student = item.Studierende.toLowerCase().split(" ").join("_")
-        const kurs = sanitizeForUrl( item.Kurs).split("-").join("_")
-        const student = sanitizeForUrl( item.Studierende).split("-").join("_")
+        // const student = item.NAME.toLowerCase().split(" ").join("_")
+        const kurs = sanitizeForUrl( item.COURSE).split("-").join("_")
+        const student = sanitizeForUrl( item.NAME).split("-").join("_")
 
-        // console.log("student",item.Studierende,student, fileDataIO[student])
+        // console.log("student",item.NAME,student, fileDataIO[student])
         // 
         const slides = []
         // @ts-ignore
@@ -45,7 +45,7 @@ const Slideshow = ({ item, setShowButton, isBook }: Props) => {
         return slides
     }, [])
 
-    // console.log("slides", slides)
+    console.log("slides", slides)
 
 
     const [activeSlide, setActiveSlide ] = useState(0)

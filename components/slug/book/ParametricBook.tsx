@@ -110,8 +110,8 @@ export default function ParametricBook({ item, type = "interact",  setShowButton
 
     const filenameFallback = 'mona_kerntke'
     // 
-    const filename = item.Studierende && item.Studierende.toLowerCase().split(" ").join("_") || filenameFallback 
-    // const filename = sanitizeForUrl(item.Studierende) || filenameFallback 
+    const filename = item.NAME && item.NAME.toLowerCase().split(" ").join("_") || filenameFallback 
+    // const filename = sanitizeForUrl(item.NAME) || filenameFallback 
 
     // @ts-ignore
     const data = fileDataIO[filename] || fileDataIO["mona_kerntke"]

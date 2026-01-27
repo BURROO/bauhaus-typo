@@ -6,32 +6,33 @@ interface Props{
     screenHeight: number|null;
     rowHeight: number;
     course: TypeCourse|null;
-    renderedData: TypeProject[]
+    dataStudents: TypeProject[];
 }
 
-const ListCourse = ({ screenHeight, rowHeight, course, renderedData }: Props) => {
+const ListCourse = ({ screenHeight, rowHeight, course, dataStudents }: Props) => {
 
+    const studentsFromCourse = dataStudents.filter(student => student.COURSE === course?.COURSE)
 
     if(course === null || screenHeight === null) return <></>
 
-    console.log("course", screenHeight - rowHeight * renderedData.length, course)
+    // console.log("course", screenHeight - rowHeight * renderedData.length, course)
 
     return (
         <div className={styles.listCourse}
         data-test="asfasf"
         style={{
-            height: screenHeight - rowHeight * (renderedData.length+1)
+            height: screenHeight - rowHeight * (studentsFromCourse.length+1)
         }}>
 
-            <h2>{course.Kurs}</h2>
-            <h3>{course.Supervision}</h3>
+            <h2>{course.COURSE}</h2>
+            <h3>{course.SUPERVISION}</h3>
             <br/>
             <div className={styles.text}>
                 <div>
-                    <p>{course['Text EN']}</p>
+                    <p>{course['ENGLISH']}</p>
                 </div>
                 <div>
-                    <p>{course['Text DE']}</p>
+                    <p>{course['DEUTSCH']}</p>
                 </div>
             </div>
 

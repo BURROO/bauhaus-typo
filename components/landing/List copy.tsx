@@ -180,10 +180,10 @@
 
 
 
-//     const allCourses: Set<TypeCoursesNames> = new Set((dataStudents.map((item: TypeProject) => item.Kurs)))
+//     const allCourses: Set<TypeCoursesNames> = new Set((dataStudents.map((item: TypeProject) => item.COURSE)))
 
 
-//     const course = filter && dataCourses.find(course => course.Kurs) || null
+//     const course = filter && dataCourses.find(course => course.COURSE) || null
 
 
 

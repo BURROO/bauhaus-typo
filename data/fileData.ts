@@ -3,6 +3,7 @@
 // pdftoppm public/images/ioom/content/james_brummelhuis/james_brummelhuis_content.pdf public/images/ioom/content/james_brummelhuis/slide -png
 
 // pdftoppm public/images/ioom/content/mona_kerntke/mona_kerntke_content.pdf public/images/ioom/content/mona_kerntke/slide -png
+// pdftoppm public/images/ioom/content/helene_dennewitz/helene_dennewitz_content.pdf public/images/ioom/content/helene_dennewitz/slide -png
 
 
 // pdftoppm public/images/tg/content/Glutig_Motsch_Content.pdf public/images/tg/content/slide -png
@@ -11,8 +12,6 @@
 export const fileDataBML = {
     
 }
-
-
 
 
 export const fileDataTT = {
@@ -50,6 +49,14 @@ export const fileDataTT = {
 
 
 export const fileDataIO = {
+    hannes_altmann: {
+        dir: `/images/ioom/content/hannes_altmann`,
+        front: `/images/ioom/cover/hannes_altmann/hannes_altmann_front.jpg`,
+        back: `/images/ioom/cover/hannes_altmann/hannes_altmann_back.jpg`,
+        spine: `/images/ioom/cover/hannes_altmann/hannes_altmann_spine.jpg`,
+        count: 0,
+        fileType: 'png'
+    },
     mona_kerntke: {
         dir: `/images/ioom/content/mona_kerntke`,
         front: `/images/ioom/cover/mona_kerntke/mona_kerntke_front.jpg`,
@@ -91,5 +98,10 @@ export const fileDataIO = {
         dir: `/images/tg/content`,
         count: 3,
         fileType: 'png'
+    },
+    'august_guccione': {
+        dir: `/images/ip/content`,
+        count: 3,
+        fileType: 'JPG'
     }
 }

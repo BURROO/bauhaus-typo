@@ -1,6 +1,6 @@
 'use client'
 
-import { TypeProject } from '@/types/project-type'
+import { courseShort, TypeProject } from '@/types/project-type'
 import styles from './Website.module.css'
 import { useEffect, useState } from 'react'
 import { getUrlVideo, sanitizeForUrl } from '@/util/sanitizeForUrl'
@@ -8,7 +8,6 @@ import { getUrlVideo, sanitizeForUrl } from '@/util/sanitizeForUrl'
 interface Props {
     item: TypeProject
 }
-
 
 
 
@@ -21,13 +20,14 @@ const Website = ({ item }: Props) => {
         ?.pop()
 
 
-
-
-
-    const name = sanitizeForUrl(item.Studierende).split("-").join("_")
+    const name = sanitizeForUrl(item.NAME).split("-").join("_")
     // const showcaseSource = 
 
-    const subFulter = item.Kurs === 'Transcoding Typography' ? 'tt' : 'pz'
+    console.log(item.COURSE)
+
+
+    const subFulter = courseShort[item.COURSE].toLocaleLowerCase()
+    // const subFulter = item.COURSE === 'Transcoding Typography' ? 'tt' : 'pz'
 
 
     // const [src, setSrc] = useState<string>(`/websites/${subFulter}/${cleanedSnippet}/index.html`)
@@ -39,6 +39,7 @@ const Website = ({ item }: Props) => {
     // const [prefereLocal, setPrefereLocal] = useState(false)
     const [prefereLocal, setPrefereLocal] = useState(true)
 
+    console.log("src", src)
 
     // useEffect(() => {
     //     let cancelled = false
@@ -91,6 +92,8 @@ const Website = ({ item }: Props) => {
 
 
     const videoUrl = getUrlVideo(item)
+
+
 
     return (
         <div className={styles.website}>

@@ -19,7 +19,7 @@ const ProjectInfo = ({ project }:Props) => {
         }}>
             <ul className={styles.projectInfoList}>
         
-                <li>{project.Studierende}</li>
+                <li>{project.NAME}</li>
                 <li></li>
                 <li></li>
                 <li></li>
@@ -27,9 +27,9 @@ const ProjectInfo = ({ project }:Props) => {
                 <li></li>
                 {/*  */}
                 <li></li>
-                <li>{project["Text DE"]}</li>
+                <li>{project["DEUTSCH"]}</li>
                 <li></li>
-                <li>{project["Text EN"]}</li>
+                <li>{project["ENGLISH"]}</li>
                 <li></li>
                 {/*  */}
                 <li></li>

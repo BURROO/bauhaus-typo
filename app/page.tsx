@@ -23,10 +23,10 @@ export default function Home() {
 
         
   const sortedData = dataStudents
-  // .sort((a, b) => b["Studierende"]?.localeCompare(a["Studierende"]) )
+  // .sort((a, b) => b["NAME"]?.localeCompare(a["NAME"]) )
   .filter((item: any) => {
 
-      if(typeof item["Studierende"] === "undefined") return false
+      if(typeof item["NAME"] === "undefined") return false
 
       return true
   })
@@ -51,9 +51,9 @@ export default function Home() {
 const getID = (item: TypeProject, nr: string) => {
 
 
-    const pt1 = courseShort[item['Kurs']]
+    const pt1 = courseShort[item['COURSE']]
     
-    const nameSplit = item["Studierende"].split(' ').map(char => char.charAt(0))
+    const nameSplit = item["NAME"].split(' ').map(char => char.charAt(0))
 
     const pt2 = `${nameSplit[0]}${nameSplit[nameSplit.length-1]}`
 

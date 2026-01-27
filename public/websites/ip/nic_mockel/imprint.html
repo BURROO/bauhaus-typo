@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Imprint - Brutalist Product Catalog</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --vw21: calc(100vw / 21);
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #ffffff;
+            color: #000000;
+            font-family: 'Almarai', sans-serif;
+            font-size: 9pt;
+            line-height: 7pt;
+            overflow-x: hidden;
+        }
+
+        .container {
+            position: relative;
+            width: 100%;
+            min-height: 100vh;
+            padding-right: calc(var(--vw21) * 15);
+            padding-left: 0;
+            padding-top: 50px;
+        }
+
+        .corner-logo {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: calc(var(--vw21) * 1);
+            height: auto;
+            z-index: 10;
+        }
+
+        .black-column {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: calc(var(--vw21) * 17);
+            height: 100vh;
+            background: #000000;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .black-bar-nav {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: auto;
+            font-family: 'Almarai', sans-serif;
+            font-size: 9pt;
+            line-height: 7pt;
+            font-weight: normal;
+            letter-spacing: 0;
+        }
+
+        .black-bar-nav a {
+            position: absolute;
+            bottom: 0;
+            color: #ffffff;
+            text-decoration: none;
+            padding: 0;
+            margin: 0;
+            text-transform: lowercase;
+            white-space: nowrap;
+            transform: scaleY(1.25);
+            transform-origin: bottom left;
+        }
+
+        .black-bar-nav a:nth-child(1) {
+            left: calc(var(--vw21) * 4);
+        }
+
+        .black-bar-nav a:nth-child(2) {
+            left: calc(var(--vw21) * 5);
+        }
+
+        .black-bar-nav a:nth-child(3) {
+            left: auto;
+            right: 0;
+            transform-origin: bottom right;
+        }
+
+        .black-bar-nav a:hover {
+            color: #6699FF;
+        }
+
+        .content {
+            max-width: calc(var(--vw21) * 14);
+            margin-left: 0;
+            font-family: 'Almarai', sans-serif;
+            font-size: 9pt;
+            line-height: 7pt;
+            font-weight: normal;
+            letter-spacing: 0;
+            transform: scaleY(1.45);
+            transform-origin: top left;
+        }
+
+        h1 {
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+        }
+
+        .back-link {
+            display: inline-block;
+            color: #0000FF;
+            text-decoration: none;
+            margin-bottom: 30px;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img src="cinlogo2.png" alt="CIN Logo" class="corner-logo">
+
+        <div class="black-column">
+            <nav class="black-bar-nav">
+                <a href="archive.html">archive</a>
+                <a href="https://www.instagram.com" target="_blank">instagram</a>
+                <a href="imprint.html">imprint</a>
+            </nav>
+        </div>
+
+        <div class="content">
+            <p>
+                nic moeckel<br>
+                cl0th1ng 1dent1f1cat10n numb3r<br>
+                Schubertstraße 2<br>
+                08525 plauen<br>
+                germany
+            </p>
+            <br>
+            <p>
+                contact@cin.com<br>
+                0176 43368036
+            </p>
+            <br>
+            <p>
+                Verantwortlich für den Inhalt nach §18 Abs. 2 MStV:<br>
+                nic moeckel<br>
+                schubertstraße 2<br>
+                08525 plauen<br>
+                germany
+            </p>
+            <br>
+            <p>
+                Sole Proprietor
+            </p>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <p>
+                all sales are final due to handcraftproduction. WE do not offer returns, exchanges, or refunds. We take the chance to inform that All pieces are handmade. Minor variations may occur without impact wearability or performance. Please keep that in mind and review your order carefully before completing your purchase.
+            </p>
+            <br>
+            <p>
+                ORDER ISSUES<br>
+                For any issues with your order (e.g., wrong item or defective product), contact us at contact@cin.com
+            </p>
+            <br>
+            <p>
+                Please include your order number and details of the issue.
+            </p>
+        </div>
+    </div>
+</body>
+</html>

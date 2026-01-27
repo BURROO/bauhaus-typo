@@ -12,37 +12,37 @@ import { TypeCoursesNames, TypeProject, TypeProjectForSVG } from "@/types/projec
 const columns: { 
     [key: string]: { 
         col: number; 
-        text: 'Studierende'|'Title'|'Type'|'Format'|'Kurs'|'Supervision'|'Id' 
+        text: 'NAME'|'TITLE'|'MEDIUM'|'FORMAT'|'Kurs'|'SUPERVISION'|'ID'|'COURSE'
         fill: boolean }[]
     } = {
     'large': [
         {
             col: 2/11,
-            text: 'Studierende',
+            text: 'NAME',
             fill: false,
         },{
             col: 2/11,
-            text: 'Title',
+            text: 'TITLE',
             fill: false,
         }, {
             col: 1/11,
-            text: 'Type',
+            text: 'MEDIUM',
             fill: false,
         }, {
             col: 1/11,
-            text: 'Format',
+            text: 'FORMAT',
             fill: false,
         }, {
             col: 2/11,
-            text: 'Kurs',
+            text: 'COURSE',
             fill: false,
         }, {
             col: 2/11,
-            text: 'Supervision',
+            text: 'SUPERVISION',
             fill: true,
         }, {
             col: 1/11,
-            text: 'Id',
+            text: 'ID',
             fill: false,
         }
     ],
@@ -50,11 +50,11 @@ const columns: {
     'medium': [
         {
             col: 2/7,
-            text: 'Studierende',
+            text: 'NAME',
             fill: false,
         },{
             col: 2/7,
-            text: 'Title',
+            text: 'TITLE',
             fill: false,
         }, 
         // {
@@ -64,23 +64,23 @@ const columns: {
         // }, 
         {
             col: 2/7,
-            text: 'Kurs',
+            text: 'COURSE',
             fill: false,
         }, 
          {
             col: 1/7,
-            text: 'Id',
+            text: 'ID',
             fill: false,
         }
     ],
     'small': [
         {
             col: 1/2,
-            text: 'Studierende',
+            text: 'NAME',
             fill: false,
         },{
             col: 1/2,
-            text: 'Title',
+            text: 'TITLE',
             fill: false,
         }, 
         
@@ -116,7 +116,7 @@ export const convertTableToSVG = ({ data, screenWidth, screenHeight, rowHeight, 
 
     const screenType = screenWidth > 1300 ? 'large' : screenWidth < 800 ? 'small' : 'medium'
 
-    let colsActive = columns[screenType].map(() => true)
+    let colsActive = columns[screenType].map(() => false)
 
 
     data.forEach((item: TypeProject, i, all) => {

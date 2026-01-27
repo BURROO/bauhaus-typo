@@ -3,11 +3,11 @@
  * Manages the overlay textarea for direct text editing
  */
 
-import { state } from './state.js';
-import { renderText } from './text.js';
+// import { state } from './state.js';
+// import { renderText } from './text.js';
 
 // Sync overlay textarea position/size to match textField
-export function syncOverlayTextarea() {
+ function syncOverlayTextarea() {
     if (!state.textEditMode) return;
     const rect = state.textField.bounds;
     const canvasRect = state.el.canvas.getBoundingClientRect();
@@ -17,6 +17,9 @@ export function syncOverlayTextarea() {
     state.el.overlayTextarea.style.width = `${rect.width}px`;
     state.el.overlayTextarea.style.height = `${rect.height}px`;
     state.el.overlayTextarea.style.fontSize = `${state.fontSize}px`;
+    // Match Paper.js line height and internal padding so rows/caret align
+    const lineHeight = state.fontSize * 1.25;
+    state.el.overlayTextarea.style.lineHeight = `${lineHeight}px`;
 }
 
 function enterTextEditMode() {
@@ -45,7 +48,7 @@ function exitTextEditMode() {
     state.textEditMode = false;
     // Persist text back to input and re-render
     if (state.el.overlayTextarea) {
-        state.currentText = state.el.overlayTextarea.value || state.currentText;
+        state.currentText = state.el.overlayTextarea.value;
         state.el.overlayTextarea.style.display = 'none';
     }
     state.textField.visible = true;
@@ -58,7 +61,7 @@ function exitTextEditMode() {
     renderText();
 }
 
-export function initTextEdit() {
+ function initTextEdit() {
     // Exit text edit mode when clicking outside the overlay textarea
     document.addEventListener('mousedown', (e) => {
         if (state.textEditMode && state.el.overlayTextarea && !state.el.overlayTextarea.contains(e.target)) {

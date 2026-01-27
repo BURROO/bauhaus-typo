@@ -26,27 +26,50 @@ export const courseShort: TypeCourseShort = {
     '204 Type-Gazette Issue 06': 'TG'
 }
 
+
+// NR;DATE;NAME;TITLE;MEDIUM;FORMAT;COURSE;SUPERVISION;ID;DEUTSCH;ENGLISH
 export interface TypeProject {
-    Kurs: TypeCoursesNames;
-    Supervision: string;
-    Studierende: string;
-    Title: string;
+    COURSE: TypeCoursesNames;
+    SUPERVISION: string;
+    NAME: string;
+    TITLE: string;
     Image: string;
     Link: string;
-    Type: 'WWW' | 'BOOK' | 'PRINT'
+    MEDIUM: 'Website' | 'Webtool' | 'Publication' | 'Poster' | 'Exhibition' | 'Zine' | 'Card Game';
     // in order of meaning!
     book?: {
         front: string;
         back: string;
         spine: string;
     };
-    "Text DE": string;
-    "Text EN": string;
+    DEUTSCH: string;
+    ENGLISH: string;
     // Automated:
-    Format: string;
+    FORMAT: string;
     index: number;
-    id: string;
+    ID: string;
 }
+// export interface TypeProject {
+//     Kurs: TypeCoursesNames;
+//     Supervision: string;
+//     Studierende: string;
+//     Title: string;
+//     Image: string;
+//     Link: string;
+//     Type: 'WWW' | 'BOOK' | 'PRINT'
+//     // in order of meaning!
+//     book?: {
+//         front: string;
+//         back: string;
+//         spine: string;
+//     };
+//     "DEUTSCH": string;
+//     "ENGLISH": string;
+//     // Automated:
+//     Format: string;
+//     index: number;
+//     id: string;
+// }
 
 
 
@@ -67,9 +90,9 @@ export interface TypeProjectForSVG {
 }
 
 export interface TypeCourse {
-    Kurs: string;
-    Supervision: string;
-    "Text DE": string;
-    "Text EN": string;
+    COURSE: string;
+    SUPERVISION: string;
+    DEUTSCH: string;
+    ENGLISH: string;
 
 }

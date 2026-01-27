@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 // import TypeLarge from "../layer2/TypeLarge";
 import ProjectInfo from "./ProjectInfo";
 import dynamic from 'next/dynamic'
+import { getType } from "@/util/sanitizeForUrl";
 
 const Book = dynamic(
   () => import("@/components/slug/book/Book"),
@@ -64,6 +65,10 @@ const PageWrapper = ({ item }: Props) => {
 
     console.log("item", item)
 
+
+
+    const { isOnScreen, isPublication, isSlideshow } = getType(item)
+
     return (
         <div className={styles.page}>
        
@@ -75,15 +80,16 @@ const PageWrapper = ({ item }: Props) => {
                     borderRadius: isHovered ? 5 : 0,
                 }}>
                     {/* Special */}
-                    {item.Kurs === "Bauhaus Master Lectures" && <Poster item={item} />}
-                    {item.Title === "204 Type-Gazette Issue 06" && <Book item={item} />}
+                    {/* {item.COURSE === "Bauhaus Master Lectures" && <Poster item={item} />}
+                    {item.TITLE === "204 Type-Gazette Issue 06" && <Book item={item} />}
 
 
-                    {item.Kurs === "First Year Introduction" && <Poster item={item} />}
-                    {item.Kurs === "Independent Project" && <Poster item={item} />}
+                    {item.COURSE === "First Year Introduction" && <Poster item={item} />}
+                    {item.COURSE === "Independent Project" && <Poster item={item} />} */}
+                    {isSlideshow && <Poster item={item} />}
                     {/* Generic from courses!! */}
-                    {item.Type === "WWW" && <Website item={item} />}
-                    {item.Type === "BOOK" && <Book item={item} />}
+                    {isOnScreen && <Website item={item} />}
+                    {isPublication && <Book item={item} />}
                 </div>
             </main>
 
@@ -91,7 +97,7 @@ const PageWrapper = ({ item }: Props) => {
             className={styles.intro} 
             style={introStyle}
             >
-                <TypeLarge text={`${item.Studierende}\\${item.Title}`} />
+                <TypeLarge text={`${item.NAME}\\${item.Title}`} />
             </div> */}
             
             <ProjectInfo project={item} />
@@ -116,8 +122,8 @@ style={{
 }}
 >
     <div style={{ opacity: isHovered ? 1 : 0}}>
-        <h1>{item.Studierende}</h1>
-        <h2>{item.Kurs}</h2>
+        <h1>{item.NAME}</h1>
+        <h2>{item.COURSE}</h2>
         <br/>
         <Link href={`/`}>← Go Back</Link>
     </div>

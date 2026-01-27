@@ -29,8 +29,8 @@ export const getUrlFromProject = (item: TypeProject) => {
 export const getUrlVideo = (item: TypeProject) => {
 
 
-    const kursShort = courseShort[item.Kurs].toLowerCase()
-    const student = sanitizeForUrl(item.Studierende).split("-").join("_")
+    const kursShort = courseShort[item.COURSE].toLowerCase()
+    const student = sanitizeForUrl(item.NAME).split("-").join("_")
 
 
     // @ts-ignore
@@ -40,4 +40,21 @@ export const getUrlVideo = (item: TypeProject) => {
   // console.log("filename", filename, fileDataTT[filename]?.showcase)
     return src
   // @ts-ignore
+}
+
+
+
+export const getType = (item: TypeProject): { isOnScreen: boolean; isPublication: boolean; isSlideshow: boolean } => {
+
+
+    const isOnScreen =  item["MEDIUM"] === "Website" || item["MEDIUM"] === "Webtool"
+    const isPublication = item["MEDIUM"] === "Publication" || item["MEDIUM"] === "Zine"
+    const isSlideshow = !isOnScreen && !isPublication
+
+
+    return {
+        isOnScreen,
+        isPublication,
+        isSlideshow
+    }
 }

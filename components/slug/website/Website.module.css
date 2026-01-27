@@ -62,8 +62,9 @@
 
 .switch{
   position: fixed;
-  top: 12px;
-  right: 50px;
+  bottom: 12px;
+  left: 50vw;
+  transform: translateX(-50%);
   background: cyan;
   padding: 5px;
   border-radius: 3px;

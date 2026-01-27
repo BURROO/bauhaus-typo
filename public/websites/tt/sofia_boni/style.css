@@ -1,0 +1,441 @@
+/* Reset base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: white;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    font-family: sans-serif;
+}
+
+button{
+    border: 1px solid black;
+    
+}
+
+#introvideo {
+    width: 100%;
+    background: white;
+    transition: opacity 0.5s ease-out;
+  }
+
+
+.watermark {
+    position: fixed;
+    right: 70px;
+    bottom: 10px;
+    /* padding-top: 0%;
+    padding-right: 10px; */
+    text-align: right;
+    line-height: 10px;
+    /* border: 1px solid black; */
+    font-size: 10px;
+    font-family: 'Sofia Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+   
+}
+
+/* Pulsanti in alto a destra */
+/*.top-buttons {
+    width: 100px;
+    height: 100px;
+    position: fixed;
+    top: 60px;
+    right: 350px;
+    display: flex;
+    gap: 5px;
+    z-index: 20;
+}*/
+
+#B{
+    width: 100px;
+    height: 100px;
+    position: fixed;
+    top: 60px;
+    right: 250px;
+    display: flex;
+    gap: 5px;
+    z-index: 20;
+}
+
+#O{
+    width: 100px;
+    height: 100px;
+    position: fixed;
+    top: 60px;
+    right: 140px;
+    display: flex;
+    gap: 5px;
+    z-index: 20;
+}
+
+#F{
+   width: 100px;
+    height: 100px;
+    position: fixed;
+    top: 170px;
+    right: 250px;
+    display: flex;
+    gap: 5px;
+    z-index: 20;
+}
+
+#I{
+    width: 100px;
+    height: 100px;
+    position: fixed;
+    top: 170px;
+    right: 140px;
+    display: flex;
+    gap: 5px;
+    z-index: 20;
+}
+
+.top-buttons .btn {
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.top-buttons .btn:hover {
+    transform: scale(1.05);
+}
+
+
+  
+  
+/* Pannello a tendina */
+#side-panel {
+    position: fixed;
+    font-family: "Playwrite RO", cursive;  
+    font-optical-sizing: auto;
+    font-weight: 50;
+    font-style: normal;
+    line-height: 100%;
+    top: 50px;
+    right: -420px; /*nascosto */
+    width: 420px;
+    
+    height: 100vh;
+    background: #ffffff;
+    /* box-shadow: -4px 0 10px rgba(0,0,0,0.1); */
+    transition: right 0.4s ease;
+    z-index: 15;
+}
+
+#side-panel.open {
+    right: 0;
+}
+
+/* Contenuto pannello */
+#panel-content {
+   /* padding-left: 20px;
+    padding-top: 250px;*/
+    width: 360px;
+    height: 100vh;
+    
+}
+
+
+
+#Beginning{
+    background-color: #e01224;
+    text-align:left;
+    text-rendering: auto;
+    padding-left: 20px;
+    height: 170vh;
+    width: 360px;
+}
+
+#Originals{
+    background-color: #2f75c9;
+    padding-left: 20px;
+    height: 170vh;
+    width: 360px;
+}
+
+#Fonts{
+    background-color: #79cb16;
+    padding-left: 20px;
+    height: 170vh;
+    width: 360px;
+}
+
+.frame_text{
+    border: 1px solid rgb(0, 0, 0);
+    width: 320px;
+    padding-top: 5px;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-bottom: 5px;
+    line-height: 16px;
+    font-family: 'Sofia Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.filters_text{
+    border: 1px solid rgb(0, 0, 0);
+    column-count: 2;
+    width: 300px;
+    padding-top: 10px;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-bottom: 2px;
+    font-family: 'Sofia Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+input[type=checkbox]{
+  accent-color:  #000000;  
+}
+
+input[type=text]{
+    width: 320px;
+}
+
+
+.button{
+    padding: 3px;
+    padding-left: 6px;
+    padding-right: 6px;
+    margin-top: 2px;
+    margin-right: 60px;
+    font-family: 'Sofia Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+#randomizeBtn{
+    position:absolute;
+    right: 20px
+
+}
+
+#Interact{
+    background-color: #F3B61F;
+    padding-left: 20px;
+    height: 170vh;
+    width: 360px;
+}
+
+
+
+
+/*sliders comandi e stile*/
+label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: inherit;
+  width: 300px;
+  height: 6px;
+  background: #000000;
+  border-radius: 3px;
+  outline: none;
+  cursor: pointer;
+}
+
+/* pallino (thumb) - Chrome, Safari */
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 30px;
+  height: 30px;
+  background: #000000;
+  border-radius: 0%;
+  cursor: ew-resize;
+  border: none;
+}
+
+/* pallino - Firefox */
+input[type="range"]::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  background: #CC2936;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+}
+
+/* barra - Firefox */
+input[type="range"]::-moz-range-track {
+  background: #ffdb27;
+  height: 6px;
+  border-radius: 3px;
+}
+
+/*++++++++++++++++++++++++++++++++SCRITTURA LETTERE++++++++++++++++++++++++++++++++++++++++++++*/
+
+#canvas {
+  width: 72%;                                            
+  height: 100%;
+  left: 10px;
+  position: fixed;
+  /* justify-content: center;
+  align-items: center; */
+  /* border: 1px solid rgb(0, 60, 255); */
+}
+
+
+/*#textWrapper {
+  display:block; 
+  width: 100%;                                    */
+  /*height: 100%; */
+  /* border: 1px solid black; */
+  /* gap: 1px; 
+    --letter-size: 150px; comando per ingrandimento lettere */
+  /*--letter-gap: -10px;*/ /*comandi per vicinanza lettere */
+  /* gap: var(--letter-gap); */
+  
+  /*QUI RISIEDE IL MISTERO PER CETRARE IL TESTO*/
+  /* position: absolute;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+} */
+
+/* #textWrapper img {
+  height: 80px;
+  height: var(--letter-size); */
+  /* width: auto;
+  margin-left: 0; */
+/* } */
+
+
+#textWrapper {
+    display: flex !important;
+    flex-direction: row !important; /* Forza l'allineamento orizzontale */
+    flex-wrap: wrap;               /* Permette di andare a capo se il testo è lungo */
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;                   /* Fondamentale per dare un limite al canvas */
+
+    position:absolute;
+    top: 60px;  
+    gap: 1px; 
+      --letter-size: 150px; /*comando per ingrandimento lettere*/
+  /*--letter-gap: -10px;*/ /*comandi per vicinanza lettere */
+  gap: var(--letter-gap);
+
+}
+
+#textWrapper img {
+ display: inline-block;         /* Aiuta il rendering orizzontale */
+    height: var(--letter-size);    /* Usa la variabile che hai già creato */
+    width: auto;
+}
+
+
+
+
+
+
+
+/*++++++++++++++++++++++++++++++++GALLERIA FOTO++++++++++++++++++++++++++++++++++++++++++++*/
+
+/* CANVAS */
+.canvas {
+    width: 72%;                                            
+    height: 100%;
+    left: 10px;
+    top: 200px;
+    /* min-height: 100vh;
+    padding: 40px; */
+    transition: background-color 0.4s ease;
+}
+
+
+#canvasO{
+    width: 72.6%;
+    display:none;     /* Inizialmente nascosti */
+    background-color: #2f75c9;
+    height: 100%;          /* Altezza massima (es. 80% della finestra) */
+    overflow-y: scroll;     
+    padding: 20px;
+           
+}
+
+#canvasF{
+    display:none;
+    background-color: #79cb16;
+    height: 100%;             /* Altezza massima (es. 80% della finestra) */
+    overflow-y: auto;      /* Attiva lo scroll verticale se serve */
+    padding: 20px;
+    display: none;         /* Inizialmente nascosti */
+}
+
+#canvas{
+    display: block;
+}
+
+#canvasO::-webkit-scrollbar, #canvasF::-webkit-scrollbar {
+    width: 8px;
+}
+#canvasO::-webkit-scrollbar-thumb, #canvasF::-webkit-scrollbar-thumb {
+    background: #ffffff; 
+    border-radius: 4px;
+}
+
+/* Griglia per le immagini all'interno */
+.galleryO, .galleryF {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 20px;
+    align-items: start;
+}
+
+.galleryO img, .galleryF img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    /* border-radius: 6px; */
+    cursor: pointer;
+    background-color: white;
+    transition: transform 0.2s ease;
+}
+
+/* .gallery img:hover {
+    transform: scale(1.05);
+} */
+
+/* MODALE */
+#image-modalO,
+#image-modalF {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+
+#image-modalF{
+background: rgba(131, 131, 131, 0.9);}
+
+#image-modalO.hidden,
+#image-modalF.hidden {
+    display: none;
+}
+
+#image-modalO img,
+#image-modalF img {
+    max-width: 90%;
+    max-height: 90%;
+}
+
+#close-modalO,
+#close-modalF {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    font-size: 40px;
+    color: white;
+    cursor: pointer;
+}
+
+
+
+

@@ -35,8 +35,10 @@ interface Filter {
 
 const List = ({ dataStudents, dataCourses}: Props) => {
 
+
+
     const [activeIndex, setActiveIndex] = useState<number|null>(null)
-    const doublicatedData = useMemo(() => [...cloneDeep(dataStudents), ...cloneDeep(dataStudents)], dataStudents)
+    // const doublicatedData = useMemo(() => [...cloneDeep(dataStudents), ...cloneDeep(dataStudents)], dataStudents)
 
 
     const { screenHeight, screenWidth, rowHeight } = useContext(ContextMenu)
@@ -59,112 +61,112 @@ const List = ({ dataStudents, dataCourses}: Props) => {
 
     const itemHeight = 60
 
-    const [renderedData, setRenderedData] = useState(doublicatedData)
+    // const [renderedData, setRenderedData] = useState(doublicatedData)
 
-    const dataRef = useRef(renderedData)
+    // const dataRef = useRef(renderedData)
 
-    useEffect(() => {
-
-
-        if(filter !== "" || searchTerm !== ''){
-            setRenderedData(
-                dataStudents
-                .filter(d => {
-
-                    if(filter === "") return true
+    // useEffect(() => {
 
 
-                    const found = Object.values(d).find(value => value && value.toString().match(new RegExp(filter, 'ig')))
+    //     if(filter !== "" || searchTerm !== ''){
+    //         setRenderedData(
+    //             dataStudents
+    //             .filter(d => {
 
-                    return found
-                })
-                .filter(d => {
-
-                    if(searchTerm === "") return true
-
+    //                 if(filter === "") return true
 
 
-                    const found = Object.values(d).find(value => value && value.toString().match(new RegExp(searchTerm, 'ig')))
+    //                 const found = Object.values(d).find(value => value && value.toString().match(new RegExp(filter, 'ig')))
+
+    //                 return found
+    //             })
+    //             .filter(d => {
+
+    //                 if(searchTerm === "") return true
 
 
-                    return found
-                })
-            )
-        }else{
-            setRenderedData(doublicatedData)
-        }
 
-    }, [filter, sorting, searchTerm, dataStudents])
+    //                 const found = Object.values(d).find(value => value && value.toString().match(new RegExp(searchTerm, 'ig')))
 
 
-    useEffect(() => {
-        dataRef.current = renderedData
-    }, [renderedData, refContainer.current])
+    //                 return found
+    //             })
+    //         )
+    //     }else{
+    //         setRenderedData(doublicatedData)
+    //     }
+
+    // }, [filter, sorting, searchTerm, dataStudents])
+
+
+    // useEffect(() => {
+    //     dataRef.current = renderedData
+    // }, [renderedData, refContainer.current])
 
 
     const [firstIndex, setFirstIndex] = useState(0)
 
-    useEffect(() => {
+    // useEffect(() => {
 
-        const handleScroll = (e: any) => {
+    //     const handleScroll = (e: any) => {
 
-            const scrollInc = e.deltaY
+    //         const scrollInc = e.deltaY
 
-            // const dir = Math.sign(scrollInc)
+    //         // const dir = Math.sign(scrollInc)
 
-            const itemsToRemove = 1 + Math.floor(Math.abs(scrollInc)/10)
-            // const itemsToRemove = 1 
+    //         const itemsToRemove = 1 + Math.floor(Math.abs(scrollInc)/10)
+    //         // const itemsToRemove = 1 
 
-            scrollPos.current = scrollInc+scrollPos.current
+    //         scrollPos.current = scrollInc+scrollPos.current
 
-            const newOfst = ofst > 1000 ? 0 : ofst+Math.floor((Math.abs(scrollInc)/10))
+    //         const newOfst = ofst > 1000 ? 0 : ofst+Math.floor((Math.abs(scrollInc)/10))
 
-            setOfst(newOfst)
-
-
-            if(refContainer.current){
+    //         setOfst(newOfst)
 
 
-                if(scrollPos.current >= itemHeight){
+    //         if(refContainer.current){
 
-                    scrollPos.current = 0
-                    setFirstIndex((firstIndex+itemsToRemove) % dataRef.current.length)
 
-                }else if(scrollPos.current <= -itemHeight){
+    //             if(scrollPos.current >= itemHeight){
+
+    //                 scrollPos.current = 0
+    //                 setFirstIndex((firstIndex+itemsToRemove) % dataStudents.length)
+
+    //             }else if(scrollPos.current <= -itemHeight){
+
+    //                 scrollPos.current = 0
+    //                 setFirstIndex((firstIndex-itemsToRemove) % dataStudents.length)
                     
-                    scrollPos.current = 0
-                    setFirstIndex((firstIndex-itemsToRemove) % dataRef.current.length)
-                    
-                }else{
+    //             }else{
 
-                    // scrollPos.current = 0
-                }
-                // refContainer.current.scrollTop += 200
-            }
+    //                 // scrollPos.current = 0
+    //             }
+    //             // refContainer.current.scrollTop += 200
+    //         }
 
-            // 
-            e.preventDefault()
-        }
+    //         // 
+    //         e.preventDefault()
+    //     }
 
-        window.addEventListener('wheel', handleScroll, { 
-            passive: false
-        })
+    //     window.addEventListener('wheel', handleScroll, { 
+    //         passive: false
+    //     })
 
-        return () => {
+    //     return () => {
 
-            window.removeEventListener('wheel', handleScroll)
-        }
+    //         window.removeEventListener('wheel', handleScroll)
+    //     }
 
-    }, [ofst])
+    // }, [ofst])
 
 
-    const allCourses: Set<TypeCoursesNames> = new Set((dataStudents.map((item: TypeProject) => item.Kurs)))
+    const allCourses: Set<TypeCoursesNames> = new Set((dataStudents.map((item: TypeProject) => item.COURSE)))
 
-    // const course = filter && dataCourses.find(course => course.Kurs) || null
+    // const course = filter && dataCourses.find(course => course.COURSE) || null
 
-    const activeProject = activeIndex && renderedData.find(d => d.index === activeIndex)
+    const activeProject = activeIndex && dataStudents.find(d => d.index === activeIndex) || null
 
-    const courseInfo: TypeCourse|null = dataCourses.find(k => k.Kurs === filter) || null
+    const courseInfo: TypeCourse|null = dataCourses.find(k => k.COURSE === filter) || null
 
     if(rowHeight === null) return <></>
 
@@ -192,7 +194,7 @@ const List = ({ dataStudents, dataCourses}: Props) => {
                     rowHeight={rowHeight}
                     course={courseInfo}
                     screenHeight={screenHeight}
-                    renderedData={renderedData}
+                    dataStudents={dataStudents}
                     // filter={filter}
                     />
                 

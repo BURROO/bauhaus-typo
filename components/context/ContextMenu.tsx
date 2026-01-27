@@ -16,7 +16,6 @@ export const ContextMenu = React.createContext<IContext>({
 });
 
 
-
 export const ContextMenuProvider = ({
   children,
 }: {
@@ -29,6 +28,7 @@ export const ContextMenuProvider = ({
 
 
   const divider = screenHeight !== null ? Math.floor( screenHeight / 15) :  1
+  // const divider = screenHeight !== null ? Math.floor( 40 - screenHeight * 0.03) :  1
 
   const rowHeight = screenHeight !== null ? (screenHeight / divider) : 0
   

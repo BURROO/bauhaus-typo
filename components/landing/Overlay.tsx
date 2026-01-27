@@ -3,7 +3,7 @@ import styles from './Overlay.module.css'
 import ParametricBook from '../slug/book/ParametricBook';
 import Scene from './three/Scene';
 import { useEffect, useState } from 'react';
-import { sanitizeForUrl } from '@/util/sanitizeForUrl';
+import { getType, sanitizeForUrl } from '@/util/sanitizeForUrl';
 import { fileDataTT } from '@/data/fileData';
 // import dynamic from 'next/dynamic';
 
@@ -38,16 +38,18 @@ const Overlay = ({ item, autoRotateSpeed }: {item: TypeProject; autoRotateSpeed:
 
 
     // 
-    const notBookNotWeb = item["Type"] !== "WWW" && item["Type"] !== "BOOK"
+
+
+    const { isOnScreen, isPublication, isSlideshow } = getType(item)
 
     return (
         <div 
         className={styles.overlay}
         >
-            {notBookNotWeb && <OverlayImage item={item} autoRotateSpeed={autoRotateSpeed}/>}
-            {/* <h2 style={{ color: "white"}}>{item.Studierende} {item.index}</h2> */}
-            {item["Type"] === "WWW" && <OverlayMac item={item} autoRotateSpeed={autoRotateSpeed}/>}
-            {item["Kurs"] === "In Order Of Meaning" && <OverlayBook item={item} autoRotateSpeed={autoRotateSpeed}/>}
+            {isSlideshow && <OverlayImage item={item} autoRotateSpeed={autoRotateSpeed}/>}
+            {/* <h2 style={{ color: "white"}}>{item.NAME} {item.index}</h2> */}
+            {isOnScreen && <OverlayMac item={item} autoRotateSpeed={autoRotateSpeed}/>}
+            {isPublication && <OverlayBook item={item} autoRotateSpeed={autoRotateSpeed}/>}
         </div>
     )
 }
@@ -84,7 +86,7 @@ const OverlayBook = ({ item, autoRotateSpeed }: { item: TypeProject; autoRotateS
 const OverlayImage = ({ item, autoRotateSpeed }: { item: TypeProject; autoRotateSpeed: number; }) => {
     // Handle
 
-    const url = sanitizeForUrl(item["Studierende"])
+    const url = sanitizeForUrl(item["NAME"])
 
     // @ts-ignore
     const src = fileDataTT[url] || null

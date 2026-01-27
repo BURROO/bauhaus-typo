@@ -10,7 +10,7 @@
  * @param {Number} mouseRadius - Radius within which force is applied
  * @param {Number} forceStrength - Strength multiplier of the force
  */
-export function applyCirclePushForce(letters, mousePos, mouseRadius, forceStrength) {
+ function applyCirclePushForce(letters, mousePos, mouseRadius, forceStrength) {
     const radiusSquared = mouseRadius * mouseRadius;
     
     for (let l of letters) {
@@ -43,7 +43,7 @@ export function applyCirclePushForce(letters, mousePos, mouseRadius, forceStreng
  * @param {Number} mouseRadius - Radius within which force is applied
  * @param {Number} forceStrength - Strength multiplier of the force
  */
-export function applyCirclePullForce(letters, mousePos, mouseRadius, forceStrength) {
+ function applyCirclePullForce(letters, mousePos, mouseRadius, forceStrength) {
     const radiusSquared = mouseRadius * mouseRadius;
     
     for (let l of letters) {
@@ -80,7 +80,7 @@ export function applyCirclePullForce(letters, mousePos, mouseRadius, forceStreng
  * @param {Number} mouseRadius - Radius within which force is applied
  * @param {Number} forceStrength - Strength multiplier of the force
  */
-export function applyCircleSpinForce(letters, mousePos, mouseRadius, forceStrength) {
+ function applyCircleSpinForce(letters, mousePos, mouseRadius, forceStrength) {
     const radiusSquared = mouseRadius * mouseRadius;
     
     for (let l of letters) {
@@ -120,7 +120,7 @@ export function applyCircleSpinForce(letters, mousePos, mouseRadius, forceStreng
  * @param {Number} forceStrength - Strength multiplier of the force
  * @param {Point} movementDelta - Direction and magnitude of square movement
  */
-export function applySquarePushForce(letters, mousePos, mouseRadius, forceStrength, forceDirection = 'right') {
+ function applySquarePushForce(letters, mousePos, mouseRadius, forceStrength, forceDirection = 'right') {
     // mousePos is the center of the square; mouseRadius is the half-size (square spans ±mouseRadius)
     const dir = forceDirection || 'right';
     const cx = mousePos.x;
@@ -416,7 +416,7 @@ export function applySquarePushForce(letters, mousePos, mouseRadius, forceStreng
  * @param {Number} mouseRadius - Half-size of the square
  * @param {Number} forceStrength - Strength multiplier of the force
  */
-export function applySquarePullForce(letters, mousePos, mouseRadius, forceStrength) {
+ function applySquarePullForce(letters, mousePos, mouseRadius, forceStrength) {
     // Intentionally left empty — implementation reset
     // Keep signature so app.js can call this. Implement pull behavior here later.
     return;
@@ -428,7 +428,7 @@ export function applySquarePullForce(letters, mousePos, mouseRadius, forceStreng
  * @param {Point} mousePos - Current mouse position
  * @param {Number} mouseRadius - Half-size of the square
  */
-export function applySquareSpinForce(letters, mousePos, mouseRadius) {
+ function applySquareSpinForce(letters, mousePos, mouseRadius) {
     // Intentionally left empty — implementation reset
     // Keep signature so app.js can call this. Implement spin behavior here later.
     return;
