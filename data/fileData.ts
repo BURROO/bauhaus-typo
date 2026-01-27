@@ -4,6 +4,7 @@
 
 // pdftoppm public/images/ioom/content/mona_kerntke/mona_kerntke_content.pdf public/images/ioom/content/mona_kerntke/slide -png
 // pdftoppm public/images/ioom/content/helene_dennewitz/helene_dennewitz_content.pdf public/images/ioom/content/helene_dennewitz/slide -png
+// pdftoppm public/images/ioom/content/hannes_altmann/hannes_altmann_content.pdf public/images/ioom/content/hannes_altmann/slide -png
 
 
 // pdftoppm public/images/tg/content/Glutig_Motsch_Content.pdf public/images/tg/content/slide -png

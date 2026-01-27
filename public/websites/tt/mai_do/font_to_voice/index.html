@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Font2Voice</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #0a0a0a;
+      color: #fff;
+      font-family: system-ui, sans-serif;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    .circle-container {
+      position: relative;
+      width: 300px;
+      height: 300px;
+    }
+    .voice-node {
+      position: absolute;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: #222;
+      border: 2px solid #444;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      transition: all 0.2s;
+    }
+    .voice-node.active {
+      background: #3b82f6;
+      border-color: #60a5fa;
+      box-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
+    }
+    .voice-node.blending {
+      background: #1e40af;
+      border-color: #3b82f6;
+    }
+    .indicator {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+    }
+    .blend-value {
+      font-size: 3rem;
+      font-weight: bold;
+      color: #3b82f6;
+    }
+    .blend-label {
+      font-size: 0.875rem;
+      color: #666;
+      margin-top: 0.25rem;
+    }
+    .pitch-value {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #10b981;
+      margin-top: 0.5rem;
+    }
+    .instructions {
+      margin-top: 2rem;
+      color: #666;
+      text-align: center;
+    }
+    .instructions kbd {
+      background: #222;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      border: 1px solid #444;
+    }
+    .loading {
+      color: #666;
+    }
+    .font-display {
+      margin-bottom: 3rem;
+    }
+    #fontCanvas {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <div class="font-display">
+    <canvas id="fontCanvas" width="400" height="150"></canvas>
+  </div>
+  <div class="circle-container">
+    <div class="voice-node" data-voice="1">1</div>
+    <div class="voice-node" data-voice="2">2</div>
+    <div class="voice-node" data-voice="3">3</div>
+    <div class="voice-node" data-voice="4">4</div>
+    <div class="voice-node" data-voice="5">5</div>
+    <div class="indicator">
+      <div class="blend-value">1</div>
+      <div class="blend-label">voice</div>
+      <div class="pitch-value">1.00x</div>
+      <div class="blend-label">pitch</div>
+    </div>
+  </div>
+  <div class="instructions">
+    <p><kbd>↑</kbd><kbd>↓</kbd> blend voices &nbsp; <kbd>←</kbd><kbd>→</kbd> pitch</p>
+    <p class="loading" id="status">Click to start audio</p>
+  </div>
+
+  <script>
+    const VOICE_COUNT = 5;
+    const FONT_COUNT = 5;
+    const BLEND_STEP = 0.05;
+    const PITCH_STEP = 0.02;
+    const MIN_PITCH = 0.1;
+    const MAX_PITCH = 4.0;
+
+    let audioCtx = null;
+    let voices = [];
+    let position = 0; // 0-4.999... represents position in the circle
+    let pitch = 1.0;
+    let isPlaying = false;
+    let gainNodes = [];
+    let voiceSources = [];
+    let musicSource = null;
+    let fontsLoaded = false;
+    const fontCanvas = document.getElementById('fontCanvas');
+    const fontCtx = fontCanvas.getContext('2d');
+    const DISPLAY_TEXT = 'Aa';
+    const FONT_SIZE = 120;
+
+    // Offscreen canvases for each font
+    const fontCanvases = [];
+
+    // Load custom fonts
+    async function loadFonts() {
+      const fontPromises = [];
+      for (let i = 1; i <= FONT_COUNT; i++) {
+        const font = new FontFace(`Font${i}`, `url(data/fonts/${i}.ttf)`);
+        fontPromises.push(font.load().then(loaded => {
+          document.fonts.add(loaded);
+          return loaded;
+        }));
+      }
+      await Promise.all(fontPromises);
+
+      // Pre-render each font to offscreen canvas
+      for (let i = 1; i <= FONT_COUNT; i++) {
+        const offscreen = document.createElement('canvas');
+        offscreen.width = fontCanvas.width;
+        offscreen.height = fontCanvas.height;
+        const ctx = offscreen.getContext('2d');
+
+        ctx.fillStyle = '#fff';
+        ctx.font = `${FONT_SIZE}px Font${i}`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(DISPLAY_TEXT, offscreen.width / 2, offscreen.height / 2);
+
+        fontCanvases.push(offscreen);
+      }
+
+      fontsLoaded = true;
+      updateFontDisplay();
+    }
+
+    // Dilate (expand) image data - makes strokes thicker
+    function dilate(imageData, radius) {
+      const w = imageData.width;
+      const h = imageData.height;
+      const src = imageData.data;
+      const dst = new Uint8ClampedArray(src.length);
+
+      for (let y = 0; y < h; y++) {
+        for (let x = 0; x < w; x++) {
+          let maxAlpha = 0;
+          // Check neighborhood
+          for (let dy = -radius; dy <= radius; dy++) {
+            for (let dx = -radius; dx <= radius; dx++) {
+              if (dx * dx + dy * dy <= radius * radius) {
+                const nx = x + dx;
+                const ny = y + dy;
+                if (nx >= 0 && nx < w && ny >= 0 && ny < h) {
+                  const idx = (ny * w + nx) * 4;
+                  maxAlpha = Math.max(maxAlpha, src[idx + 3]);
+                }
+              }
+            }
+          }
+          const i = (y * w + x) * 4;
+          dst[i] = src[i];
+          dst[i + 1] = src[i + 1];
+          dst[i + 2] = src[i + 2];
+          dst[i + 3] = maxAlpha;
+        }
+      }
+      return new ImageData(dst, w, h);
+    }
+
+    // Erode (shrink) image data - makes strokes thinner
+    function erode(imageData, radius) {
+      const w = imageData.width;
+      const h = imageData.height;
+      const src = imageData.data;
+      const dst = new Uint8ClampedArray(src.length);
+
+      for (let y = 0; y < h; y++) {
+        for (let x = 0; x < w; x++) {
+          let minAlpha = 255;
+          // Check neighborhood
+          for (let dy = -radius; dy <= radius; dy++) {
+            for (let dx = -radius; dx <= radius; dx++) {
+              if (dx * dx + dy * dy <= radius * radius) {
+                const nx = x + dx;
+                const ny = y + dy;
+                if (nx >= 0 && nx < w && ny >= 0 && ny < h) {
+                  const idx = (ny * w + nx) * 4;
+                  minAlpha = Math.min(minAlpha, src[idx + 3]);
+                } else {
+                  minAlpha = 0;
+                }
+              }
+            }
+          }
+          const i = (y * w + x) * 4;
+          dst[i] = src[i];
+          dst[i + 1] = src[i + 1];
+          dst[i + 2] = src[i + 2];
+          dst[i + 3] = minAlpha;
+        }
+      }
+      return new ImageData(dst, w, h);
+    }
+
+    // Pixel-level morphing between two fonts with weight control
+    function updateFontDisplay() {
+      if (!fontsLoaded) return;
+
+      const primaryIdx = Math.floor(position);
+      const blend = position - primaryIdx;
+      const secondaryIdx = (primaryIdx + 1) % FONT_COUNT;
+
+      const canvas1 = fontCanvases[primaryIdx];
+      const canvas2 = fontCanvases[secondaryIdx];
+
+      const ctx1 = canvas1.getContext('2d');
+      const ctx2 = canvas2.getContext('2d');
+
+      let imgData1 = ctx1.getImageData(0, 0, canvas1.width, canvas1.height);
+      let imgData2 = ctx2.getImageData(0, 0, canvas2.width, canvas2.height);
+
+      // Apply weight: pitch < 1 = dilate (thicker), pitch > 1 = erode (thinner)
+      // Map pitch to radius: 0.1 -> +4px, 1.0 -> 0px, 4.0 -> -3px
+      let radius = 0;
+      if (pitch < 1) {
+        radius = Math.round((1 - pitch) * 5); // 0 to 4
+        if (radius > 0) {
+          imgData1 = dilate(imgData1, radius);
+          imgData2 = dilate(imgData2, radius);
+        }
+      } else if (pitch > 1) {
+        radius = Math.round((pitch - 1) / 3 * 3); // 0 to 3
+        if (radius > 0) {
+          imgData1 = erode(imgData1, radius);
+          imgData2 = erode(imgData2, radius);
+        }
+      }
+
+      const output = fontCtx.createImageData(fontCanvas.width, fontCanvas.height);
+      const d1 = imgData1.data;
+      const d2 = imgData2.data;
+      const out = output.data;
+
+      // Blend pixels
+      for (let i = 0; i < d1.length; i += 4) {
+        out[i] = d1[i] * (1 - blend) + d2[i] * blend;
+        out[i + 1] = d1[i + 1] * (1 - blend) + d2[i + 1] * blend;
+        out[i + 2] = d1[i + 2] * (1 - blend) + d2[i + 2] * blend;
+        out[i + 3] = d1[i + 3] * (1 - blend) + d2[i + 3] * blend;
+      }
+
+      fontCtx.putImageData(output, 0, 0);
+    }
+
+    // Initialize fonts on page load
+    loadFonts();
+
+    // Position voice nodes in a circle
+    const nodes = document.querySelectorAll('.voice-node');
+    nodes.forEach((node, i) => {
+      const angle = (i / VOICE_COUNT) * Math.PI * 2 - Math.PI / 2;
+      const radius = 120;
+      const x = 150 + Math.cos(angle) * radius - 25;
+      const y = 150 + Math.sin(angle) * radius - 25;
+      node.style.left = `${x}px`;
+      node.style.top = `${y}px`;
+    });
+
+    async function init() {
+      if (audioCtx) return;
+
+      audioCtx = new AudioContext();
+      document.getElementById('status').textContent = 'Loading voices...';
+
+      try {
+        // Load all voice samples and music in parallel
+        const voicePromises = [];
+        for (let i = 1; i <= VOICE_COUNT; i++) {
+          voicePromises.push(
+            fetch(`data/voices/${i}.wav`)
+              .then(r => r.arrayBuffer())
+              .then(buf => audioCtx.decodeAudioData(buf))
+          );
+        }
+        const musicPromise = fetch('data/music.mp3')
+          .then(r => r.arrayBuffer())
+          .then(buf => audioCtx.decodeAudioData(buf));
+
+        const [musicBuffer, ...voiceBuffers] = await Promise.all([musicPromise, ...voicePromises]);
+        voices = voiceBuffers;
+
+        document.getElementById('status').textContent = 'Use arrow keys to navigate';
+        startPlayback(musicBuffer);
+      } catch (e) {
+        document.getElementById('status').textContent = 'Error loading voices';
+        console.error(e);
+      }
+    }
+
+    function startPlayback(musicBuffer) {
+      if (isPlaying) return;
+      isPlaying = true;
+
+      // Start music track (loops continuously)
+      musicSource = audioCtx.createBufferSource();
+      musicSource.buffer = musicBuffer;
+      musicSource.loop = true;
+      musicSource.connect(audioCtx.destination);
+      musicSource.start(0);
+
+      // Create looping sources for all voices
+      voices.forEach((buffer, i) => {
+        const source = audioCtx.createBufferSource();
+        const gain = audioCtx.createGain();
+
+        source.buffer = buffer;
+        source.loop = true;
+        source.connect(gain);
+        gain.connect(audioCtx.destination);
+        gain.gain.value = 0;
+
+        gainNodes.push(gain);
+        voiceSources.push(source);
+        source.start(0);
+      });
+
+      updateGains();
+    }
+
+    function updatePitch(delta) {
+      pitch = Math.max(MIN_PITCH, Math.min(MAX_PITCH, pitch + delta));
+      voiceSources.forEach(source => {
+        source.playbackRate.setTargetAtTime(pitch, audioCtx.currentTime, 0.05);
+      });
+      musicSource.playbackRate.setTargetAtTime(pitch, audioCtx.currentTime, 0.05);
+      document.querySelector('.pitch-value').textContent = pitch.toFixed(2) + 'x';
+      updateFontDisplay();
+    }
+
+    function updateGains() {
+      const primaryIdx = Math.floor(position);
+      const blend = position - primaryIdx;
+      const secondaryIdx = (primaryIdx + 1) % VOICE_COUNT;
+
+      gainNodes.forEach((gain, i) => {
+        let targetGain = 0;
+        if (i === primaryIdx) {
+          targetGain = 1 - blend;
+        } else if (i === secondaryIdx) {
+          targetGain = blend;
+        }
+        gain.gain.setTargetAtTime(targetGain, audioCtx.currentTime, 0.05);
+      });
+
+      // Update visual
+      nodes.forEach((node, i) => {
+        node.classList.remove('active', 'blending');
+        if (i === primaryIdx) {
+          node.classList.add('active');
+        } else if (i === secondaryIdx && blend > 0.01) {
+          node.classList.add('blending');
+        }
+      });
+
+      // Update indicator
+      const displayPos = (position + 1).toFixed(2);
+      document.querySelector('.blend-value').textContent = displayPos;
+    }
+
+    function move(direction) {
+      position += direction * BLEND_STEP;
+
+      // Wrap around
+      if (position < 0) position += VOICE_COUNT;
+      if (position >= VOICE_COUNT) position -= VOICE_COUNT;
+
+      updateGains();
+      updateFontDisplay();
+    }
+
+    document.addEventListener('click', init);
+
+    document.addEventListener('keydown', (e) => {
+      if (!isPlaying) {
+        init();
+        return;
+      }
+
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        move(1);
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        move(-1);
+      } else if (e.key === 'ArrowRight') {
+        e.preventDefault();
+        updatePitch(PITCH_STEP);
+      } else if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        updatePitch(-PITCH_STEP);
+      }
+    });
+  </script>
+</body>
+</html>

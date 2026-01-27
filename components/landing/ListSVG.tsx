@@ -134,7 +134,7 @@ const ListSVG = ({ dataStudents, dataCourses, filter, searchTerm, firstIndex, se
 
     const courseInfo: TypeCourse|null = dataCourses.find(k => k.COURSE === filter) || null
 
-    console.log("renderDarta", renderData)
+    // console.log("renderDarta", renderData)
 
 
     // const fontSize = rowHeight
