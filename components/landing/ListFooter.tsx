@@ -26,7 +26,11 @@ const ListFooter = ({ setFilter, filter, setSorting, sorting, setSearchTerm, sea
         className={styles.footer}
         style={{ height }}
         >
-            <div>Search: <input type="text" onChange={(e) => setSearchTerm(e.currentTarget.value)}></input></div>
+            <div>
+                <label>
+                Search: <input type="text" onChange={(e) => setSearchTerm(e.currentTarget.value)}></input>
+                </label>
+            </div>
             <div style={{ display: "flex"}}>
                 <span>Filter:</span>
                 {

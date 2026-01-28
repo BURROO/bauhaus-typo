@@ -1,4 +1,4 @@
-import { txtLeftOfst, txtTopOfst } from "@/components/landing/ListSVG";
+import { txtLeftOfst } from "@/components/landing/ListSVG";
 import { TypeCoursesNames, TypeProject, TypeProjectForSVG } from "@/types/project-type";
 
 
@@ -142,7 +142,7 @@ export const convertTableToSVG = ({ data, screenWidth, screenHeight, rowHeight, 
             const x = cols.slice(0, k).reduce((a, b) => a + b.col, 0) * screenWidth
             const width = cols[k].col * screenWidth
             const height = rowHeight
-            // console.log("x", x). 
+            // const height = rowHeight * (i === 0 ? 3 : 1)
 
             // @ts-ignore
             const currColRowText = item[col.text]
@@ -162,7 +162,7 @@ export const convertTableToSVG = ({ data, screenWidth, screenHeight, rowHeight, 
             //     svgPath += colSquare
             // }
             // @ts-ignore
-            const activeDataRow = activeIndex && data[activeIndex] && data[activeIndex][col.text]
+            const activeDataRow = activeIndex  !== null && data[activeIndex] && data[activeIndex][col.text]
 
             const setActive = activeDataRow === currColRowText && k !== 0 && k !== 1 && k !== 3
             // const setActive = activeDataRow === currColRowText && k !== 0 && k !== 1 && k !== 3
@@ -177,7 +177,7 @@ export const convertTableToSVG = ({ data, screenWidth, screenHeight, rowHeight, 
                 hideText: isPrevSame ? true : false,
                 // text: item[col.text],
                 x: x + txtLeftOfst,
-                y: y + txtTopOfst,
+                y: y,
                 width: width,
                 height: height,
                 path: colSquare,
@@ -185,7 +185,7 @@ export const convertTableToSVG = ({ data, screenWidth, screenHeight, rowHeight, 
                 // fill: i === 0 ? false : colsActive[k],
                 fill: colsActive[k],
                 index: item.index,
-                isActive: activeIndex === i || setActive,
+                isActive: activeIndex === i || setActive || false,
                 data: item
             }) 
         }
@@ -214,15 +214,8 @@ export const adjustYtoOrder = (orderedList: TypeProjectForSVG[][]) => {
             
             return ({
                 ...col,
-                // text: isPrevSame ? "" : item[col.text],
-                // x: x + 2,
-                y: y + 12,
-                // width: width,
-                // height: height,
-                // path: colSquare,
-                // fill: i === 0 ? false : col.fill
+                y: y,
                 fill: col.fill,
-                // fill: col.fill
             })
         })
     })
@@ -244,12 +237,10 @@ export const convertAreaToSVG = ({ textToRender }: { textToRender: TypeProjectFo
 
 
 
-
-
         row.forEach((col, k) => {
 
-            const x = col.x-2
-            const y = col.y-12
+            const x = col.x-txtLeftOfst
+            const y = col.y
             const width = col.width
             const height = col.height
 

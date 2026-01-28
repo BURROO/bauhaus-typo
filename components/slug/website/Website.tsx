@@ -2,7 +2,7 @@
 
 import { courseShort, TypeProject } from '@/types/project-type'
 import styles from './Website.module.css'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { getUrlVideo, sanitizeForUrl } from '@/util/sanitizeForUrl'
 
 interface Props {
@@ -99,18 +99,12 @@ const Website = ({ item }: Props) => {
         <div className={styles.website}>
             <button 
             className={styles.switch}
-            
-            
             onClick={() => setView(view === "iframe" ? "video" : "iframe")}>{
                 view === "video" ? "Try Website" : "See Showcase"}
             </button>
             {
                 view === 'iframe' && src &&(
-                    <>
-                        <iframe 
-                        src={src}
-                        ></iframe>
-                     </>
+                    <WebIframe src={src} />
                 )
             }
             {
@@ -121,16 +115,45 @@ const Website = ({ item }: Props) => {
                     </div>
                 )
             }
-            <div
-            onClick={() => setPrefereLocal(!prefereLocal)}
-            className={styles.type}
-            style={{
-                background: isLocal ? 'green' : 'red'
-            }}>{isLocal ? 'Local' : 'Remote'}</div>
-        
         </div>
     )
 }
 
 
 export default Website
+
+
+
+const WebIframe = ({ src }: { src: string }) => {
+    const containerRef = useRef<HTMLDivElement>(null)
+
+
+    const [isFullScreen, setIsFullScreen] = useState(false)
+
+    const enterFullscreen = () => {
+        const el = containerRef.current
+        if (!el) return
+
+        if (el.requestFullscreen) {
+            el.requestFullscreen()
+        // Safari
+        } else if ((el as any).webkitRequestFullscreen) {
+            (el as any).webkitRequestFullscreen()
+        }
+
+        setIsFullScreen(true)
+    }
+
+    return (
+        <div ref={containerRef} className={styles.websiteIframe}>
+            <iframe  src={src} />
+            {!isFullScreen &&<button 
+            className={styles.btnFullscreen} 
+            onClick={enterFullscreen}
+            >
+                Fullscreen
+            </button>}
+        </div>
+
+    )
+}

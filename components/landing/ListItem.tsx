@@ -2,7 +2,7 @@
 import styles from './ListItem.module.css'
 import Link from 'next/link';
 import { courseShort, TypeCoursesNames, TypeProject } from '@/types/project-type';
-import { sanitizeForUrl } from '@/util/sanitizeForUrl';
+import { getUrlFromProject, sanitizeForUrl } from '@/util/sanitizeForUrl';
 
 interface Props {
     row: TypeProject;
@@ -26,10 +26,9 @@ const ListItem = ({
     rowHeight
 }: Props) => {
 
-    const activeElement = activeIndex && all[activeIndex]
+    const activeElement = activeIndex  !== null && all[activeIndex]
 
-    const kurs = sanitizeForUrl(row.COURSE)
-    const studierende = sanitizeForUrl(row.NAME)
+    const url = getUrlFromProject(row)
 
     const courseIndex = Array.from(allCourses).indexOf(row.COURSE)
     const isPrevSameCourse = all[currentIndex-1]?.COURSE === row.COURSE
@@ -46,9 +45,11 @@ const ListItem = ({
     const isActiveCourse = activeElement && activeElement.COURSE === row.COURSE || false
     const isActiveSupervision = activeElement && activeElement.SUPERVISION === row.SUPERVISION || false
 
+
+
     return (
         <Link 
-        href={`/${kurs}/${studierende}`}
+        href={url}
         >
             <li
             className={styles.row}

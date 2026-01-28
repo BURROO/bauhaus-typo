@@ -19,8 +19,13 @@ export const sanitizeForUrl = (text: string) => {
 
 export const getUrlFromProject = (item: TypeProject) => {
 
+    const kurs = sanitizeForUrl(item?.COURSE)
+    const studierende = sanitizeForUrl(item?.NAME)
 
     // 
+
+
+    return `/${kurs}/${studierende}`
 }
 
 
@@ -47,8 +52,8 @@ export const getUrlVideo = (item: TypeProject) => {
 export const getType = (item: TypeProject): { isOnScreen: boolean; isPublication: boolean; isSlideshow: boolean } => {
 
 
-    const isOnScreen =  item["MEDIUM"] === "Website" || item["MEDIUM"] === "Webtool"
-    const isPublication = item["MEDIUM"] === "Publication" || item["MEDIUM"] === "Zine"
+    const isOnScreen =  (item["MEDIUM"].toUpperCase() === "WEBSITE" || item["MEDIUM"].toUpperCase() === "WEBTOOL")
+    const isPublication = (item["MEDIUM"].toUpperCase() === "PUBLICATION" || item["MEDIUM"].toUpperCase() === "ZINE")
     const isSlideshow = !isOnScreen && !isPublication
 
 

@@ -1,12 +1,14 @@
 export type TypeCoursesNames = 
 'Transcoding Typography' | 
 'In Order Of Meaning' | 
+'In Order Of Meaning ' | 
 'Handmade Websites as Punk Zines' | 
 'Bauhaus Master Lectures' |
 'First Year Introduction' |
 // 'Introduction Typography' |
 'Independent Project' |
 '204 Type-Gazette Issue 06' |
+'204 Type-Gazette Issue 6' |
 'Bauhaus Inhouse'
 
 
@@ -17,13 +19,15 @@ type TypeCourseShort = {
 export const courseShort: TypeCourseShort = {
     'Transcoding Typography': 'TT',
     'In Order Of Meaning': 'OM',
+    'In Order Of Meaning ': 'OM',
     'Bauhaus Master Lectures': 'BM',
     'Bauhaus Inhouse': 'BI',
     'Handmade Websites as Punk Zines': 'PZ',
     // 'Introduction Typography': 'IT',
     'First Year Introduction': 'IT',
     'Independent Project': 'IP',
-    '204 Type-Gazette Issue 06': 'TG'
+    '204 Type-Gazette Issue 06': 'TG',
+    '204 Type-Gazette Issue 6': 'TG'
 }
 
 

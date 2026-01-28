@@ -27,7 +27,8 @@ export const ContextMenuProvider = ({
   const [screenHeight, setScreenHeight] = useState<number|null>(null);
 
 
-  const divider = screenHeight !== null ? Math.floor( screenHeight / 15) :  1
+  // const divider = screenHeight !== null ? Math.floor( screenHeight / 15) :  1
+  const divider = 50
   // const divider = screenHeight !== null ? Math.floor( 40 - screenHeight * 0.03) :  1
 
   const rowHeight = screenHeight !== null ? (screenHeight / divider) : 0

@@ -33,7 +33,6 @@ export default function Home() {
   .map((d, i) => ({ 
     ...d, 
     index: i,
-    Id: getID(d,  i.toString().padStart(2, "0"))
   }))
   
 
@@ -46,19 +45,3 @@ export default function Home() {
     </div>
   );
 }
-
-
-const getID = (item: TypeProject, nr: string) => {
-
-
-    const pt1 = courseShort[item['COURSE']]
-    
-    const nameSplit = item["NAME"].split(' ').map(char => char.charAt(0))
-
-    const pt2 = `${nameSplit[0]}${nameSplit[nameSplit.length-1]}`
-
-
-    return `${pt1}/${pt2}/${nr}`
-
-}
-

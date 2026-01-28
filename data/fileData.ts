@@ -50,46 +50,53 @@ export const fileDataTT = {
 
 
 export const fileDataIO = {
+    elsa_babtist: {
+        dir: `/images/ioom/content/elsa_babtist`,
+        count: 6,
+        fileType: 'jpg'
+    },
     hannes_altmann: {
         dir: `/images/ioom/content/hannes_altmann`,
-        front: `/images/ioom/cover/hannes_altmann/hannes_altmann_front.jpg`,
-        back: `/images/ioom/cover/hannes_altmann/hannes_altmann_back.jpg`,
-        spine: `/images/ioom/cover/hannes_altmann/hannes_altmann_spine.jpg`,
-        count: 0,
-        fileType: 'png'
-    },
-    mona_kerntke: {
-        dir: `/images/ioom/content/mona_kerntke`,
-        front: `/images/ioom/cover/mona_kerntke/mona_kerntke_front.jpg`,
-        back: `/images/ioom/cover/mona_kerntke/mona_kerntke_back.jpg`,
-        spine: `/images/ioom/cover/mona_kerntke/mona_kerntke_spine.jpg`,
-        count: 8,
-        fileType: 'png'
-    },
-    sophia_rhein: {
-        dir: `/images/ioom/content/sophia_rhein`,
-        front: `/images/ioom/cover/sophia_rhein/sophia_rhein_front.jpg`,
-        back: `/images/ioom/cover/sophia_rhein/sophia_rhein_back.jpg`,
-        spine: `/images/ioom/cover/sophia_rhein/sophia_rhein_spine.jpg`,
-        count: 2,
-        fileType: 'png'
+        count: 6,
+        fileType: 'jpg'
     },
     helene_dennewitz: {
         dir: `/images/ioom/content/helene_dennewitz`,
-        front: `/images/ioom/cover/helene_dennewitz/helene_dennewitz_front.jpg`,
-        back: `/images/ioom/cover/helene_dennewitz/helene_dennewitz_back.jpg`,
-        spine: `/images/ioom/cover/helene_dennewitz/helene_dennewitz_spine.jpg`,
         count: 2,
         fileType: 'png'
     },
     james_brummelhuis: {
         dir: `/images/ioom/content/james_brummelhuis`,
-        front: `/images/ioom/cover/james_brummelhuis/james_brummelhuis_front.jpg`,
-        back: `/images/ioom/cover/james_brummelhuis/james_brummelhuis_back.jpg`,
-        spine: `/images/ioom/cover/james_brummelhuis/james_brummelhuis_spine.jpg`,
+        count: 2,
+        fileType: 'jpg'
+    },
+    ke_hsin_chang: {
+        dir: `/images/ioom/content/ke_hsin_chang`,
+        count: 6,
+        fileType: 'jpg'
+    },
+    mona_kerntke: {
+        dir: `/images/ioom/content/mona_kerntke`,
+        count: 8,
+        fileType: 'png'
+    },
+    pia_wetzig: {
+        dir: `/images/ioom/content/pia_wetzig`,
+        count: 6,
+        fileType: 'jpg'
+    },
+    sophia_rhein: {
+        dir: `/images/ioom/content/sophia_rhein`,
         count: 2,
         fileType: 'png'
     },
+    yasmina_khalil: {
+        dir: `/images/ioom/content/yasmina_khalil`,
+        count: 10,
+        fileType: 'jpg'
+    },
+
+    // 
     'susan_arian_julide_nur_alemdar': {
         dir: `/images/bml`,
         count: 10,

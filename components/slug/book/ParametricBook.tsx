@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { CameraProps, Canvas } from "@react-three/fiber";
 import { useTexture, Environment, OrbitControls } from "@react-three/drei";
-import { TypeProject } from "@/types/project-type";
+import { courseShort, TypeProject } from "@/types/project-type";
 import  * as THREE from 'three'
 import { fileDataIO } from "@/data/fileData";
 import { sanitizeForUrl } from "@/util/sanitizeForUrl";
@@ -44,9 +44,9 @@ function Book({
             `${frontUrl}`,
             `${backUrl}`,
             `${spineUrl}`,
-            `/images/ioom/_general/pages.jpg`,
-            `/images/ioom/_general/pages-top.jpg`,
-            `/images/ioom/_general/pages-bottom.jpg`
+            `/images/om/_general/pages.jpg`,
+            `/images/om/_general/pages-top.jpg`,
+            `/images/om/_general/pages-bottom.jpg`
         ].filter(Boolean)
     );
 
@@ -110,23 +110,37 @@ export default function ParametricBook({ item, type = "interact",  setShowButton
 
     const filenameFallback = 'mona_kerntke'
     // 
-    const filename = item.NAME && item.NAME.toLowerCase().split(" ").join("_") || filenameFallback 
+    // const name = item.NAME && item.NAME.toLowerCase().split(" ").join("_") || filenameFallback 
+    const name = item.NAME && sanitizeForUrl(item.NAME).split("-").join("_") || filenameFallback 
     // const filename = sanitizeForUrl(item.NAME) || filenameFallback 
 
+    const courseFolder = courseShort[item.COURSE]?.toLocaleLowerCase()
+
+    console.log(name, courseShort, item.COURSE)
+
     // @ts-ignore
-    const data = fileDataIO[filename] || fileDataIO["mona_kerntke"]
+    const data = fileDataIO[name] || fileDataIO["mona_kerntke"]
+
+    // @ts-ignore
+    const foundData = !!fileDataIO[name]
+
+    const studentName = foundData ? name : "mona_kerntke"
+    // const data = fileDataIO[name]
+    // console.log(name, fileDataIO, fileDataIO[name])
 
     // 
     item["book"] = {
-        // front: `/images/ioom/cover/mona_kerntke_front.jpg`,
+        front: `/images/${courseFolder}/cover/${studentName}/${studentName}_front.jpg`,
+        back: `/images/${courseFolder}/cover/${studentName}/${studentName}_back.jpg`,
+        spine: `/images/${courseFolder}/cover/${studentName}/${studentName}_spine.jpg`,
         // back: `/images/ioom/cover/mona_kerntke_back.jpg`,
         // spine: `/images/ioom/cover/mona_kerntke_spine.jpg`,
         // front: `/images/ioom/cover/${filename}_front.jpg`,
         // back: `/images/ioom/cover/${filename}_back.jpg`,
         // spine: `/images/ioom/cover/${filename}_spine.jpg`,
-        front: data.front,
-        back: data.back,
-        spine: data.spine,
+        // front: data.front,
+        // back: data.back,
+        // spine: data.spine,
     }
 
     // 
@@ -154,8 +168,6 @@ export default function ParametricBook({ item, type = "interact",  setShowButton
         setWidth(totalWidth);
         setSpine(spineThickness);
     }
-
-    // 
 
     // 
     const orbitCam: CameraProps = {

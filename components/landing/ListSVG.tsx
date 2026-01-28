@@ -1,11 +1,9 @@
 import { useContext, useEffect, useMemo, useRef, useState } from "react"
 import { ContextMenu } from "../context/ContextMenu"
 import { TypeCourse, TypeProject } from "@/types/project-type"
-import { render } from "@react-pdf/renderer";
 import { adjustYtoOrder, convertAreaToSVG, convertTableToSVG } from "@/util/convertTableToSVG";
 import { cloneDeep } from 'lodash'
-import Link from "next/link";
-import { sanitizeForUrl } from "@/util/sanitizeForUrl";
+import { getUrlFromProject } from "@/util/sanitizeForUrl";
 
 import { useRouter } from "next/navigation"
 
@@ -16,7 +14,7 @@ const grayFont = `rgba(170,170,170, 0.97)`;
 const color = "cyan";
 
 
-export const txtTopOfst = 12
+// export const txtTopOfst = 12
 export const txtLeftOfst = 2
 
 interface Props {
@@ -39,7 +37,6 @@ const ListSVG = ({ dataStudents, dataCourses, filter, searchTerm, firstIndex, se
 
     const originalOrder = useMemo(() => {
 
-        console.log("dataStudents", dataStudents)
         
         const textToRender = convertTableToSVG({ 
             data: [...dataStudents], 
@@ -49,7 +46,7 @@ const ListSVG = ({ dataStudents, dataCourses, filter, searchTerm, firstIndex, se
             activeIndex
         })
 
-        console.log("textToRender", textToRender)
+        // console.log("textToRender", textToRender)
 
 
         return textToRender
@@ -163,7 +160,6 @@ const ListSVG = ({ dataStudents, dataCourses, filter, searchTerm, firstIndex, se
             height={screenHeight}
             >
                 <defs>
-                  
                     <linearGradient
                     id={gradientId}
                     gradientUnits="userSpaceOnUse"
@@ -173,34 +169,21 @@ const ListSVG = ({ dataStudents, dataCourses, filter, searchTerm, firstIndex, se
                     y2="0"
                     gradientTransform={`rotate(25 ${screenWidth / 2} ${screenHeight / 2})`}
                     >
-                    {/* <stop offset="0%" stopColor="rgb(200,200,200)"/>
-                    <stop offset="45%" stopColor="rgb(180,180,180)"/>
-                    <stop offset="55%" stopColor="rgb(200,200,200)"/>
-                    <stop offset="100%" stopColor="rgb(220,220,220)"/> */}
+                        <stop offset="0%" stopColor="rgb(190,190,190)"/>
+                        <stop offset="45%" stopColor="rgb(150, 150, 150)"/>
+                        <stop offset="50%" stopColor="rgb(180,180,180)"/>
+                        <stop offset="100%" stopColor="rgb(190,190,190)"/>
 
-                    {/* <stop offset="0%" stopColor="rgb(200,200,200)"/>
-                    <stop offset="45%" stopColor="rgb(128, 128, 128)"/>
-                    <stop offset="55%" stopColor="rgb(200,200,200)"/>
-                    <stop offset="100%" stopColor="rgb(220,220,220)"/> */}
-
-                    <stop offset="0%" stopColor="rgb(190,190,190)"/>
-                    <stop offset="45%" stopColor="rgb(150, 150, 150)"/>
-                    <stop offset="50%" stopColor="rgb(180,180,180)"/>
-                    <stop offset="100%" stopColor="rgb(190,190,190)"/>
-
-                    <animateTransform
-                    attributeName="gradientTransform"
-                    type="translate"
-                    additive="sum"
-                    from={`-${screenWidth} 0`}
-                    to={`${screenWidth} 0`}
-                    dur="6s"
-                    repeatCount="indefinite"
-                    />
-
+                        <animateTransform
+                        attributeName="gradientTransform"
+                        type="translate"
+                        additive="sum"
+                        from={`-${screenWidth} 0`}
+                        to={`${screenWidth} 0`}
+                        dur="6s"
+                        repeatCount="indefinite"
+                        />
                     </linearGradient>
-
-
                     <filter id="metalFoil">
                         <feTurbulence
                             type="fractalNoise"
@@ -228,8 +211,6 @@ const ListSVG = ({ dataStudents, dataCourses, filter, searchTerm, firstIndex, se
                             0   0   0   1 0"
                         />
                     </filter>
-
-
                     <filter id="paperInkGrain" x="-20%" y="-20%" width="140%" height="140%">
                         <feTurbulence
                             type="fractalNoise"
@@ -275,7 +256,6 @@ const ListSVG = ({ dataStudents, dataCourses, filter, searchTerm, firstIndex, se
                             operator="multiply"
                         />
                     </filter>
-
                     <mask id={maskId}>
                         <rect
                         x="0"
@@ -284,43 +264,27 @@ const ListSVG = ({ dataStudents, dataCourses, filter, searchTerm, firstIndex, se
                         height={screenHeight}
                         fill="white"
                         />
-
                         {
                             renderData
-                                
                             .map((row, i) => {
 
-
-                                
-                                    
                                 return (
                                     <g key={i}>
                                         {
                                             row.map((d, k) => (
-
-                                                <text
-                                                style={{
-                                                    textTransform: "uppercase",
-                                                    fontSize
-                                                }}
+                                                <TextElement 
                                                 key={k}
-                                                x={d.x}
-                                                y={d.y}
+                                                position={d}
                                                 fontSize={fontSize}
-                                                fontWeight="bold"
-                                                fill={"black"}
-                                                >
-                                                    {!d.hideText && d.text}
-                                                </text>
+                                                text={!d.hideText && d.text}
+                                                />
                                             ))
                                         }
-
                                     </g>
                                 )
                             })
                         }
                     </mask>
-
 
                     {filter !== "" && <mask id={maskFilterId}>
                         <rect
@@ -336,62 +300,31 @@ const ListSVG = ({ dataStudents, dataCourses, filter, searchTerm, firstIndex, se
                 <path
                 d={`M 0 ${0} L ${screenWidth} ${0} L ${screenWidth} ${rowHeight+1} L 0 ${rowHeight+1}`}
                 fill={`url(#${gradientId})`}
-                // mask={`url(#${maskId})`}
                 />
                 <g  transform={`translate(0 ${rowHeight})`}>
                     {
                         renderData
-                        // .slice(12,200)
                         .map((row, i) => {
-
-
-                            // if(i === 0 )return <g key={i}/>
-
                         
                             return (
                                 <g key={i}>
                                     {
                                         row.map((d, k) => (
 
-                                            <text
+                                            <TextElement 
                                             key={k}
-                                            x={d.x}
-                                            y={d.y}
-                                            fontSize={fontSize}
-                                            fontWeight="bold"
-                                            // fill={d.isActive ? "black" : !d.fill ? gray : "transparent"}
-                                            // fill={!d.fill && i !== 0  ? grayFont : "transparent"}
+                                            position={d}
                                             fill={!d.fill  ? grayFont : "transparent"}
-
-                                            style={{
-                                                textTransform: "uppercase",
-                                                fontSize
-                                            }}
-                                            >
-
-                                                {!d.hideText && (!d.fill || d.isActive) && d.text}
-                                            </text>
+                                            fontSize={fontSize}
+                                            text={!d.hideText && (!d.fill || d.isActive) && d.text}
+                                            />
                                         ))
                                     }
 
                                 </g>
-
                             )
                         })
                     }
-
-
-
-                    {/* REST */}
-                    {/* <rect
-                    x={0}
-                    y={-rowHeight}
-                    width={screenWidth}
-                    height={rowHeight}
-                    // fill="red"
-                    fill={`url(#${gradientId})`}
-                    // mask={`url(#${maskId})`}
-                    /> */}
                     <path
                     d={svgPath}
                     fill={`url(#${gradientId})`}
@@ -400,56 +333,35 @@ const ListSVG = ({ dataStudents, dataCourses, filter, searchTerm, firstIndex, se
                     {/* ACtive Path */}
                     <path
                     d={svgActivePath}
-                    // fill={gray} 
-                    fill="cyan"
-                    // filter="url(#metalFoil)"
+                    fill={color}
                     mask={`url(#${maskId})`}
                     />
-                    {/* <path
-                    style={{
-                        opacity: "0.3"
-                    }}
-                    d={svgPath}
-                    fill={"white"} 
-                    filter="url(#paperInkGrain)"
-                    mask={`url(#${maskId})`}
-                    /> */}
-                  
-
                     {/* ACTIVE OVERLAY */}
                     {
                         renderData.map((row, i) => {
-                            
-
                         
+
+
                             return (
                                 <g key={i}>
                                     {
                                         row
-                                        .filter(d => d.isActive)
+                                        .filter(d => {
+
+                                            
+                                            return d.isActive === true
+                                        })
                                         .map((d, i) => (
-
-                                            <text
+                                            <TextElement
                                             key={i}
-                                            x={d.x}
-                                            y={d.y}
+                                            position={d}
                                             fontSize={fontSize}
-                                            fontWeight="bold"
-                                            fill={"black"}
-
-                                            style={{
-                                                textTransform: "uppercase",
-                                                fontSize
-                                            }}
-                                            >
-
-                                                {!d.hideText  && d.text}
-                                            </text>
+                                            text={!d.hideText  && d.text}
+                                            />
                                         ))
                                     }
 
                                 </g>
-
                             )
                         })
                     }
@@ -457,9 +369,7 @@ const ListSVG = ({ dataStudents, dataCourses, filter, searchTerm, firstIndex, se
                     {
                         renderData.map((row, i) => {
 
-
-                            const kurs = sanitizeForUrl(row[0].data?.COURSE)
-                            const studierende = sanitizeForUrl(row[0].data?.NAME)
+                            const url = getUrlFromProject(row[0].data)
                             
                             return (
                                 <g
@@ -468,17 +378,18 @@ const ListSVG = ({ dataStudents, dataCourses, filter, searchTerm, firstIndex, se
                                 onMouseLeave={() => setActiveIndex(null)}
                                 // onClick={() => {}}
                                 >
-                                    {/* <Link href={`/${kurs}/${studierende}`}> */}
                                     <a
-                                    href={`/${kurs}/${studierende}`}
+                                    aria-label={`Link to ${row[0]?.data.NAME}`}
+                                    href={url}
                                     onClick={(e) => {
                                         e.preventDefault()
-                                        router.push(`/${kurs}/${studierende}`)
+                                        router.push(url)
                                     }}
                                     >
-                                          <rect
+                                        <rect
                                         x={0}
-                                        y={row[0].y-row[0].height}
+                                        // y={row[0].y-row[0].height}
+                                        y={row[0].y}
                                         width={screenWidth}
                                         height={row[0].height}
                                         fill="transparent"
@@ -488,23 +399,12 @@ const ListSVG = ({ dataStudents, dataCourses, filter, searchTerm, firstIndex, se
                                         />
                                     </a>
                                 </g>
-
                             )
                         })
                     }
                     </g>
-
-
-
                     {/* Filöter info */}
                     {filter !== "" && <g transform={`translate(${0} ${renderData.length * rowHeight-1})`}>
-
-
-                        {/* Handle */}
-
-                        {/* <text  /> */}
-
-
                         <rect 
                         x={0}
                         y={0}
@@ -512,18 +412,9 @@ const ListSVG = ({ dataStudents, dataCourses, filter, searchTerm, firstIndex, se
                         height={screenHeight - renderData.length * rowHeight}
                         fill={`url(#${gradientId})`}
                         mask={`url(#${maskFilterId})`}
-                        // fill="red"
                         />
-                        
-                        
-                        
                     </g>}
-
-
                 </g>
-
-
-
             </svg>
         </div>
     )
@@ -557,3 +448,45 @@ export default ListSVG
 //                 </svg>
 
 
+
+interface TxtProps { 
+    fontSize: number; position: 
+    { 
+        x: number;
+        y: number;
+        height: number;
+    };
+    text: string|null|false; 
+    fill?: string;
+};
+
+const TextElement = ({ fontSize, position, text, fill }: TxtProps) => text && (
+
+
+
+    <>
+        <text
+        style={{
+            textTransform: "uppercase",
+            fontSize,
+            background: "red"
+        }}
+        x={position.x}
+        // y={position.y}
+        y={position.y+position.height*2-fontSize*1.5}
+        // y={position.y-fontSize*1.8+fontSize*0.3}
+        fontSize={fontSize}
+        fontWeight="bold"
+        fill={fill || "black"}
+        >
+            {text}
+        </text>
+        {/* <rect
+        x={position.x}
+        y={position.y}
+        width={100}
+        height={20}
+        fill="red"
+        /> */}
+    </>
+)

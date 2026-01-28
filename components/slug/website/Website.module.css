@@ -12,17 +12,6 @@
 }
 
 
-.website iframe{
-  position: absolute;
-  width: 80%;
-  height: 80%;
-  background: gainsboro;
-  border: none;
-  outline: none;
-  /* border: 2px solid white; */
-  filter: var(--dropShadow);
-  border-radius: 10px;
-}
 
 .website .preview{
   position: absolute;
@@ -72,4 +61,43 @@
   outline: 0;
   border: none;
   cursor: pointer;
+}
+
+.websiteIframe{
+  position: absolute;
+  width: 80%;
+  height: 80%;
+  background: gainsboro;
+  border: none;
+  outline: none;
+  /* border: 2px solid white; */
+  filter: var(--dropShadow);
+  border-radius: 7px;
+  outline: 0;
+  overflow: hidden;
+}
+
+.websiteIframe iframe{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border: none;
+}
+
+.btnFullscreen{
+  position: absolute;
+  top: 0;
+  right: 0;  
+  background: var(--color);
+  z-index: 1;
+  cursor: pointer;
+}
+
+.websiteIframe:fullscreen .btnFullscreen {
+    display: none;
+}
+
+.websiteIframe:-webkit-full-screen .btnFullscreen {
+    display: none;
 }

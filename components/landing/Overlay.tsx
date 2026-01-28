@@ -5,17 +5,8 @@ import Scene from './three/Scene';
 import { useEffect, useState } from 'react';
 import { getType, sanitizeForUrl } from '@/util/sanitizeForUrl';
 import { fileDataTT } from '@/data/fileData';
-// import dynamic from 'next/dynamic';
-
-
-// const Scene = dynamic(
-//   () => import("./three/Scene"),
-//   { ssr: false }
-// );
-
 
 const Overlay = ({ item, autoRotateSpeed }: {item: TypeProject; autoRotateSpeed: number }) => {
-
 
 
     const [currentRotation, setCurrentRotation] = useState(0)
@@ -33,14 +24,11 @@ const Overlay = ({ item, autoRotateSpeed }: {item: TypeProject; autoRotateSpeed:
 
     }, [])
 
-
     if(typeof item === "undefined") return <></>
 
-
-    // 
-
-
     const { isOnScreen, isPublication, isSlideshow } = getType(item)
+
+    console.log(isOnScreen, isPublication, isSlideshow)
 
     return (
         <div 
@@ -59,8 +47,6 @@ export default Overlay
 
 const OverlayMac = ({ item, autoRotateSpeed }: { item: TypeProject, autoRotateSpeed: number; }) => {
     // Handle
-
-
 
     return (
         <div 
