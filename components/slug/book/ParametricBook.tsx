@@ -128,19 +128,14 @@ export default function ParametricBook({ item, type = "interact",  setShowButton
     // const data = fileDataIO[name]
     // console.log(name, fileDataIO, fileDataIO[name])
 
+    // const fileFormat = 'jpg'
+    const fileFormat = 'webp'
+
     // 
     item["book"] = {
-        front: `/images/${courseFolder}/cover/${studentName}/${studentName}_front.jpg`,
-        back: `/images/${courseFolder}/cover/${studentName}/${studentName}_back.jpg`,
-        spine: `/images/${courseFolder}/cover/${studentName}/${studentName}_spine.jpg`,
-        // back: `/images/ioom/cover/mona_kerntke_back.jpg`,
-        // spine: `/images/ioom/cover/mona_kerntke_spine.jpg`,
-        // front: `/images/ioom/cover/${filename}_front.jpg`,
-        // back: `/images/ioom/cover/${filename}_back.jpg`,
-        // spine: `/images/ioom/cover/${filename}_spine.jpg`,
-        // front: data.front,
-        // back: data.back,
-        // spine: data.spine,
+        front: `/images/${courseFolder}/${studentName}/${studentName}_front.${fileFormat}`,
+        back: `/images/${courseFolder}/${studentName}/${studentName}_back.${fileFormat}`,
+        spine: `/images/${courseFolder}/${studentName}/${studentName}_spine.${fileFormat}`,
     }
 
     // 

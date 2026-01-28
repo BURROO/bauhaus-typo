@@ -111,6 +111,8 @@ export const convertTableToSVG = ({ data, screenWidth, screenHeight, rowHeight, 
 
     // let svgPath = ``;
 
+
+
     const textToRender: TypeProjectForSVG[][]= []
 
 
@@ -118,6 +120,9 @@ export const convertTableToSVG = ({ data, screenWidth, screenHeight, rowHeight, 
 
     let colsActive = columns[screenType].map(() => false)
 
+    const padding = 0
+    // const padding = 12
+    const rowWidth = screenWidth-padding*2
 
     data.forEach((item: TypeProject, i, all) => {
 
@@ -139,10 +144,21 @@ export const convertTableToSVG = ({ data, screenWidth, screenHeight, rowHeight, 
 
             const col = cols[k]
             // const colPrev = cols
-            const x = cols.slice(0, k).reduce((a, b) => a + b.col, 0) * screenWidth
-            const width = cols[k].col * screenWidth
-            const height = rowHeight
-            // const height = rowHeight * (i === 0 ? 3 : 1)
+            const x = cols.slice(0, k).reduce((a, b) => a + b.col, 0) * rowWidth
+
+
+            const width = cols[k].col * (rowWidth)
+
+
+
+            const defRows: { [key: string]: number } = {
+                "0": 2,
+                "1": 4,
+                "2": 2
+            }
+
+            const rowCount = defRows[i.toString()] || 1
+            const height = rowHeight * rowCount
 
             // @ts-ignore
             const currColRowText = item[col.text]
@@ -176,7 +192,7 @@ export const convertTableToSVG = ({ data, screenWidth, screenHeight, rowHeight, 
                 text: item[col.text],
                 hideText: isPrevSame ? true : false,
                 // text: item[col.text],
-                x: x + txtLeftOfst,
+                x: x + txtLeftOfst + padding,
                 y: y,
                 width: width,
                 height: height,
@@ -204,12 +220,14 @@ export const adjustYtoOrder = (orderedList: TypeProjectForSVG[][]) => {
 
     return  orderedList.map((row: TypeProjectForSVG[], i, all) => {
 
-
+        const accHeight = all.slice(0, i).reduce((acc, item) => acc+ item[0].height, 0)
 
 
         return row.map(col => {
 
-            const y = i * col.height
+            // const y = i * col.height
+
+            const y = accHeight
 
             
             return ({

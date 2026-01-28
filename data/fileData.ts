@@ -51,65 +51,70 @@ export const fileDataTT = {
 
 export const fileDataIO = {
     elsa_babtist: {
-        dir: `/images/ioom/content/elsa_babtist`,
+        // dir: `/images/ioom/elsa_babtist`,
         count: 6,
         fileType: 'jpg'
     },
     hannes_altmann: {
-        dir: `/images/ioom/content/hannes_altmann`,
+        // dir: `/images/ioom/hannes_altmann`,
         count: 6,
         fileType: 'jpg'
     },
     helene_dennewitz: {
-        dir: `/images/ioom/content/helene_dennewitz`,
+        // dir: `/images/ioom/helene_dennewitz`,
         count: 2,
         fileType: 'png'
     },
     james_brummelhuis: {
-        dir: `/images/ioom/content/james_brummelhuis`,
+        // dir: `/images/ioom/james_brummelhuis`,
         count: 2,
         fileType: 'jpg'
     },
     ke_hsin_chang: {
-        dir: `/images/ioom/content/ke_hsin_chang`,
+        // dir: `/images/ioom/ke_hsin_chang`,
         count: 6,
         fileType: 'jpg'
     },
     mona_kerntke: {
-        dir: `/images/ioom/content/mona_kerntke`,
+        // dir: `/images/ioom/mona_kerntke`,
         count: 8,
         fileType: 'png'
     },
     pia_wetzig: {
-        dir: `/images/ioom/content/pia_wetzig`,
+        // dir: `/images/ioom/pia_wetzig`,
         count: 6,
         fileType: 'jpg'
     },
     sophia_rhein: {
-        dir: `/images/ioom/content/sophia_rhein`,
+        // dir: `/images/ioom/sophia_rhein`,
         count: 2,
         fileType: 'png'
     },
     yasmina_khalil: {
-        dir: `/images/ioom/content/yasmina_khalil`,
+        // dir: `/images/ioom/yasmina_khalil`,
         count: 10,
         fileType: 'jpg'
     },
 
     // 
     'susan_arian_julide_nur_alemdar': {
-        dir: `/images/bml`,
+        // dir: `/images/bml`,
         count: 10,
         fileType: 'jpg'
     },
     'franziska_glutig_luise_motsch': {
-        dir: `/images/tg/content`,
+        // dir: `/images/tg/content`,
         count: 3,
         fileType: 'png'
     },
     'august_guccione': {
-        dir: `/images/ip/content`,
+        // dir: `/images/ip/content`,
         count: 3,
+        fileType: 'JPG'
+    },
+    'ossian_osborne': {
+        // dir: `/images/ip/content`,
+        count: 4,
         fileType: 'JPG'
     }
 }

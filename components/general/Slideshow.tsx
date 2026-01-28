@@ -1,6 +1,6 @@
 // 'use client'
 
-import { TypeProject } from '@/types/project-type'
+import { courseShort, TypeProject } from '@/types/project-type'
 import styles from './Slideshow.module.css'
 import {  useMemo, useState } from 'react';
 
@@ -35,11 +35,18 @@ const Slideshow = ({ item, setShowButton, isBook }: Props) => {
         // @ts-ignore
         const dir = (fileDataIO[student] || fileDataIO["mona_kerntke"]).dir
         // @ts-ignore
-        const fileType = (fileDataIO[student] || fileDataIO["mona_kerntke"]).fileType
+        // const fileType = (fileDataIO[student] || fileDataIO["mona_kerntke"]).fileType
+        const fileType = "webp"
+
+        const courseFolder = courseShort[item.COURSE]?.toLocaleLowerCase()
+        
 
         for(let i = 1; i <= count;i++){
 
-            slides.push(`${dir}/slide-${i}.${fileType}`)
+            // images/ioom/hannes_altmann
+
+            // slides.push(`${dir}/slide-${i}.${fileType}`)
+            slides.push(`/images/${courseFolder}/${student}/slide-${i}.webp`)
         }
 
         return slides
@@ -92,7 +99,7 @@ const Slideshow = ({ item, setShowButton, isBook }: Props) => {
                 {activeSlide > 0 && <div className={styles.goLeft} onClick={() => goPrev()}/>}
                 {activeSlide < slides.length-1 && <div className={styles.goRight} onClick={() => goNext()} />}
             </div>
-            <div className={styles.thumbails}>
+            {/* <div className={styles.thumbails}>
                 {
                     slides.map((slide, i) => (
                         <div 
@@ -105,7 +112,7 @@ const Slideshow = ({ item, setShowButton, isBook }: Props) => {
                         </div>
                     ))
                 }
-            </div>
+            </div> */}
         </>
     )
 }

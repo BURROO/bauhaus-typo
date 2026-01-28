@@ -5,6 +5,7 @@ export type TypeCoursesNames =
 'Handmade Websites as Punk Zines' | 
 'Bauhaus Master Lectures' |
 'First Year Introduction' |
+'Introduction Typography' |
 // 'Introduction Typography' |
 'Independent Project' |
 '204 Type-Gazette Issue 06' |
@@ -25,6 +26,7 @@ export const courseShort: TypeCourseShort = {
     'Handmade Websites as Punk Zines': 'PZ',
     // 'Introduction Typography': 'IT',
     'First Year Introduction': 'IT',
+    'Introduction Typography': 'IT',
     'Independent Project': 'IP',
     '204 Type-Gazette Issue 06': 'TG',
     '204 Type-Gazette Issue 6': 'TG'

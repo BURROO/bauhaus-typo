@@ -28,12 +28,16 @@
   display: flex;
   align-items: center;
   position: relative;
-  font-size: 65vh; 
+  /* font-size: 65vh;  */
+  font-size: 68vh; 
+  line-height: 70vh;
   padding: 0;
   margin: 0;
+  top: -4vh;
+  padding-bottom: 30px;
   font-family: "UfficioMono-Black";
   color: white;
-  line-height: 0.9;
+  line-height: 0.95;
   animation: marquee 16s infinite linear;
   width: max-content;
   text-transform: uppercase;

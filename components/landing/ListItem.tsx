@@ -1,8 +1,8 @@
 
 import styles from './ListItem.module.css'
 import Link from 'next/link';
-import { courseShort, TypeCoursesNames, TypeProject } from '@/types/project-type';
-import { getUrlFromProject, sanitizeForUrl } from '@/util/sanitizeForUrl';
+import { TypeCoursesNames, TypeProject } from '@/types/project-type';
+import { getUrlFromProject } from '@/util/sanitizeForUrl';
 
 interface Props {
     row: TypeProject;

@@ -277,6 +277,7 @@ const ListSVG = ({ dataStudents, dataCourses, filter, searchTerm, firstIndex, se
                                                 position={d}
                                                 fontSize={fontSize}
                                                 text={!d.hideText && d.text}
+                                                height={rowHeight}
                                                 />
                                             ))
                                         }
@@ -297,11 +298,11 @@ const ListSVG = ({ dataStudents, dataCourses, filter, searchTerm, firstIndex, se
                     </mask>}
                 </defs>
 
-                <path
+                {/* <path
                 d={`M 0 ${0} L ${screenWidth} ${0} L ${screenWidth} ${rowHeight+1} L 0 ${rowHeight+1}`}
                 fill={`url(#${gradientId})`}
-                />
-                <g  transform={`translate(0 ${rowHeight})`}>
+                /> */}
+                <g  transform={`translate(0 ${0})`}>
                     {
                         renderData
                         .map((row, i) => {
@@ -317,6 +318,7 @@ const ListSVG = ({ dataStudents, dataCourses, filter, searchTerm, firstIndex, se
                                             fill={!d.fill  ? grayFont : "transparent"}
                                             fontSize={fontSize}
                                             text={!d.hideText && (!d.fill || d.isActive) && d.text}
+                                                height={rowHeight}
                                             />
                                         ))
                                     }
@@ -357,6 +359,7 @@ const ListSVG = ({ dataStudents, dataCourses, filter, searchTerm, firstIndex, se
                                             position={d}
                                             fontSize={fontSize}
                                             text={!d.hideText  && d.text}
+                                            height={rowHeight}
                                             />
                                         ))
                                     }
@@ -450,21 +453,69 @@ export default ListSVG
 
 
 interface TxtProps { 
-    fontSize: number; position: 
+    fontSize: number; 
+    position: 
     { 
         x: number;
         y: number;
         height: number;
+        data: TypeProject;
     };
     text: string|null|false; 
     fill?: string;
+    height: number;
 };
 
-const TextElement = ({ fontSize, position, text, fill }: TxtProps) => text && (
+const TextElement = ({
+    fontSize,
+    position,
+    text,
+    fill,
+    height,
+}: TxtProps) => {
+
+    if(!text) return <></>
+
+    // console.log(position)
 
 
+    const typeIndex = Object.values(position.data).findIndex(v => v === text)
 
-    <>
+    const type = Object.keys(position.data)[typeIndex]
+
+    // console.log("ype", type)
+
+    if(type === 'NAME'){
+
+        return (
+            <>
+                {
+                    text.split(',').map((name, i) => (
+
+                        <text
+                        style={{
+                            textTransform: "uppercase",
+                            fontSize,
+                            background: "red"
+                        }}
+                        x={position.x}
+                        // y={position.y}
+                        y={position.y+height*2-fontSize*1.5+i*height}
+                        // y={position.y-fontSize*1.8+fontSize*0.3}
+                        fontSize={fontSize}
+                        fontWeight="bold"
+                        fill={fill || "black"}
+                        >
+                            {name}
+                        </text>
+                    ))
+                }
+            </>
+        )
+
+    }
+
+    return (<>
         <text
         style={{
             textTransform: "uppercase",
@@ -473,7 +524,7 @@ const TextElement = ({ fontSize, position, text, fill }: TxtProps) => text && (
         }}
         x={position.x}
         // y={position.y}
-        y={position.y+position.height*2-fontSize*1.5}
+        y={position.y+height*2-fontSize*1.5}
         // y={position.y-fontSize*1.8+fontSize*0.3}
         fontSize={fontSize}
         fontWeight="bold"
@@ -489,4 +540,4 @@ const TextElement = ({ fontSize, position, text, fill }: TxtProps) => text && (
         fill="red"
         /> */}
     </>
-)
+)}

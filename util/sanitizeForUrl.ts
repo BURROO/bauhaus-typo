@@ -53,7 +53,8 @@ export const getType = (item: TypeProject): { isOnScreen: boolean; isPublication
 
 
     const isOnScreen =  (item["MEDIUM"].toUpperCase() === "WEBSITE" || item["MEDIUM"].toUpperCase() === "WEBTOOL")
-    const isPublication = (item["MEDIUM"].toUpperCase() === "PUBLICATION" || item["MEDIUM"].toUpperCase() === "ZINE")
+    // const isPublication = (item["MEDIUM"].toUpperCase() === "PUBLICATION" || item["MEDIUM"].toUpperCase() === "ZINE")
+    const isPublication = (item["MEDIUM"].toUpperCase() === "PUBLICATION" )
     const isSlideshow = !isOnScreen && !isPublication
 
 

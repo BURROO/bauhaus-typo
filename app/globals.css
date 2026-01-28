@@ -6,15 +6,10 @@
   --grayFont: rgba(180,180,180, 0.97);
   --color: cyan;
   /* --dropShadow: drop-shadow(0 0 20px black); */
-  --dropShadow: drop-shadow(0 0 10px rgba(0,0,0,0.7));
+  /* --dropShadow: drop-shadow(0 0 10px rgba(0,0,0,0.7)); */
+  --dropShadow: drop-shadow(0 0 20px rgba(0,0,0,0.2));
 }
 
-/* @media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-} */
 
 @font-face {
   font-family: "UfficioMono-Normal";

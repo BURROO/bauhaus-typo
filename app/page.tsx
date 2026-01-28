@@ -4,7 +4,7 @@ import List from "@/components/landing/List";
 import fs from "fs";
 import path from "path";
 import Papa from "papaparse";
-import { courseShort, TypeProject } from "@/types/project-type";
+import {  TypeProject } from "@/types/project-type";
 
 
 export default function Home() {

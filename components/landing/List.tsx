@@ -2,7 +2,7 @@
 
 import { useContext, useEffect, useMemo, useRef, useState } from 'react'
 import styles from './List.module.css'
-import { courseShort, TypeCourse, TypeCoursesNames, TypeProject } from '@/types/project-type';
+import {  TypeCourse, TypeCoursesNames, TypeProject } from '@/types/project-type';
 import Overlay from './Overlay';
 import ListFooter from './ListFooter';
 // import TypeLarge from '../layer2/TypeLarge';
@@ -183,11 +183,11 @@ const List = ({ dataStudents, dataCourses}: Props) => {
                     activeProject !== null &&
                     <Overlay item={activeProject} autoRotateSpeed={6}/>
                 }
-                <ul 
+                {/* <ul 
                 >
                     <ListHeader rowHeight={rowHeight} />
                 
-                </ul>
+                </ul> */}
                 {
                     screenHeight && rowHeight && filter !== "" &&
                     <ListCourse
