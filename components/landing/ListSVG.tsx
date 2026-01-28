@@ -332,6 +332,14 @@ const ListSVG = ({ dataStudents, dataCourses, filter, searchTerm, firstIndex, se
                     fill={`url(#${gradientId})`}
                     mask={`url(#${maskId})`}
                     />
+                    <path
+                    d={svgPath}
+                    fill={`url(#$paperInkGrain})`}
+                    // mask={`url(#${maskId})`}
+                    />
+
+
+                    
                     {/* ACtive Path */}
                     <path
                     d={svgActivePath}
