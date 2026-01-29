@@ -1,7 +1,8 @@
 import { TypeProject } from '@/types/project-type'
 import styles from './ProjectInfo.module.css'
 import Link from 'next/link'
-import { useState } from 'react'
+import { useContext, useState } from 'react'
+import { ContextMenu } from '../context/ContextMenu'
 
 interface Props{
     project: TypeProject
@@ -10,12 +11,16 @@ interface Props{
 
 const ProjectInfo = ({ project }:Props) => {
 
-    const [isOpen, setIsOpen] = useState(false)
 
+
+    const { fontSize } = useContext(ContextMenu)
+
+    const [isOpen, setIsOpen] = useState(false)
 
     return (
         <div className={styles.projectInfo} style={{
-            transform: isOpen ? ``: `translateY(calc(-100% + 20px))`
+            transform: isOpen ? ``: `translateY(calc(-100% + 20px))`,
+            fontSize: fontSize || ''
         }}>
             <ul className={styles.projectInfoList}>
         
