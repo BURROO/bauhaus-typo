@@ -12,7 +12,6 @@ import ListHeader from './ListHeader';
 import ListCourse from './ListCourse';
 import Background from './Background';
 import ListSVG from './ListSVG';
-import Preloader from '../loading/Loader';
 
 interface Props {
     dataStudents: TypeProject[];

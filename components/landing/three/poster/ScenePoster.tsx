@@ -75,56 +75,20 @@ function ScenePosterInner({
   //   `/images/${kurs}/poster/front_l2.webp`,
   //   `/images/${kurs}/poster/front_l3.webp`
   // ], []);
+
   //@ts-ignore
-  const frontUrls: string[] = useMemo(() => fileDataIO[slug]?.front.map((l, i) =>  `/images/${kurs}/poster/front_l${i+1}.webp`) || [], [item]);
+  const frontSettings = fileDataIO[slug]?.front || []
   //@ts-ignore
-  const backUrls: string[] = useMemo(() => fileDataIO[slug]?.back.map((l, i) =>  `/images/${kurs}/poster/back_l${i+1}.webp`) || [], [item]);
+  const backSettings = fileDataIO[slug]?.back || []
+
+  const frontUrls: string[] = useMemo(() => frontSettings.map((l: any, i: number) =>  `/images/${kurs}/poster/front_l${i+1}.webp`) || [], [item]);
+  const backUrls: string[] = useMemo(() => backSettings.map((l: any, i: number) =>  `/images/${kurs}/poster/back_l${i+1}.webp`) || [], [item]);
   
   const frontTextures = useTexture(frontUrls);
   const backTextures = useTexture(backUrls);
 
   const width = 1.453*0.1;
   const height = width/21*29.7;
-
-  // useEffect(() => {
-  //   onDimensions?.({ width, height });
-  // }, [width, height, onDimensions]);
-
-  // Build materials: front layers stacked via alpha
-  // const materials = useMemo(() => {
-  //   const createLayeredMaterial = (textures: THREE.Texture[]) => {
-  //     if (textures.length === 0) return new THREE.MeshStandardMaterial({ color: 0xffffff });
-      
-  //     // Single texture = simple material
-  //     if (textures.length === 1) return new THREE.MeshStandardMaterial({ map: textures[0], side: THREE.DoubleSide });
-
-  //     // Multiple textures = use alpha layering
-  //     const baseMat = new THREE.MeshStandardMaterial({
-  //       map: textures[0],
-  //       transparent: true,
-  //       side: THREE.DoubleSide,
-  //     });
-
-  //     if (textures.length > 1) {
-  //       // Use a second material on the same mesh for simplicity
-  //       // (For real parametric stacking, you'd write a custom shader)
-  //       const secondMat = new THREE.MeshStandardMaterial({
-  //         map: textures[1],
-  //         transparent: true,
-  //         side: THREE.DoubleSide,
-  //       });
-  //       return [baseMat, secondMat];
-  //     }
-  //     return baseMat;
-  //   };
-
-  //   const frontMat = createLayeredMaterial(frontTextures);
-  //   const backMat = createLayeredMaterial(backTextures);
-
-  //   return Array.isArray(frontMat)
-  //     ? [...frontMat, ...(Array.isArray(backMat) ? backMat : [backMat])]
-  //     : [frontMat, ...(Array.isArray(backMat) ? backMat : [backMat])];
-  // }, [frontTextures, backTextures]);
 
   const time = useRef(0);
 
@@ -272,6 +236,3 @@ if (!frontTextures[0]) return null;
   );
 }
 
-
-const hash = (x: number, y: number) =>
-  Math.sin(x * 12.9898 + y * 78.233) * 43758.5453 % 1;

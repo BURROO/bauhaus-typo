@@ -2,9 +2,11 @@
 
 import { courseShort, TypeProject } from '@/types/project-type'
 import styles from './Website.module.css'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { getUrlVideo, sanitizeForUrl } from '@/util/sanitizeForUrl'
 import SceneMacbook from '@/components/landing/three/macbook/SceneMacbook'
+import SceneWrapper from '@/components/landing/three/SceneWrapper'
+import { CameraProps } from '@react-three/fiber'
 
 interface Props {
     item: TypeProject
@@ -12,25 +14,37 @@ interface Props {
 
 const Website = ({ item }: Props) => {
 
-    // 1. Build local path
-    const cleanedSnippet = item.Link
-        ?.split('.')[0]
-        ?.split('/')
-        ?.pop()
 
 
-    const name = sanitizeForUrl(item.NAME).split("-").join("_")
-    // const showcaseSource = 
+    const { src } = useMemo(() => {
 
-    const subFulter = courseShort[item.COURSE].toLocaleLowerCase()
-    // const subFulter = item.COURSE === 'Transcoding Typography' ? 'tt' : 'pz'
+        // 
+        const name = sanitizeForUrl(item.NAME).split("-").join("_")
+        // const showcaseSource = 
 
-    const [src, setSrc] = useState<string>(`/websites/${subFulter}/${name}/index.html`)
+        const subFulter = courseShort[item.COURSE].toLocaleLowerCase()
+        // const subFulter = item.COURSE === 'Transcoding Typography' ? 'tt' : 'pz'
+
+        const src = `/websites/${subFulter}/${name}/index.html`
+
+        return { src }
+
+    }, [item])
+
 
     // const [view, setView] = useState<'video'|'iframe'>('video')
-    const [view, setView] = useState<'video'|'iframe'>('iframe')
+    // const [view, setView] = useState<'video'|'iframe'>('iframe')
+    const [view, setView] = useState<'video'|'iframe'>('video')
 
-    const videoUrl = getUrlVideo(item)
+
+    const interactCam: CameraProps = {
+        position: [
+            0.0, 
+            0.0, 
+            0.4
+        ], 
+        fov: 45 
+    }
 
     return (
         <div className={styles.website}>
@@ -47,9 +61,13 @@ const Website = ({ item }: Props) => {
             {
                 view === "video" && (
                     <div className={styles.preview}>
-
-                        {/* <video src={videoUrl} muted autoPlay loop={true}/> */}
-                        <SceneMacbook item={item} rotationSpeed={0} type='interact'/>
+                        <SceneWrapper
+                        camSettings={interactCam}
+                        type={"interact"}
+                        autoRotateSpeed={0}
+                        >
+                            <SceneMacbook item={item} rotationSpeed={0} type='interact'/>
+                        </SceneWrapper>
                     </div>
                 )
             }

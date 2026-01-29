@@ -70,11 +70,24 @@ const SceneWrapper = ({ camSettings, children, autoRotateSpeed, type }: Prop) =>
             intensity={1.2}
             castShadow
             />
+            <directionalLight
+            position={[-3, 5, -4]}
+            intensity={1.2}
+            castShadow
+            />
+            {/*  */}
             <rectAreaLight
             width={4}
             height={2}
             intensity={3}
             position={[-2, 1, 2]}
+            lookAt={[0, 0, 0]}
+            />
+            <rectAreaLight
+            width={4}
+            height={2}
+            intensity={3}
+            position={[2, 1, -2]}
             lookAt={[0, 0, 0]}
             />
         </Canvas>
