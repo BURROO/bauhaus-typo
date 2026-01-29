@@ -108,18 +108,15 @@ function Book({
 
 export default function ParametricBook({ item, type = "interact",  setShowButton, autoRotateSpeed = 1 }: Props) {
 
+    // 
     const filenameFallback = 'mona_kerntke'
     // 
-    // const name = item.NAME && item.NAME.toLowerCase().split(" ").join("_") || filenameFallback 
     const name = item.NAME && sanitizeForUrl(item.NAME).split("-").join("_") || filenameFallback 
-    // const filename = sanitizeForUrl(item.NAME) || filenameFallback 
-
+    // 
     const courseFolder = courseShort[item.COURSE]?.toLocaleLowerCase()
 
-    console.log(name, courseShort, item.COURSE)
-
     // @ts-ignore
-    const data = fileDataIO[name] || fileDataIO["mona_kerntke"]
+    // const data = fileDataIO[name] || fileDataIO["mona_kerntke"]
 
     // @ts-ignore
     const foundData = !!fileDataIO[name]

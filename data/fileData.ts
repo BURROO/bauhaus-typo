@@ -118,3 +118,13 @@ export const fileDataIO = {
         fileType: 'JPG'
     }
 }
+
+
+export const assets = [
+    `/images/om/elsa_babtist/elsa_babtist_front.webp`,
+    `/images/om/elsa_babtist/elsa_babtist_back.webp`,
+    `/images/om/elsa_babtist/elsa_babtist_spine.webp`,
+    `/images/om/hannes_altmann/hannes_altmann_front.webp`,
+    `/images/om/hannes_altmann/hannes_altmann_back.webp`,
+    `/images/om/hannes_altmann/hannes_altmann_spine.webp`,
+]

@@ -1,34 +1,50 @@
 import { TypeProject } from '@/types/project-type';
 import styles from './Overlay.module.css'
-import ParametricBook from '../slug/book/ParametricBook';
-import Scene from './three/Scene';
+// import ParametricBook from '../slug/book/ParametricBook';
+// import Scene from './three/Scene';
 import { useEffect, useState } from 'react';
 import { getType, sanitizeForUrl } from '@/util/sanitizeForUrl';
 import { fileDataTT } from '@/data/fileData';
+import dynamic from 'next/dynamic';
+
+const ParametricBook = dynamic(
+  () => import("@/components/slug/book/ParametricBook"),
+  { ssr: false }
+);
+
+const Scene = dynamic(
+  () => import("@/components/landing/three/Scene"),
+  { ssr: false }
+);
+
+// const Website = dynamic(
+//   () => import("@/components/slug/website/Website"),
+//   { ssr: false }
+// );
 
 const Overlay = ({ item, autoRotateSpeed }: {item: TypeProject; autoRotateSpeed: number }) => {
 
 
-    const [currentRotation, setCurrentRotation] = useState(0)
+    // const [currentRotation, setCurrentRotation] = useState(0)
 
-    useEffect(() => {
+    // useEffect(() => {
 
-        const timeout = setTimeout(() => {
-            setCurrentRotation(currentRotation+1)
-        }, 10)
+    //     const timeout = setTimeout(() => {
+    //         setCurrentRotation(currentRotation+1)
+    //     }, 10)
 
 
-        return () => {
-            clearTimeout(timeout)
-        }
+    //     return () => {
+    //         clearTimeout(timeout)
+    //     }
 
-    }, [])
+    // }, [])
 
     if(typeof item === "undefined") return <></>
 
     const { isOnScreen, isPublication, isSlideshow } = getType(item)
 
-    console.log(isOnScreen, isPublication, isSlideshow)
+    // console.log(isOnScreen, isPublication, isSlideshow)
 
     return (
         <div 
@@ -52,7 +68,7 @@ const OverlayMac = ({ item, autoRotateSpeed }: { item: TypeProject, autoRotateSp
         <div 
         className={styles.overlay}
         >
-            <Scene item={item} rotationSpeed={6}/>
+            <Scene type="orbit" item={item} rotationSpeed={6}/>
         </div>
     )
 }
@@ -74,6 +90,8 @@ const OverlayImage = ({ item, autoRotateSpeed }: { item: TypeProject; autoRotate
 
     const url = sanitizeForUrl(item["NAME"])
 
+
+    // const hasVideo = Boolean(src) && src.endsWith('.webm')
     // @ts-ignore
     const src = fileDataTT[url] || null
 

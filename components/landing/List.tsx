@@ -7,14 +7,12 @@ import Overlay from './Overlay';
 import ListFooter from './ListFooter';
 // import TypeLarge from '../layer2/TypeLarge';
 import { ContextMenu } from '../context/ContextMenu';
-import ListItem from './ListItem';
 import ListHeader from './ListHeader';
 // import { render } from '@react-pdf/renderer';
 import ListCourse from './ListCourse';
 import Background from './Background';
 import ListSVG from './ListSVG';
-import { convertTableToSVG } from '@/util/convertTableToSVG';
-import { cloneDeep} from 'lodash'
+import Preloader from '../loading/Loader';
 
 interface Props {
     dataStudents: TypeProject[];
@@ -35,13 +33,18 @@ interface Filter {
 
 const List = ({ dataStudents, dataCourses}: Props) => {
 
-
-
-    const [activeIndex, setActiveIndex] = useState<number|null>(null)
+    // const [activeIndex, setActiveIndex] = useState<number|null>(null)
     // const doublicatedData = useMemo(() => [...cloneDeep(dataStudents), ...cloneDeep(dataStudents)], dataStudents)
 
+    const [ready, setReady] = useState(false)
 
-    const { screenHeight, screenWidth, rowHeight } = useContext(ContextMenu)
+    const {
+        screenHeight,
+        screenWidth,
+        rowHeight,
+        // setActiveIndex,
+        activeIndex 
+     } = useContext(ContextMenu)
 
 
     const scrollPos = useRef(2000)
@@ -60,49 +63,6 @@ const List = ({ dataStudents, dataCourses}: Props) => {
     const [searchTerm, setSearchTerm ] = useState("")
 
     const itemHeight = 60
-
-    // const [renderedData, setRenderedData] = useState(doublicatedData)
-
-    // const dataRef = useRef(renderedData)
-
-    // useEffect(() => {
-
-
-    //     if(filter !== "" || searchTerm !== ''){
-    //         setRenderedData(
-    //             dataStudents
-    //             .filter(d => {
-
-    //                 if(filter === "") return true
-
-
-    //                 const found = Object.values(d).find(value => value && value.toString().match(new RegExp(filter, 'ig')))
-
-    //                 return found
-    //             })
-    //             .filter(d => {
-
-    //                 if(searchTerm === "") return true
-
-
-
-    //                 const found = Object.values(d).find(value => value && value.toString().match(new RegExp(searchTerm, 'ig')))
-
-
-    //                 return found
-    //             })
-    //         )
-    //     }else{
-    //         setRenderedData(doublicatedData)
-    //     }
-
-    // }, [filter, sorting, searchTerm, dataStudents])
-
-
-    // useEffect(() => {
-    //     dataRef.current = renderedData
-    // }, [renderedData, refContainer.current])
-
 
     const [firstIndex, setFirstIndex] = useState(0)
 
@@ -170,6 +130,10 @@ const List = ({ dataStudents, dataCourses}: Props) => {
 
     if(rowHeight === null) return <></>
 
+
+
+    if(!ready) return <Preloader onDone={() => setReady(true)} />
+
     return (
         <>
             <div
@@ -236,10 +200,9 @@ const List = ({ dataStudents, dataCourses}: Props) => {
             filter={filter}
             searchTerm={searchTerm}
             firstIndex={firstIndex}
-            setActiveIndex={setActiveIndex}
-            activeIndex={activeIndex}/>
-
-
+            // setActiveIndex={setActiveIndex}
+            // activeIndex={activeIndex}
+            />
        </>
     )
 }

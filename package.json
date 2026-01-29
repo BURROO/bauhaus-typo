@@ -6,6 +6,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+      "prebuild": "node util/generateAssetsManifest.ts",
+
     "start": "next start",
     "export": "next export",
     "lint": "eslint"

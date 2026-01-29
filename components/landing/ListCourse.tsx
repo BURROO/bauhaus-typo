@@ -13,15 +13,17 @@ const ListCourse = ({ screenHeight, rowHeight, course, dataStudents }: Props) =>
 
     const studentsFromCourse = dataStudents.filter(student => student.COURSE === course?.COURSE)
 
-    if(course === null || screenHeight === null) return <></>
+    console.log()
 
-    // console.log("course", screenHeight - rowHeight * renderedData.length, course)
+    const count = studentsFromCourse.reduce((acc, data) => acc + data.NAME.split(',').length, 0)
+
+    if(course === null || screenHeight === null) return <></>
 
     return (
         <div className={styles.listCourse}
         data-test="asfasf"
         style={{
-            height: screenHeight - rowHeight * (studentsFromCourse.length+1)
+            height: screenHeight - rowHeight * (count+1)
         }}>
 
             <h2>{course.COURSE}</h2>

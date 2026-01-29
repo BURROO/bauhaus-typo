@@ -23,15 +23,29 @@ interface Props {
     filter: string;
     searchTerm: string;
     firstIndex: number;
-    setActiveIndex: (valie: number|null) => void;
-    activeIndex: null|number;
+    // setActiveIndex: (valie: number|null) => void;
+    // activeIndex: null|number;
 }
 
 
-const ListSVG = ({ dataStudents, dataCourses, filter, searchTerm, firstIndex, setActiveIndex, activeIndex }: Props) => {
+const ListSVG = ({
+    dataStudents,
+    dataCourses,
+    filter,
+    searchTerm,
+    firstIndex,
+    // setActiveIndex,
+    // activeIndex
+}: Props) => {
 
 
-    const { screenHeight, screenWidth, rowHeight } = useContext(ContextMenu)
+    const {
+        screenHeight,
+        screenWidth,
+        rowHeight,
+        setActiveIndex,
+        activeIndex 
+    } = useContext(ContextMenu)
 
     const router = useRouter()
 
@@ -184,6 +198,31 @@ const ListSVG = ({ dataStudents, dataCourses, filter, searchTerm, firstIndex, se
                         repeatCount="indefinite"
                         />
                     </linearGradient>
+                      <filter id="blurMe">
+                        <feGaussianBlur stdDeviation="5" />
+                    </filter>
+                     <filter id="screenPrintEffect">
+                         {/* <!-- Generate noise pattern --> */}
+                         <feTurbulence type="turbulence" baseFrequency="0.95" numOctaves="3" result="turbulence"/>
+                        
+                         {/* <!-- Convert to grayscale and boost contrast --> */}
+                         <feColorMatrix
+                         in="turbulence"
+                         type="matrix"
+                         values="0.33 0.33 0.33 0 0
+                        0.33 0.33 0.33 0 0
+                        0.33 0.33 0.33 0 0
+                        0 0 0 0.8 0"
+                        result="grayscale"/>
+                        
+                         {/* <!-- Apply threshold to create sharp black/white dots --> */}
+                         <feComponentTransfer in="grayscale" result="thresholded">
+                         <feFuncA type="discrete" tableValues="0 1"/>
+                         </feComponentTransfer>
+                        
+                         {/* <!-- Use the pattern as a mask or displacement map --> */}
+                         <feComposite in="SourceGraphic" in2="thresholded" operator="in" result="screenPrinted"/>
+                     </filter>
                     <filter id="metalFoil">
                         <feTurbulence
                             type="fractalNoise"
@@ -334,7 +373,12 @@ const ListSVG = ({ dataStudents, dataCourses, filter, searchTerm, firstIndex, se
                     />
                     <path
                     d={svgPath}
-                    fill={`url(#$paperInkGrain})`}
+                    // filter={`url(#metalFoil)`}
+                    // filter={`url(#paperInkGrain)`}
+                    // mask={`url(#${maskId})`}
+                    filter={`url(#screenPrintEffect)`}
+                    // filter={`url(#blurMe)`}
+                    fill="rgba(240,240,240,0.4)"
                     // mask={`url(#${maskId})`}
                     />
 
@@ -501,6 +545,7 @@ const TextElement = ({
                     text.split(',').map((name, i) => (
 
                         <text
+                        key={i}
                         style={{
                             textTransform: "uppercase",
                             fontSize,
@@ -540,12 +585,5 @@ const TextElement = ({
         >
             {text}
         </text>
-        {/* <rect
-        x={position.x}
-        y={position.y}
-        width={100}
-        height={20}
-        fill="red"
-        /> */}
     </>
 )}

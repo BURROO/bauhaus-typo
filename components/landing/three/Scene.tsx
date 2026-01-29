@@ -7,15 +7,17 @@ import VideoPlane from './VideoPlane'
 import { TypeProject } from '@/types/project-type'
 import { fileDataTT } from '@/data/fileData'
 import { getUrlVideo } from '@/util/sanitizeForUrl'
+import { checkIfAssetExists } from '@/util/checkIfAssetExists'
 
 
 
 interface Props{
   item: TypeProject;
   rotationSpeed: number;
+  type: 'orbit' | 'interact';
 }
 
-export default function Scene({ item, rotationSpeed }: Props) {
+export default function Scene({ item, rotationSpeed, type }: Props) {
 
   // const src = `/images/tt/showcase/mai_do_showcase.mp4`
 
@@ -28,6 +30,7 @@ export default function Scene({ item, rotationSpeed }: Props) {
   const src = getUrlVideo(item)
   // const src = fileDataTT[filename]?.showcase || `/images/tt/showcase/phuong_mai_do_showcase.mp4`
 
+
   const screensOfst = 0.087
 
   const orbitCam: CameraProps = {
@@ -39,38 +42,27 @@ export default function Scene({ item, rotationSpeed }: Props) {
       // fov: 45 
   }
 
+  const interactCam: CameraProps = {
+      position: [0.02, 0.4, 0.6], 
+      fov: 45 
+  }
+
+  const camSettings = type === 'orbit' 
+      ? orbitCam 
+      : interactCam
+
   return (
     // <Canvas camera={{ position: [0, 1.5/10, 4/10], fov: 50 }}>
   //  <Canvas camera={{ position: [0, 1.5/18, 8/18], fov: 50, lookAt: Math.PI*0.3 }} >
-   <Canvas camera={orbitCam} >
-      {/* <ambientLight intensity={0.5} /> */}
-      {/* <ambientLight intensity={0.01} /> */}
-
+   <Canvas camera={camSettings} >
       <group>
-        <group position={[0,0,screensOfst]}>
-          <ObjModel url="/macbook.glb" position={[0,-0.05,0]} rotation={[0,0,0]}/>
-          <VideoPlane
-          src={src}
-          position={[0, 0.04, -0.081]} 
-          rotate={[0,0,0]} 
-          size={[0.23, 0.135]}
-          />
-          {/* <VideoPlane
-          src={src}
-          position={[0, 0.034, -0.1022]} 
-          rotate={[-0.265,0,0]} 
-          size={[0.23, 0.145]}
-          /> */}
-        </group>
-        <group rotation={[0,Math.PI,0]} position={[0,0,-screensOfst]} >
-            <ObjModel url="/macbook.glb" position={[0,-0.05,0]} rotation={[0,0,0]}/>
-          <VideoPlane
-          src={src}
-          position={[0, 0.04, -0.081]} 
-          rotate={[0,0,0]} 
-          size={[0.23, 0.135]}
-          />
-        </group>
+    
+          <ModelWithScreen position={[0,0,screensOfst]} src={src} />
+        {
+          type === "orbit" && (
+            <ModelWithScreen position={[0,0,-screensOfst]} rotation={[0,Math.PI,0]}  src={src} />
+          )
+        }
       </group>
 
 
@@ -82,14 +74,41 @@ export default function Scene({ item, rotationSpeed }: Props) {
       environmentIntensity={0.3}
       />
       {/* <Environment preset="night" /> */}
-      <OrbitControls
-      makeDefault 
-      autoRotate
-      autoRotateSpeed={rotationSpeed} 
-      enableRotate={false}
-      enableZoom={false}
-      enablePan={false}
-      />
+      {type === 'interact' ?
+        <OrbitControls
+        makeDefault
+        // enablePan
+        enableZoom={false}
+        enableRotate
+        />
+        :
+        <OrbitControls
+        makeDefault 
+        autoRotate
+        autoRotateSpeed={rotationSpeed} 
+        enableRotate={false}
+        enableZoom={false}
+        enablePan={false}
+        />
+      }
     </Canvas>
+  )
+}
+
+
+
+const ModelWithScreen = ({ src, position, rotation }: { src: string; position?: [number,number,number]; rotation?: [number,number,number]; }) => {
+
+
+  return (
+    <group position={position} rotation={rotation}>
+      <ObjModel url="/macbook.glb" position={[0,-0.05,0]} rotation={[0,0,0]}/>
+      <VideoPlane
+      src={src}
+      position={[0, 0.04, -0.081]} 
+      rotate={[0,0,0]} 
+      size={[0.23, 0.135]}
+      />
+    </group>
   )
 }

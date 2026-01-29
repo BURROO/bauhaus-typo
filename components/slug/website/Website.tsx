@@ -4,6 +4,7 @@ import { courseShort, TypeProject } from '@/types/project-type'
 import styles from './Website.module.css'
 import { useEffect, useRef, useState } from 'react'
 import { getUrlVideo, sanitizeForUrl } from '@/util/sanitizeForUrl'
+import Scene from '@/components/landing/three/Scene'
 
 interface Props {
     item: TypeProject
@@ -111,7 +112,8 @@ const Website = ({ item }: Props) => {
                 view === "video" && (
                     <div className={styles.preview}>
 
-                        <video src={videoUrl} muted autoPlay loop={true}/>
+                        {/* <video src={videoUrl} muted autoPlay loop={true}/> */}
+                        <Scene item={item} rotationSpeed={0} type='interact'/>
                     </div>
                 )
             }

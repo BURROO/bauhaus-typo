@@ -1,5 +1,6 @@
 'use client'
 
+import { checkIfAssetExists } from '@/util/checkIfAssetExists'
 import { useEffect, useMemo, useRef } from 'react'
 import * as THREE from 'three'
 
@@ -20,6 +21,7 @@ export default function VideoPlane({
   const videoRef = useRef<HTMLVideoElement | null>(null)
 
 
+
   // 1️⃣ Create video ONCE
   if (!videoRef.current) {
     const video = document.createElement('video')
@@ -35,12 +37,38 @@ export default function VideoPlane({
   // 2️⃣ Update src ONLY when it changes
   useEffect(() => {
     const video = videoRef.current!
-    video.src = src
-    video.currentTime = 0
 
-    video.play().catch(() => {
-      console.warn('Video playback blocked')
-    })
+
+  
+    const isAssetAvailable = checkIfAssetExists(src)
+  
+    console.log("isAssetAvailable", isAssetAvailable, src)
+
+    if(isAssetAvailable){
+    
+      
+        // if(!isAssetAvailable) return <></>
+      video.src = src
+      video.currentTime = 0
+
+      video.play().catch(() => {
+        console.warn('Video playback blocked')
+      })
+    }else{
+      video.src = ""
+      video.currentTime = 0
+
+      // video.play().catch(() => {
+      //   console.warn('Video playback blocked')
+      // })
+    }
+
+    return () => {
+      video.pause()
+      video.src = ''
+      texture.dispose()
+    }
+
   }, [src])
 
   // 3️⃣ Create texture ONCE
@@ -51,7 +79,18 @@ export default function VideoPlane({
     tex.magFilter = THREE.LinearFilter
     tex.generateMipmaps = false
     return tex
-  }, [])
+
+
+    
+  }, [src])
+
+
+  // const isAssetAvailable = checkIfAssetExists(src)
+
+  // // console.log("isAssetAvailable", isAssetAvailable, src)
+
+
+  // if(!isAssetAvailable) return <></>
 
   return (
     <mesh position={position} rotation={rotate}>
