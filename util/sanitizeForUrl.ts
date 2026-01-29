@@ -37,30 +37,47 @@ export const getUrlVideo = (item: TypeProject) => {
     const kursShort = courseShort[item.COURSE].toLowerCase()
     const student = sanitizeForUrl(item.NAME).split("-").join("_")
 
-
     // @ts-ignore
     const src = `/images/${kursShort}/showcase/${student}_showcase.webm`
 
-
-  // console.log("filename", filename, fileDataTT[filename]?.showcase)
     return src
-  // @ts-ignore
 }
 
 
 
-export const getType = (item: TypeProject): { isOnScreen: boolean; isPublication: boolean; isSlideshow: boolean } => {
+export const getType = (item: TypeProject): "WEBSITE"|"PUBLICATION"|"POSTER"|"SLIDESHOW" => {
 
 
     const isOnScreen =  (item["MEDIUM"].toUpperCase() === "WEBSITE" || item["MEDIUM"].toUpperCase() === "WEBTOOL")
+
+    if(isOnScreen) return "WEBSITE"
     // const isPublication = (item["MEDIUM"].toUpperCase() === "PUBLICATION" || item["MEDIUM"].toUpperCase() === "ZINE")
-    const isPublication = (item["MEDIUM"].toUpperCase() === "PUBLICATION" )
-    const isSlideshow = !isOnScreen && !isPublication
+    const isPublication = (
+        item["MEDIUM"].toUpperCase() === "PUBLICATION" 
+        // ||
+        // item["MEDIUM"].toUpperCase() === "CARD GAME" 
+    )
+
+    if(isPublication) return "PUBLICATION"
+
+    const isPoster = (
+        item["MEDIUM"].toUpperCase() === "POSTER" ||
+        item["MEDIUM"].toUpperCase() === "ZINE" ||
+        item["MEDIUM"].toUpperCase() === "EXHIBITION" 
+    )
+
+    if(isPoster) return "POSTER"
 
 
-    return {
-        isOnScreen,
-        isPublication,
-        isSlideshow
-    }
+    return "SLIDESHOW"
+
+    // const isSlideshow = !isOnScreen && !isPublication && !isPoster
+
+
+    // return {
+    //     isOnScreen,
+    //     isPublication,
+    //     isPoster,
+    //     isSlideshow
+    // }
 }

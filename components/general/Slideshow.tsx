@@ -27,7 +27,6 @@ const Slideshow = ({ item, setShowButton, isBook }: Props) => {
         const kurs = sanitizeForUrl( item.COURSE).split("-").join("_")
         const student = sanitizeForUrl( item.NAME).split("-").join("_")
 
-        // console.log("student",item.NAME,student, fileDataIO[student])
         // 
         const slides = []
         // @ts-ignore
@@ -51,8 +50,6 @@ const Slideshow = ({ item, setShowButton, isBook }: Props) => {
 
         return slides
     }, [])
-
-    console.log("slides", slides)
 
 
     const [activeSlide, setActiveSlide ] = useState(0)

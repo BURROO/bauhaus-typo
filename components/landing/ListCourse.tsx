@@ -13,7 +13,6 @@ const ListCourse = ({ screenHeight, rowHeight, course, dataStudents }: Props) =>
 
     const studentsFromCourse = dataStudents.filter(student => student.COURSE === course?.COURSE)
 
-    console.log()
 
     const count = studentsFromCourse.reduce((acc, data) => acc + data.NAME.split(',').length, 0)
 

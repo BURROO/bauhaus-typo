@@ -48,7 +48,6 @@ export async function generateStaticParams() {
     data: TypeProject[];
   };
 
-  // console.log(data)
 
   return data
     .filter(row => row.COURSE && row.NAME)

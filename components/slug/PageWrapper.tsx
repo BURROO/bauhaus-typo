@@ -63,43 +63,22 @@ const PageWrapper = ({ item }: Props) => {
         }
     }, [])
 
-    console.log("item", item)
 
-
-
-    const { isOnScreen, isPublication, isSlideshow } = getType(item)
+    const type = getType(item)
 
     return (
         <div className={styles.page}>
-       
-
             <main className={styles.main}>
                 <div className={styles.wrapper} style={{
-                    // width: isHovered ? '80vw' : '',
-                    // height: isHovered ? '90vh' : '',
                     borderRadius: isHovered ? 5 : 0,
                 }}>
-                    {/* Special */}
-                    {/* {item.COURSE === "Bauhaus Master Lectures" && <Poster item={item} />}
-                    {item.TITLE === "204 Type-Gazette Issue 06" && <Book item={item} />}
-
-
-                    {item.COURSE === "First Year Introduction" && <Poster item={item} />}
-                    {item.COURSE === "Independent Project" && <Poster item={item} />} */}
-                    {isSlideshow && <Poster item={item} />}
-                    {/* Generic from courses!! */}
-                    {isOnScreen && <Website item={item} />}
-                    {isPublication && <Book item={item} />}
+                 
+                    {type === "POSTER" && <Poster item={item} />}
+                    {type === "WEBSITE" && <Website item={item} />}
+                    {type === "PUBLICATION" && <Book item={item} />}
+            
                 </div>
             </main>
-
-            {/* <div 
-            className={styles.intro} 
-            style={introStyle}
-            >
-                <TypeLarge text={`${item.NAME}\\${item.Title}`} />
-            </div> */}
-            
             <ProjectInfo project={item} />
         </div>
     )
@@ -107,24 +86,3 @@ const PageWrapper = ({ item }: Props) => {
 
 
 export default PageWrapper
-
-
-/* <div
-className={styles.overlay}
-onMouseEnter={() => setIsHovered(true)}
-onMouseLeave={() => setIsHovered(false)}
-style={{
-    width: isHovered ? 'auto' : '30px',
-    height: isHovered ? '100px' : '30px',
-    overflow: "hidden",
-    borderRadius: isHovered ? 5 : 20
-
-}}
->
-    <div style={{ opacity: isHovered ? 1 : 0}}>
-        <h1>{item.NAME}</h1>
-        <h2>{item.COURSE}</h2>
-        <br/>
-        <Link href={`/`}>← Go Back</Link>
-    </div>
-</div> */

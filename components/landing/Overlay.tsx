@@ -1,59 +1,71 @@
+'use client'
+
 import { TypeProject } from '@/types/project-type';
 import styles from './Overlay.module.css'
-// import ParametricBook from '../slug/book/ParametricBook';
-// import Scene from './three/Scene';
-import { useEffect, useState } from 'react';
 import { getType, sanitizeForUrl } from '@/util/sanitizeForUrl';
 import { fileDataTT } from '@/data/fileData';
 import dynamic from 'next/dynamic';
+import { useContext } from 'react';
+import { ContextMenu } from '../context/ContextMenu';
+// import SceneWrapper from './three/SceneWrapper';
+import { CameraProps } from '@react-three/fiber';
 
-const ParametricBook = dynamic(
-  () => import("@/components/slug/book/ParametricBook"),
+const SceneWrapper = dynamic(
+  () => import("@/components/landing//three/SceneWrapper"),
   { ssr: false }
 );
 
-const Scene = dynamic(
-  () => import("@/components/landing/three/Scene"),
+const SceneBook = dynamic(
+  () => import("@/components/landing/three/book/SceneBook"),
   { ssr: false }
 );
 
-// const Website = dynamic(
-//   () => import("@/components/slug/website/Website"),
-//   { ssr: false }
-// );
+const ScenePoster = dynamic(
+  () => import("@/components/landing/three/poster/ScenePoster"),
+  { ssr: false }
+);
 
-const Overlay = ({ item, autoRotateSpeed }: {item: TypeProject; autoRotateSpeed: number }) => {
+const SceneMacbook = dynamic(
+  () => import("@/components/landing/three/macbook/SceneMacbook"),
+  { ssr: false }
+);
+
+const Overlay = ({ 
+    dataStudents, 
+    autoRotateSpeed 
+}: {
+    dataStudents: TypeProject[]; 
+    autoRotateSpeed: number 
+}) => {
+
+    const { activeIndex } = useContext(ContextMenu)
+
+    const activeProject = activeIndex !== null && dataStudents.find(d => d.index === activeIndex) || null
 
 
-    // const [currentRotation, setCurrentRotation] = useState(0)
+    const type = activeProject && getType(activeProject)
 
-    // useEffect(() => {
-
-    //     const timeout = setTimeout(() => {
-    //         setCurrentRotation(currentRotation+1)
-    //     }, 10)
-
-
-    //     return () => {
-    //         clearTimeout(timeout)
-    //     }
-
-    // }, [])
-
-    if(typeof item === "undefined") return <></>
-
-    const { isOnScreen, isPublication, isSlideshow } = getType(item)
-
-    // console.log(isOnScreen, isPublication, isSlideshow)
+    const orbitCam: CameraProps = {
+    //   position: [0, 0.4, 0.6],
+    position: [0, 2/1.5, 6/1.5],
+    // position: [0, 2, 6],
+    near: 0.1,
+    far: 10,
+    zoom: 17
+    }
 
     return (
         <div 
         className={styles.overlay}
         >
-            {isSlideshow && <OverlayImage item={item} autoRotateSpeed={autoRotateSpeed}/>}
-            {/* <h2 style={{ color: "white"}}>{item.NAME} {item.index}</h2> */}
-            {isOnScreen && <OverlayMac item={item} autoRotateSpeed={autoRotateSpeed}/>}
-            {isPublication && <OverlayBook item={item} autoRotateSpeed={autoRotateSpeed}/>}
+            <SceneWrapper camSettings={orbitCam} autoRotateSpeed={6} type={"orbit"}>
+                {activeProject && <>
+                    {/* {type === "SLIDESHOW" && <OverlayImage item={activeProject} autoRotateSpeed={autoRotateSpeed}/>} */}
+                    {type === "POSTER" && <OverlayPoster item={activeProject} autoRotateSpeed={autoRotateSpeed}/>}
+                    {type === "WEBSITE" && <OverlayMac item={activeProject} autoRotateSpeed={autoRotateSpeed}/>}
+                    {type === "PUBLICATION" && <OverlayBook item={activeProject} autoRotateSpeed={autoRotateSpeed}/>}
+                </>}
+            </SceneWrapper>
         </div>
     )
 }
@@ -65,11 +77,8 @@ const OverlayMac = ({ item, autoRotateSpeed }: { item: TypeProject, autoRotateSp
     // Handle
 
     return (
-        <div 
-        className={styles.overlay}
-        >
-            <Scene type="orbit" item={item} rotationSpeed={6}/>
-        </div>
+    
+        <SceneMacbook type="orbit" item={item} rotationSpeed={autoRotateSpeed}/>
     )
 }
 
@@ -78,11 +87,24 @@ const OverlayBook = ({ item, autoRotateSpeed }: { item: TypeProject; autoRotateS
     // Handle
 
     return (
-        <div style={{ height: 400 }}>
-            <ParametricBook type="orbit" item={item} setShowButton={() => {}} autoRotateSpeed={autoRotateSpeed}/>
-        </div>
+        <SceneBook type="orbit" item={item} setShowButton={() => {}} autoRotateSpeed={autoRotateSpeed}/>
     )
 }
+
+const OverlayPoster = ({ item, autoRotateSpeed }: { item: TypeProject; autoRotateSpeed: number; }) => {
+    // Handle
+
+    return (
+        <ScenePoster
+        type="orbit"
+        item={item}
+        rolled={true}
+        // setShowButton={() => {}} 
+        autoRotateSpeed={autoRotateSpeed}
+        />
+    )
+}
+
 
 
 const OverlayImage = ({ item, autoRotateSpeed }: { item: TypeProject; autoRotateSpeed: number; }) => {

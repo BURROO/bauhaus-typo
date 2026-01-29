@@ -44,7 +44,7 @@ const ListSVG = ({
         screenWidth,
         rowHeight,
         setActiveIndex,
-        activeIndex 
+        activeIndex,
     } = useContext(ContextMenu)
 
     const router = useRouter()
@@ -60,7 +60,6 @@ const ListSVG = ({
             activeIndex
         })
 
-        // console.log("textToRender", textToRender)
 
 
         return textToRender
@@ -143,15 +142,8 @@ const ListSVG = ({
     if(screenHeight === null || screenWidth === null || rowHeight === null) return <></>
 
 
-    const courseInfo: TypeCourse|null = dataCourses.find(k => k.COURSE === filter) || null
+    // const courseInfo: TypeCourse|null = dataCourses.find(k => k.COURSE === filter) || null
 
-    // console.log("renderDarta", renderData)
-
-
-    // const fontSize = rowHeight
-    // const fontSize = 12
-    const fontSize = rowHeight * 0.8
-    // const topFontOfst = txtTopOfst
 
     return (
         <div
@@ -314,9 +306,7 @@ const ListSVG = ({
                                                 <TextElement 
                                                 key={k}
                                                 position={d}
-                                                fontSize={fontSize}
                                                 text={!d.hideText && d.text}
-                                                height={rowHeight}
                                                 />
                                             ))
                                         }
@@ -355,9 +345,7 @@ const ListSVG = ({
                                             key={k}
                                             position={d}
                                             fill={!d.fill  ? grayFont : "transparent"}
-                                            fontSize={fontSize}
                                             text={!d.hideText && (!d.fill || d.isActive) && d.text}
-                                                height={rowHeight}
                                             />
                                         ))
                                     }
@@ -409,9 +397,7 @@ const ListSVG = ({
                                             <TextElement
                                             key={i}
                                             position={d}
-                                            fontSize={fontSize}
                                             text={!d.hideText  && d.text}
-                                            height={rowHeight}
                                             />
                                         ))
                                     }
@@ -505,7 +491,6 @@ export default ListSVG
 
 
 interface TxtProps { 
-    fontSize: number; 
     position: 
     { 
         x: number;
@@ -515,27 +500,28 @@ interface TxtProps {
     };
     text: string|null|false; 
     fill?: string;
-    height: number;
 };
 
 const TextElement = ({
-    fontSize,
     position,
     text,
     fill,
-    height,
 }: TxtProps) => {
 
-    if(!text) return <></>
 
-    // console.log(position)
+    const {
+        fontSize,
+        rowHeight: height
+    } = useContext(ContextMenu)
+
+    if(!text || !fontSize || !height) return <></>
+
 
 
     const typeIndex = Object.values(position.data).findIndex(v => v === text)
 
     const type = Object.keys(position.data)[typeIndex]
 
-    // console.log("ype", type)
 
     if(type === 'NAME'){
 

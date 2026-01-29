@@ -1,12 +1,13 @@
 'use client'
 
 import { useEffect, useMemo, useState } from "react";
-import { CameraProps, Canvas } from "@react-three/fiber";
-import { useTexture, Environment, OrbitControls } from "@react-three/drei";
+import { CameraProps } from "@react-three/fiber";
+import { useTexture } from "@react-three/drei";
 import { courseShort, TypeProject } from "@/types/project-type";
 import  * as THREE from 'three'
 import { fileDataIO } from "@/data/fileData";
 import { sanitizeForUrl } from "@/util/sanitizeForUrl";
+import SceneWrapper from "../SceneWrapper";
 
 interface Props{
     item: TypeProject;
@@ -38,6 +39,7 @@ function Book({
     onDimensions
 }: BookProps) {
 
+
     // Load only when values exist
     const [front, back, spineTex, pagesTex, pagesTopText, pagesBottomText] = useTexture(
         [
@@ -58,8 +60,7 @@ function Book({
         const frontImg = front.image as HTMLImageElement;
         const spineImg = spineTex.image as HTMLImageElement;
 
-        // 
-        onDimensions({
+        const dimensions = {
             front: {
                 w: frontImg.naturalWidth,
                 h: frontImg.naturalHeight,
@@ -70,7 +71,10 @@ function Book({
                 h: spineImg.naturalHeight,
                 aspect: spineImg.naturalWidth / spineImg.naturalHeight,
             },
-        });
+        }
+
+        // 
+        onDimensions(dimensions);
 
     }, [front, spineTex, onDimensions]);
 
@@ -106,7 +110,7 @@ function Book({
     );
 }
 
-export default function ParametricBook({ item, type = "interact",  setShowButton, autoRotateSpeed = 1 }: Props) {
+export default function SceneBook({ item, type = "interact",  setShowButton, autoRotateSpeed = 1 }: Props) {
 
     // 
     const filenameFallback = 'mona_kerntke'
@@ -123,7 +127,6 @@ export default function ParametricBook({ item, type = "interact",  setShowButton
 
     const studentName = foundData ? name : "mona_kerntke"
     // const data = fileDataIO[name]
-    // console.log(name, fileDataIO, fileDataIO[name])
 
     // const fileFormat = 'jpg'
     const fileFormat = 'webp'
@@ -149,7 +152,7 @@ export default function ParametricBook({ item, type = "interact",  setShowButton
     function handleCoverDims({ front, spine }: { front: any; spine: any; }) {
 
          // your chosen physical height
-        const targetHeight = 0.24 * 2;
+        const targetHeight = 0.24 * 1;
 
         // Front cover
         const coverWidth = targetHeight * front.aspect;
@@ -177,19 +180,7 @@ export default function ParametricBook({ item, type = "interact",  setShowButton
     }
 
     // 
-    const camSettings = type === 'orbit' 
-        ? orbitCam 
-        : interactCam
-
-    // 
     return (
-        <>
-            <Canvas
-            // shadows
-            camera={camSettings}
-            // camera={{ position: [0.02, 0.4, 0.6], fov: 80 }}
-            style={{ height: "100%" }}
-            >
                 <group 
                 onPointerEnter={() => setShowButton(true)}
                 onPointerLeave={() => setShowButton(false)}
@@ -204,38 +195,5 @@ export default function ParametricBook({ item, type = "interact",  setShowButton
                     onDimensions={handleCoverDims}
                     />
                 </group>
-
-                <mesh
-                    receiveShadow
-                    rotation={[-Math.PI / 2, 0, 0]}
-                    position={[0, -height / 2 - 0.002, 0]}
-                >
-                    <planeGeometry args={[2, 2]} />
-                    <shadowMaterial opacity={0.25} />
-                </mesh>
-
-                {/*  */}
-                <Environment preset="studio" environmentIntensity={0.3} />
-
-                {/* rotation + zoom controls */}
-                {type === 'interact' ? 
-                    <OrbitControls
-                    makeDefault
-                    // enablePan
-                    enableZoom={false}
-                    enableRotate
-                    />
-                    :
-                    <OrbitControls
-                    makeDefault 
-                    autoRotate
-                    autoRotateSpeed={autoRotateSpeed}   // adjust speed
-                    enableRotate={false}
-                    enableZoom={false}
-                    enablePan={false}
-                    />
-                }
-            </Canvas>
-        </>
     );
 }

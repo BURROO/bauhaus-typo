@@ -9,6 +9,7 @@ interface IContext {
   rowHeight: number|null;
   setActiveIndex: (valie: number|null) => void;
   activeIndex: null|number;
+  fontSize: null|number;
 }
 
 export const ContextMenu = React.createContext<IContext>({
@@ -17,6 +18,7 @@ export const ContextMenu = React.createContext<IContext>({
   rowHeight: null,
   setActiveIndex: () => {},
   activeIndex: null,
+  fontSize: null
 });
 
 
@@ -25,7 +27,6 @@ export const ContextMenuProvider = ({
 }: {
   children: ReactNode;
 }) => {
-  // console.log('props', props);
   // Set the initial mode
   const [screenWidth, setScreenWidth] = useState<number|null>(null);
   const [screenHeight, setScreenHeight] = useState<number|null>(null);
@@ -41,6 +42,7 @@ export const ContextMenuProvider = ({
   // const divider = screenHeight !== null ? Math.floor( 40 - screenHeight * 0.03) :  1
 
   const rowHeight = screenHeight !== null ? (screenHeight / divider) : 0
+  const fontSize = rowHeight * 0.8
   
 
   useEffect(() => {
@@ -67,14 +69,16 @@ export const ContextMenuProvider = ({
       screenHeight,
       rowHeight,
       activeIndex,
-      setActiveIndex
+      setActiveIndex,
+      fontSize
     }),
     [
       screenWidth,
       screenHeight,
       rowHeight,
       activeIndex,
-      setActiveIndex
+      setActiveIndex,
+      fontSize
     ]
   );
 

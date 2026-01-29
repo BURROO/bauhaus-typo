@@ -34,5 +34,3 @@ fs.writeFileSync(
   OUT_FILE,
   JSON.stringify(assets, null, 2)
 )
-
-// console.log(`✅ Generated ${assets.length} assets`)

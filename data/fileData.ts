@@ -100,7 +100,39 @@ export const fileDataIO = {
     'susan_arian_julide_nur_alemdar': {
         // dir: `/images/bml`,
         count: 10,
-        fileType: 'jpg'
+        fileType: 'jpg',
+        front: [
+            { metalness: 0 },
+            { metalness: 0 },
+            { metalness: 0 },
+        ],
+        back: [
+            { metalness: 0 },
+        ],
+    },
+    'first_year': {
+        // dir: `/images/bml`,
+        count: 10,
+        fileType: 'jpg',
+        front: [
+            { metalness: 0 },
+        ],
+        back: [
+            { metalness: 0 },
+        ],
+    },
+    'mona_kerntke_yasmina_khalil_lea_sailer_anna_lena_welz': {
+        // dir: `/images/bml`,
+        count: 10,
+        fileType: 'jpg',
+        front: [
+            { metalness: 0 },
+            { metalness: 0 },
+            { metalness: 0 },
+        ],
+        back: [
+            { metalness: 0 },
+        ],
     },
     'franziska_glutig_luise_motsch': {
         // dir: `/images/tg/content`,
@@ -118,13 +150,3 @@ export const fileDataIO = {
         fileType: 'JPG'
     }
 }
-
-
-export const assets = [
-    `/images/om/elsa_babtist/elsa_babtist_front.webp`,
-    `/images/om/elsa_babtist/elsa_babtist_back.webp`,
-    `/images/om/elsa_babtist/elsa_babtist_spine.webp`,
-    `/images/om/hannes_altmann/hannes_altmann_front.webp`,
-    `/images/om/hannes_altmann/hannes_altmann_back.webp`,
-    `/images/om/hannes_altmann/hannes_altmann_spine.webp`,
-]

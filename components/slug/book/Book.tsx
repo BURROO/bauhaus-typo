@@ -2,9 +2,11 @@
 
 import { TypeProject } from "@/types/project-type"
 import styles from './Book.module.css'
-import ParametricBook from "./ParametricBook"
+import SceneBook from "../../landing/three/book/SceneBook"
 import { useState } from "react"
 import Slideshow from "../../general/Slideshow"
+import SceneWrapper from "@/components/landing/three/SceneWrapper"
+import { CameraProps } from "@react-three/fiber"
 
 
 interface Props {
@@ -12,25 +14,32 @@ interface Props {
 }
 
 const Book = ({ item }: Props) => {
-    // console.log("book", item)
-
 
     const [view, setView] = useState<'cover'|'content'>('cover')
 
-
-    const index = item.NAME.length % 2 + 1
+    // const index = item.NAME.length % 2 + 1
     const [showButton, setShowButton] = useState(false)
 
+    const interactCam: CameraProps = {
+        position: [0.02, 0.4, 0.6], 
+        fov: 45 
+    }
 
     return (
         <>
             <div className={styles.book}>
                 {view === "cover" && (
-                    <ParametricBook
-                    type="interact"
-                    item={item}
-                    setShowButton={setShowButton}
-                    />
+                    <SceneWrapper
+                    camSettings={interactCam}
+                    type={"interact"}
+                    autoRotateSpeed={0}
+                    >
+                        <SceneBook
+                        type="interact"
+                        item={item}
+                        setShowButton={setShowButton}
+                        />
+                    </SceneWrapper>
                 )}
                 {view === "content" && (
                     <Slideshow

@@ -120,19 +120,10 @@ const List = ({ dataStudents, dataCourses}: Props) => {
     }, [ofst])
 
 
-    const allCourses: Set<TypeCoursesNames> = new Set((dataStudents.map((item: TypeProject) => item.COURSE)))
-
-    // const course = filter && dataCourses.find(course => course.COURSE) || null
-
-    const activeProject = activeIndex !== null && dataStudents.find(d => d.index === activeIndex) || null
-
     const courseInfo: TypeCourse|null = dataCourses.find(k => k.COURSE === filter) || null
 
     if(rowHeight === null) return <></>
 
-
-
-    if(!ready) return <Preloader onDone={() => setReady(true)} />
 
     return (
         <>
@@ -143,15 +134,8 @@ const List = ({ dataStudents, dataCourses}: Props) => {
                 <div
                 className={styles.scrollWrapperInner}
                 />
-                {
-                    activeProject !== null &&
-                    <Overlay item={activeProject} autoRotateSpeed={6}/>
-                }
-                {/* <ul 
-                >
-                    <ListHeader rowHeight={rowHeight} />
-                
-                </ul> */}
+            
+                <Overlay dataStudents={dataStudents} autoRotateSpeed={2}/>
                 {
                     screenHeight && rowHeight && filter !== "" &&
                     <ListCourse
@@ -186,22 +170,13 @@ const List = ({ dataStudents, dataCourses}: Props) => {
                     <Background text={"Bauhaus Typography"} dir={1}/>
                     <Background text={"EXHIBITION"} dir={-1}/>
                 </div>
-                
-
-
-
-
             </div>
-
-
             <ListSVG
             dataStudents={dataStudents}
             dataCourses={dataCourses}
             filter={filter}
             searchTerm={searchTerm}
             firstIndex={firstIndex}
-            // setActiveIndex={setActiveIndex}
-            // activeIndex={activeIndex}
             />
        </>
     )

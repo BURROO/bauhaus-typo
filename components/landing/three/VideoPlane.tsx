@@ -1,11 +1,11 @@
 'use client'
 
-import { checkIfAssetExists } from '@/util/checkIfAssetExists'
-import { useEffect, useMemo, useRef } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import * as THREE from 'three'
 
 type Props = {
   src: string
+  loaderSrc?: string
   rotate: [number, number, number]
   position?: [number, number, number]
   size: [number, number]
@@ -13,65 +13,75 @@ type Props = {
 
 export default function VideoPlane({
   src,
+  loaderSrc,
   position,
   rotate,
-  // size = [2, 1.125],
   size,
 }: Props) {
   const videoRef = useRef<HTMLVideoElement | null>(null)
+  const [ready, setReady] = useState(false)
+  const [usingLoader, setUsingLoader] = useState(true)
 
-
-
-  // 1️⃣ Create video ONCE
+  // Initialize video only once
   if (!videoRef.current) {
     const video = document.createElement('video')
     video.crossOrigin = 'anonymous'
     video.loop = true
     video.muted = true
     video.playsInline = true
-    video.autoplay = true
     video.preload = 'auto'
     videoRef.current = video
   }
 
-  // 2️⃣ Update src ONLY when it changes
   useEffect(() => {
     const video = videoRef.current!
-
-
-  
-    const isAssetAvailable = checkIfAssetExists(src)
-  
-    console.log("isAssetAvailable", isAssetAvailable, src)
-
-    if(isAssetAvailable){
-    
-      
-        // if(!isAssetAvailable) return <></>
-      video.src = src
+    const trySrc = async (srcToTry: string) => {
+      video.src = srcToTry
       video.currentTime = 0
 
-      video.play().catch(() => {
-        console.warn('Video playback blocked')
+      // wait until video can play
+      const canPlay = new Promise<void>((resolve, reject) => {
+        const onCanPlay = () => {
+          resolve()
+          video.removeEventListener('canplaythrough', onCanPlay)
+        }
+        const onError = () => {
+          reject()
+          video.removeEventListener('error', onError)
+        }
+
+        video.addEventListener('canplaythrough', onCanPlay)
+        video.addEventListener('error', onError)
       })
-    }else{
-      video.src = ""
-      video.currentTime = 0
 
-      // video.play().catch(() => {
-      //   console.warn('Video playback blocked')
-      // })
+      try {
+        await canPlay
+        await video.play()
+        setReady(true)
+        setUsingLoader(false)
+      } catch {
+        console.warn('Video playback blocked or failed', srcToTry)
+        setReady(false)
+        setUsingLoader(true)
+      }
+    }
+
+    if (loaderSrc) {
+      // start with loader first
+      trySrc(loaderSrc).then(() => {
+        // then try the real video
+        if (src) trySrc(src)
+      })
+    } else {
+      if (src) trySrc(src)
     }
 
     return () => {
       video.pause()
-      video.src = ''
-      texture.dispose()
     }
+  }, [src, loaderSrc])
 
-  }, [src])
-
-  // 3️⃣ Create texture ONCE
+  // create THREE texture once
   const texture = useMemo(() => {
     const tex = new THREE.VideoTexture(videoRef.current!)
     tex.colorSpace = THREE.SRGBColorSpace
@@ -79,18 +89,7 @@ export default function VideoPlane({
     tex.magFilter = THREE.LinearFilter
     tex.generateMipmaps = false
     return tex
-
-
-    
-  }, [src])
-
-
-  // const isAssetAvailable = checkIfAssetExists(src)
-
-  // // console.log("isAssetAvailable", isAssetAvailable, src)
-
-
-  // if(!isAssetAvailable) return <></>
+  }, [])
 
   return (
     <mesh position={position} rotation={rotate}>
@@ -99,59 +98,9 @@ export default function VideoPlane({
         map={texture}
         toneMapped={false}
         side={THREE.DoubleSide}
+        transparent
+        opacity={ready ? 1 : 0.5} // fade in when ready
       />
     </mesh>
   )
 }
-
-
-
-
-// 'use client'
-
-// import { useEffect, useRef } from 'react'
-// import { useFrame } from '@react-three/fiber'
-// import * as THREE from 'three'
-
-// type Props = {
-//   src: string
-//   position?: [number, number, number]
-//   size?: [number, number]
-// }
-
-// export default function VideoPlane({
-//   src,
-//   position = [0, 0, -2],
-//   size = [2, 1.125],
-// }: Props) {
-//   const meshRef = useRef<THREE.Mesh>(null)
-//   const video = useRef<HTMLVideoElement>(null)
-
-//   useEffect(() => {
-//     video.current = document.createElement('video')
-//     video.current.src = src
-//     video.current.crossOrigin = 'anonymous'
-//     video.current.loop = true
-//     video.current.muted = true
-//     video.current.playsInline = true
-//     video.current.play()
-//   }, [src])
-
-//   useFrame(() => {
-//     if (meshRef.current && video.current) {
-//       const texture = new THREE.VideoTexture(video.current)
-//       texture.colorSpace = THREE.SRGBColorSpace
-//       // @ts-ignore
-//       meshRef.current.material.map = texture
-//       // @ts-ignore
-//       meshRef.current.material.needsUpdate = true
-//     }
-//   })
-
-//   return (
-//     <mesh ref={meshRef} position={position}>
-//       <planeGeometry args={size} />
-//       <meshBasicMaterial toneMapped={false} />
-//     </mesh>
-//   )
-// }
