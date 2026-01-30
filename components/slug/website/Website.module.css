@@ -54,13 +54,7 @@
   bottom: 12px;
   left: 50vw;
   transform: translateX(-50%);
-  background: cyan;
-  padding: 5px;
-  border-radius: 3px;
   z-index: 10;
-  outline: 0;
-  border: none;
-  cursor: pointer;
 }
 
 .websiteIframe{

@@ -57,6 +57,10 @@ const Overlay = ({
     return (
         <div 
         className={styles.overlay}
+        style={{ 
+            visibility: activeIndex === null ? 'hidden' : 'visible',
+            pointerEvents: activeIndex === null ? 'none' : 'all'
+        }}
         >
             <SceneWrapper camSettings={orbitCam} autoRotateSpeed={6} type={"orbit"}>
                 {activeProject && <>

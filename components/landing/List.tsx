@@ -11,7 +11,7 @@ import ListHeader from './ListHeader';
 // import { render } from '@react-pdf/renderer';
 import ListCourse from './ListCourse';
 import Background from './Background';
-import ListSVG from './ListSVG';
+import ListSVG from './svg/ListSVG';
 
 interface Props {
     dataStudents: TypeProject[];

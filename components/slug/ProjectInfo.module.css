@@ -4,10 +4,40 @@
   top: 0;
   right: 0;
   transition: 0.2s;
-  min-height: 33vh;
-  background: var(--grayTransparent);
-  background: rgba(255,255,255,0.4);
-  backdrop-filter: blur(20px);
+}
+
+.projectInfo ul{
+  display: grid;
+  grid-template-columns: 2fr 2fr 2fr 2fr 1fr;
+  list-style: none;
+  text-transform: uppercase;
+  font-family: "UfficioMono-Bold";
+  width: 100vw;
+}
+.projectInfo ul li{
+  font-family: "UfficioMono-Bold";
+  color: black;
+}
+
+@media screen and (max-width: 1300){
+
+  .projectInfo ul{
+    grid-template-columns: 2fr 2fr 69px;
+  }
+  .projectInfo ul > li:nth-child(3){ display: none }
+  .projectInfo ul > li:nth-child(4){ display: none }
+  .projectInfo ul > li:nth-child(6){ display: none }
+}
+
+@media screen and (max-width: 1000){
+  .projectInfo ul{
+    grid-template-columns: 2fr 2fr;
+  }
+  .projectInfo ul > li:nth-child(3){ display: none }
+  .projectInfo ul > li:nth-child(4){ display: none }
+  .projectInfo ul > li:nth-child(5){ display: none }
+  .projectInfo ul > li:nth-child(6){ display: none }
+  .projectInfo ul > li:nth-child(7){ display: none }
 }
 
 .projectInfo button{

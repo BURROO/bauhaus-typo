@@ -7,6 +7,7 @@ import { getUrlVideo, sanitizeForUrl } from '@/util/sanitizeForUrl'
 import SceneMacbook from '@/components/landing/three/macbook/SceneMacbook'
 import SceneWrapper from '@/components/landing/three/SceneWrapper'
 import { CameraProps } from '@react-three/fiber'
+import Button from '@/components/general/Button'
 
 interface Props {
     item: TypeProject
@@ -41,18 +42,21 @@ const Website = ({ item }: Props) => {
         position: [
             0.0, 
             0.0, 
-            0.4
+            0.35
         ], 
         fov: 45 
     }
 
     return (
         <div className={styles.website}>
-            <button 
+            <div 
             className={styles.switch}
-            onClick={() => setView(view === "iframe" ? "video" : "iframe")}>{
-                view === "video" ? "Try Website" : "See Showcase"}
-            </button>
+            onClick={() => setView(view === "iframe" ? "video" : "iframe")}>
+                     <Button 
+                    onClick={() => setView(view === "iframe" ? "video" : "iframe")}
+                    text={view === "video" ? "Try Website" : "See Showcase"}
+                    />
+            </div>
             {
                 view === 'iframe' && src &&(
                     <WebIframe src={src} />

@@ -49,6 +49,7 @@ export const ContextMenuProvider = ({
     const handleResize = () => {
       setScreenWidth(window.innerWidth)
       setScreenHeight(window.innerHeight)
+      console.log("handle resize")
     };
 
     handleResize()

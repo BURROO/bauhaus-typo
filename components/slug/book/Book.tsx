@@ -7,6 +7,7 @@ import { useState } from "react"
 import Slideshow from "../../general/Slideshow"
 import SceneWrapper from "@/components/landing/three/SceneWrapper"
 import { CameraProps } from "@react-three/fiber"
+import Button from "@/components/general/Button"
 
 
 interface Props {
@@ -21,7 +22,8 @@ const Book = ({ item }: Props) => {
     const [showButton, setShowButton] = useState(false)
 
     const interactCam: CameraProps = {
-        position: [0.02, 0.4, 0.6], 
+        // position: [0.02, 0.4, 0.6], 
+        position: [0.02, 0.2, 0.3], 
         fov: 45 
     }
 
@@ -49,16 +51,13 @@ const Book = ({ item }: Props) => {
                     />
                 )}
             </div>
-            {
-                showButton && 
-                <button 
-                onMouseOver={() => setShowButton(true)}
+            
+            <div className={styles.button}>
+                <Button
                 onClick={() => setView(view === "content" ? "cover" : "content")}
-                className={styles.button}
-                >
-                   Look {view === "content" ? "outside" : "inside"}
-                </button>
-            }
+                text={`Look ${view === "content" ? "outside" : "inside"}`}
+                />
+            </div>
         </>
     )
 }

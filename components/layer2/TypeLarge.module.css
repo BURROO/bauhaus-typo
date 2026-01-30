@@ -26,7 +26,7 @@
 .typeLarge h1 > span,
 .typeLarge h2 > span{
   /*  */
-  font-family: "UfficioMono-Black";
+  font-family: "UfficioMono-Bold";
   /* font-family: Arial, Helvetica, sans-serif; */
   font-weight: bold;
   font-size: 9vw;

@@ -1,0 +1,18 @@
+
+
+.button{
+    position: relative;
+    /* position: fixed; */
+    /* bottom: 12px;
+    left: 50vw; */
+    /* transform: translateX(-50%); */
+    font-family: "UfficioMono-Bold";
+    text-transform: uppercase;
+    background: cyan;
+    padding: 2px 15px;
+    /* border-radius: 3px; */
+    z-index: 10;
+    outline: 0;
+    border: none;
+    cursor: pointer;
+}

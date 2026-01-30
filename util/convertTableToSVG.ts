@@ -1,4 +1,4 @@
-import { txtLeftOfst } from "@/components/landing/ListSVG";
+import { txtLeftOfst } from "@/components/landing/svg/ListSVG";
 import { TypeCoursesNames, TypeProject, TypeProjectForSVG } from "@/types/project-type";
 
 
@@ -97,20 +97,19 @@ interface Props{
 }
 
 
-interface Return {
-    textToRender: TypeProjectForSVG[][];
-    svgPath: string;
-}
-
-
 
 export const convertTableToSVG = ({ data, screenWidth, screenHeight, rowHeight, activeIndex }: Props): TypeProjectForSVG[][] => {
 
+    console.log("data", data)
+    console.log("screenWidth", screenWidth)
+    console.log("screenHeight", screenHeight)
+    console.log("rowHeight", rowHeight)
 
     if(screenWidth === null || screenHeight === null || rowHeight === null) return []
 
     // let svgPath = ``;
 
+    console.log("data after", data)
 
 
     const textToRender: TypeProjectForSVG[][]= []
@@ -123,6 +122,8 @@ export const convertTableToSVG = ({ data, screenWidth, screenHeight, rowHeight, 
     const padding = 0
     // const padding = 12
     const rowWidth = screenWidth-padding*2
+
+
 
     data.forEach((item: TypeProject, i, all) => {
 
@@ -209,7 +210,6 @@ export const convertTableToSVG = ({ data, screenWidth, screenHeight, rowHeight, 
 
         textToRender.push(rowTextToRender) 
     })
-
 
     return textToRender
 }

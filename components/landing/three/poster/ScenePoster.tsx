@@ -105,8 +105,10 @@ function ScenePosterInner({
       clearcoatRoughness: 0.2,
 
       normalScale: new THREE.Vector2(
-        1 + i * 0.2,
-        1 + i * 0.2
+        // 1 + i * 0.2,
+        // 1 + i * 0.2
+        (i+1) * 0.02,
+        (i+1) * 0.02
       ),
     });
   });
@@ -220,7 +222,7 @@ if (!frontTextures[0]) return null;
         <mesh
           key={i}
           geometry={geometry}
-          position={[0, 0, i * 0.002]} // tiny depth separation
+          position={[0, 0, i * 0.0002]} // tiny depth separation
           // rotation={[0, Math.PI, 0]}
           castShadow
           receiveShadow

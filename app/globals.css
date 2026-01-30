@@ -19,14 +19,14 @@
 
 @font-face {
   font-family: "UfficioMono-Bold";
-  src: url(/fonts/UfficioMono-600.woff2);
+  src: url(/fonts/UfficioMono-800.woff2);
 }
 
 
-@font-face {
+/* @font-face {
   font-family: "UfficioMono-Black";
-  src: url(/fonts/UfficioMono-900.woff2);
-}
+  src: url(/fonts/UfficioMono-800.woff2);
+} */
 
 html,
 body {
