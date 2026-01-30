@@ -55,7 +55,6 @@ export const useAnimation = ({
                 const value = time * item.speed + phase
 
                 if (item.attribute === 'rotation') {
-                    // g.rotation[item.axis] += value
 
                     // baseRot.current[i][item.axis] +
                     //     time * item.speed +
