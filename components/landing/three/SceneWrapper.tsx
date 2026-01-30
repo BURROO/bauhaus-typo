@@ -11,7 +11,12 @@ interface Prop {
     type: "orbit" | "interact"
 }
 
-const SceneWrapper = ({ camSettings, children, autoRotateSpeed, type }: Prop) => {
+const SceneWrapper = ({
+    camSettings,
+    children,
+    autoRotateSpeed,
+    type 
+}: Prop) => {
 
     return (
        <Canvas 

@@ -35,7 +35,7 @@ const Book = ({ item }: Props) => {
                     autoRotateSpeed={0}
                     >
                         <SceneBook
-                        type="interact"
+                        // type="interact"
                         item={item}
                         setShowButton={setShowButton}
                         />

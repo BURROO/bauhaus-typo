@@ -11,9 +11,9 @@ import SceneWrapper from "../SceneWrapper";
 
 interface Props{
     item: TypeProject;
-    type: 'orbit' | 'interact';
+    // type: 'orbit' | 'interact';
     setShowButton: (value: boolean) => void;
-    autoRotateSpeed?: number;
+    // autoRotateSpeed?: number;
 }
 
 interface BookProps {
@@ -110,7 +110,10 @@ function Book({
     );
 }
 
-export default function SceneBook({ item, type = "interact",  setShowButton, autoRotateSpeed = 1 }: Props) {
+export default function SceneBook({ 
+    item, 
+    setShowButton, 
+}: Props) {
 
     // 
     const filenameFallback = 'mona_kerntke'
@@ -165,23 +168,9 @@ export default function SceneBook({ item, type = "interact",  setShowButton, aut
     }
 
     // 
-    const orbitCam: CameraProps = {
-        zoom: 17,          // higher = closer
-        // position: [0, 0.4, 0.6],
-        position: [0, 2, 6],
-        near: 0.1,
-        far: 10,
-    }
-
-    // 
-    const interactCam: CameraProps = {
-        position: [0.02, 0.4, 0.6], 
-        fov: 45 
-    }
-
-    // 
     return (
                 <group 
+                rotation={[0,Math.PI,0]}
                 onPointerEnter={() => setShowButton(true)}
                 onPointerLeave={() => setShowButton(false)}
                 >

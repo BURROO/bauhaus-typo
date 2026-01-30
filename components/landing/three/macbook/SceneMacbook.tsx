@@ -12,11 +12,11 @@ import SceneWrapper from '../SceneWrapper'
 
 interface Props{
   item: TypeProject;
-  rotationSpeed: number;
   type: 'orbit' | 'interact';
+  isDouble: boolean;
 }
 
-export default function SceneMacbook({ item, rotationSpeed, type }: Props) {
+export default function SceneMacbook({ item, type , isDouble}: Props) {
 
   // const src = `/images/tt/showcase/mai_do_showcase.mp4`
 
@@ -41,9 +41,9 @@ export default function SceneMacbook({ item, rotationSpeed, type }: Props) {
   return (
       <group>
     
-          <ModelWithScreen position={[0,0,screensOfst]} src={src} />
+        <ModelWithScreen position={[0,0,screensOfst]} src={src} />
         {
-          type === "orbit" && (
+          type === "orbit" && isDouble && (
             <ModelWithScreen position={[0,0,-screensOfst]} rotation={[0,Math.PI,0]}  src={src} />
           )
         }

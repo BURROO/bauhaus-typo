@@ -78,7 +78,7 @@ const OverlayMac = ({ item, autoRotateSpeed }: { item: TypeProject, autoRotateSp
 
     return (
     
-        <SceneMacbook type="orbit" item={item} rotationSpeed={autoRotateSpeed}/>
+        <SceneMacbook type="orbit" item={item} isDouble={true}/>
     )
 }
 
@@ -87,7 +87,7 @@ const OverlayBook = ({ item, autoRotateSpeed }: { item: TypeProject; autoRotateS
     // Handle
 
     return (
-        <SceneBook type="orbit" item={item} setShowButton={() => {}} autoRotateSpeed={autoRotateSpeed}/>
+        <SceneBook item={item} setShowButton={() => {}} />
     )
 }
 
@@ -99,8 +99,6 @@ const OverlayPoster = ({ item, autoRotateSpeed }: { item: TypeProject; autoRotat
         type="orbit"
         item={item}
         rolled={true}
-        // setShowButton={() => {}} 
-        autoRotateSpeed={autoRotateSpeed}
         />
     )
 }

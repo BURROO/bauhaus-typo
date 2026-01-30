@@ -1,7 +1,6 @@
-import { useEffect, useMemo, useRef } from "react";
+import {  useMemo, useRef } from "react";
 import * as THREE from "three";
 import { useTexture } from "@react-three/drei";
-import SceneWrapper from "../SceneWrapper";
 import { CameraProps, useFrame } from "@react-three/fiber";
 import { courseShort, TypeProject } from "@/types/project-type";
 import { fileDataIO } from "@/data/fileData";
@@ -12,12 +11,10 @@ interface PosterProps {
     item: TypeProject;
     folded?: boolean;      // if true, simulate a fold
     rolled?: boolean;      // if true, simulate rolled poster
-    autoRotateSpeed: number,
 }
 
 
 export default function ScenePosterWrapper({
-  autoRotateSpeed,
   type,
   item
 }: PosterProps){
@@ -50,7 +47,6 @@ export default function ScenePosterWrapper({
       <ScenePosterInner
       type={type}
       item={item}
-      autoRotateSpeed={autoRotateSpeed}
       />
     // </SceneWrapper>
   )

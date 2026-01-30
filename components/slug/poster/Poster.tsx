@@ -42,7 +42,6 @@ const Poster = ({ item }: Props) => {
                         <ScenePosterWrapper
                         type="interact"
                         item={item}
-                        autoRotateSpeed={0}
                         />
                     </SceneWrapper>
                 )}
