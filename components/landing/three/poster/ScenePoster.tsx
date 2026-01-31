@@ -8,7 +8,7 @@ import { sanitizeForUrl } from "@/util/sanitizeForUrl";
 
 interface PosterProps {
     type: 'orbit' | 'interact';
-    item: TypeProject;
+    item: TypeProject|null;
     folded?: boolean;      // if true, simulate a fold
     rolled?: boolean;      // if true, simulate rolled poster
 }
@@ -38,39 +38,37 @@ export default function ScenePosterWrapper({
       ? orbitCam 
       : interactCam
 
+
+  if(!item) return null
+
   return (
-    // <SceneWrapper
-    // camSettings={camSettings}
-    // type={type}
-    // autoRotateSpeed={autoRotateSpeed}
-    // >
+   
       <ScenePosterInner
       type={type}
       item={item}
       />
-    // </SceneWrapper>
   )
+}
+
+
+interface PosterInnerProps {
+    type: 'orbit' | 'interact';
+    item: TypeProject;
+    folded?: boolean;      // if true, simulate a fold
+    rolled?: boolean;      // if true, simulate rolled poster
 }
 
 function ScenePosterInner({
     folded = false,
     rolled = false,
     item,
-}: PosterProps) {
+}: PosterInnerProps) {
   // Load front textures
-
-
 
 
   const kurs = courseShort[item.COURSE].toLowerCase()
   const slug = sanitizeForUrl(item.NAME).split("-").join("_");
 
-
-  // const frontUrls: string[] = useMemo(() => [
-  //   `/images/${kurs}/poster/front_l1.webp`,
-  //   `/images/${kurs}/poster/front_l2.webp`,
-  //   `/images/${kurs}/poster/front_l3.webp`
-  // ], []);
 
   //@ts-ignore
   const frontSettings = fileDataIO[slug]?.front || []
@@ -94,27 +92,27 @@ function ScenePosterInner({
   });
 
   const layerMaterials = useMemo(() => {
-  return frontTextures.map((txt, i) => {
-    return new THREE.MeshPhysicalMaterial({
-      map: txt,
-      transparent: true,
-      side: THREE.DoubleSide,
-      roughness: 0.6 - i * 0.15,   // top layer glossier
-      metalness: 0.05 + i * 0.02,
-      clearcoat: i === 0 ? 0.1 : 0,
-      clearcoatRoughness: 0.2,
+    return frontTextures.map((txt, i) => {
+      return new THREE.MeshPhysicalMaterial({
+        map: txt,
+        transparent: true,
+        side: THREE.DoubleSide,
+        roughness: 0.6 - i * 0.15,   // top layer glossier
+        metalness: 0.05 + i * 0.02,
+        clearcoat: i === 0 ? 0.1 : 0,
+        clearcoatRoughness: 0.2,
 
-      normalScale: new THREE.Vector2(
-        // 1 + i * 0.2,
-        // 1 + i * 0.2
-        (i+1) * 0.02,
-        (i+1) * 0.02
-      ),
+        normalScale: new THREE.Vector2(
+          // 1 + i * 0.2,
+          // 1 + i * 0.2
+          (i+1) * 0.02,
+          (i+1) * 0.02
+        ),
+      });
     });
-  });
 }, [frontTextures]);
 
-  if(item.COURSE === "Bauhaus Master Lectures") rolled = true
+  if(item?.COURSE === "Bauhaus Master Lectures") rolled = true
 
 
 

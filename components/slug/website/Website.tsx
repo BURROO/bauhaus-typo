@@ -70,7 +70,12 @@ const Website = ({ item }: Props) => {
                         type={"interact"}
                         autoRotateSpeed={0}
                         >
-                            <SceneMacbook item={item} isDouble={false} type='interact'/>
+                            <SceneMacbook
+                            item={item}
+                            isDouble={false}
+                            type='interact'
+                            visible={true}
+                            />
                         </SceneWrapper>
                     </div>
                 )

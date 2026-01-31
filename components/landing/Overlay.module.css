@@ -21,6 +21,10 @@
   overflow: hidden;
 }
 
+.overlay * {
+  pointer-events: none;
+}
+
 .overlay img,
 .overlay video,
 .overlay iframe{

@@ -32,7 +32,7 @@ const AnimationBook = ({ data, animation, radius }: { data: TypeProject[], anima
             >
                 <group rotation={[0.1, 0.2, Math.PI/2]}>
                     <SceneBook
-                    setShowButton={() => {}}
+                    visible={true}
                     item={d} 
                     />
                 </group>

@@ -49,6 +49,7 @@ const AnimationWebsite = ({ data, animation, radius }: { data: TypeProject[], an
             >
                 <group rotation={[0.1, 0.2, Math.PI/2]}>
                     <SceneMacbook
+                    visible={true}
                     // setShowButton={() => {}}
                     item={d} 
                     isDouble={false}

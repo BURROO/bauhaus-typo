@@ -38,8 +38,9 @@ const Book = ({ item }: Props) => {
                     >
                         <SceneBook
                         // type="interact"
+                        visible={true}
                         item={item}
-                        setShowButton={setShowButton}
+                        // setShowButton={setShowButton}
                         />
                     </SceneWrapper>
                 )}

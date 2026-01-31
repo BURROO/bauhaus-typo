@@ -1,14 +1,12 @@
 'use client'
 
-import { useContext, useEffect, useMemo, useRef, useState } from 'react'
+import { useContext, useEffect, useRef, useState } from 'react'
 import styles from './List.module.css'
-import {  TypeCourse, TypeCoursesNames, TypeProject } from '@/types/project-type';
+import {  TypeCourse,TypeProject } from '@/types/project-type';
 import Overlay from './Overlay';
 import ListFooter from './ListFooter';
-// import TypeLarge from '../layer2/TypeLarge';
 import { ContextMenu } from '../context/ContextMenu';
-import ListHeader from './ListHeader';
-// import { render } from '@react-pdf/renderer';
+// import ListHeader from './ListHeader';
 import ListCourse from './ListCourse';
 import Background from './Background';
 import ListSVG from './svg/ListSVG';
@@ -25,26 +23,12 @@ interface Sorting {
     direction: 'asc' | 'desc'
 }
 
-interface Filter {
-
-}
-
-
 const List = ({ dataStudents, dataCourses}: Props) => {
-
-    // const [activeIndex, setActiveIndex] = useState<number|null>(null)
-    // const doublicatedData = useMemo(() => [...cloneDeep(dataStudents), ...cloneDeep(dataStudents)], dataStudents)
-
-    const [ready, setReady] = useState(false)
 
     const {
         screenHeight,
-        screenWidth,
         rowHeight,
-        // setActiveIndex,
-        activeIndex 
      } = useContext(ContextMenu)
-
 
     const scrollPos = useRef(2000)
     const [ofst, setOfst] = useState(0)
@@ -71,10 +55,7 @@ const List = ({ dataStudents, dataCourses}: Props) => {
 
             const scrollInc = e.deltaY
 
-            // const dir = Math.sign(scrollInc)
-
             const itemsToRemove = 1 + Math.floor(Math.abs(scrollInc)/10)
-            // const itemsToRemove = 1 
 
             scrollPos.current = scrollInc+scrollPos.current
 
@@ -82,9 +63,7 @@ const List = ({ dataStudents, dataCourses}: Props) => {
 
             setOfst(newOfst)
 
-
             if(refContainer.current){
-
 
                 if(scrollPos.current >= itemHeight){
 
