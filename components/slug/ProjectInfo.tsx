@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { useContext, useState } from 'react'
 import { ContextMenu } from '../context/ContextMenu'
 import ListSVGOneRow from '../landing/svg/ListSVGOneRow'
+import ButtonLink from '../general/ButtonLink'
 
 interface Props{
     project: TypeProject
@@ -25,24 +26,18 @@ const ProjectInfo = ({ project }:Props) => {
         // style={{ display: "flex", flexDirection: "column"}}
         >
             <div 
+            className={styles.projectInfoInner} 
+
             onClick={() => setIsOpen(!isOpen)}
             style={{
-                position: "relative",
-                top: 0,
-                left: 0,
-                cursor: "pointer",
-                zIndex: isOpen ? 1 : 0,
                 paddingBottom: rowHeight || 0,
             }}
             >
-                <div style={{ 
-                    backdropFilter: "blur(20px)", 
-                    // opacity: 0.9, 
-                    background: "rgba(200,200,200,0.7)",
-                    fontSize: 0,
-                    padding: 0,
-                    margin: 0,
-                    height: isOpen ? "50vh" : rowHeight || 0
+                <div
+                className={styles.header} 
+                style={{ 
+                    height: rowHeight || 0
+                    // height: isOpen ? "30vh" : rowHeight || 0
                 }}>
                     <ul style={{ display: "grid", fontSize }}>
                         <li style={{ fontSize }}>{project.NAME}</li>
@@ -55,23 +50,18 @@ const ProjectInfo = ({ project }:Props) => {
                     </ul>
                 </div>
                 <div 
+                className={styles.dropDown} 
                 onClick={() => !isOpen && setIsOpen(!isOpen)}
                 style={{
-                    position: "absolute",
                     fontSize,
-                    top: 0,
-                    bottom: 0,
-                    left: 0,
-                    right: 0,
-                    maxWidth: 800
-                }}>
-                    <div style={{
+                }}>                    
+                    <div
+                    className={styles.dropDownBG} 
+                    />
+                    <div
+                    className={styles.dropDownInner} 
+                    style={{
                         display: isOpen ? "" : "none",
-                        position: "relative",
-                        fontSize: 0,
-                        margin: 0,
-                        textTransform: "uppercase",
-                        padding: `100px 4px 0 4px`,
                     }}>
                         <div style={{
                         fontSize: fontSize || '',
@@ -81,28 +71,11 @@ const ProjectInfo = ({ project }:Props) => {
                             <br/>
                             <p>{project["ENGLISH"]}</p>
                         </div>
-
-                        {/* <div>
-                            <button style={{ cursor: "pointer" }} onClick={() => setIsOpen(!isOpen)}>{isOpen ? "Close" : "Open"} Info</button>
-            
-                        </div>
-
-                        <button style={{ cursor: "pointer" }} onClick={() => setIsOpen(!isOpen)}>{isOpen ? "Close" : "Open"} Info</button> */}
                     </div>
-                    <Link href={`/`}>
-                        <div style={{ 
-                            padding: 0,
-                            margin: 0,
-                            width: 200, 
-                            bottom: 0, 
-                            height: rowHeight || 0,
-                            textTransform: "uppercase",
-                            fontSize: fontSize || '',
-                        }}>
-                            ← Go Back
-                        </div>
-                    </Link>
+
+
                 </div>
+                <ButtonLink href="/" text='Go Back' />
             </div>
         
         </div>

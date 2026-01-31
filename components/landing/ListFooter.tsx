@@ -1,3 +1,4 @@
+import { TypeCourse, TypeCoursesNames } from '@/types/project-type';
 import styles from './ListFooter.module.css'
 
 
@@ -12,14 +13,29 @@ interface Props {
     setFilter: (value: string) => void;
     filter: string;
     setSorting: (value: any) => void;
-    sorting: Sorting
+    // sorting: Sorting
     setSearchTerm: (value: string) => void;
-    searchTerm: string;
+    // searchTerm: string;
     height: number;
 }
 
-const ListFooter = ({ setFilter, filter, setSorting, sorting, setSearchTerm, searchTerm, height }: Props) => {
+const ListFooter = ({
+    setFilter,
+    filter,
+    setSorting,
+    // sorting,
+    setSearchTerm,
+    // searchTerm,
+    height 
+}: Props) => {
 
+
+    const filterOptions: { short: 'TT' | 'OM' | 'PZ' | 'TG'; name: TypeCoursesNames }[] = [
+        { short: "TT", name: "Transcoding Typography" }, 
+        { short: "OM", name: "In Order Of Meaning" }, 
+        { short: "PZ", name: "Handmade Websites as Punk Zines" },
+        { short: "TG", name: '204 Type-Gazette Issue 06' },
+    ]
 
     return (
         <div
@@ -34,12 +50,7 @@ const ListFooter = ({ setFilter, filter, setSorting, sorting, setSearchTerm, sea
             <div style={{ display: "flex"}}>
                 <span>Filter:</span>
                 {
-                    [
-                        { short: "TT", name: "Transcoding Typography" }, 
-                        { short: "OM", name: "In Order Of Meaning" }, 
-                        { short: "PZ", name: "Handmade Websites as Punk Zines" },
-                        // { short: "FP", name: "Free Project" }
-                    ].map((course, i, allCourses) => (
+                    filterOptions.map((course, i, allCourses) => (
                         <span 
                         onClick={(() => setFilter(course.name === filter ? "" : course.name))}
                         key={i}

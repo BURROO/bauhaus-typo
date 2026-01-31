@@ -1,20 +1,65 @@
 .projectInfo{
   position: fixed;
-  left: 0;
-  top: 0;
-  right: 0;
+  left: 0px;
+  top: 0px;
+  right: 0px;
   transition: 0.2s;
 }
 
+
+.projectInfoInner{
+  position: relative;
+  top: 0px;
+  left: 0px;
+  cursor: pointer;
+}
+
+.dropDown{
+  position: relative;
+  top: 0px;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+}
+
+.dropDownBG{
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 100%;
+  background: rgba(200,200,200,0.7);
+  backdrop-filter: blur(20px);
+}
+
+.dropDownInner{
+  position: relative;
+  font-size: 0;
+  margin: 0;
+  text-transform: uppercase;
+  padding: 0 4px 0 4px;
+  /* max-width: 900px; */
+}
+
+.header{
+  backdrop-filter: blur(20px);
+  background: rgba(200,200,200,0.7);
+  font-size: 0px;
+  padding: 0px;
+  margin: 0px;
+  padding: 0 4px;
+}
+
+
 .projectInfo ul{
   display: grid;
-  grid-template-columns: 2fr 2fr 2fr 2fr 1fr;
+  grid-template-columns: 2fr 2fr 1fr 1fr 1fr;
   list-style: none;
   text-transform: uppercase;
   font-family: "UfficioMono-Bold";
   width: 100vw;
 }
-.projectInfo ul li{
+.projectInfo ul li,
+.projectInfo p{
   font-family: "UfficioMono-Bold";
   color: black;
 }
@@ -46,15 +91,10 @@
   right: 0;
 }
 
-.projectInfo a{
+.projectInfo .link{
   position: absolute;
   bottom: 0;
-  background: var(--color);
-  height: 20px;
   display: inline-block;
-  display: flex;
-  align-items: end;
-  padding: 0 10px;
 }
 
 .projectInfoList{
@@ -66,60 +106,3 @@
 .projectInfoList li{
   padding: 3px;
 }
-
-/* A */
-/* .projectInfoList > li:nth-child(8n-7){
-  background: var(--gray);
-}
-
-.projectInfoList > li:nth-child(8n-5){
-  background: var(--gray);
-}
-.projectInfoList > li:nth-child(8n-2){
-  background: var(--gray);
-}
-.projectInfoList > li:nth-child(8n-0){
-  background: var(--gray);
-} */
-/* B */
-
-.projectInfoList {
-}
-/* 
-.projectInfoList > li{
-  background: var(--gray);
-  backdrop-filter: blur(20px);
-} */
-
-/* 
-
-.projectInfoList > li:nth-child(10n+1){
-  background: var(--gray);
-}
-.projectInfoList > li:nth-child(10n+3){
-  background: var(--gray);
-}
-.projectInfoList > li:nth-child(10n+5){
-  background: var(--gray);
-}
-.projectInfoList > li:nth-child(10n+7){
-  background: var(--gray);
-}
-.projectInfoList > li:nth-child(10n+9){
-  background: var(--gray);
-}
-.projectInfoList > li:nth-child(9n+8){
-  background: var(--gray);
-}  */
-
-
-
-/* .projectInfoList > li:nth-child(8n-6){
-  background: var(--gray);
-}
-.projectInfoList > li:nth-child(8n-3){
-  background: var(--gray);
-}
-.projectInfoList > li:nth-child(8n-1){
-  background: var(--gray);
-} */

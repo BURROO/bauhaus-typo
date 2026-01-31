@@ -8,6 +8,7 @@ import Slideshow from "../../general/Slideshow"
 import SceneWrapper from "@/components/landing/three/SceneWrapper"
 import { CameraProps } from "@react-three/fiber"
 import Button from "@/components/general/Button"
+import { ButtonWrapper } from "../PageWrapper"
 
 
 interface Props {
@@ -52,13 +53,14 @@ const Book = ({ item }: Props) => {
                     />
                 )}
             </div>
+                    
             
-            <div className={styles.button}>
+            <ButtonWrapper>
                 <Button
                 onClick={() => setView(view === "content" ? "cover" : "content")}
                 text={`Look ${view === "content" ? "outside" : "inside"}`}
                 />
-            </div>
+            </ButtonWrapper>
         </>
     )
 }

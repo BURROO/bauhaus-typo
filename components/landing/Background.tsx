@@ -54,15 +54,17 @@ const Background = ({ text, dir }: Props) => {
     }, [])
 
 
-    // if(!isInactive) return;
+    if(!isInactive) return;
 
 
     return (
         <div
         className={styles.background}
         style={{ 
-            filter: isInactive ? "" : `blur(50px)`,
-            opacity: isInactive ? "" : 0.2,
+            // filter: isInactive ? "" : `blur(50px)`,
+            // opacity: isInactive ? "" : 0.2,
+            // filter: isInactive ? "" : `blur(50px)`,
+            // opacity: isInactive ? "" : 0.2,
         }}
         >
             <div className={styles.backgroundWrapper}

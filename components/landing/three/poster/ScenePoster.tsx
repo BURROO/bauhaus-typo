@@ -42,7 +42,6 @@ export default function ScenePosterWrapper({
   if(!item) return null
 
   return (
-   
       <ScenePosterInner
       type={type}
       item={item}

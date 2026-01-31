@@ -8,6 +8,7 @@ import ScenePosterWrapper from "@/components/landing/three/poster/ScenePoster"
 import { CameraProps } from "@react-three/fiber"
 import SceneWrapper from "@/components/landing/three/SceneWrapper"
 import Button from "@/components/general/Button"
+import { ButtonWrapper } from "../PageWrapper"
 
 
 interface Props {
@@ -55,22 +56,12 @@ const Poster = ({ item }: Props) => {
                     />
                 )}
             </div>
-            {
-                showButton && 
-                // <button 
-                // onMouseOver={() => setShowButton(true)}
-                // onClick={() => setView(view === "poster" ? "slideshow" : "poster")}
-                // className={styles.button}
-                // >
-                //    Look at {view === "poster" ? "Slideshow" : "Poster"}
-                // </button>
-                <div className={styles.button}>
-                    <Button
-                    onClick={() => setView(view === "poster" ? "slideshow" : "poster")}
-                    text={`Look at ${view === "poster" ? "Slideshow" : "Poster"}`}
-                    />
-                </div>
-            }
+            <ButtonWrapper>
+                <Button
+                onClick={() => setView(view === "poster" ? "slideshow" : "poster")}
+                text={`Look at ${view === "poster" ? "Slideshow" : "Poster"}`}
+                />
+            </ButtonWrapper>
         </>
     )
 }

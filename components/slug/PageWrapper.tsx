@@ -7,11 +7,12 @@ import styles from "./PageWrapper.module.css";
 // import PunkZine from "@/components/slug/punkZine/PunkZine";
 import Link from "next/link";
 import { TypeProject } from "@/types/project-type";
-import { useEffect, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 // import TypeLarge from "../layer2/TypeLarge";
 import ProjectInfo from "./ProjectInfo";
 import dynamic from 'next/dynamic'
 import { getType } from "@/util/sanitizeForUrl";
+import { useRouter } from "next/navigation";
 
 const Book = dynamic(
   () => import("@/components/slug/book/Book"),
@@ -41,6 +42,8 @@ const PageWrapper = ({ item }: Props) => {
 
     const [isHovered, setIsHovered] = useState(false)
 
+    const router = useRouter()
+
 
     const [introStyle, setIntroStyle] = useState({
         opacity: 1,
@@ -48,6 +51,17 @@ const PageWrapper = ({ item }: Props) => {
     })
 
     useEffect(() => {
+
+
+        const handleEscape = (e: any) => {
+
+            if(e.key === "Escape") {
+                router.push('/')
+            }
+        }
+
+
+        window.addEventListener("keydown", handleEscape)
 
         const timeout1 = setTimeout(() => {
 
@@ -60,6 +74,7 @@ const PageWrapper = ({ item }: Props) => {
 
         return () => {
             clearTimeout(timeout1)
+            window.removeEventListener("keydown", handleEscape)
         }
     }, [])
 
@@ -80,6 +95,20 @@ const PageWrapper = ({ item }: Props) => {
                 </div>
             </main>
             <ProjectInfo project={item} />
+        </div>
+    )
+}
+
+
+
+
+
+export const ButtonWrapper = ({ children } : { children: ReactNode }) => {
+
+
+    return (
+        <div className={styles.footer}>
+            {children}
         </div>
     )
 }

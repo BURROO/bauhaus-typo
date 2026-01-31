@@ -2,123 +2,106 @@
 
 import { courseShort, TypeProject } from '@/types/project-type'
 import styles from './Website.module.css'
-import { useEffect, useMemo, useRef, useState } from 'react'
-import { getUrlVideo, sanitizeForUrl } from '@/util/sanitizeForUrl'
+import { useMemo, useRef, useState, useEffect } from 'react'
+import { sanitizeForUrl } from '@/util/sanitizeForUrl'
 import SceneMacbook from '@/components/landing/three/macbook/SceneMacbook'
 import SceneWrapper from '@/components/landing/three/SceneWrapper'
 import { CameraProps } from '@react-three/fiber'
 import Button from '@/components/general/Button'
+import { ButtonWrapper } from '../PageWrapper'
 
 interface Props {
     item: TypeProject
 }
 
 const Website = ({ item }: Props) => {
-
-
-
     const { src } = useMemo(() => {
-
-        // 
         const name = sanitizeForUrl(item.NAME).split("-").join("_")
-        // const showcaseSource = 
-
         const subFulter = courseShort[item.COURSE].toLocaleLowerCase()
-        // const subFulter = item.COURSE === 'Transcoding Typography' ? 'tt' : 'pz'
-
-        const src = `/websites/${subFulter}/${name}/index.html`
-
-        return { src }
-
+        return { src: `/websites/${subFulter}/${name}/index.html` }
     }, [item])
 
-
-    // const [view, setView] = useState<'video'|'iframe'>('video')
-    // const [view, setView] = useState<'video'|'iframe'>('iframe')
-    const [view, setView] = useState<'video'|'iframe'>('video')
-
+    const [view, setView] = useState<'video' | 'iframe'>('video')
+    const iframeContainerRef = useRef<HTMLDivElement>(null)
 
     const interactCam: CameraProps = {
-        position: [
-            0.0, 
-            0.0, 
-            0.35
-        ], 
-        fov: 45 
+        position: [0, 0, 0.35],
+        fov: 45,
     }
+
+    const openFullscreenIframe = () => {
+        setView('iframe')
+
+        requestAnimationFrame(() => {
+            const el = iframeContainerRef.current
+            if (!el) return
+
+            if (el.requestFullscreen) el.requestFullscreen()
+            else if ((el as any).webkitRequestFullscreen) {
+                (el as any).webkitRequestFullscreen()
+            }
+        })
+    }
+
+    // 👇 Listen for ESC / fullscreen exit
+    useEffect(() => {
+        const onFullscreenChange = () => {
+            const isFullscreen =
+                document.fullscreenElement ||
+                (document as any).webkitFullscreenElement
+
+            if (!isFullscreen) {
+                // Fullscreen exited → stay on iframe preview
+                setView('video')
+            }
+        }
+
+        document.addEventListener('fullscreenchange', onFullscreenChange)
+        document.addEventListener('webkitfullscreenchange', onFullscreenChange)
+
+        return () => {
+            document.removeEventListener('fullscreenchange', onFullscreenChange)
+            document.removeEventListener('webkitfullscreenchange', onFullscreenChange)
+        }
+    }, [])
 
     return (
         <div className={styles.website}>
-            <div 
-            className={styles.switch}
-            onClick={() => setView(view === "iframe" ? "video" : "iframe")}>
-                     <Button 
-                    onClick={() => setView(view === "iframe" ? "video" : "iframe")}
-                    text={view === "video" ? "Try Website" : "See Showcase"}
+            {view === 'iframe' && (
+                <div ref={iframeContainerRef} className={styles.websiteIframe}>
+                    <iframe
+                        src={src}
+                        allowFullScreen
+                        sandbox="allow-scripts allow-same-origin"
                     />
-            </div>
-            {
-                view === 'iframe' && src &&(
-                    <WebIframe src={src} />
-                )
-            }
-            {
-                view === "video" && (
-                    <div className={styles.preview}>
-                        <SceneWrapper
-                        camSettings={interactCam}
-                        type={"interact"}
-                        autoRotateSpeed={0}
-                        >
-                            <SceneMacbook
+                </div>
+            )}
+
+            {view === 'video' && (
+                <div className={styles.preview}>
+                    <SceneWrapper camSettings={interactCam} type="interact" autoRotateSpeed={5}>
+                        <SceneMacbook
                             item={item}
                             isDouble={false}
-                            type='interact'
-                            visible={true}
-                            />
-                        </SceneWrapper>
-                    </div>
-                )
-            }
+                            type="interact"
+                            visible
+                        />
+                    </SceneWrapper>
+                </div>
+            )}
+
+            <ButtonWrapper>
+                <Button
+                    onClick={
+                        view === 'video'
+                            ? openFullscreenIframe
+                            : () => setView('video')
+                    }
+                    text={view === 'video' ? 'Try Website' : 'See Showcase'}
+                />
+            </ButtonWrapper>
         </div>
     )
 }
-
 
 export default Website
-
-
-
-const WebIframe = ({ src }: { src: string }) => {
-    const containerRef = useRef<HTMLDivElement>(null)
-
-
-    const [isFullScreen, setIsFullScreen] = useState(false)
-
-    const enterFullscreen = () => {
-        const el = containerRef.current
-        if (!el) return
-
-        if (el.requestFullscreen) {
-            el.requestFullscreen()
-        // Safari
-        } else if ((el as any).webkitRequestFullscreen) {
-            (el as any).webkitRequestFullscreen()
-        }
-
-        setIsFullScreen(true)
-    }
-
-    return (
-        <div ref={containerRef} className={styles.websiteIframe}>
-            <iframe  src={src} />
-            {!isFullScreen &&<button 
-            className={styles.btnFullscreen} 
-            onClick={enterFullscreen}
-            >
-                Fullscreen
-            </button>}
-        </div>
-
-    )
-}

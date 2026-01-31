@@ -131,9 +131,9 @@ const List = ({ dataStudents, dataCourses}: Props) => {
                     setFilter={setFilter}
                     filter={filter}
                     setSorting={setSorting}
-                    sorting={sorting}
+                    // sorting={sorting}
                     setSearchTerm={setSearchTerm}
-                    searchTerm={searchTerm}
+                    // searchTerm={searchTerm}
                     />
                 </div>
                 <div 
