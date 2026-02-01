@@ -98,7 +98,9 @@ const List = ({ dataStudents, dataCourses}: Props) => {
     }, [ofst])
 
 
-    const courseInfo: TypeCourse|null = dataCourses.find(k => k.COURSE === filter) || null
+    // const courseInfo: TypeCourse|null = dataCourses.find(k => k.COURSE === filter) || null
+    console.log(filter, dataCourses)
+    const courseInfo: TypeCourse|null = dataCourses.find(k => k.COURSE.slice(0,7).match(filter.slice(0,7))) || null
 
     if(rowHeight === null) return <></>
 
@@ -117,9 +119,7 @@ const List = ({ dataStudents, dataCourses}: Props) => {
                 {
                     screenHeight && rowHeight && filter !== "" &&
                     <ListCourse
-                    rowHeight={rowHeight}
                     course={courseInfo}
-                    screenHeight={screenHeight}
                     dataStudents={dataStudents}
                     // filter={filter}
                     />
@@ -127,7 +127,7 @@ const List = ({ dataStudents, dataCourses}: Props) => {
                 }
                 <div className={styles.footer}>
                     <ListFooter
-                    height={rowHeight*3}
+                    height={rowHeight*4}
                     setFilter={setFilter}
                     filter={filter}
                     setSorting={setSorting}
