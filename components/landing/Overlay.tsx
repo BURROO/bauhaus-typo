@@ -88,6 +88,7 @@ const Overlay = ({
                     type="orbit"
                     item={activeProject || null}
                     isDouble={true}
+                    onClick={() => {}}
                     />
                 }
                 {type === "POSTER" && 

@@ -1,6 +1,6 @@
 'use client'
 
-import { useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 import { useTexture } from '@react-three/drei'
 import * as THREE from 'three'
 import { TypeProject, courseShort } from '@/types/project-type'
@@ -9,104 +9,40 @@ import { sanitizeForUrl } from '@/util/sanitizeForUrl'
 
 interface Props {
   item: TypeProject | null
-  visible: boolean
+  visible: boolean;
+  onClick?: () => void;
 }
-
-// export default function SceneBook({
-//   item,
-//   setShowButton,
-//   visible,
-// }: Props) {
-
-//   /* -------------------------------------------------- */
-//   /* URLs                                                */
-//   /* -------------------------------------------------- */
-
-//   const bookUrls = useMemo(() => {
-//     if (!item) {
-//       return { front: '', back: '', spine: '' }
-//     }
-
-//     const filenameFallback = 'mona_kerntke'
-//     const name = item.NAME
-//       ? sanitizeForUrl(item.NAME).replaceAll('-', '_')
-//       : filenameFallback
-
-//     const courseFolder = courseShort[item.COURSE]?.toLowerCase()
-//     if (!courseFolder) {
-//         return null
-//     }
-//     // @ts-ignore
-//     const studentName = fileDataIO[name] ? name : filenameFallback
-//     const format = 'webp'
-
-//     return {
-//       front: `/images/${courseFolder}/${studentName}/${studentName}_front.${format}`,
-//       back: `/images/${courseFolder}/${studentName}/${studentName}_back.${format}`,
-//       spine: `/images/${courseFolder}/${studentName}/${studentName}_spine.${format}`,
-//     }
-//   }, [item?.ID])
-
-//   /* -------------------------------------------------- */
-//   /* Physical dimensions (meters-ish)                   */
-//   /* -------------------------------------------------- */
-
-//   const [width, setWidth] = useState(0.16)
-//   const [height, setHeight] = useState(0.24)
-//   const [spine, setSpine] = useState(0.028)
-
-//   /* -------------------------------------------------- */
-//   /* Stable callback from <Book />                      */
-//   /* -------------------------------------------------- */
-
-//   const handleCoverDims = useCallback(
-//     ({ front, spine }: { front: { aspect: number }; spine: { aspect: number } }) => {
-//       const targetHeight = 0.24
-
-//       const nextWidth = targetHeight * front.aspect
-//       const nextSpine = targetHeight * spine.aspect
-
-//       setHeight(h => (h !== targetHeight ? targetHeight : h))
-//       setWidth(w => (w !== nextWidth ? nextWidth : w))
-//       setSpine(s => (s !== nextSpine ? nextSpine : s))
-//     },
-//     []
-//   )
-
-//   /* -------------------------------------------------- */
-
-//   return (
-//     <group
-//       rotation={[0, Math.PI, 0]}
-//       onPointerEnter={() => setShowButton(true)}
-//       onPointerLeave={() => setShowButton(false)}
-//       visible={visible}
-//     >
-//       {bookUrls && <Book
-//         width={width}
-//         height={height}
-//         spine={spine}
-//         frontUrl={bookUrls.front}
-//         backUrl={bookUrls.back}
-//         spineUrl={bookUrls.spine}
-//         onDimensions={handleCoverDims}
-//       />}
-//     </group>
-//   )
-// }
 
 export default function SceneBook({
   item,
   visible,
+  onClick
 }: Props) {
   if (!item) return null
+  
+  const setCursor = (cursor: string) => {
+    document.body.style.cursor = cursor
+  }
 
+  useEffect(() => {
+    return () => {
+      setCursor("auto")
+    }
+  })
+  
   return (
     <group
       rotation={[0, Math.PI, 0]}
       visible={visible}
-    //   onPointerEnter={() => setShowButton(true)}
-    //   onPointerLeave={() => setShowButton(false)}
+      onPointerDown={onClick}
+    onPointerOver={(e) => {
+      e.stopPropagation()
+      setCursor('pointer')
+    }}
+    onPointerOut={(e) => {
+      e.stopPropagation()
+      setCursor('auto')
+    }}
     >
       <Book item={item} />
     </group>

@@ -12,7 +12,8 @@ import { ButtonWrapper } from "../PageWrapper"
 
 
 interface Props {
-    item: TypeProject
+    item: TypeProject;
+    // onClick: () => void;
 }
 
 const Book = ({ item }: Props) => {
@@ -20,7 +21,7 @@ const Book = ({ item }: Props) => {
     const [view, setView] = useState<'cover'|'content'>('cover')
 
     // const index = item.NAME.length % 2 + 1
-    const [showButton, setShowButton] = useState(false)
+    // const [showButton, setShowButton] = useState(false)
 
     const interactCam: CameraProps = {
         // position: [0.02, 0.4, 0.6], 
@@ -38,10 +39,9 @@ const Book = ({ item }: Props) => {
                     autoRotateSpeed={0}
                     >
                         <SceneBook
-                        // type="interact"
                         visible={true}
                         item={item}
-                        // setShowButton={setShowButton}
+                        onClick={() => setView(view === 'cover' ? 'content' : 'cover')}
                         />
                     </SceneWrapper>
                 )}
@@ -49,7 +49,6 @@ const Book = ({ item }: Props) => {
                     <Slideshow
                     isBook={true}
                     item={item}
-                    setShowButton={setShowButton}
                     />
                 )}
             </div>

@@ -15,6 +15,8 @@ interface Props {
 }
 
 const Website = ({ item }: Props) => {
+
+    // 
     const { src } = useMemo(() => {
         const name = sanitizeForUrl(item.NAME).split("-").join("_")
         const subFulter = courseShort[item.COURSE].toLocaleLowerCase()
@@ -85,6 +87,12 @@ const Website = ({ item }: Props) => {
                             isDouble={false}
                             type="interact"
                             visible
+                            // onClick={() => setView(view === 'iframe' ? 'video' : 'iframe')}
+                            onClick={
+                                view === 'video'
+                                    ? openFullscreenIframe
+                                    : () => setView('video')
+                            }
                         />
                     </SceneWrapper>
                 </div>

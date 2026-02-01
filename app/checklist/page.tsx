@@ -4,9 +4,10 @@ import List from "@/components/landing/List";
 import fs from "fs";
 import path from "path";
 import Papa from "papaparse";
-import { TypeProject } from "@/types/project-type";
+import { courseShort, TypeProject } from "@/types/project-type";
 import { getUrlFromProject } from "@/util/sanitizeForUrl";
 import Link from "next/link";
+import { getAssetShowcase, getAssetSlideShow } from "@/util/getAssets";
 
 
 export default function Home() {
@@ -54,15 +55,34 @@ export default function Home() {
           const DE = project.DEUTSCH
           const EN = project.ENGLISH
 
+          const courseFolder = courseShort[project.COURSE]?.toLocaleLowerCase()  
+
+          const slides = getAssetSlideShow({ item:project })
+          const showcase = getAssetShowcase({ item:project })
+          
+          let content = ``;
+          let contentMarked = false;
+          if(courseFolder === 'tt' || courseFolder === 'pz'){
+            content = `Showcase: ${!!showcase}`
+            contentMarked = !showcase
+          }else if(courseFolder === 'om'){
+            content = `Slides: ${slides.length.toString()}`
+            contentMarked = slides.length === 0
+          }
+
+
           const items = [
               () => <Column key={i} label="Name" data={project.NAME} />,
               () => <Column key={i} label="Title" data={project.TITLE} />,
               () => <Column key={i} label="Course" data={project.COURSE} />,
               () => <Column key={i} label="Deutsch" data={DE?.length.toString()} isMarked={DE?.length === 0}/>,
               () => <Column key={i} label="English" data={EN?.length.toString()} isMarked={EN?.length === 0} />,
+              () => <Column key={i} label="Slides" data={content} isMarked={contentMarked} />,
           ]
 
           const url = getUrlFromProject(project)
+
+
 
           return(
             <Link

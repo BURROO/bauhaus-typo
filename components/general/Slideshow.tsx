@@ -7,53 +7,30 @@ import {  useMemo, useState } from 'react';
 
 import { fileDataIO } from '@/data/fileData';
 import { sanitizeForUrl } from '@/util/sanitizeForUrl';
+import { getAssetSlideShow } from '@/util/getAssets';
 
 
 interface Props{
     item: TypeProject;
-    setShowButton: (value: boolean) => void;
+    // setShowButton: (value: boolean) => void;
     isBook?: boolean;
 }
 
 
-const Slideshow = ({ item, setShowButton, isBook }: Props) => {
-
-
+const Slideshow = ({
+    item,
+    // setShowButton,
+    isBook 
+}: Props) => {
 
     const slides = useMemo(() => {
 
-
-        // const student = item.NAME.toLowerCase().split(" ").join("_")
-        const kurs = sanitizeForUrl( item.COURSE).split("-").join("_")
-        const student = sanitizeForUrl( item.NAME).split("-").join("_")
-
-        // 
-        const slides = []
-        // @ts-ignore
-        const count = (fileDataIO[student] || fileDataIO["mona_kerntke"]).count
-        // @ts-ignore
-        const dir = (fileDataIO[student] || fileDataIO["mona_kerntke"]).dir
-        // @ts-ignore
-        // const fileType = (fileDataIO[student] || fileDataIO["mona_kerntke"]).fileType
-        const fileType = "webp"
-
-        const courseFolder = courseShort[item.COURSE]?.toLocaleLowerCase()
-        
-
-        for(let i = 1; i <= count;i++){
-
-            // images/ioom/hannes_altmann
-
-            // slides.push(`${dir}/slide-${i}.${fileType}`)
-            slides.push(`/images/${courseFolder}/${student}/slide-${i}.webp`)
-        }
+        const slides = getAssetSlideShow({ item})
 
         return slides
     }, [])
 
-
     const [activeSlide, setActiveSlide ] = useState(0)
-
 
     const goNext = () => {
 
@@ -63,7 +40,6 @@ const Slideshow = ({ item, setShowButton, isBook }: Props) => {
 
         setActiveSlide((activeSlide - 1 + slides.length) % slides.length)
     }
-
 
     return (
         <>
@@ -76,8 +52,8 @@ const Slideshow = ({ item, setShowButton, isBook }: Props) => {
                             <div
                             key={slide}
                             className={styles.slide}
-                            onMouseEnter={() => setShowButton(true)}
-                            onMouseLeave={() => setShowButton(false)}
+                            // onMouseEnter={() => setShowButton(true)}
+                            // onMouseLeave={() => setShowButton(false)}
                             >
                                 <img src={`${slide}`} />
                                 {

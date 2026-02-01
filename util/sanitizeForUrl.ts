@@ -29,22 +29,6 @@ export const getUrlFromProject = (item: TypeProject) => {
 }
 
 
-
-
-export const getUrlVideo = (item: TypeProject) => {
-
-
-    const kursShort = courseShort[item.COURSE].toLowerCase()
-    const student = sanitizeForUrl(item.NAME).split("-").join("_")
-
-    // @ts-ignore
-    const src = `/images/${kursShort}/showcase/${student}_showcase.webm`
-
-    return src
-}
-
-
-
 export const getType = (item: TypeProject): "WEBSITE"|"PUBLICATION"|"POSTER"|"SLIDESHOW" => {
 
 

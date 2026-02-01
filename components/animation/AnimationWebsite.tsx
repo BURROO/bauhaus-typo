@@ -4,7 +4,13 @@ import { useEffect, useRef } from "react"
 import { TypeAnimation, useAnimation } from "../hook/useAnimation"
 import SceneMacbook from "../landing/three/macbook/SceneMacbook"
 
-const AnimationWebsite = ({ data, animation, radius }: { data: TypeProject[], animation: TypeAnimation[]; radius: number }) => {
+interface Props { 
+    data: TypeProject[], 
+    animation: TypeAnimation[]; 
+    radius: number 
+}
+
+const AnimationWebsite = ({ data, animation, radius }: Props) => {
 
     const groupRefs = useRef<THREE.Group[]>([])
 
@@ -35,6 +41,7 @@ const AnimationWebsite = ({ data, animation, radius }: { data: TypeProject[], an
             >
                 <group rotation={[0.1, 0.2, Math.PI/2]}>
                     <SceneMacbook
+                    onClick={() => {}}
                     visible={true}
                     item={d} 
                     isDouble={false}

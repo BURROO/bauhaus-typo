@@ -15,16 +15,11 @@ interface Props {
     item: TypeProject
 }
 
-
-
-
 const Poster = ({ item }: Props) => {
-
 
     const [view, setView] = useState<'poster'|'slideshow'>('poster')
 
     const [showButton, setShowButton] = useState(true)
-
 
     const interactCam: CameraProps = {
         // position: [0.02, 0.4, 0.6], 
@@ -52,7 +47,7 @@ const Poster = ({ item }: Props) => {
                     <Slideshow
                     isBook={true}
                     item={item}
-                    setShowButton={setShowButton}
+                    // setShowButton={setShowButton}
                     />
                 )}
             </div>

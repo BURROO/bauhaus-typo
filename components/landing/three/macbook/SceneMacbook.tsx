@@ -5,14 +5,16 @@ import * as THREE from 'three'
 import ObjModel from './ObjModel'
 import VideoPlane from '../VideoPlane'
 import { TypeProject } from '@/types/project-type'
-import { getUrlVideo } from '@/util/sanitizeForUrl'
+import { useHover } from '@/components/hook/useHover'
+import { getAssetShowcase } from '@/util/getAssets'
 
 
 interface Props {
-  item: TypeProject | null
-  type: 'orbit' | 'interact'
-  isDouble: boolean
-  visible: boolean
+  item: TypeProject | null;
+  type: 'orbit' | 'interact';
+  isDouble: boolean;
+  visible: boolean;
+  onClick: () => void;
 }
 
 export default function SceneMacbook({
@@ -20,6 +22,7 @@ export default function SceneMacbook({
   type,
   isDouble,
   visible,
+  onClick
 }: Props) {
   const rootRef = useRef<THREE.Group>(null!)
   const frontRef = useRef<THREE.Group>(null!)
@@ -39,7 +42,7 @@ export default function SceneMacbook({
    * --------------------------------------------- */
   const src = useMemo(() => {
     if (!item) return null
-    return getUrlVideo(item)
+    return getAssetShowcase({item})
   }, [item?.ID])
 
   /* ---------------------------------------------
@@ -51,10 +54,17 @@ export default function SceneMacbook({
     }
   }, [type, isDouble])
 
+
+  const { setCursor } = useHover()
+
   const screensOfst = 0.087
 
   return (
-    <group ref={rootRef}>
+    <group ref={rootRef}
+    onPointerDown={onClick}
+    onPointerEnter={() => setCursor("pointer")}
+    onPointerLeave={() => setCursor("auto")}
+    >
       {/* FRONT */}
       <MacbookInstance
         ref={frontRef}
