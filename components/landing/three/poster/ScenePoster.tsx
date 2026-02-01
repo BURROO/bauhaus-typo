@@ -5,10 +5,12 @@ import { CameraProps, useFrame } from "@react-three/fiber";
 import { courseShort, TypeProject } from "@/types/project-type";
 import { fileDataIO } from "@/data/fileData";
 import { sanitizeForUrl } from "@/util/sanitizeForUrl";
+import { useHover } from "@/components/hook/useHover";
 
 interface PosterProps {
     type: 'orbit' | 'interact';
     item: TypeProject|null;
+    onClick: () => void;
     folded?: boolean;      // if true, simulate a fold
     rolled?: boolean;      // if true, simulate rolled poster
 }
@@ -16,7 +18,8 @@ interface PosterProps {
 
 export default function ScenePosterWrapper({
   type,
-  item
+  item,
+  onClick
 }: PosterProps){
 
     // 
@@ -33,19 +36,33 @@ export default function ScenePosterWrapper({
     // position: [0.002, 0.04, 0.06], 
     fov: 45 
   }
-  // 
-  const camSettings = type === 'orbit' 
-      ? orbitCam 
-      : interactCam
+  // // 
+  // const camSettings = type === 'orbit' 
+  //     ? orbitCam 
+  //     : interactCam
 
+  const { setCursor } = useHover()
 
   if(!item) return null
 
   return (
+    <group
+    onPointerDown={onClick}
+    onPointerOver={(e) => {
+      e.stopPropagation()
+      setCursor('pointer')
+    }}
+    onPointerOut={(e) => {
+      e.stopPropagation()
+      setCursor('auto')
+    }}
+    
+    >
       <ScenePosterInner
       type={type}
       item={item}
       />
+      </group>
   )
 }
 

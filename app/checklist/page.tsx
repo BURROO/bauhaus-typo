@@ -7,7 +7,7 @@ import Papa from "papaparse";
 import { courseShort, TypeProject } from "@/types/project-type";
 import { getUrlFromProject } from "@/util/sanitizeForUrl";
 import Link from "next/link";
-import { getAssetShowcase, getAssetSlideShow } from "@/util/getAssets";
+import { getAssetCover, getAssetShowcase, getAssetSlideShow, getAssetWebsite } from "@/util/getAssets";
 
 
 export default function Home() {
@@ -36,7 +36,7 @@ export default function Home() {
             <div
             style={{ 
               display: "grid", 
-              gridTemplateColumns: `1fr 1fr 1fr 1fr 1fr 1fr`,
+              gridTemplateColumns: `1fr 1fr 1fr 1fr 1fr 1fr 1fr`,
               borderBottom: "1px solid black",
               width: "100vw",
               background: "white"
@@ -46,7 +46,8 @@ export default function Home() {
               <div>COURSE</div>
               <div>DEUTSCH</div>
               <div>ENGLISH</div>
-              <div>…</div>
+              <div>Cover/Iframe</div>
+              <div>Slides/Website</div>
             </div>
 
         </div>
@@ -59,15 +60,39 @@ export default function Home() {
 
           const slides = getAssetSlideShow({ item:project })
           const showcase = getAssetShowcase({ item:project })
+          // 
+          const website = getAssetWebsite({ item: project })
+          const cover = getAssetCover({ item: project })
           
+          let product = ``;
+          let productMarked = false
           let content = ``;
           let contentMarked = false;
-          if(courseFolder === 'tt' || courseFolder === 'pz'){
-            content = `Showcase: ${!!showcase}`
-            contentMarked = !showcase
-          }else if(courseFolder === 'om'){
+
+
+          if(
+            courseFolder === 'tt' || 
+            courseFolder === 'pz' ||
+            project.NAME === 'Nic Möckel'
+          ){
+            // 
+            product = `Showcase: ${!!showcase}`
+            productMarked = !showcase
+            // 
+            content = `Website: ${!!website}`
+            contentMarked = !website
+          }else if(
+            courseFolder === 'om' ||
+            project.NAME === 'Ossian Osborne'
+          ){
+            // 
+            product = `Covers: ${!!cover}`
+            productMarked = !cover
+
+            // 
             content = `Slides: ${slides.length.toString()}`
             contentMarked = slides.length === 0
+
           }
 
 
@@ -77,6 +102,7 @@ export default function Home() {
               () => <Column key={i} label="Course" data={project.COURSE} />,
               () => <Column key={i} label="Deutsch" data={DE?.length.toString()} isMarked={DE?.length === 0}/>,
               () => <Column key={i} label="English" data={EN?.length.toString()} isMarked={EN?.length === 0} />,
+              () => <Column key={i} label="Slides" data={product} isMarked={productMarked} />,
               () => <Column key={i} label="Slides" data={content} isMarked={contentMarked} />,
           ]
 
@@ -92,7 +118,7 @@ export default function Home() {
               <div
               style={{ 
                 display: "grid", 
-                gridTemplateColumns: `1fr 1fr 1fr 1fr 1fr 1fr`,
+                gridTemplateColumns: `1fr 1fr 1fr 1fr 1fr 1fr 1fr`,
                 borderBottom: "1px solid black",
               }}>
                 {

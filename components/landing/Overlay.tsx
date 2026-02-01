@@ -95,6 +95,7 @@ const Overlay = ({
                     <ScenePoster
                     type="orbit"
                     item={activeProject || null}
+                    onClick={() => {}}
                     />
                 }
             </SceneWrapper>

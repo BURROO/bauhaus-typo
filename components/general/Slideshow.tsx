@@ -41,9 +41,12 @@ const Slideshow = ({
         setActiveSlide((activeSlide - 1 + slides.length) % slides.length)
     }
 
+    const fullScreen = item.COURSE === "Bauhaus Master Lectures"
+
+
     return (
         <>
-            <div className={styles.slideshow}>
+            <div className={`${styles.slideshow} ${fullScreen ? styles.fullScreen : ''}`}>
                 <div className={styles.wrapper} style={{
                     transform: `translateX(${-activeSlide * 100}vw)`
                 }}>

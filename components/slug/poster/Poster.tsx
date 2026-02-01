@@ -29,8 +29,7 @@ const Poster = ({ item }: Props) => {
 
     return (
         <>
-         
-             <div className={styles.poster}>
+            <div className={styles.poster}>
                 {view === "poster" && (
                     <SceneWrapper
                     camSettings={interactCam}
@@ -38,6 +37,7 @@ const Poster = ({ item }: Props) => {
                     autoRotateSpeed={0}
                     >
                         <ScenePosterWrapper
+                        onClick={() => setView('slideshow')}
                         type="interact"
                         item={item}
                         />
@@ -45,7 +45,7 @@ const Poster = ({ item }: Props) => {
                 )}
                 {view === "slideshow" && (
                     <Slideshow
-                    isBook={true}
+                    isBook={false}
                     item={item}
                     // setShowButton={setShowButton}
                     />

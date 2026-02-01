@@ -100,20 +100,9 @@ interface Props{
 
 export const convertTableToSVG = ({ data, screenWidth, screenHeight, rowHeight, activeIndex }: Props): TypeProjectForSVG[][] => {
 
-    console.log("data", data)
-    console.log("screenWidth", screenWidth)
-    console.log("screenHeight", screenHeight)
-    console.log("rowHeight", rowHeight)
-
     if(screenWidth === null || screenHeight === null || rowHeight === null) return []
 
-    // let svgPath = ``;
-
-    console.log("data after", data)
-
-
     const textToRender: TypeProjectForSVG[][]= []
-
 
     const screenType = screenWidth > 1300 ? 'large' : screenWidth < 800 ? 'small' : 'medium'
 
@@ -123,11 +112,8 @@ export const convertTableToSVG = ({ data, screenWidth, screenHeight, rowHeight, 
     // const padding = 12
     const rowWidth = screenWidth-padding*2
 
-
-
     data.forEach((item: TypeProject, i, all) => {
-
-
+        
         // const currentItemIndex = item.index
         const prevItem = all[i-1]
         // 

@@ -1,14 +1,14 @@
 'use client'
 
-import { courseShort, TypeProject } from '@/types/project-type'
+import { TypeProject } from '@/types/project-type'
 import styles from './Website.module.css'
 import { useMemo, useRef, useState, useEffect } from 'react'
-import { sanitizeForUrl } from '@/util/sanitizeForUrl'
 import SceneMacbook from '@/components/landing/three/macbook/SceneMacbook'
 import SceneWrapper from '@/components/landing/three/SceneWrapper'
 import { CameraProps } from '@react-three/fiber'
 import Button from '@/components/general/Button'
 import { ButtonWrapper } from '../PageWrapper'
+import { getAssetWebsite } from '@/util/getAssets'
 
 interface Props {
     item: TypeProject
@@ -18,9 +18,8 @@ const Website = ({ item }: Props) => {
 
     // 
     const { src } = useMemo(() => {
-        const name = sanitizeForUrl(item.NAME).split("-").join("_")
-        const subFulter = courseShort[item.COURSE].toLocaleLowerCase()
-        return { src: `/websites/${subFulter}/${name}/index.html` }
+     
+        return { src : getAssetWebsite({ item })}
     }, [item])
 
     const [view, setView] = useState<'video' | 'iframe'>('video')
@@ -67,9 +66,12 @@ const Website = ({ item }: Props) => {
         }
     }, [])
 
+
+    const hasWebsite = useMemo(() => getAssetWebsite({ item }), [item])
+
     return (
         <div className={styles.website}>
-            {view === 'iframe' && (
+            {view === 'iframe' && src &&(
                 <div ref={iframeContainerRef} className={styles.websiteIframe}>
                     <iframe
                         src={src}
@@ -88,17 +90,22 @@ const Website = ({ item }: Props) => {
                             type="interact"
                             visible
                             // onClick={() => setView(view === 'iframe' ? 'video' : 'iframe')}
-                            onClick={
-                                view === 'video'
-                                    ? openFullscreenIframe
-                                    : () => setView('video')
-                            }
+                            onClick={() => {
+
+                                if(!hasWebsite) return;
+
+                                if(view === 'video'){
+                                    openFullscreenIframe()
+                                }else{
+                                    setView('video')
+                                }
+                            }}
                         />
                     </SceneWrapper>
                 </div>
             )}
 
-            <ButtonWrapper>
+            {hasWebsite && <ButtonWrapper>
                 <Button
                     onClick={
                         view === 'video'
@@ -107,7 +114,7 @@ const Website = ({ item }: Props) => {
                     }
                     text={view === 'video' ? 'Try Website' : 'See Showcase'}
                 />
-            </ButtonWrapper>
+            </ButtonWrapper>}
         </div>
     )
 }

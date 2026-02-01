@@ -6,6 +6,8 @@ import * as THREE from 'three'
 import { TypeProject, courseShort } from '@/types/project-type'
 import { fileDataIO } from '@/data/fileData'
 import { sanitizeForUrl } from '@/util/sanitizeForUrl'
+import { getAssetCover } from '@/util/getAssets'
+import { useHover } from '@/components/hook/useHover'
 
 interface Props {
   item: TypeProject | null
@@ -20,29 +22,21 @@ export default function SceneBook({
 }: Props) {
   if (!item) return null
   
-  const setCursor = (cursor: string) => {
-    document.body.style.cursor = cursor
-  }
-
-  useEffect(() => {
-    return () => {
-      setCursor("auto")
-    }
-  })
+  const { setCursor } = useHover()
   
   return (
     <group
       rotation={[0, Math.PI, 0]}
       visible={visible}
       onPointerDown={onClick}
-    onPointerOver={(e) => {
-      e.stopPropagation()
-      setCursor('pointer')
-    }}
-    onPointerOut={(e) => {
-      e.stopPropagation()
-      setCursor('auto')
-    }}
+      onPointerOver={(e) => {
+        e.stopPropagation()
+        setCursor('pointer')
+      }}
+      onPointerOut={(e) => {
+        e.stopPropagation()
+        setCursor('auto')
+      }}
     >
       <Book item={item} />
     </group>
@@ -58,23 +52,14 @@ export default function SceneBook({
 
 function Book({ item }: { item: TypeProject }) {
   const bookUrls = useMemo(() => {
-    const courseFolder = courseShort[item.COURSE]
-    if (!courseFolder) return null
 
-    const fallback = 'mona_kerntke'
-    const name = item.NAME
-      ? sanitizeForUrl(item.NAME).replaceAll('-', '_')
-      : fallback
+    const cover= getAssetCover({ item })
 
-    // @ts-ignore
-    const studentName = fileDataIO[name] ? name : fallback
-    const format = 'webp'
+    if(!cover) return null
 
-    return {
-      front: `/images/${courseFolder.toLowerCase()}/${studentName}/${studentName}_front.${format}`,
-      back: `/images/${courseFolder.toLowerCase()}/${studentName}/${studentName}_back.${format}`,
-      spine: `/images/${courseFolder.toLowerCase()}/${studentName}/${studentName}_spine.${format}`,
-    }
+    const { front, back, spine } = cover
+
+    return { front, back, spine }
   }, [item.ID])
 
   if (!bookUrls) return null
@@ -83,9 +68,9 @@ function Book({ item }: { item: TypeProject }) {
     bookUrls.front,
     bookUrls.back,
     bookUrls.spine,
-    `/images/om/_general/pages.jpg`,
-    `/images/om/_general/pages-top.jpg`,
-    `/images/om/_general/pages-bottom.jpg`,
+    `/images/om/_general/pages.webp`,
+    `/images/om/_general/pages-top.webp`,
+    `/images/om/_general/pages-bottom.webp`,
   ])
 
   const scale = useMemo<[number, number, number]>(() => {
@@ -132,371 +117,3 @@ function mat(map?: THREE.Texture) {
   }
 }
 
-
-// // 'use client'
-
-// // import { useEffect, useMemo, useState } from "react";
-// // import { useTexture } from "@react-three/drei";
-// // import { courseShort, TypeProject } from "@/types/project-type";
-// // import  * as THREE from 'three'
-// // import { fileDataIO } from "@/data/fileData";
-// // import { sanitizeForUrl } from "@/util/sanitizeForUrl";
-
-// // interface Props{
-// //     item: TypeProject|null;
-// //     setShowButton: (value: boolean) => void;
-// //     visible: boolean;
-// // }
-
-// // export default function SceneBook({ 
-// //     item, 
-// //     setShowButton, 
-// //     visible
-// // }: Props) {
-
-// //     // const type = activeProject && getType(activeProject)
-
-// //     const bookUrls = useMemo(() => {
-
-// //         if(item === null){
-// //             return {
-// //                 front: '',
-// //                 back: '',
-// //                 spine: ''
-// //             }
-// //         }
-// //         const filenameFallback = 'mona_kerntke'
-// //         const name =
-// //             item.NAME
-// //             ? sanitizeForUrl(item.NAME).replaceAll("-", "_")
-// //             : filenameFallback
-
-// //         const courseFolder = courseShort[item.COURSE]?.toLowerCase()
-// //         // @ts-ignore
-// //         const studentName = fileDataIO[name] ? name : filenameFallback
-// //         const format = 'webp'
-
-// //         return {
-// //             front: `/images/${courseFolder}/${studentName}/${studentName}_front.${format}`,
-// //             back: `/images/${courseFolder}/${studentName}/${studentName}_back.${format}`,
-// //             spine: `/images/${courseFolder}/${studentName}/${studentName}_spine.${format}`,
-// //         }
-// //     }, [item?.ID]) // 👈 stable key
-
-// //     // 
-// //     // const frontUrl = item.book!.front;
-// //     // const backUrl = item.book!.back;
-// //     // const spineUrl = item.book!.spine;
-
-// //     //
-// //     const [width, setWidth]   = useState(0.16);
-// //     const [height, setHeight] = useState(0.24);
-// //     const [spine, setSpine]   = useState(0.028);
-
-// //     // 
-// //     function handleCoverDims({ front, spine }: { front: any; spine: any; }) {
-
-// //          // your chosen physical height
-// //         const targetHeight = 0.24 * 1;
-
-// //         // Front cover
-// //         const coverWidth = targetHeight * front.aspect;
-// //         const spineThickness = targetHeight * spine.aspect;
-// //         const totalWidth = coverWidth;
-
-// //         setHeight(targetHeight);
-// //         setWidth(totalWidth);
-// //         setSpine(spineThickness);
-// //     }
-
-// //     // 
-// //     return (
-// //         <group 
-// //         rotation={[0,Math.PI,0]}
-// //         onPointerEnter={() => setShowButton(true)}
-// //         onPointerLeave={() => setShowButton(false)}
-// //         >
-// //             <Book
-// //             width={width}
-// //             height={height}
-// //             spine={spine}
-// //             frontUrl={bookUrls.front}
-// //             backUrl={bookUrls.back}
-// //             spineUrl={bookUrls.spine}
-// //             onDimensions={handleCoverDims}
-// //             />
-// //         </group>
-// //     );
-// // }
-
-
-// // interface BookProps {
-// //     width: number;
-// //     height: number;
-// //     spine: number;
-// //     frontUrl: string;
-// //     backUrl: string;
-// //     spineUrl: string;
-// //     onDimensions: (data : {
-// //         front: any;
-// //         spine: any
-// //     }) => void;
-// // }
-
-// // function Book({
-// //     width,
-// //     height,
-// //     spine,
-// //     frontUrl,
-// //     backUrl,
-// //     spineUrl,
-// //     onDimensions
-// // }: BookProps) {
-
-
-// //     // Load only when values exist
-// //     const [front, back, spineTex, pagesTex, pagesTopText, pagesBottomText] = useTexture(
-// //         [
-// //             `${frontUrl}`,
-// //             `${backUrl}`,
-// //             `${spineUrl}`,
-// //             `/images/om/_general/pages.jpg`,
-// //             `/images/om/_general/pages-top.jpg`,
-// //             `/images/om/_general/pages-bottom.jpg`
-// //         ].filter(Boolean)
-// //     );
-
-// //     useEffect(() => {
-// //         // 
-// //         if (!front || !front.image) return;
-
-// //         // 
-// //         const frontImg = front.image as HTMLImageElement;
-// //         const spineImg = spineTex.image as HTMLImageElement;
-
-// //         const dimensions = {
-// //             front: {
-// //                 w: frontImg.naturalWidth,
-// //                 h: frontImg.naturalHeight,
-// //                 aspect: frontImg.naturalWidth / frontImg.naturalHeight,
-// //             },
-// //             spine: {
-// //                 w: spineImg.naturalWidth,
-// //                 h: spineImg.naturalHeight,
-// //                 aspect: spineImg.naturalWidth / spineImg.naturalHeight,
-// //             },
-// //         }
-
-// //         // 
-// //         onDimensions(dimensions);
-
-// //     }, [front, spineTex, onDimensions]);
-
-// //     const materials = useMemo(() => {
-
-// //         // Defining the texture
-// //         const m = (map?: THREE.Texture) => ({
-// //             map,
-// //             roughness: 0.8,
-// //             metalness: 0.05,
-// //             envMapIntensity: 0.4,
-// //         });
-
-// //         // 
-// //         return [
-// //             m(spineTex),     // Pos 1 === Spine
-// //             m(pagesTex),
-// //             m(pagesTopText),
-// //             m(pagesBottomText),
-// //             m(back),  // --> Pos. 4 = Front?
-// //             m(front),  // --> Pos. 5 == Front
-// //         ];
-
-// //     }, [front, back, spineTex]);
-
-// //     return (
-// //         <mesh castShadow receiveShadow scale={[width, height, spine]}>
-// //             <boxGeometry 
-// //             args={[1, 1, 1]}
-// //             // args={[width, height, spine]} 
-// //             />
-// //             {materials.map((mat, i) => (
-// //                 <meshStandardMaterial key={i} attach={`material-${i}`} {...mat} />
-// //             ))}
-// //         </mesh>
-// //     );
-// // }
-
-
-
-// 'use client'
-
-// import { useEffect, useMemo, useRef, useState } from 'react'
-// import { useTexture } from '@react-three/drei'
-// import * as THREE from 'three'
-// import { courseShort, TypeProject } from '@/types/project-type'
-// import { fileDataIO } from '@/data/fileData'
-// import { sanitizeForUrl } from '@/util/sanitizeForUrl'
-
-// interface Props {
-//   item: TypeProject | null
-//   setShowButton: (value: boolean) => void
-//   visible: boolean
-// }
-
-// export default function SceneBook({ item, setShowButton, visible }: Props) {
-//   const groupRef = useRef<THREE.Group>(null!)
-
-//   /* ---------------------------------------------
-//    * Visibility control (NO remounting)
-//    * --------------------------------------------- */
-//   useEffect(() => {
-//     if (groupRef.current) {
-//       groupRef.current.visible = visible
-//     }
-//   }, [visible])
-
-//   /* ---------------------------------------------
-//    * Derive URLs (immutable, stable)
-//    * --------------------------------------------- */
-//   const bookUrls = useMemo(() => {
-//     if (!item) return null
-
-//     const fallback = 'mona_kerntke'
-//     const name = item.NAME
-//       ? sanitizeForUrl(item.NAME).replaceAll('-', '_')
-//       : fallback
-
-//     const courseFolder = courseShort[item.COURSE]?.toLowerCase()
-//     // @ts-ignore
-//     const studentName = fileDataIO[name] ? name : fallback
-//     const format = 'webp'
-
-//     return {
-//       front: `/images/${courseFolder}/${studentName}/${studentName}_front.${format}`,
-//       back: `/images/${courseFolder}/${studentName}/${studentName}_back.${format}`,
-//       spine: `/images/${courseFolder}/${studentName}/${studentName}_spine.${format}`,
-//     }
-//   }, [item?.ID])
-
-//   /* ---------------------------------------------
-//    * Physical dimensions (scale only)
-//    * --------------------------------------------- */
-//   const [scale, setScale] = useState<[number, number, number]>([
-//     0.16, 0.24, 0.028,
-//   ])
-
-//   const handleCoverDims = ({
-//     front,
-//     spine,
-//   }: {
-//     front: { aspect: number }
-//     spine: { aspect: number }
-//   }) => {
-//     const targetHeight = 0.24
-//     const width = targetHeight * front.aspect
-//     const spineThickness = targetHeight * spine.aspect
-
-//     setScale([width, targetHeight, spineThickness])
-//   }
-
-//   return (
-//     <group
-//       ref={groupRef}
-//       rotation={[0, Math.PI, 0]}
-//       onPointerEnter={() => setShowButton(true)}
-//       onPointerLeave={() => setShowButton(false)}
-//     >
-//       {bookUrls && (
-//         <Book
-//           scale={scale}
-//           urls={bookUrls}
-//           onDimensions={handleCoverDims}
-//         />
-//       )}
-//     </group>
-//   )
-// }
-
-// /* ========================================================= */
-
-// interface BookProps {
-//   scale: [number, number, number]
-//   urls: {
-//     front: string
-//     back: string
-//     spine: string
-//   }
-//   onDimensions: (data: {
-//     front: { aspect: number }
-//     spine: { aspect: number }
-//   }) => void
-// }
-
-// function Book({ scale, urls, onDimensions }: BookProps) {
-//   /* ---------------------------------------------
-//    * Textures (stable order, reused)
-//    * --------------------------------------------- */
-//   const [
-//     front,
-//     back,
-//     spineTex,
-//     pages,
-//     pagesTop,
-//     pagesBottom,
-//   ] = useTexture([
-//     urls.front,
-//     urls.back,
-//     urls.spine,
-//     '/images/om/_general/pages.jpg',
-//     '/images/om/_general/pages-top.jpg',
-//     '/images/om/_general/pages-bottom.jpg',
-//   ])
-
-//   /* ---------------------------------------------
-//    * Extract image ratios ONCE
-//    * --------------------------------------------- */
-//   useEffect(() => {
-//     if (!front?.image || !spineTex?.image) return
-
-//     const frontImg = front.image as HTMLImageElement
-//     const spineImg = spineTex.image as HTMLImageElement
-
-//     onDimensions({
-//       front: { aspect: frontImg.naturalWidth / frontImg.naturalHeight },
-//       spine: { aspect: spineImg.naturalWidth / spineImg.naturalHeight },
-//     })
-//   }, [front, spineTex, onDimensions])
-
-//   /* ---------------------------------------------
-//    * Materials (memoized)
-//    * --------------------------------------------- */
-//   const materials = useMemo(() => {
-//     const m = (map?: THREE.Texture) =>
-//       new THREE.MeshStandardMaterial({
-//         map,
-//         roughness: 0.8,
-//         metalness: 0.05,
-//         envMapIntensity: 0.4,
-//       })
-
-//     return [
-//       m(spineTex),
-//       m(pages),
-//       m(pagesTop),
-//       m(pagesBottom),
-//       m(back),
-//       m(front),
-//     ]
-//   }, [front, back, spineTex, pages, pagesTop, pagesBottom])
-
-//   return (
-//     <mesh castShadow receiveShadow scale={scale}>
-//       {/* geometry NEVER changes */}
-//       <boxGeometry args={[1, 1, 1]} />
-//       {materials.map((mat, i) => (
-//         <primitive key={i} object={mat} attach={`material-${i}`} />
-//       ))}
-//     </mesh>
-//   )
-// }

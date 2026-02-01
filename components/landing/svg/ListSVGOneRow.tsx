@@ -1,10 +1,9 @@
-import { useContext,useMemo, useRef } from "react"
+import { useContext,useMemo } from "react"
 import { ContextMenu } from "../../context/ContextMenu"
 import {  TypeProject } from "@/types/project-type"
 import { convertAreaToSVG, convertTableToSVG } from "@/util/convertTableToSVG";
 
 
-import TextSVG from "./TextSVG";
 import ListRowSVG from "./ListRowSVG";
 import DefFiltersSVG from "./DefFiltersSVG";
 import PathSVG from "./PathSVG";
