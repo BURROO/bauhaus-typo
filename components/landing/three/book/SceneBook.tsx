@@ -1,11 +1,9 @@
 'use client'
 
-import { useEffect, useMemo } from 'react'
+import { useMemo } from 'react'
 import { useTexture } from '@react-three/drei'
 import * as THREE from 'three'
-import { TypeProject, courseShort } from '@/types/project-type'
-import { fileDataIO } from '@/data/fileData'
-import { sanitizeForUrl } from '@/util/sanitizeForUrl'
+import { TypeProject } from '@/types/project-type'
 import { getAssetCover } from '@/util/getAssets'
 import { useHover } from '@/components/hook/useHover'
 
@@ -114,7 +112,6 @@ function Book({ item }: { item: TypeProject }) {
 
 
   // const 
-  // console.log(scale)
   const thickness = scale[2]
   const spreadArea = thickness*0.999
 
@@ -148,8 +145,6 @@ function Book({ item }: { item: TypeProject }) {
             // const color = new THREE.Color(`rgb(${grayTone},${grayTone},${grayTone})`)
             const color = new THREE.Color(grayTone, grayTone, grayTone)
             // const color = new THREE.Color(`rgb(255,0,0)`)
-
-            // console.log(randomVal, color)
 
             return (
             <mesh 

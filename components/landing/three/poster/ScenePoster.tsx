@@ -1,7 +1,7 @@
 import {  useMemo, useRef } from "react";
 import * as THREE from "three";
 import { useTexture } from "@react-three/drei";
-import { CameraProps, useFrame } from "@react-three/fiber";
+import { useFrame } from "@react-three/fiber";
 import { courseShort, TypeProject } from "@/types/project-type";
 import { fileDataIO } from "@/data/fileData";
 import { sanitizeForUrl } from "@/util/sanitizeForUrl";

@@ -36,7 +36,7 @@ const Overlay = ({
     autoRotateSpeed: number 
 }) => {
 
-    const { activeIndex } = useContext(ContextMenu)
+    const { activeIndex, rowHeight } = useContext(ContextMenu)
 
     const [stableIndex, setStableIndex] = useState<number | null>(null)
 
@@ -72,6 +72,7 @@ const Overlay = ({
         <div 
         className={styles.overlay}
         style={{ 
+            paddingBottom: rowHeight ? rowHeight*4 : 0,
             visibility: activeIndex === null ? 'hidden' : 'visible',
         }}
         >

@@ -1,12 +1,9 @@
 // 'use client'
 
-import { courseShort, TypeProject } from '@/types/project-type'
+import { TypeProject } from '@/types/project-type'
 import styles from './Slideshow.module.css'
 import {  useMemo, useState } from 'react';
 
-
-import { fileDataIO } from '@/data/fileData';
-import { sanitizeForUrl } from '@/util/sanitizeForUrl';
 import { getAssetSlideShow } from '@/util/getAssets';
 
 

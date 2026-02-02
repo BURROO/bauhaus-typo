@@ -74,12 +74,12 @@ export const getAssetCover = ({ item }: Props) => {
       : fallback
 
     // @ts-ignore
-    const studentName = fileDataIO[name] ? name : fallback
+    // const studentName = fileDataIO[name] ? name : fallback
     const format = 'webp'
 
-    const front = `/images/${courseFolder.toLowerCase()}/${studentName}/${studentName}_front.${format}`;
-    const back = `/images/${courseFolder.toLowerCase()}/${studentName}/${studentName}_back.${format}`;
-    const spine = `/images/${courseFolder.toLowerCase()}/${studentName}/${studentName}_spine.${format}`;
+    const front = `/images/${courseFolder.toLowerCase()}/${name}/${name}_front.${format}`;
+    const back = `/images/${courseFolder.toLowerCase()}/${name}/${name}_back.${format}`;
+    const spine = `/images/${courseFolder.toLowerCase()}/${name}/${name}_spine.${format}`;
 
 
     const hasFront = assets.find(a => a === front)

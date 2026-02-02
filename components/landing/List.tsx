@@ -99,7 +99,6 @@ const List = ({ dataStudents, dataCourses}: Props) => {
 
 
     // const courseInfo: TypeCourse|null = dataCourses.find(k => k.COURSE === filter) || null
-    console.log(filter, dataCourses)
     const courseInfo: TypeCourse|null = dataCourses.find(k => k.COURSE.slice(0,7).match(filter.slice(0,7))) || null
 
     if(rowHeight === null) return <></>

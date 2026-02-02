@@ -66,8 +66,6 @@ const Website = ({ item }: Props) => {
         }
     }, [])
 
-    console.log("src", src)
-
     const website = getAssetWebsite({ item })
 
     return (
