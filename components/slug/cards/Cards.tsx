@@ -19,7 +19,6 @@ interface Props {
 
 const Book = ({ item }: Props) => {
 
-    // const [view, setView] = useState<'cover'|'content'>('cover')
     const { view, setView } = useContext(ContextMenu)
 
     // const index = item.NAME.length % 2 + 1

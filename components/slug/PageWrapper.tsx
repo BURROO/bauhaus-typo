@@ -99,7 +99,7 @@ const PageWrapper = ({ item }: Props) => {
     const buttonText = type === 'WEBSITE' ? 'Open Website' : 'Open Slideshow'
 
 
-    const hasWebsite =  type === 'WEBSITE' && !getAssetWebsite({ item }) ? false : true
+    const hasWebsite =  (type === 'WEBSITE' && !getAssetWebsite({ item })) ? false : true
 
     return (
         <div className={styles.page}>

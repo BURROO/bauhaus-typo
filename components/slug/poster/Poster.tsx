@@ -18,7 +18,6 @@ interface Props {
 
 const Poster = ({ item }: Props) => {
 
-    // const [view, setView] = useState<'poster'|'slideshow'>('poster')
     const { view, setView } = useContext(ContextMenu)
 
     const [showButton, setShowButton] = useState(true)
