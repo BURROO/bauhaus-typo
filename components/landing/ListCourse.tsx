@@ -41,7 +41,6 @@ const ListCourse = ({ course, dataStudents }: Props) => {
                 <div>
                     <p>{course['DEUTSCH']}</p>
                 </div>
-                {count}
             </div>
         </div>
     )

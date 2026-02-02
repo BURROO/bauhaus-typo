@@ -70,6 +70,7 @@ const SceneWrapper = ({
                 />
             }
             <ambientLight intensity={0.3} />
+            {/* <ambientLight intensity={0.9} /> */}
             <directionalLight
             position={[3, 5, 4]}
             intensity={1.2}
@@ -92,7 +93,7 @@ const SceneWrapper = ({
             width={4}
             height={2}
             intensity={3}
-            position={[2, 1, -2]}
+            position={[2, -1, -2]}
             lookAt={[0, 0, 0]}
             />
         </Canvas>
