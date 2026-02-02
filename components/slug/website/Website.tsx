@@ -16,7 +16,6 @@ interface Props {
 
 const Website = ({ item }: Props) => {
 
-    // 
     const { src } = useMemo(() => {
      
         return { src : getAssetWebsite({ item })}
@@ -33,15 +32,15 @@ const Website = ({ item }: Props) => {
     const openFullscreenIframe = () => {
         setView('iframe')
 
-        // requestAnimationFrame(() => {
-        //     const el = iframeContainerRef.current
-        //     if (!el) return
+        requestAnimationFrame(() => {
+            const el = iframeContainerRef.current
+            if (!el) return
 
-        //     if (el.requestFullscreen) el.requestFullscreen()
-        //     else if ((el as any).webkitRequestFullscreen) {
-        //         (el as any).webkitRequestFullscreen()
-        //     }
-        // })
+            if (el.requestFullscreen) el.requestFullscreen()
+            else if ((el as any).webkitRequestFullscreen) {
+                (el as any).webkitRequestFullscreen()
+            }
+        })
     }
 
     // 👇 Listen for ESC / fullscreen exit
@@ -99,11 +98,15 @@ const Website = ({ item }: Props) => {
                             type="interact"
                             visible
                             // onClick={() => setView(view === 'iframe' ? 'video' : 'iframe')}
-                            onClick={
-                                view === 'video'
-                                    ? openFullscreenIframe
-                                    : () => setView('video')
-                            }
+                            onClick={() => {
+
+                                if(!website) return
+                                if(view === 'video'){
+                                    openFullscreenIframe()
+                                }else{
+                                    setView('video')
+                                }
+                            }}
                         />
                     </SceneWrapper>
                 </div>

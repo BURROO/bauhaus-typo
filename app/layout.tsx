@@ -5,8 +5,8 @@ import Layout from "@/components/Layout";
 
 
 export const metadata: Metadata = {
-  title: "Bauhaus Typo",
-  description: "Bauhaus Typoe W25/26",
+  title: "Bauhaus Typography",
+  description: "Bauhaus Typography W25/26",
 };
 
 export default function RootLayout({
