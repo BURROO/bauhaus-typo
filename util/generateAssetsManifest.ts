@@ -44,6 +44,8 @@ function walkAssets(dir: string, fileList: string[] = []) {
     // ignore hidden stuff completely
     if (file.startsWith('.')) continue
 
+    if (file.match('websites')) continue
+
     const fullPath = path.join(dir, file)
 
     let stat

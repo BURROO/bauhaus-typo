@@ -45,6 +45,9 @@ export const getAssetShowcase = ({ item }: Props) => {
 
     const assetFound = assets.find(a => a === src)
 
+
+    // console.log(assetFound)
+
     return assetFound ? src : null
 
 }
