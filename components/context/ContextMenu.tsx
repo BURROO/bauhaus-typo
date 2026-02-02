@@ -61,7 +61,6 @@ export const ContextMenuProvider = ({
       window.removeEventListener('resize', handleResize);
     };
   }, []);
-  // const [filteredProjects, setFilteredProjects] = useState([]);
 
 
   // Set the initial mode

@@ -10,6 +10,7 @@ import { ContextMenu } from '../context/ContextMenu';
 import ListCourse from './ListCourse';
 import Background from './Background';
 import ListSVG from './svg/ListSVG';
+import { useSearchParams, useRouter } from 'next/navigation';
 
 interface Props {
     dataStudents: TypeProject[];
@@ -25,6 +26,10 @@ interface Sorting {
 
 const List = ({ dataStudents, dataCourses}: Props) => {
 
+
+    const searchParams = useSearchParams()
+    const router = useRouter()
+
     const {
         screenHeight,
         rowHeight,
@@ -35,7 +40,6 @@ const List = ({ dataStudents, dataCourses}: Props) => {
     const refContainer = useRef<HTMLDivElement>(null)
 
     // 
-    const [filter, setFilter ] = useState('')
     // 
     const [sorting, setSorting ] = useState<Sorting>({
         column: 'Name',
@@ -48,6 +52,29 @@ const List = ({ dataStudents, dataCourses}: Props) => {
     const itemHeight = 60
 
     const [firstIndex, setFirstIndex] = useState(0)
+
+    const [filter, setFilter ] = useState('')
+
+        // Update URL when filter changes
+    const updateFilter = (newFilter: string) => {
+        setFilter(newFilter)
+
+        // Build a new URLSearchParams object
+        const params = new URLSearchParams(searchParams.toString())
+        if (newFilter) {
+        params.set('filter', newFilter)
+        } else {
+        params.delete('filter')
+        }
+
+        // Push a new URL (client-side navigation)
+        router.push(`?${params.toString()}`)
+    }
+    
+    useEffect(() => {
+        const f = searchParams.get('filter') || ''
+        setFilter(f)
+    }, [searchParams])
 
     useEffect(() => {
 
@@ -127,7 +154,11 @@ const List = ({ dataStudents, dataCourses}: Props) => {
                 <div className={styles.footer}>
                     <ListFooter
                     height={rowHeight*4}
-                    setFilter={setFilter}
+                    setFilter={(filter) => {
+
+                        updateFilter(filter)
+                        // setFilter()
+                    }}
                     filter={filter}
                     setSorting={setSorting}
                     // sorting={sorting}
