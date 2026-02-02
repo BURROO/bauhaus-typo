@@ -8,6 +8,7 @@
     "build": "npm run prebuild && next build",
     "prebuild": "node util/generateAssetsManifest.ts",
     "start": "next start",
+    "serve": "npx serve@latest out",
     "export": "next export",
     "lint": "eslint"
   },

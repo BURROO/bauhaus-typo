@@ -33,15 +33,15 @@ const Website = ({ item }: Props) => {
     const openFullscreenIframe = () => {
         setView('iframe')
 
-        requestAnimationFrame(() => {
-            const el = iframeContainerRef.current
-            if (!el) return
+        // requestAnimationFrame(() => {
+        //     const el = iframeContainerRef.current
+        //     if (!el) return
 
-            if (el.requestFullscreen) el.requestFullscreen()
-            else if ((el as any).webkitRequestFullscreen) {
-                (el as any).webkitRequestFullscreen()
-            }
-        })
+        //     if (el.requestFullscreen) el.requestFullscreen()
+        //     else if ((el as any).webkitRequestFullscreen) {
+        //         (el as any).webkitRequestFullscreen()
+        //     }
+        // })
     }
 
     // 👇 Listen for ESC / fullscreen exit
@@ -66,17 +66,28 @@ const Website = ({ item }: Props) => {
         }
     }, [])
 
+    console.log("src", src)
 
-    const hasWebsite = useMemo(() => getAssetWebsite({ item }), [item])
+    const website = getAssetWebsite({ item })
 
     return (
         <div className={styles.website}>
-            {view === 'iframe' && src &&(
+            {view === 'iframe' && src && (
                 <div ref={iframeContainerRef} className={styles.websiteIframe}>
                     <iframe
-                        src={src}
-                        allowFullScreen
-                        sandbox="allow-scripts allow-same-origin"
+                    src={src}
+                    // src="/websites/tt/hannes_altmann/index.html"
+                    allowFullScreen
+                    // sandbox="allow-scripts allow-same-origin"
+                    //   sandbox="
+                    //     allow-scripts
+                    //     allow-same-origin
+                    //     allow-forms
+                    //     allow-pointer-lock
+                    //     allow-popups
+                    //     allow-modals
+                    //     allow-top-navigation-by-user-activation
+                    //   "
                     />
                 </div>
             )}
@@ -90,22 +101,17 @@ const Website = ({ item }: Props) => {
                             type="interact"
                             visible
                             // onClick={() => setView(view === 'iframe' ? 'video' : 'iframe')}
-                            onClick={() => {
-
-                                if(!hasWebsite) return;
-
-                                if(view === 'video'){
-                                    openFullscreenIframe()
-                                }else{
-                                    setView('video')
-                                }
-                            }}
+                            onClick={
+                                view === 'video'
+                                    ? openFullscreenIframe
+                                    : () => setView('video')
+                            }
                         />
                     </SceneWrapper>
                 </div>
             )}
 
-            {hasWebsite && <ButtonWrapper>
+            {website && <ButtonWrapper>
                 <Button
                     onClick={
                         view === 'video'
