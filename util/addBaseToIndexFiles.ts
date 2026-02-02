@@ -8,6 +8,9 @@ const root_tt = "public/websites/tt";
 
 const handleDir = (root: string) => {
   for (const dir of fs.readdirSync(root)) {
+
+  if(dir.match("wunderle")) return;
+
     const index = path.join(root, dir, "index.html");
     if (!fs.existsSync(index)) continue;
 
@@ -15,7 +18,7 @@ const handleDir = (root: string) => {
 
     const subDir = root.split('/').pop(); // "pz" oder "tt"
 
-    console.log(subDir)
+    // console.log(subDir)
     const baseTag = `<base href="/websites/${subDir}/${dir}/">`;
 
     if (html.includes("<base")) {
