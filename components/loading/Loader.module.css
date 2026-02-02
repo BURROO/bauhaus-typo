@@ -1,0 +1,29 @@
+.overlay {
+    position: fixed;
+    inset: 0;
+    background: black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    z-index: 9999;
+  }
+
+.bar {
+    width: 50vw;
+    height: 14px;
+    background: #222;
+    overflow: hidden;
+}
+.fill {
+    height: 100%;
+    background: cyan;
+    transform-origin: 0 0;
+    transition: transform 0.2s ease;
+  }
+.label {
+    margin-top: 12px;
+    color: #888;
+    font-size: 12px;
+    font-family: monospace;
+}
