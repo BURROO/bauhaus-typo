@@ -5,8 +5,8 @@ export type TypeCoursesNames =
 'Handmade Websites as Punk Zines' | 
 'Bauhaus Master Lectures' |
 'First Year Introduction' |
-'Introduction Typography' |
 // 'Introduction Typography' |
+'Introduction Typography' |
 'Independent Project' |
 '204 Type-Gazette Issue 06' |
 '204 Type-Gazette Issue 6' |

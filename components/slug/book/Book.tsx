@@ -52,12 +52,12 @@ const Book = ({ item }: Props) => {
             </div>
                     
             
-            <ButtonWrapper>
+            {view === "inside" && <ButtonWrapper>
                 <Button
                 onClick={() => setView(view === "inside" ? "outside" : "inside")}
                 text={`Look ${view === "inside" ? "outside" : "inside"}`}
                 />
-            </ButtonWrapper>
+            </ButtonWrapper>}
         </>
     )
 }

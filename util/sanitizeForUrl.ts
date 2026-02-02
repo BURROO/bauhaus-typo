@@ -29,7 +29,7 @@ export const getUrlFromProject = (item: TypeProject) => {
 }
 
 
-export const getType = (item: TypeProject): "WEBSITE"|"PUBLICATION"|"POSTER"|"SLIDESHOW" => {
+export const getType = (item: TypeProject): "WEBSITE"|"PUBLICATION"|"POSTER"|"SLIDESHOW"|"CARD GAME" => {
 
 
     const isOnScreen =  (item["MEDIUM"].toUpperCase() === "WEBSITE" || item["MEDIUM"].toUpperCase() === "WEBTOOL")
@@ -52,6 +52,11 @@ export const getType = (item: TypeProject): "WEBSITE"|"PUBLICATION"|"POSTER"|"SL
 
     if(isPoster) return "POSTER"
 
+    const isCardGame = (
+        item["MEDIUM"].toUpperCase() === "CARD GAME" 
+    )
+
+    if(isCardGame) return "CARD GAME"
 
     return "SLIDESHOW"
 

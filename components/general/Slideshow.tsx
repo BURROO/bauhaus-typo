@@ -22,7 +22,7 @@ const Slideshow = ({
 
     const slides = useMemo(() => {
 
-        const slides = getAssetSlideShow({ item})
+        const slides = getAssetSlideShow({ item })
 
         return slides
     }, [])

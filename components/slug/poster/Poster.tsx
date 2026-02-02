@@ -20,11 +20,9 @@ const Poster = ({ item }: Props) => {
 
     const { view, setView } = useContext(ContextMenu)
 
-    const [showButton, setShowButton] = useState(true)
-
     const interactCam: CameraProps = {
         // position: [0.02, 0.4, 0.6], 
-        position: [0.02, 0.2*0.7, 0.3*0.7], 
+        position: [0.02, 0.2*0.2, 0.3*1], 
         fov: 45 
     }
 
@@ -52,12 +50,14 @@ const Poster = ({ item }: Props) => {
                     />
                 )}
             </div>
-            <ButtonWrapper>
+            {view === "inside" && <ButtonWrapper>
                 <Button
-                onClick={() => setView(view === "outside" ? "inside" : "outside")}
-                text={`Look at ${view === "outside" ? "Slideshow" : "Poster"}`}
+                // onClick={() => setView(view === "outside" ? "inside" : "outside")}
+                // text={`Look at ${view === "outside" ? "Slideshow" : "Poster"}`}
+                onClick={() => setView("inside")}
+                text={`Look at Slideshow`}
                 />
-            </ButtonWrapper>
+            </ButtonWrapper>}
         </>
     )
 }

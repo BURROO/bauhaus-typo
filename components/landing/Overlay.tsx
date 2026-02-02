@@ -7,6 +7,7 @@ import dynamic from 'next/dynamic';
 import { useContext, useEffect, useState } from 'react';
 import { ContextMenu } from '../context/ContextMenu';
 import { CameraProps } from '@react-three/fiber';
+import SceneCard from './three/cards/SceneCards';
 
 const SceneWrapper = dynamic(
   () => import("@/components/landing//three/SceneWrapper"),
@@ -72,7 +73,8 @@ const Overlay = ({
         <div 
         className={styles.overlay}
         style={{ 
-            paddingBottom: rowHeight ? rowHeight*4 : 0,
+            height : rowHeight ? rowHeight*25+2 : 0,
+            paddingBottom: rowHeight ? rowHeight*3 : 0,
             visibility: activeIndex === null ? 'hidden' : 'visible',
         }}
         >
@@ -95,6 +97,13 @@ const Overlay = ({
                 {type === "POSTER" && 
                     <ScenePoster
                     type="orbit"
+                    item={activeProject || null}
+                    onClick={() => {}}
+                    />
+                }
+                {type === "CARD GAME" && 
+                    <SceneCard
+                    visible={type === "CARD GAME"}
                     item={activeProject || null}
                     onClick={() => {}}
                     />

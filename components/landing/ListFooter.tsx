@@ -34,7 +34,7 @@ const ListFooter = ({
         { short: "TT", name: "Transcoding Typography" }, 
         { short: "OM", name: "In Order Of Meaning" }, 
         { short: "PZ", name: "Handmade Websites as Punk Zines" },
-        { short: "TG", name: '204 Type-Gazette Issue 6' },
+        // { short: "TG", name: '204 Type-Gazette Issue 6' },
         // { short: "TG", name: '204 Type-Gazette Issue 06' },
     ]
 

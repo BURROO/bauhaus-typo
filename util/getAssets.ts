@@ -16,11 +16,6 @@ export const getAssetSlideShow = ({ item }: Props): string[] => {
 
     // 
     const slides = []
-    // @ts-ignore
-    // const count = (fileDataIO[student] || fileDataIO["mona_kerntke"]).count
-
-
-    // Get the count from asset instea/images/bm/susan_arian_julide_nur_alemdar/slide-d!!
     const count = assets.filter(a => a.match(`/images/${courseFolder}/${student}/slide`)).length
     
 
@@ -102,4 +97,61 @@ export const getAssetCover = ({ item }: Props) => {
 export const getAssetsPoster = ({ item }: Props) => {
 
     // Handle stuff…
+}
+
+
+
+export const getAssetCardBox = ({ item }: Props) => {
+    // const courseFolder = courseShort[item.COURSE]
+
+    const courseFolder = "ip"
+
+
+    const name =  sanitizeForUrl(item.NAME).replaceAll('-', '_')
+
+    // @ts-ignore
+    // const studentName = fileDataIO[name] ? name : fallback
+    const format = 'webp'
+
+    const front = `/images/${courseFolder.toLowerCase()}/${name}/front.${format}`;
+    const back = `/images/${courseFolder.toLowerCase()}/${name}/back.${format}`;
+
+
+    const hasFront = assets.find(a => a === front)
+    const hasBack = assets.find(a => a === back)
+    // const hasSpine = assets.find(a => a === spine)
+
+
+    if (!hasFront || !hasBack) return null
+
+    return { 
+        front, 
+        back, 
+        // spine 
+    }
+}
+
+
+
+
+export const getAssetCards = ({ item }: Props) => {
+    // const courseFolder = courseShort[item.COURSE]
+
+    const courseFolder = "ip"
+    // const kurs = sanitizeForUrl( item.COURSE).split("-").join("_")
+    const student = sanitizeForUrl( item.NAME).split("-").join("_")
+    // const courseFolder = courseShort[item.COURSE]?.toLocaleLowerCase()  
+
+    const slides = []
+    const count = assets.filter(a => a.match(`/images/${courseFolder}/${student}/cards_Seite_`)).length
+    
+    for(let i = 1; i <= count;i++){
+
+        const numLength = i.toString().length
+        const paddedNumber = numLength > 1 ? i.toString() : `0${i}`
+
+        slides.push(`/images/${courseFolder}/${student}/cards_Seite_${paddedNumber}.webp`)
+    }
+
+    return slides
 }

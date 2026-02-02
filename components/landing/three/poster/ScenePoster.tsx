@@ -55,13 +55,9 @@ export default function ScenePosterWrapper({
 interface PosterInnerProps {
     type: 'orbit' | 'interact';
     item: TypeProject;
-    folded?: boolean;      // if true, simulate a fold
-    rolled?: boolean;      // if true, simulate rolled poster
 }
 
 function ScenePosterInner({
-    folded = false,
-    rolled = false,
     item,
 }: PosterInnerProps) {
   // Load front textures
@@ -92,17 +88,37 @@ function ScenePosterInner({
     // update phase = time.current
   });
 
+
+  const isMetallic = item.COURSE === "Bauhaus Master Lectures"
+
+  const metallness = (isMetallic: boolean, index: number) => {
+    
+    if(isMetallic){
+      return {
+        roughness: 0.6 - index * 0.15,   // top layer glossier
+        metalness: 0.05 + index * 0.02,
+        clearcoat: index === 0 ? 0.1 : 0,
+        clearcoatRoughness: 0.2,
+        transparent: true,
+      }
+    }else{
+      return {
+        roughness: 1,
+        metalness: 0,
+        clearcoat: 0,
+        clearcoatRoughness: 0,
+        transparent: false,
+      }
+
+    }
+  }
+
   const layerMaterials = useMemo(() => {
     return frontTextures.map((txt, i) => {
       return new THREE.MeshPhysicalMaterial({
         map: txt,
-        transparent: true,
         side: THREE.DoubleSide,
-        roughness: 0.6 - i * 0.15,   // top layer glossier
-        metalness: 0.05 + i * 0.02,
-        clearcoat: i === 0 ? 0.1 : 0,
-        clearcoatRoughness: 0.2,
-
+        ...metallness(isMetallic, i),
         normalScale: new THREE.Vector2(
           // 1 + i * 0.2,
           // 1 + i * 0.2
@@ -113,8 +129,14 @@ function ScenePosterInner({
     });
 }, [frontTextures]);
 
-  if(item?.COURSE === "Bauhaus Master Lectures") rolled = true
+  let rolled = false
+  let folded = false
 
+  if(item?.COURSE === "Bauhaus Master Lectures") rolled = true
+  if(item?.COURSE === "Introduction Typography") folded = true
+
+
+  console.log("folded", folded, item?.COURSE)
 
 
   const geometry = useMemo(() => {
@@ -123,94 +145,146 @@ function ScenePosterInner({
     return geo
   },[item, width, height])
 
-  // const geometry = useMemo(() => {
-  //   const ge   = new THREE.PlaneGeometry(width, height, 32, 32);
 
-  //   if (folded) {
-  //     // Simple sinusoidal fold along width
-  //     for (let i = 0; i < geo.attributes.position.count; i++) {
-  //       const x = geo.attributes.position.getX(i);
-  //       const y = geo.attributes.position.getY(i);
-  //       const fold = Math.sin((x / width) * Math.PI * 2) * 0.05; // fold amplitude
-  //       geo.attributes.position.setZ(i, fold);
+  // useFrame((_, delta) => {
+  //   time.current += delta;
+
+  //   if(rolled){
+
+  //     const pos = geometry.attributes.position;
+  //     const halfW = width / 2;
+  //     const halfH = height / 2;
+
+  //     const amplitude = 0.018;
+  //     // const frequency = 2.2;
+  //     const frequency = 1.2;
+  //     const phase = time.current * 1.2;
+
+  //     for (let i = 0; i < pos.count; i++) {
+  //       const x = pos.getX(i);
+  //       const y = pos.getY(i);
+
+  //       // normalize
+  //       const nx = x / halfW;
+  //       const ny = y / halfH;
+
+  //       // 👉 diagonal wave
+  //       const diag = nx * 0.3 + ny * 0.6;
+     
+  //       const z =
+  //         Math.sin(diag * Math.PI * frequency + phase) *
+  //         amplitude *
+  //         Math.cos(ny * Math.PI * 0.5); // edge damping
+
+  //       pos.setZ(i, z);
   //     }
-  //     geo.computeVertexNormals();
+  //     pos.needsUpdate = true;
   //   }
+  //   geometry.computeVertexNormals();
+  // });
+  // const FOLDS_X = 5; // vertical folds (columns)
+  // const FOLDS_Y = 1; // horizontal folds (rows)
 
-  //   if (rolled) {
-  //     // Roll along width
-  //     for (let i = 0; i < geo.attributes.position.count; i++) {
+  const FOLD_ANGLE = Math.PI / 2.2; // ~82°, looks like real fold
 
-  //       const pos = geo.attributes.position;
-  //       const halfW = width / 2;
-
-  //       const amplitude = 0.15;     // wave height
-  //       const frequency = 2.5;      // number of waves across width
-  //       const phase =time.current;            // animate later 👀
-
-  //       for (let i = 0; i < pos.count; i++) {
-  //         const x = pos.getX(i);
-  //         const y = pos.getY(i);
-
-  //         const nx = x / halfW; // -1 → +1
-
-  //         const z =
-  //           Math.sin(nx * Math.PI * frequency + phase) *
-  //           amplitude *
-  //           Math.cos((y / height) * Math.PI * 0.5); // damp near top/bottom
-
-  //         pos.setZ(i, z);
-  //       }
-  //     }
-  //     geo.computeVertexNormals();
-  //   }
-
-  //   return geo;
-  // }, [width, height, folded, rolled]);
 
   useFrame((_, delta) => {
-    time.current += delta;
+  time.current += delta;
 
-    if(rolled){
+  const pos = geometry.attributes.position;
+  const halfW = width / 2;
+  const halfH = height / 2;
 
-      const pos = geometry.attributes.position;
-      const halfW = width / 2;
-      const halfH = height / 2;
+  for (let i = 0; i < pos.count; i++) {
+    const x = pos.getX(i);
+    const y = pos.getY(i);
 
-      const amplitude = 0.018;
-      // const frequency = 2.2;
-      const frequency = 1.2;
-      const phase = time.current * 1.2;
+    let z = 0;
 
-      for (let i = 0; i < pos.count; i++) {
-        const x = pos.getX(i);
-        const y = pos.getY(i);
+    /* ======================= ROLLED ======================= */
+    if (rolled) {
+      const nx = x / halfW;
+      const ny = y / halfH;
 
-        // normalize
-        const nx = x / halfW;
-        const ny = y / halfH;
-
-        // 👉 diagonal wave
-        const diag = nx * 0.3 + ny * 0.6;
-        // const noise =
-        //   (hash(nx * 10 + phase * 1, ny * 10) - 0.5) * 0.01;
-
-        // const z =
-        //   Math.sin(diag * Math.PI * frequency + phase) *
-        //   amplitude *
-        //   Math.cos(ny * Math.PI * 0.5) +
-        //   noise;
-        const z =
-          Math.sin(diag * Math.PI * frequency + phase) *
-          amplitude *
-          Math.cos(ny * Math.PI * 0.5); // edge damping
-
-        pos.setZ(i, z);
-      }
-      pos.needsUpdate = true;
+      const diag = nx * 0.3 + ny * 0.6;
+      z +=
+        Math.sin(diag * Math.PI * 1.2 + time.current * 1.2) *
+        0.018 *
+        Math.cos(ny * Math.PI * 0.5);
     }
-    geometry.computeVertexNormals();
-  });
+
+    // if (folded) {
+
+    //   const FOLDS_X = 1;   // vertical folds → 6 columns
+    //   const FOLDS_Y = 5;   // horizontal fold → 2 rows
+
+    //   const FOLD_DEPTH_X = 0.0004; // vertical crease depth
+    //   const FOLD_DEPTH_Y = 0.003; // horizontal crease depth
+
+    //   const pos = geometry.attributes.position;
+
+    //   const cols = FOLDS_X + 1;
+    //   const rows = FOLDS_Y + 1;
+
+    //   const colW = width / cols;
+    //   const rowH = height / rows;
+
+    //   for (let i = 0; i < pos.count; i++) {
+    //     const x = pos.getX(i);
+    //     const y = pos.getY(i);
+
+    //     /* ===================== segment indices ===================== */
+    //     const colIndex = Math.floor((x + width / 2) / colW);
+    //     const rowIndex = Math.floor((y + height / 2) / rowH);
+
+    //     /* ===================== linear offsets ===================== */
+    //     const zX =
+    //       ((colIndex % 2 === 0 ? 1 : -1) * FOLD_DEPTH_X);
+
+    //     const zY =
+    //       ((rowIndex % 2 === 0 ? -1 : 1) * FOLD_DEPTH_Y);
+
+    //     pos.setZ(i, zX + zY);
+    //   }
+
+    //   pos.needsUpdate = true;
+    // }
+
+
+    /* ======================= FOLDED ======================= */
+    if (folded) {
+
+      const foldStrength = 0.0000035        // how much it folds
+      const foldSoftness = 0.000012        // how wide the crease is
+      const foldDepth = 0.000002           // how much Z displacement
+      
+      const distToFold = x; // fold at x = 0
+      const foldDir = Math.sign(distToFold) || 1;
+      const t = Math.abs(distToFold) / halfW;
+
+      // soften crease
+      const smooth = Math.exp(-t * t / foldSoftness);
+
+      // bending displacement
+      z +=
+        foldDir *
+        Math.sin(t * Math.PI) *
+        foldDepth *
+        foldStrength;
+
+      // crease indentation
+      z -= smooth * 0.006;
+    }
+
+    
+
+    pos.setZ(i, z);
+  }
+
+  pos.needsUpdate = true;
+  geometry.computeVertexNormals();
+});
+
 
    
 if (!frontTextures[0]) return null;
