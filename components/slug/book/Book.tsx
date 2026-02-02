@@ -3,12 +3,13 @@
 import { TypeProject } from "@/types/project-type"
 import styles from './Book.module.css'
 import SceneBook from "../../landing/three/book/SceneBook"
-import { useState } from "react"
+import { useContext } from "react"
 import Slideshow from "../../general/Slideshow"
 import SceneWrapper from "@/components/landing/three/SceneWrapper"
 import { CameraProps } from "@react-three/fiber"
 import Button from "@/components/general/Button"
 import { ButtonWrapper } from "../PageWrapper"
+import { ContextMenu } from "@/components/context/ContextMenu"
 
 
 interface Props {
@@ -18,10 +19,7 @@ interface Props {
 
 const Book = ({ item }: Props) => {
 
-    const [view, setView] = useState<'cover'|'content'>('cover')
-
-    // const index = item.NAME.length % 2 + 1
-    // const [showButton, setShowButton] = useState(false)
+    const { view, setView } = useContext(ContextMenu)
 
     const interactCam: CameraProps = {
         // position: [0.02, 0.4, 0.6], 
@@ -32,7 +30,7 @@ const Book = ({ item }: Props) => {
     return (
         <>
             <div className={styles.book}>
-                {view === "cover" && (
+                {view === "outside" && (
                     <SceneWrapper
                     camSettings={interactCam}
                     type={"interact"}
@@ -41,11 +39,11 @@ const Book = ({ item }: Props) => {
                         <SceneBook
                         visible={true}
                         item={item}
-                        onClick={() => setView(view === 'cover' ? 'content' : 'cover')}
+                        onClick={() => setView(view === 'outside' ? 'inside' : 'outside')}
                         />
                     </SceneWrapper>
                 )}
-                {view === "content" && (
+                {view === "inside" && (
                     <Slideshow
                     isBook={true}
                     item={item}
@@ -56,8 +54,8 @@ const Book = ({ item }: Props) => {
             
             <ButtonWrapper>
                 <Button
-                onClick={() => setView(view === "content" ? "cover" : "content")}
-                text={`Look ${view === "content" ? "outside" : "inside"}`}
+                onClick={() => setView(view === "inside" ? "outside" : "inside")}
+                text={`Look ${view === "inside" ? "outside" : "inside"}`}
                 />
             </ButtonWrapper>
         </>

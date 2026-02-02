@@ -1,12 +1,13 @@
 'use client'
 
-import { useEffect, useMemo, useRef, forwardRef } from 'react'
+import { useEffect, useMemo, useRef, forwardRef, useContext } from 'react'
 import * as THREE from 'three'
 import ObjModel from './ObjModel'
 import VideoPlane from '../VideoPlane'
 import { TypeProject } from '@/types/project-type'
 import { useHover } from '@/components/hook/useHover'
 import { getAssetShowcase } from '@/util/getAssets'
+import { ContextMenu } from '@/components/context/ContextMenu'
 
 
 interface Props {
@@ -22,11 +23,13 @@ export default function SceneMacbook({
   type,
   isDouble,
   visible,
-  onClick
+  onClick,
 }: Props) {
   const rootRef = useRef<THREE.Group>(null!)
   const frontRef = useRef<THREE.Group>(null!)
   const backRef = useRef<THREE.Group>(null!)
+
+  const { setIsHovered } = useContext(ContextMenu)
 
   /* ---------------------------------------------
    * Visibility (no remount)
@@ -62,8 +65,15 @@ export default function SceneMacbook({
   return (
     <group ref={rootRef}
     onPointerDown={onClick}
-    onPointerEnter={() => setCursor("pointer")}
-    onPointerLeave={() => setCursor("auto")}
+    onPointerEnter={() => {
+      if(!src) return;
+      setIsHovered(true)
+      setCursor("pointer")}}
+    onPointerLeave={() => {
+      if(!src) return;
+      setIsHovered(false)
+      setCursor("auto")
+    }}
     >
       {/* FRONT */}
       <MacbookInstance

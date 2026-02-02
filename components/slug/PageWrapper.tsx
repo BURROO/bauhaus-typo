@@ -7,12 +7,16 @@ import styles from "./PageWrapper.module.css";
 // import PunkZine from "@/components/slug/punkZine/PunkZine";
 import Link from "next/link";
 import { TypeProject } from "@/types/project-type";
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode, useContext, useEffect, useState } from "react";
 // import TypeLarge from "../layer2/TypeLarge";
 import ProjectInfo from "./ProjectInfo";
 import dynamic from 'next/dynamic'
 import { getType } from "@/util/sanitizeForUrl";
 import { useRouter } from "next/navigation";
+import { ContextMenu } from "../context/ContextMenu";
+import { xor } from "lodash";
+import Button from "../general/Button";
+import { getAssetWebsite } from "@/util/getAssets";
 
 const Book = dynamic(
   () => import("@/components/slug/book/Book"),
@@ -40,18 +44,12 @@ interface Props{
 
 const PageWrapper = ({ item }: Props) => {
 
-    const [isHovered, setIsHovered] = useState(false)
 
+    const { isHovered, view } = useContext(ContextMenu)
     const router = useRouter()
 
 
-    const [introStyle, setIntroStyle] = useState({
-        opacity: 1,
-        display: "flex"
-    })
-
     useEffect(() => {
-
 
         const handleEscape = (e: any) => {
 
@@ -60,26 +58,48 @@ const PageWrapper = ({ item }: Props) => {
             }
         }
 
-
         window.addEventListener("keydown", handleEscape)
-
-        const timeout1 = setTimeout(() => {
-
-            setIntroStyle({
-                opacity: 0,
-                display: "flex"
-            })
-        }, 1000)
 
 
         return () => {
-            clearTimeout(timeout1)
             window.removeEventListener("keydown", handleEscape)
         }
     }, [])
 
 
+    const [mousePos, setMousePos ] = useState<null|{x: number; y: number }>(null)
+
+
+    useEffect(() => {
+
+        const handleMousePos = (e: any) => {
+
+            const { clientX: x, clientY: y} = e
+            
+            setMousePos({ x, y })
+        }
+
+        if(isHovered){
+            window.addEventListener("mousemove", handleMousePos)
+        }else{
+            setMousePos(null)
+            window.removeEventListener("mousemove", handleMousePos)
+        }
+
+        return () => {
+
+            setMousePos(null)
+            window.removeEventListener("mousemove", handleMousePos)
+        }
+
+    }, [isHovered])
+
     const type = getType(item)
+
+    const buttonText = type === 'WEBSITE' ? 'Open Website' : 'Open Slideshow'
+
+
+    const hasWebsite =  type === 'WEBSITE' && !getAssetWebsite({ item }) ? false : true
 
     return (
         <div className={styles.page}>
@@ -95,6 +115,17 @@ const PageWrapper = ({ item }: Props) => {
                 </div>
             </main>
             <ProjectInfo project={item} />
+
+            {
+                hasWebsite &&
+                mousePos && 
+                view === 'outside' &&
+                <div style={{ position: 'fixed', left: mousePos?.x+ 20, top: mousePos.y - 20, pointerEvents: "none"}}>
+                    <Button text={buttonText} onClick={() => {
+                        // 
+                    }}/>
+                </div>
+            }
         </div>
     )
 }

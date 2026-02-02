@@ -9,7 +9,7 @@
     "prebuild": "node util/generateAssetsManifest.ts",
     "start": "next start",
     "serve": "npx serve@latest out",
-    "export": "next export",
+    "export": "NEXT_EXPORT=true npm run prebuild && next build",
     "lint": "eslint"
   },
   "dependencies": {

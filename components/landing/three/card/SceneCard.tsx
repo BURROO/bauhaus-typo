@@ -14,16 +14,17 @@ interface Props {
   onClick?: () => void;
 }
 
-export default function SceneBook({
+export default function SceneCard({
   item,
   visible,
   onClick,
 }: Props) {
   if (!item) return null
-  
-  const { setCursor } = useHover()
+
 
   const { setIsHovered } = useContext(ContextMenu)
+  
+  const { setCursor } = useHover()
   
   return (
     <group

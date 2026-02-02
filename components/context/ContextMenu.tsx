@@ -10,6 +10,10 @@ interface IContext {
   setActiveIndex: (valie: number|null) => void;
   activeIndex: null|number;
   fontSize: null|number;
+  setIsHovered: (value: boolean) => void;
+  isHovered: boolean;
+  view: "inside"|"outside";
+  setView: (value: "inside"|"outside") => void;
 }
 
 export const ContextMenu = React.createContext<IContext>({
@@ -18,7 +22,11 @@ export const ContextMenu = React.createContext<IContext>({
   rowHeight: null,
   setActiveIndex: () => {},
   activeIndex: null,
-  fontSize: null
+  fontSize: null,
+  isHovered: false,
+  setIsHovered: () => {},
+  view: 'outside',
+  setView: () => {}
 });
 
 
@@ -31,7 +39,13 @@ export const ContextMenuProvider = ({
   const [screenWidth, setScreenWidth] = useState<number|null>(null);
   const [screenHeight, setScreenHeight] = useState<number|null>(null);
   const [activeIndex, setActiveIndex] = useState<number|null>(null)
+  const [isHovered, setIsHovered] = useState<boolean>(false)
 
+  const [view, setView] = useState<'outside'|'inside'>('outside')
+
+  useEffect(() => {
+    setView("outside")
+  }, [activeIndex])
 
   // const divider = screenHeight !== null ? Math.floor( screenHeight / 15) :  1
   // const projectCount = 46
@@ -71,7 +85,13 @@ export const ContextMenuProvider = ({
       rowHeight,
       activeIndex,
       setActiveIndex,
-      fontSize
+      fontSize,
+      // 
+      isHovered,
+      setIsHovered,
+
+      view,
+      setView
     }),
     [
       screenWidth,
@@ -79,7 +99,13 @@ export const ContextMenuProvider = ({
       rowHeight,
       activeIndex,
       setActiveIndex,
-      fontSize
+      fontSize,
+      // 
+      isHovered,
+      setIsHovered,
+
+      view,
+      setView
     ]
   );
 

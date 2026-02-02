@@ -1,4 +1,4 @@
-import {  useMemo, useRef } from "react";
+import {  useContext, useMemo, useRef } from "react";
 import * as THREE from "three";
 import { useTexture } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
@@ -6,6 +6,7 @@ import { courseShort, TypeProject } from "@/types/project-type";
 import { fileDataIO } from "@/data/fileData";
 import { sanitizeForUrl } from "@/util/sanitizeForUrl";
 import { useHover } from "@/components/hook/useHover";
+import { ContextMenu } from "@/components/context/ContextMenu";
 
 interface PosterProps {
     type: 'orbit' | 'interact';
@@ -22,6 +23,7 @@ export default function ScenePosterWrapper({
   onClick
 }: PosterProps){
 
+  const { setIsHovered } = useContext(ContextMenu)
   const { setCursor } = useHover()
 
   if(!item) return null
@@ -32,10 +34,12 @@ export default function ScenePosterWrapper({
     onPointerOver={(e) => {
       e.stopPropagation()
       setCursor('pointer')
+      setIsHovered(true)
     }}
     onPointerOut={(e) => {
       e.stopPropagation()
       setCursor('auto')
+      setIsHovered(false)
     }}
     
     >
