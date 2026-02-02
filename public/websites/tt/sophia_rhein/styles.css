@@ -1,637 +1,1335 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap');
+@font-face {
+    font-family: 'Lausanne';
+    src: url('fonts/TWKLausanne-400.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+}
 
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Roboto Mono', 'Courier New', Courier, monospace;
+    font-family: 'Lausanne', Helvetica, Arial, sans-serif;
 }
 
 body {
-    background: #ffffff;
-    color: #000000;
-    transition: background 0.3s, color 0.3s;
+    background: #fff;
+    color: #000;
+    overflow-x: visible;
+    overflow-y: hidden;
+    width: 100vw;
+    height: 100vh;
+    cursor: none;
 }
 
-body.dark-mode {
-    background: #000000;
-    color: #ffffff;
+body * {
+    cursor: none !important;
 }
 
-.top-line,
-.bottom-line {
+/* Allow overflow for step 2 to show slider line */
+#step2 {
+    overflow: visible !important;
+}
+
+.step {
+    display: none;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+}
+
+.step.active {
+    display: flex;
+}
+
+/* STEP 1: Landing with falling stones */
+#step1 {
+    flex-direction: column;
+    position: relative;
+    cursor: none;
+}
+
+#step1 * {
+    cursor: none !important;
+}
+
+/* Click text that follows cursor */
+.cursor-click-text {
     position: fixed;
+    pointer-events: none;
+    z-index: 10001;
+    font-size: 14px;
+    font-family: 'Lausanne', Helvetica, Arial, sans-serif;
+    color: #fff;
+    transform: translate(-50%, -100%);
+    margin-top: -10px;
+    display: none;
+    white-space: nowrap;
+    mix-blend-mode: difference;
+}
+
+#customCursor {
+    background: #fff;
+    mix-blend-mode: difference;
+}
+
+.clock-view.fullscreen ~ #customCursor,
+.clock-view.fullscreen #customCursor {
+    z-index: 10002 !important;
+}
+
+.top-bar,
+.bottom-bar {
+    position: absolute;
     left: 0;
     right: 0;
     height: 1px;
-    background: #000000;
-    z-index: 1000;
+    background: #000;
+    z-index: 2;
 }
 
-body.dark-mode .top-line,
-body.dark-mode .bottom-line {
-    background: #ffffff;
-}
-
-.top-line {
+.top-bar {
     top: 0;
 }
 
-.bottom-line {
+.bottom-bar {
     bottom: 0;
 }
 
-.container {
+.intro-text {
+    position: absolute;
+    top: 48%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    z-index: 1;
+    pointer-events: none;
+    width: 100%;
+}
+
+.step1-canvas-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    pointer-events: none;
+}
+
+#step1Canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.step1-stones-svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.falling-stones-container {
+    z-index: 10;
+    position: relative;
+}
+
+.material-grid-container {
+    perspective: 2000px;
+    transform-style: preserve-3d;
+}
+
+.material-grid-cell {
+    transform-style: preserve-3d;
+}
+
+.intro-text p {
+    font-size: 510px;
+    line-height: 0.75;
+    margin: 0;
+    font-weight: 400;
+}
+
+.falling-stones-container {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+.falling-stone {
+    position: absolute;
+    cursor: pointer;
+    transition: transform 0.2s;
+    z-index: 10;
+    pointer-events: auto;
+}
+
+.falling-stone:hover {
+    transform: scale(1.05);
+}
+
+/* STEP 2: Number creation workspace */
+#step2 {
+    flex-direction: column;
+    position: relative;
+    overflow: visible !important;
+    cursor: none;
+}
+
+#step2 * {
+    cursor: none !important;
+}
+
+/* STEP 3: Calendar selection */
+#step3 {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+#step2 .top-bar,
+#step2 .bottom-bar {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: #000;
+    z-index: 2;
+}
+
+#step2 .top-bar {
+    top: 0;
+}
+
+#step2 .bottom-bar {
+    bottom: 0;
+}
+
+.output-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    width: 100%;
+    height: 100%;
+    border-left: 1px solid #fff;
+    border-right: 1px solid #fff;
+}
+
+.output-grid-two {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    width: 100%;
+    height: 100%;
+}
+
+.output-option {
     display: flex;
-    gap: 20px;
-    max-width: 1600px;
-    margin: 0 auto;
-    padding: 40px 20px 40px 0px;  /* Kein Padding links */
+    align-items: flex-start;
+    justify-content: flex-start;
+    border-right: 1px solid #000;
+    cursor: pointer;
+    transition: all 0.3s;
+    position: relative;
+    padding: 40px 20px;
 }
 
-.sidebar {
-    width: 300px;
-    background: transparent;
-    padding: 20px 20px 20px 20px;  /* 20px Padding links für Innenabstand */
-    overflow-y: auto;
-    max-height: calc(100vh - 80px);
+.output-option:last-child {
+    border-right: none;
 }
 
-body.dark-mode .sidebar {
-    border-right-color: #ffffff;
+.output-option span {
+    font-size: 72px;
+    font-weight: bold;
+    transition: color 0.3s;
+    text-align: left;
 }
 
-.vertical-line {
-    position: fixed;
-    left: 300px;  /* Anpassen je nachdem wie weit links die Sidebar ist */
-    top: 0;
-    bottom: 0;
-    width: 1px;
-    background: #000000;
-    z-index: 999;
+.output-option:hover:not(.disabled) {
+    background: #000;
 }
 
-body.dark-mode .vertical-line {
-    background: #ffffff;
+.output-option:hover:not(.disabled) span {
+    color: #fff;
+}
+
+.output-option.disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+/* STEP 3: Main workspace */
+#step3 {
+    flex-direction: column;
+    position: relative;
+}
+
+.workspace {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
 }
 
 
-.main-area {
+/* Canvas area */
+.canvas-area {
+    overflow: visible;
     flex: 1;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
     gap: 20px;
 }
 
+/* Left sidebar with horizontal slider */
+.left-sidebar {
+    width: 150px;
+    border-right: 1px solid #000;
+    display: none; /* Hidden by default */
+    flex-direction: column;
+    background: #fff;
+    flex-shrink: 0;
+    position: relative;
+    overflow: visible;
+}
 
-.header {
+/* Show left sidebar only in step 2 */
+#step2 .left-sidebar {
     display: flex;
+}
+
+/* Hide slider elements in step 1 and step 3 */
+#step1 .left-sidebar,
+#step3 .left-sidebar {
+    display: none !important;
+}
+
+/* Slider handle visibility is controlled by JavaScript */
+/* Default styles are set below, JavaScript will show/hide it */
+
+/* Allow overflow for step 2 so slider line can extend beyond sidebar */
+#step2 {
+    overflow: visible;
+}
+
+.slider-row {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    justify-content: flex-start;
+    flex: 1;
+    position: relative;
+    padding: 0;
+    overflow: visible;
+}
+
+.slider-numbers {
+    display: flex;
+    flex-direction: column;
     justify-content: space-between;
+    height: 100%;
+    font-size: 18px;
+    color: #000;
+    font-family: 'Lausanne', Helvetica, Arial, sans-serif;
+    padding: 20px 10px;
+    position: absolute;
+    right: -15px;
+    top: 0;
+    min-width: 30px;
+    pointer-events: none;
+}
+
+.slider-number {
+    line-height: 1;
+}
+
+.vertical-slider {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    cursor: ns-resize;
+    flex: 1;
+    margin-left: 0;
+    overflow: visible;
+}
+
+.slider-track {
+    position: absolute;
+    width: 150px;
+    height: 4px;
+    top: 0;
+    left: -150px;
+    background: #000;
+    transform: translateY(-50%);
+    transition: top 0.15s ease-out;
+    will-change: top;
+}
+
+.slider-handle {
+    position: fixed;
+    left: 0;
+    transform: translateY(-50%);
+    width: 150px;
+    height: 20px;
+    background: #000 !important;
+    border-radius: 0;
+    cursor: ns-resize;
+    top: 0;
+    transition: top 0.15s ease-out;
+    will-change: top;
+    z-index: 1000;
+    visibility: visible !important;
+    opacity: 1 !important;
+    display: block !important;
+    box-sizing: border-box;
+}
+
+.slider-handle:active {
+    cursor: ns-resize;
+}
+
+/* Direction control container at top of sidebar, above slider */
+.direction-control-container {
+    position: relative;
+    width: 100%;
+    height: 150px;
+    border-top: 1px solid #000;
+    border-bottom: 1px solid #000;
+    flex-shrink: 0;
+    display: flex;
     align-items: center;
-    padding: 15px 20px;
-    border-bottom: 1px solid #000000;
+    justify-content: center;
+    background: #fff;
+    overflow: visible;
 }
 
-body.dark-mode .header {
-    border-bottom-color: #ffffff;
+.direction-lines {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.direction-button {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: #000 !important;
+    cursor: grab;
+    transform: translate(-50%, -50%);
+    top: 50%;
+    left: 50%;
+    z-index: 10;
+    transition: none;
+    flex-shrink: 0;
+    pointer-events: auto;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+.direction-button:active {
+    cursor: grabbing;
+}
+
+/* Material control buttons (mix and color) at bottom */
+.material-control-buttons {
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    height: 300px; /* Same height as view-sidebar (5 buttons × 60px) */
+}
+
+.material-control-btn {
+    flex: 1;
+    border-bottom: 1px solid #000;
+    border-top: 1px solid #000;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    cursor: pointer;
+    transition: all 0.2s;
+    min-height: 60px;
+    background: #fff;
+    color: #000;
+    font-family: 'Lausanne', Helvetica, Arial, sans-serif;
+    font-size: 18px;
+    font-weight: normal;
+    border-left: none;
+    border-right: none;
+    text-align: left;
+}
+
+.material-control-btn:first-child {
+    border-top: 1px solid #000;
+}
+
+.material-control-btn:not(:first-child) {
+    border-top: none;
+}
+
+.material-control-btn:last-child {
+    border-bottom: none;
+}
+
+.material-control-btn:hover {
+    background: #000;
+    color: #fff;
+}
+
+.material-control-btn:active {
+    background: #333;
+    color: #fff;
+}
+
+.direction-arrow {
+    width: 20px;
+    height: 20px;
+    color: #fff;
+}
+
+/* Current number label below canvas */
+.current-number-label {
+    text-align: center;
+    font-size: 20px;
+    color: #000;
+    margin-top: 10px;
+    font-family: 'Lausanne', Helvetica, Arial, sans-serif;
+}
+
+.canvas-wrapper {
+    position: relative;
+    overflow: visible;
+}
+
+.preview-canvas {
+    position: relative;
+    border: 1px solid #000;
+    background: #fff;
+    width: 700px;
+    height: 980px;
+    overflow: visible;
+}
+
+#mainCanvas {
+    width: 100%;
+    height: 100%;
+    cursor: crosshair;
+}
+
+.stones-svg {
+    position: absolute;
+    top: -200px;
+    left: -200px;
+    width: calc(100% + 400px);
+    height: calc(100% + 400px);
+    pointer-events: none;
+    z-index: 2;
+    overflow: visible;
+}
+
+.canvas-label {
+    position: absolute;
+    font-size: 18px;
+    font-weight: normal;
+    pointer-events: none;
+    z-index: 10;
+}
+
+.canvas-label.year {
+    top: 20px;
+    left: 20px;
+}
+
+.canvas-label.month {
+    top: 20px;
+    right: 20px;
 }
 
 
+.nav-arrow {
+    width: 160px;
+    height: 160px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    position: relative;
+    z-index: 10;
+    pointer-events: auto;
+    margin: 0 60px;
+}
 
-h1 {
+.nav-arrow::before,
+.nav-arrow::after {
+    content: '';
+    position: absolute;
+    background: #000;
+    width: 1px;
+}
+
+.nav-arrow-left::before {
+    height: 40px;
+    transform: rotate(45deg);
+    top: 20px;
+    left: 0;
+    transform-origin: right bottom;
+}
+
+.nav-arrow-left::after {
+    height: 41px;
+    transform: rotate(-45deg);
+    bottom: 60px;
+    left: 0;
+    transform-origin: right top;
+}
+
+.nav-arrow-right::before {
+    height: 41px;
+    transform: rotate(-45deg);
+    top: 20px;
+    right: 0;
+    transform-origin: left bottom;
+}
+
+.nav-arrow-right::after {
+    height: 40px;
+    transform: rotate(45deg);
+    bottom: 60px;
+    right: 0;
+    transform-origin: left top;
+}
+
+.nav-arrow:hover {
+    opacity: 0.5;
+}
+
+/* Shape selection sidebar */
+.shape-sidebar {
+    width: 150px;
+    border-left: 1px solid #000;
+    border-right: 1px solid #000;
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+}
+
+.shape-option {
+    flex: 1;
+    border-bottom: 1px solid #000;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    cursor: pointer;
+    transition: all 0.2s;
+    min-height: 60px;
+}
+
+.shape-option:last-child {
+    border-bottom: none;
+}
+
+.shape-option span {
     font-size: 18px;
     font-weight: normal;
 }
 
-.view-toggle {
+.shape-option:hover,
+.shape-option.active {
+    background: #000;
+}
+
+.shape-option:hover span,
+.shape-option.active span {
+    color: #fff;
+}
+
+/* View sidebar */
+.view-sidebar {
+    width: 150px;
+    height: 100vh;
     display: flex;
-    gap: 10px;
-}
-
-.view-btn {
-    width: 40px;
-    height: 40px;
-    border: 1px solid #000000;
-    background: #ffffff;
-    cursor: pointer;
-    font-size: 20px;
-    transition: all 0.2s;
-}
-
-body.dark-mode .view-btn {
-    border-color: #ffffff;
-    background: #000000;
-    color: #ffffff;
-}
-
-.view-btn:hover {
-    background: #000000;
-    color: #ffffff;
-}
-
-body.dark-mode .view-btn:hover {
-    background: #ffffff;
-    color: #000000;
-}
-
-.view-btn.active {
-    background: #000000;
-    color: #ffffff;
-}
-
-body.dark-mode .view-btn.active {
-    background: #ffffff;
-    color: #000000;
-}
-
-.canvas-container {
-    padding: 40px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 600px;
-    position: relative;
-}
-
-.preview-area {
-    position: relative;
-    background: #ffffff;
-    border: 2px solid #000000;
-    overflow: hidden;
-}
-
-body.dark-mode .preview-area {
-    background: #000000;
-    border-color: #ffffff;
-}
-
-.grid-overlay,
-.shapes-canvas {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-}
-
-.shapes-canvas {
-    pointer-events: auto;
-}
-
-.day-number {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 400px;
-    color: rgba(200, 200, 200, 0.3);
-    pointer-events: none;
-    user-select: none;
-    line-height: 1;
-}
-
-body.dark-mode .day-number {
-    color: rgba(100, 100, 100, 0.3);
-}
-
-.text-element {
-    position: absolute;
-    cursor: move;
-    user-select: none;
-    color: #000000;
-}
-
-body.dark-mode .text-element {
-    color: #ffffff;
-}
-
-.controls {
-    padding: 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.navigation {
-    display: flex;
-    gap: 20px;
-    align-items: center;
-}
-
-.nav-btn {
-    width: 40px;
-    height: 40px;
-    border: 1px solid #000000;
-    background: #ffffff;
-    cursor: pointer;
-    font-size: 18px;
-}
-
-body.dark-mode .nav-btn {
-    border-color: #ffffff;
-    background: #000000;
-    color: #ffffff;
-}
-
-.nav-btn:hover {
-    background: #000000;
-    color: #ffffff;
-}
-
-body.dark-mode .nav-btn:hover {
-    background: #ffffff;
-    color: #000000;
-}
-
-.current-day {
-    font-size: 24px;
-    min-width: 60px;
-    text-align: center;
-}
-
-.export-btn {
-    padding: 10px 20px;
-    border: 1px solid #000000;
-    background: #ffffff;
-    cursor: pointer;
-    font-size: 14px;
-}
-
-body.dark-mode .export-btn {
-    border-color: #ffffff;
-    background: #000000;
-    color: #ffffff;
-}
-
-.export-btn:hover {
-    background: #000000;
-    color: #ffffff;
-}
-
-body.dark-mode .export-btn:hover {
-    background: #ffffff;
-    color: #000000;
-}
-
-.section {
-    margin-bottom: 20px;
-}
-
-.section-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 0;
-    cursor: pointer;
-    border-bottom: 1px solid #000000;
-    margin-bottom: 10px;
-}
-
-body.dark-mode .section-header {
-    border-bottom-color: #ffffff;
-}
-
-.section-header:hover {
-    opacity: 0.7;
-}
-
-.section-title {
-    font-size: 14px;
-    font-weight: bold;
-}
-
-.arrow {
-    transition: transform 0.2s;
-}
-
-.arrow.expanded {
-    transform: rotate(90deg);
-}
-
-.section-content {
-    display: none;
-    padding: 10px 0;
-}
-
-.section-content.expanded {
-    display: block;
-}
-
-.control-group {
-    margin-bottom: 15px;
-}
-
-.control-label {
-    font-size: 12px;
-    margin-bottom: 5px;
-    display: block;
-}
-
-.slider-container {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    border: 1px solid #000000;
-    padding: 8px 12px;
-    background: #ffffff;
-}
-
-body.dark-mode .slider-container {
-    border-color: #ffffff;
-    background: #000000;
-}
-
-input[type="range"] {
-    flex: 1;
-    height: 2px;
-    background: #000000;
-    outline: none;
-}
-
-body.dark-mode input[type="range"] {
-    background: #ffffff;
-}
-
-input[type="range"]::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    width: 16px;
-    height: 16px;
-    background: #000000;
-    cursor: pointer;
-    border: 1px solid #000000;
-}
-
-body.dark-mode input[type="range"]::-webkit-slider-thumb {
-    background: #ffffff;
-    border-color: #ffffff;
-}
-
-input[type="range"]::-moz-range-thumb {
-    width: 16px;
-    height: 16px;
-    background: #000000;
-    cursor: pointer;
-    border: 1px solid #000000;
-}
-
-body.dark-mode input[type="range"]::-moz-range-thumb {
-    background: #ffffff;
-    border-color: #ffffff;
-}
-
-.slider-value {
-    font-size: 12px;
-    min-width: 30px;
-    text-align: right;
-}
-
-input[type="number"],
-input[type="text"],
-select {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid #000000;
-    font-size: 12px;
-    background: #ffffff;
-    color: #000000;
-}
-
-body.dark-mode input[type="number"],
-body.dark-mode input[type="text"],
-body.dark-mode select {
-    border-color: #ffffff;
-    background: #000000;
-    color: #ffffff;
-}
-
-.custom-checkbox {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    cursor: pointer;
-    user-select: none;
-}
-
-.custom-checkbox input[type="checkbox"] {
-    display: none;
-}
-
-.checkmark {
-    width: 20px;
-    height: 20px;
-    border: 1px solid #000000;
-    background: #ffffff;
-    position: relative;
+    flex-direction: column;
+    background: #fff;
     flex-shrink: 0;
 }
 
-body.dark-mode .checkmark {
-    border-color: #ffffff;
-    background: #000000;
+/* Border only in Step 2, not in calendar view */
+#step2 .view-sidebar {
+    border-left: 1px solid #000;
 }
 
-.custom-checkbox input[type="checkbox"]:checked + .checkmark {
-    background: #000000;
-}
 
-body.dark-mode .custom-checkbox input[type="checkbox"]:checked + .checkmark {
-    background: #ffffff;
-}
-
-.custom-checkbox input[type="checkbox"]:checked + .checkmark::after {
-    content: '';
-    position: absolute;
-    left: 6px;
-    top: 2px;
-    width: 5px;
-    height: 10px;
-    border: solid #ffffff;
-    border-width: 0 2px 2px 0;
-    transform: rotate(45deg);
-}
-
-body.dark-mode .custom-checkbox input[type="checkbox"]:checked + .checkmark::after {
-    border-color: #000000;
-}
-
-.checkbox-group {
-    margin: 10px 0;
-}
-
-.forms-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 10px;
-    border: 1px solid #000000;
-    padding: 10px;
-}
-
-body.dark-mode .forms-grid {
-    border-color: #ffffff;
-}
-
-.form-item {
-    aspect-ratio: 1;
-    border: 1px solid #000000;
+.view-option {
+    flex: 1;
+    border-bottom: 1px solid #000;
+    padding: 20px;
     display: flex;
     align-items: center;
-    justify-content: center;
-    cursor: grab;
-    background: #ffffff;
+    justify-content: flex-start;
+    cursor: pointer;
+    transition: all 0.2s;
+    min-height: 60px;
+    position: relative;
+    z-index: 10;
+    pointer-events: auto;
 }
 
-body.dark-mode .form-item {
-    border-color: #ffffff;
-    background: #000000;
+.view-option:last-child {
+    border-bottom: none;
 }
 
-.form-item:hover {
-    opacity: 0.7;
+.view-option span {
+    font-size: 18px;
+    font-weight: normal;
 }
 
-.form-item:active {
-    cursor: grabbing;
+.view-option:hover,
+.view-option.active {
+    background: #000;
 }
 
-.form-item svg {
-    width: 80%;
-    height: 80%;
+.view-option:hover span,
+.view-option.active span {
+    color: #fff;
 }
 
-body.dark-mode .form-item svg circle,
-body.dark-mode .form-item svg rect,
-body.dark-mode .form-item svg path {
-    fill: #ffffff;
-}
-
-.grid-view {
+.view-divider {
     display: none;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 20px;
+}
+
+
+/*Pfeil von next Step Button*/
+.pdf-option {
+    margin-top: auto;
+    position: relative;
+    justify-content: flex-end;
+    height: 185px;
+    display: flex;
+    align-items: stretch;
+}
+
+.pdf-option .arrow-svg {
+    position: absolute;
+    width: 40px;
+    height: 200px;
+    bottom: 0;
+    right: 65px;
+    color: #000;
+    pointer-events: none;
+}
+
+.pdf-option:hover .arrow-svg {
+    color: #fff;
+}
+
+/* Pfeil von Kalender-Back-Button (separat von Step 2) */
+.calendar-back-arrow {
+    margin-top: auto;
+    position: relative;
+    justify-content: flex-end;
+    height: 700px;
+    display: flex;
+    align-items: stretch;
+}
+
+.calendar-back-arrow .arrow-svg {
+    position: absolute;
+    width: 40px;
+    height: 700px;
+    top: 0;
+    right: 60px;
+    color: #000;
+    pointer-events: none;
+}
+
+.calendar-back-arrow:hover .arrow-svg {
+    color: #fff;
+}
+
+/* All view container */
+.all-view-container {
+    display: none;
+    width: 100%;
+    height: 100%;
     padding: 40px;
+    overflow: auto;
 }
 
-.grid-view.active {
+.all-view-container.active {
+    display: block;
+}
+
+.all-view-grid {
     display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 30px;
+    max-width: 1800px;
+    margin: 0 auto;
 }
 
-.grid-day-wrapper {
+.grid-item {
+    aspect-ratio: 700/980;
+    border: 1px solid #000;
+    position: relative;
+    background: #fff;
     cursor: pointer;
     transition: opacity 0.2s;
 }
 
-.grid-day-wrapper:hover {
+.grid-item:hover {
     opacity: 0.7;
 }
 
-.grid-day {
-    aspect-ratio: 2/3;
-    border: 1px solid #000000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 48px;
-    color: #ccc;
-    position: relative;
-    overflow: hidden;
-    background: #ffffff;
-}
-
-body.dark-mode .grid-day {
-    border-color: #ffffff;
-    background: #000000;
-    color: #666;
-}
-
-.grid-day canvas {
-    position: absolute;
-    top: 0;
-    left: 0;
+.grid-item canvas {
     width: 100%;
     height: 100%;
 }
 
-.color-input {
-    width: 100%;
-    height: 40px;
-    border: 1px solid #000000;
-    cursor: pointer;
-}
-
-body.dark-mode .color-input {
-    border-color: #ffffff;
-}
-
-.color-palette {
+.grid-item-label {
     position: absolute;
-    display: flex;
-    gap: 8px;
-    padding: 10px;
-    background: #ffffff;
-    border: 1px solid #000000;
-    z-index: 100;
+    top: 10px;
+    left: 10px;
+    font-size: 12px;
+    pointer-events: none;
 }
 
-body.dark-mode .color-palette {
-    background: #000000;
-    border-color: #ffffff;
-}
 
-.color-swatch {
-    width: 30px;
-    height: 30px;
-    border: 1px solid #000000;
-    cursor: pointer;
-    transition: transform 0.2s;
-}
-
-body.dark-mode .color-swatch {
-    border-color: #ffffff;
-}
-
-.color-swatch:hover {
-    transform: scale(1.1);
-}
-
-.resize-handle {
-    position: absolute;
-    width: 12px;
-    height: 12px;
-    background: #ffffff;
-    border: 2px solid #000000;
-    bottom: 0;
-    right: 0;
-    cursor: nwse-resize;
-    z-index: 10;
-}
-
-body.dark-mode .resize-handle {
-    background: #000000;
-    border-color: #ffffff;
+/* Hide workspace when all view is active */
+.workspace.hidden {
+    display: none;
 }
 
 @media (max-width: 1200px) {
-    .container {
-        flex-direction: column;
-    }
-    
-    .sidebar {
-        width: 100%;
-        max-height: none;
-    }
-    
-    .grid-view {
-        grid-template-columns: repeat(4, 1fr);
+    .all-view-grid {
+        grid-template-columns: repeat(3, 1fr);
     }
 }
 
+/* Calendar view */
+.calendar-view {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    display: flex !important;
+    flex-direction: row !important;
+}
+
+/* Ensure calendar-view is completely hidden when display: none */
+.calendar-view[style*="display: none"] {
+    display: none !important;
+    visibility: hidden !important;
+}
+
+.calendar-workspace {
+    display: flex;
+    flex: 1;
+    overflow: auto;
+}
+
+/* Calendar view sidebar - hidden by default, shown when calendar-view is visible */
+.calendar-view-sidebar {
+    display: none;
+    width: 150px;
+    height: 100vh;
+    flex-direction: column;
+    background: #fff;
+    flex-shrink: 0;
+}
+
+/* Show sidebar when calendar-view is visible (display: flex) */
+.calendar-view[style*="display: flex"] .calendar-view-sidebar {
+    display: flex !important;
+}
+
+.month-sidebar {
+    width: 150px;
+    border-right: 1px solid #000;
+    display: none; /* Hidden by default */
+    flex-direction: column;
+    background: #fff;
+    overflow-y: auto;
+}
+
+/* Show month-sidebar when calendar-view is visible (display: flex) */
+.calendar-view[style*="display: flex"] .month-sidebar {
+    display: flex !important;
+}
+
+.month-option {
+    border-bottom: 1px solid #000;
+    padding: 8px 15px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 16px;
+    font-family: 'Lausanne', Helvetica, Arial, sans-serif;
+    flex-shrink: 0;
+}
+
+.month-option:hover,
+.month-option.active {
+    background: #000;
+    color: #fff;
+}
+
+.calendar-pages-container {
+    flex: 1;
+    padding: 40px;
+    overflow: auto;
+    border-right: 1px solid #000; /* Line to separate from sidebar like month-sidebar */
+    position: relative;
+}
+
+/* Custom scrollbar styles for calendar pages */
+.calendar-pages-container::-webkit-scrollbar {
+    width: 20px;
+}
+
+.calendar-pages-container::-webkit-scrollbar-track {
+    background: #fff;
+    border-left: 1px solid #000; /* Left line next to slider */
+    border-right: 1px solid #000; /* Right line next to slider */
+}
+
+.calendar-pages-container::-webkit-scrollbar-thumb {
+    background: #000 !important;
+    border-radius: 0 !important; /* Not rounded at all */
+    border: none !important;
+    margin: 0 !important; /* No gap */
+    min-height: 50vh !important; /* Slider is half screen height */
+    box-shadow: none !important; /* Remove any shadow that might create rounding effect */
+    -webkit-appearance: none !important; /* Remove default styling */
+    clip-path: inset(0 0 0 0) !important; /* Force no rounding */
+    -webkit-border-radius: 0 !important; /* Explicit for webkit */
+}
+
+.calendar-pages-container::-webkit-scrollbar-thumb:hover {
+    background: #000 !important;
+}
+
+/* Remove any rounding from scrollbar buttons if they exist */
+.calendar-pages-container::-webkit-scrollbar-button {
+    display: none !important; /* Hide scrollbar buttons */
+    height: 0 !important;
+    width: 0 !important;
+}
+
+/* Firefox scrollbar - needs different approach */
+.calendar-pages-container {
+    scrollbar-width: thin;
+    scrollbar-color: #000 #fff;
+}
+
+.calendar-pages-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    max-width: 1600px;
+    margin: 0 auto;
+}
+
+.calendar-page {
+    aspect-ratio: 2/3;
+    border: 1px solid #000;
+    position: relative;
+    background: #fff;
+}
+
+.calendar-page canvas {
+    width: 100%;
+    height: 100%;
+}
+
+.calendar-buttons {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.calendar-back-button,
+.pdf-export-calendar-button {
+    padding: 15px 30px;
+    border: 1px solid #000;
+    background: #fff;
+    font-size: 18px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: 'Lausanne', Helvetica, Arial, sans-serif;
+}
+
+.calendar-back-button:hover,
+.pdf-export-calendar-button:hover {
+    background: #000;
+    color: #fff;
+}
+
+/* Selection back arrow (Step 3 selection screen) - spiegelverkehrt zum next step Button */
+#step3 {
+    position: relative;
+}
+
+.selection-back-arrow {
+    position: absolute;
+    bottom: 0;
+    right: 65px;
+    padding: 0;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    z-index: 100;
+    width: 150px;
+    height: 150px;
+    box-sizing: border-box;
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+}
+
+.selection-back-arrow::before,
+.selection-back-arrow::after {
+    content: '';
+    position: absolute;
+    background: #000;
+    width: 1px;
+}
+
+.selection-back-arrow::before {
+    height: 40px;
+    transform: rotate(-45deg);
+    bottom: 105px;
+    right: 0px;
+    transform-origin: right bottom;
+}
+
+.selection-back-arrow::after {
+    height: 40px;
+    transform: rotate(45deg);
+    bottom: 120px;
+    right: 0px;
+    transform-origin: right top;
+}
+
+.selection-back-arrow:hover::before,
+.selection-back-arrow:hover::after {
+    background: #999;
+}
+
+/* Invert arrow when hovering over Clock option (black background) */
+#step3.hovering-clock .selection-back-arrow::before,
+#step3.hovering-clock .selection-back-arrow::after {
+    background: #fff;
+}
+
+/* Clock view */
+.clock-view {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    background: #fff;
+}
+
+/* Ensure clock-view is completely hidden when display: none */
+.clock-view[style*="display: none"] {
+    display: none !important;
+    visibility: hidden !important;
+}
+
+.clock-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    height: 100%;
+}
+
+.clock-display {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+
+.clock-numbers-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px; /* Gap between hours, colon, and minutes groups */
+}
+
+.clock-digit {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: visible;
+}
+
+.clock-digit-canvas {
+    width: auto;
+    height: auto;
+    max-width: none;
+    max-height: none;
+    border: none;
+    background: transparent;
+    display: block;
+    overflow: visible;
+}
+
+.clock-colon {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 0 -30px; /* Margin for spacing */
+    width: 130px; 
+    height: 320px; 
+}
+
+.clock-two-digit {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Clock back arrow - identisch mit selection-back-arrow */
+.clock-view {
+    position: relative;
+}
+
+.clock-fullscreen-button {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    background: #fff;
+    border: 1px solid #000;
+    cursor: pointer;
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    transition: all 0.2s;
+}
+
+.clock-fullscreen-button:hover {
+    background: #000;
+    color: #fff;
+}
+
+.clock-fullscreen-button svg {
+    width: 24px;
+    height: 24px;
+    stroke: currentColor;
+}
+
+.clock-fullscreen-button:hover svg {
+    stroke: #fff;
+}
+
+.clock-view.fullscreen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 9999;
+    background: #fff;
+    cursor: none !important;
+}
+
+.clock-view.fullscreen * {
+    cursor: none !important;
+}
+
+.clock-view.fullscreen .clock-back-arrow {
+    display: none;
+}
+
+.clock-view.fullscreen .clock-fullscreen-button {
+    z-index: 10001;
+}
+
+/* Hide cursor in browser fullscreen mode */
+:fullscreen,
+:-webkit-full-screen,
+:-moz-full-screen,
+:-ms-fullscreen {
+    cursor: none !important;
+}
+
+:fullscreen *,
+:-webkit-full-screen *,
+:-moz-full-screen *,
+:-ms-fullscreen * {
+    cursor: none !important;
+}
+
+.clock-back-arrow {
+    position: absolute;
+    bottom: 0;
+    right: 65px;
+    padding: 0;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    z-index: 100;
+    width: 150px;
+    height: 150px;
+    box-sizing: border-box;
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+}
+
+.clock-back-arrow::before,
+.clock-back-arrow::after {
+    content: '';
+    position: absolute;
+    background: #000;
+    width: 1px;
+}
+
+.clock-back-arrow::before {
+    height: 40px;
+    transform: rotate(-45deg);
+    bottom: 105px;
+    right: 0px;
+    transform-origin: right bottom;
+}
+
+.clock-back-arrow::after {
+    height: 40px;
+    transform: rotate(45deg);
+    bottom: 120px;
+    right: 0px;
+    transform-origin: right top;
+}
+
+.clock-back-arrow:hover::before,
+.clock-back-arrow:hover::after {
+    background: #999;
+}
+
+/* Info Box */
+.info-box {
+    position: fixed;
+    top: 0;
+    left: 0;
+    transform: none;
+    background: #fff;
+    border: 1px solid #000;
+    padding: 20px;
+    max-width: 750px;
+    width: 90%;
+    z-index: 10000;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    min-height: 400px;
+}
+
+.info-box-content {
+    font-size: 24px;
+    font-family: 'Lausanne', Helvetica, Arial, sans-serif;
+    color: #000;
+    line-height: 1.3;
+    flex: 1;
+    padding: 0;
+    padding-top: 5px;
+    padding-bottom: 50px;
+}
+
+.info-box-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: auto;
+    margin-left: -20px;
+    margin-right: -20px;
+    margin-bottom: -20px;
+    padding: 0;
+    border-top: 1px solid #000;
+}
+
+.info-box-preset-button,
+.info-box-try-button {
+    padding: 70px 40px;
+    border: none;
+    border-right: 1px solid #000;
+    background: #fff;
+    font-size: 20px;
+    cursor: pointer;
+    color: #000;
+    font-family: 'Lausanne', Helvetica, Arial, sans-serif;
+    transition: all 0.2s;
+    flex: 1;
+    min-width: 0;
+}
+
+.info-box-try-button {
+    border-right: none;
+}
+
+.info-box-preset-button:hover,
+.info-box-try-button:hover {
+    background: #000;
+    color: #fff;
+}
+
 @media (max-width: 768px) {
-    .grid-view {
+    .all-view-grid {
         grid-template-columns: repeat(3, 1fr);
     }
     
-    .forms-grid {
-        grid-template-columns: repeat(3, 1fr);
+    .workspace {
+        flex-direction: column;
+    }
+    
+    .view-sidebar {
+        width: 100%;
+        flex-direction: row;
+        border: none;
+    }
+    
+    .view-option {
+        border-right: 1px solid #000;
+    }
+    
+    .info-box {
+        padding: 30px 20px;
+        max-width: 90%;
+    }
+    
+    .info-box-buttons {
+        flex-direction: column;
     }
 }

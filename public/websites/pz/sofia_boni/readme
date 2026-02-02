@@ -1,0 +1,71 @@
+notes HERE
+
+Hello Sofia, 
+Please look through your image sizes! some are still to big ideally they are around 100KB bu the smaller the better. Open them in photoshop and export for web
+
+Notes Hjördis
+
+- the coloors are on a good way, the notes are a fun way to tell a story
+- - the title in the head is different to the title on the site
+i think it can help to get more of the punkzine feeling to make it more monochromatic black and white, or one color and white like in riso
+the x before the title give the feeling like you can only close it at that area
+-the titles on the notes need sometimes moore spacing
+-maybe do the notes in black and white an changing sothat there certains aspects of your website that says the same
+
+
+- is there unneccesary js that we can delete 
+- items are not cliclable anymore once other item is clicked 
+- also faces just one appears
+- stable move (rotate, scale) logic
+
+
+
+
+COLOR ARRAY LOGIC ADDED IN COLORCHANGE.HTML
+How it works (quick explanation)
+Math.random() * colors.length
+→ gives a random number between 0 and array length
+
+Math.floor(...)
+→ turns it into a valid array index
+
+colors[randomIndex]
+→ selects a random color
+
+
+creating a list (array)
+const colors = ['yellow', 'red', 'blue', 'green', 'purple'];
+An array is a list of values.
+they all get indexed
+0	yellow
+1	red
+2	blue
+3	green
+4	purple
+Important:Arrays start counting at 0, not 1
+Why const? const means:“This variable will not be replaced with something else.”
+------
+
+Math.random() — getting randomness 🎲
+Math.random()
+
+
+This gives a random number between 0 and 1, for example:
+
+0.13
+
+0.67
+
+0.999
+
+⚠️ It will never be exactly 1.
+
+
+
+
+
+
+
+
+
+ciao ho bisogno che mi aiuti con la costruzione del mio ito. Sto scrivendo codice su html, css e js. Attualmente ho un problema cn la stuttura dell'html e di conseguenza di css e js ovvero che vorrei che nel mio sito apparissero vari elementi separati  tra loro ma anche luserizzati in gruppi. Ti spiego meglio: come vedrai dal codice, il mio sito è composto da una lista di "voci" organizzate una sotto l'altra come categorizzate secondo la class="category" che si modificano un po' all'hover su di esse. Il punto cardine (e problematico) di tutto ciò è che vorrei che al click su ogni voce category si aprissero le questtro tabs associate alla categoria precisa, mettiamo per esempio alla voce con id="maximalist" venissero visualizzate (con stile come da css) le tabs SOURCES/tabs/tabs_maximalist_1,2,3 o 4 eccetera eccetera che potessero essere chiuse al click. In più per alcune voci, ovvero per id="icons" id="cutouts" e id="ornaments" vorrei che al di sotto delle tabs apparissero anche delle immagini (anche sovrapposte) contenute nella cartella sources che potrei specificare nell'html che potessero essere trascinate e riscalate all'interno della pagina. Attualmente questa struttura funziona quasi ma ho un problema con il cancellare le tabs al click. Infatti il cancellare al click funziona soltanto se un gruppo di tabs è aperto ma se per caso sono aperte sia le tabs relative alla voce id="icons" che quelle relative alla voce id="papers" sarò in grado di chiuderne solo un gruppo. Puoi aiutarmi nello strutturare il file per far si che la cosa funzioni e che possa funzionare anche nel momento in cui aggiungessi più immagini delle voci id="icons" id="cutouts" e id="ornaments"? Ti lascio di seguito i miei codici

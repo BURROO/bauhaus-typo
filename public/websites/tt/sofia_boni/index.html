@@ -5,13 +5,26 @@
     <title>BofiTool</title>
     <link rel="stylesheet" href="style.css">
     <link rel="icon" type="image/jpg" href="sources/favicon.jpg">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playwrite+RO:wght@100..400&display=swap" rel="stylesheet">
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <!-- <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> -->
+    <!-- <link href="https://fonts.googleapis.com/css2?family=Playwrite+RO:wght@100..400&display=swap" rel="stylesheet"> -->
+
+    <!-- <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Sofia+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Sofia+Sans:wght@400;600;700&display=swap" rel="stylesheet"> -->
+    <style>
+        @font-face {
+            font-family: 'Sofia_Sans';
+            src: url(sources/SofiaSans-Medium.ttf);
+            /* font-weight: normal;
+            font-style: normal; */
+        }
+        @font-face {
+        font-family: 'Playwrite_RO';
+        src: url(sources/PlaywriteRO-Regular.ttf);
+        }
+    </style>
 </head>
 <body>
 
@@ -75,7 +88,7 @@
                         </label>
 
                         <label>
-                            <input type="checkbox" id="packages"> Packages
+                            <input type="checkbox" id="packaging"> Packages
                         </label>
 
                         <label>
@@ -150,33 +163,37 @@
                      had been manually reconsructed and retraced from the archive's pictures.<br>
                      Feel free to take a closer look to them before start playing.<br>
                      Each one of them has a unique story </p> <br> <br>
-                <!-- <p style="font-family: Playwrite RO;font-weight: bold;">Category</p>
-                      <div class="filters_text">
+                <p style="font-family: Playwrite RO;font-weight: bold;">Letters</p>
+                      <div class="filters_text" id="category_letter">
                    
-                        <label>
-                            <input type="checkbox"> Signs
-                        </label>
-
-                        <label>
-                            <input type="checkbox"> Posters
-                        </label>
-
-                        <label>
-                            <input type="checkbox"> Packages
-                        </label>
-
-                        <label>
-                            <input type="checkbox"> Books
-                        </label>
-
-                        <label>
-                            <input type="checkbox"> Tags
-                        </label>
-
-                        <label>
-                            <input type="checkbox"> Inscriptions
-                        </label>
-                    </div><br> -->
+                        <label><input type="checkbox" data-letter="A"> A</label>
+                        <label><input type="checkbox" data-letter="B"> B</label>
+                        <label><input type="checkbox" data-letter="C"> C</label>
+                        <label><input type="checkbox" data-letter="D"> D</label>
+                        <label><input type="checkbox" data-letter="E"> E</label>
+                        <label><input type="checkbox" data-letter="F"> F</label>
+                        <label><input type="checkbox" data-letter="G"> G</label>
+                        <label><input type="checkbox" data-letter="H"> H</label>
+                        <label><input type="checkbox" data-letter="I"> I</label>
+                        <label><input type="checkbox" data-letter="J"> J</label>
+                        <label><input type="checkbox" data-letter="K"> K</label>
+                        <label><input type="checkbox" data-letter="L"> L</label>
+                        <label><input type="checkbox" data-letter="M"> M</label>
+                        <label><input type="checkbox" data-letter="N"> N</label>
+                        <label><input type="checkbox" data-letter="O"> O</label>
+                        <label><input type="checkbox" data-letter="P"> P</label>
+                        <label><input type="checkbox" data-letter="Q"> Q</label>
+                        <label><input type="checkbox" data-letter="R"> R</label>
+                        <label><input type="checkbox" data-letter="S"> S</label>
+                        <label><input type="checkbox" data-letter="T"> T</label>
+                        <label><input type="checkbox" data-letter="U"> U</label>
+                        <label><input type="checkbox" data-letter="V"> V</label>
+                        <label><input type="checkbox" data-letter="W"> W</label>
+                        <label><input type="checkbox" data-letter="X"> X</label>
+                        <label><input type="checkbox" data-letter="Y"> Y</label>
+                        <label><input type="checkbox" data-letter="Z"> Z</label>
+                       
+                    </div><br>
 
                     
 
@@ -186,9 +203,10 @@
                 <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> 
                 <h2>Interact!</h2> <br> <br>
                 <label>Type something...</label>
-                <input type="text" id="textInput" placeholder="Hello"><br>
+                <!-- <input type="textarea" id="textInput" placeholder="Hello"><br> -->
+                <textarea id="textInput" placeholder="Hello"></textarea>
                 <button class="button" id="randomizeBtn" style="background-color: #F3B61F;">Randomize</button>
-                <br><br><br><br>
+                <br><br>
                 <!-- <button class="button" style="background-color: #F3B61F;">Stop</button> <br> <br> -->
                 <label>Size</label>
                 <input type="range" class="size-slider"  id="fontSize" name="size"  min="0"  max="250"  value="120"><br><br><br>

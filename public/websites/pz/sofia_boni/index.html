@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>PunkZinator</title>
+    <link rel="icon" type="image/png" href="SOURCES/img/star.PNG">
+    <link href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/themes/smoothness/jquery-ui.css" rel="stylesheet" type="text/css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/interactjs/dist/interact.min.js"></script>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Beth+Ellen&family=Borel&family=Caveat:wght@400..700&family=Homemade+Apple&family=Miniver&family=Playwrite+HR:wght@100..400&family=Playwrite+NO+Guides&family=Playwrite+VN+Guides&family=Rock+Salt&display=swap');
+
+
+            a:hover {cursor: pointer;
+            }
+
+        @font-face {
+            font-family: 'Mess_Light';
+            src: url('Mess-Light_web.eot');
+            src: url('Mess-Light_web.eot?#iefix') format('embedded-opentype'),
+            url(SOURCES/Mess-Light_web.woff) format('woff'),
+            url(SOURCES/Mess-Light_web.woff2) format('woff2'),
+            url(SOURCES/Mess-Light_web.ttf) format('truetype'),
+            url('Mess-Light_web.svg#svgFontName') format('svg');
+            font-weight: normal;
+            font-style: normal;
+        }
+        @font-face {
+        font-family: 'MagazineLetterByBrntlbrnl-Regular';
+        src: url(SOURCES/MagazineLetterByBrntlbrnl-Regular.ttf);
+        }
+
+        @font-face {
+            font-family: 'playwriteHR';
+            src: url(SOURCES/PlaywriteHR-Regular.ttf);
+        }
+
+        @font-face {
+            font-family: 'playwriteVNGuides';
+            src: url(SOURCES/PlaywriteVNGuides-Regular.ttf);
+        }
+        </style>
+</head>
+<body>
+
+    <div class="titlewrap">
+        <h1 id="title">The Ultimate PUNKZINATOR</h1>
+        <img id="titlehover" src="SOURCES/img/title.PNG">
+    </div>
+
+    <div id="categoryList">
+        
+        <p class="category" id="maximalist">Maximalist but functional layouts</p>
+        <div id="overlay_maximalist" class="category-overlay">
+            <div class="gallery">
+                <img src="SOURCES/tabs/tabs_maximalist_1.png" class="tab-img" id="maximalist1">
+                <img src="SOURCES/tabs/tabs_maximalist_2.png" class="tab-img" id="maximalist2">
+                <img src="SOURCES/tabs/tabs_maximalist_3.png" class="tab-img" id="maximalist3">
+                <img src="SOURCES/tabs/tabs_maximalist_4.png" class="tab-img" id="maximalist4">
+            </div>
+        </div>
+
+        <p class="category" id="papers">Different papers & different sizes</p>
+        <div id="overlay_papers" class="category-overlay">
+            <div class="gallery">
+                <img src="SOURCES/tabs/tabs_papers_1.png" class="tab-img" id="papers1">
+                <img src="SOURCES/tabs/tabs_papers_2.png" class="tab-img" id="papers2">
+                <img src="SOURCES/tabs/tabs_papers_3.png" class="tab-img" id="papers3">
+                <img src="SOURCES/tabs/tabs_papers_4.png" class="tab-img" id="papers4">
+            </div>
+        </div>
+
+        <p class="category" id="icons">Ordinary culture icons modified</p>
+        <div id="overlay_icons" class="category-overlay">
+            <div class="gallery">
+                <img src="SOURCES/tabs/tabs_icons_1.png" class="tab-img" id="icons1">
+                <img src="SOURCES/tabs/tabs_icons_2.png" class="tab-img" id="icons2">
+                <img src="SOURCES/tabs/tabs_icons_3.png" class="tab-img" id="icons3">
+                <img src="SOURCES/tabs/tabs_icons_4.png" class="tab-img" id="icons4">
+            </div>
+            <div class="extra-assets">
+                <img src="SOURCES/faces/madonna5.PNG" class="draggable-asset" id="madonna5">
+                <img src="SOURCES/faces/madonna4.PNG" class="draggable-asset" id="madonna4">
+                <img src="SOURCES/faces/madonna3.PNG" class="draggable-asset" id="madonna3">
+                <img src="SOURCES/faces/madonna2.PNG" class="draggable-asset" id="madonna2">
+                <img src="SOURCES/faces/queen1.PNG" class="draggable-asset" id="queen1">
+                <img src="SOURCES/faces/Mikey1.PNG" class="draggable-asset" id="mikey1">
+                <img src="SOURCES/faces/Mikey5.PNG" class="draggable-asset" id="mikey5">
+                <img src="SOURCES/faces/ted6.PNG" class="draggable-asset" id="ted6">
+
+            </div>
+        </div>
+
+
+        <p class="category" id="drawings">Hand drawings</p>
+        <div id="overlay_drawings" class="category-overlay">
+            <div class="gallery">
+                <img src="SOURCES/tabs/tabs_drawings_1.png" class="tab-img" id="drawings1">
+                <img src="SOURCES/tabs/tabs_drawings_2.png" class="tab-img" id="drawings2">
+                <img src="SOURCES/tabs/tabs_drawings_3.png" class="tab-img" id="drawings3">
+                <img src="SOURCES/tabs/tabs_drawings_4.png" class="tab-img" id="drawings4">
+            </div>
+        </div>
+
+        <p class="category" id="ornaments">Ornaments</p>
+        <div id="overlay_ornaments" class="category-overlay">
+            <div class="gallery">
+                <img src="SOURCES/tabs/tabs_ornaments_1.png" class="tab-img" id="ornaments1">
+                <img src="SOURCES/tabs/tabs_ornaments_2.png" class="tab-img" id="ornaments2">
+                <img src="SOURCES/tabs/tabs_ornaments_3.png" class="tab-img" id="ornaments3">
+                <img src="SOURCES/tabs/tabs_ornaments_4.png" class="tab-img" id="ornaments4">
+            </div>
+            <div class="extra-assets">
+            <img src="SOURCES/ornaments/orn_1.png" class="draggable-asset" id="orn1">
+            <img src="SOURCES/ornaments/orn_2.PNG" class="draggable-asset" id="orn2">
+            <img src="SOURCES/ornaments/orn_7.PNG" class="draggable-asset" id="orn3">
+            <img src="SOURCES/ornaments/orn_4.PNG" class="draggable-asset" id="orn4">
+            <img src="SOURCES/ornaments/orn_5.png" class="draggable-asset" id="orn5">
+            <img src="SOURCES/ornaments/orn_8.png" class="draggable-asset" id="orn6">
+            <img src="SOURCES/ornaments/orn_10.PNG" class="draggable-asset" id="orn7">
+            <img src="SOURCES/ornaments/orn_16.PNG" class="draggable-asset" id="orn8">
+            <img src="SOURCES/ornaments/orn_14.PNG" class="draggable-asset" id="orn9">
+            <img src="SOURCES/ornaments/orn_13.png" class="draggable-asset" id="orn0">
+
+         </div>
+        </div>
+
+        <p class="category" id="collages">Collages and cutouts</p>
+        <div id="overlay_collages" class="category-overlay">
+            <div class="gallery">
+                <img src="SOURCES/tabs/tabs_collages_1.png" class="tab-img" id="collages1">
+                <img src="SOURCES/tabs/tabs_collages_2.png" class="tab-img" id="collages2">
+                <img src="SOURCES/tabs/tabs_collages_3.png" class="tab-img" id="collages3">
+                <img src="SOURCES/tabs/tabs_collages_4.png" class="tab-img" id="collages4">
+            </div>
+            <div class="extra-assets">
+            <img src="SOURCES/letters/LET (6).png" class="draggable-asset letter">
+             <img src="SOURCES/letters/LET (8).png" class="draggable-asset letter" >
+              <img src="SOURCES/letters/LET (12).png" class="draggable-asset letter">
+              <img src="SOURCES/letters/LET (14).png" class="draggable-asset letter">
+              <img src="SOURCES/letters/LET (23).png" class="draggable-asset letter">
+              <img src="SOURCES/letters/LET (26).png" class="draggable-asset letter">
+              <img src="SOURCES/letters/LET (28).png" class="draggable-asset letter">
+              <img src="SOURCES/letters/LET (29).png" class="draggable-asset letter">
+              <img src="SOURCES/letters/LET (33).png" class="draggable-asset letter">
+              <img src="SOURCES/letters/LET (23).png" class="draggable-asset letter">
+        </div>
+        </div>
+
+        <p class="category" id="illegible">Illegible pages</p>
+        <div id="overlay_illegible" class="category-overlay">
+            <div class="gallery">
+                <img src="SOURCES/tabs/tabs_illegible_1.png" class="tab-img" id="illegible1">
+                <img src="SOURCES/tabs/tabs_illegible_2.png" class="tab-img" id="illegible2">
+                <img src="SOURCES/tabs/tabs_illegible_3.png" class="tab-img" id="illegible3">
+                <img src="SOURCES/tabs/tabs_illegible_4.png" class="tab-img" id="illegible4">
+                
+            </div>
+        </div>
+
+         <p class="category" id="browsing" onclick="document.body.style.transform = this.click ? 'scaleX(-1)' : 'scaleX(1)'">Hard browsing experience</p>
+        <div id="overlay_browsing" class="category-overlay">
+            <div class="gallery">
+                <img src="SOURCES/tabs/tabs_browsing_1.png" class="tab-img" id="browsing1">
+                <img src="SOURCES/tabs/tabs_browsing_2.png" class="tab-img" id="browsing2">
+                <img src="SOURCES/tabs/tabs_browsing_3.png" class="tab-img" id="browsing3">
+                <img src="SOURCES/tabs/tabs_browsing_4.png" class="tab-img" id="browsing4">
+            </div>
+        </div>
+
+        <br><br>
+        <button class="button" id="print">Print/Export PDF</button>
+        <button class="button" id="reset">Reset</button>
+
+        <div class="hover-target">
+            <img id="stellina" src="SOURCES/img/star.PNG">
+            <div class="footer">
+                Tool developed by Sofia Boni |<br> Website as punk zines course <br> by Insa Deist & Hjördis Lyn Behncken | <br>
+                2025 Bauhaus Universitat Weimar
+            </div>
+        </div>
+    </div>
+
+    <div id="canvas" class="canvas">**</div>
+
+    <script src="script2.js"></script>
+</body>
+</html>

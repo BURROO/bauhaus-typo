@@ -1,0 +1,202 @@
+the animation of the clovers in"plant.html" is not working...😭 I copied the code of https://codepen.io/cooljockey/pen/yLjXYz but it is not working...Also I want to make the 4-leaves-clover has glitter effect(or similar) when people hover it ,while they're moving.
+
+In the "paper.html"(and css): I wanted to make the rings draggable to the fingers, (which I succeed)But how can I make the initial images, before being dragged, not overlap and be arranged in a vertical column? 
+
+Also I wanna ask about the details of presentation, is it on this thursday? Should we present the final website?
+-> Yes i think you've gotten some mails about that already check marcels mail, allso we can talk tomorrow about it!
+
+I also wonder,in the page "paper.html"I have a link to a song in spotify, since the  exhibition is offline, can I download the (for example)the lyrics video and put this in my html? Are there any copyright problem? 
+-> No not really, first of all we are offline so they can't track but secondly you are not using it for commercial scsess on your end so go ahead just remember to keep the size of the video small
+
+Last but not least, are there any visual feedbacks from the new pages?🥹(paper&aluminum.html) 
+-> I think they work well! I especially like on the paper page the part with the rings that can be added to the fingers - you already started that a bit on other pages (the clover for example) i think its good if every page gets it's own easter egg
+
+
+Hello!
+the clover problem was an easy fix :) you just forgot to load the jquery that was needed, and that you use in the script. 
+I've added this line 
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+before your js script, now it works. Probably this one was a little hidden on codepen and thats why you didn't see it. Usually you can see if they've used jquery if you click on the settingsicon on top of the code window.
+
+Now that we have to think about offline you would have to download this jquery bit 
+1. Download jQuery
+Open this link in your browser:
+https://code.jquery.com/jquery-3.7.1.min.js
+<!-- Right-click → Save As… -->
+Save the file as:
+jquery-3.7.1.min.js
+
+2. Put it in your project folder
+Example structure:
+project/
+│
+├── index.html
+├── plant.html
+├── js/
+│   └── jquery-3.7.1.min.js
+└── images/
+(You can also put it next to the HTML file — /js/ is just cleaner.)
+
+3. Link it locally in your HTML
+Inside <body> before your own script:
+<script src="js/jquery-3.7.1.min.js"></script>
+<script>
+  // your existing JS here
+</script>
+
+
+
+then a few more errors on the plant.html 
+
+-> Invalid / problematic content usage
+you use 
+.hover-img {
+  content: url("images/plant/plantpicker1.png");
+}
+.hover-img:hover {
+  content: url("images/plant/plantpicker2.png");
+}
+content is meant for ::before / ::after, not regular elements.
+Some browsers allow this, others don’t → fragile.
+Better options:
+- Use background-image (I would say this is the easiest one)
+- Or swap <img src> with JS
+- Or use ::before
+
+solution 1:
+.hover-img {
+  background-image: url("images/plant/plantpicker1.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+.hover-img:hover {
+  background-image: url("images/plant/plantpicker2.png");
+}
+<!-- (Then remove the <img> and make it a div) -->
+            <div class="hover-img" width= 80%><img src="images/plant/plantpicker1.png"></div>
+<div class="hover-img" src="images/plant/plantpicker1.png"></div>
+
+
+-> 3. Missing viewport meta (important!)
+Without this, mobile layout will behave strangely, but its always good practice to include it even if you don't go for a mobile solution. Probably you will need that in some more files.
+Add inside <head>:
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+Things that technically work, but are wrong / risky
+-> 4. Invalid image widths
+<img src="..." width= 230vw>
+width attribute does not accept vw
+This is invalid HTML.
+Use CSS instead:
+<img src="..." style="width:230vw;">
+
+or better in css file or style tags:
+.step2 img { width: 230vw; }
+
+-> 5. Unclosed tags
+You have this:
+<p><b><span class="highlight-white">
+✨You’ll get organic, one-of-a-kind botanical prints 
+with soft, natural textures- <br> — each piece unique 🌸🌿
+
+Missing closing tags for:
+</span>
+</b>
+</p>
+Browsers will guess, but it can mess up layout.
+
+Fix:
+<p><b><span class="highlight-white">
+✨You’ll get organic, one-of-a-kind botanical prints 
+with soft, natural textures — <br> each piece unique 🌸🌿
+</span></b></p>
+
+-> 6. overflow: scroll
+.tutorial {
+  overflow: scroll;
+}
+
+This forces scrollbars even when not needed on some browsers.
+Better:
+overflow: auto;
+
+
+
+The Problem with the draggable images --> 
+this is a classic positioning clash 
+Your layout is trying to use flexbox, but position: absolute is overriding it.
+Why they’re stacking on top of each other
+This line is the culprit:
+.draggable {
+  position: absolute;
+}
+Absolutely positioned elements are removed from the flex layout, so all five images default to the same top-left point of .ring. Flexbox can’t space them if they’re absolute.
+
+Simple, clean solution (absolute only)
+Keep your CSS almost the same
+.interact {
+  position: relative;
+  top: 26vh;
+  left: 52%;
+  width: 30%;
+}
+
+.ring {
+  position: relative;
+  height: 10vw; /* gives a reference height */
+}
+
+.draggable {
+  position: absolute;
+  width: 5vw;
+  cursor: grab;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+Set different starting positions (CSS)
+The easiest way: :nth-child() this is how you can adress different iterations of one item
+
+.ring .draggable:nth-child(1) {
+  left: 0;
+  top: 0;
+}
+.ring .draggable:nth-child(2) {
+  left: 6vw;
+  top: 0;
+}
+.ring .draggable:nth-child(3) {
+  left: 12vw;
+  top: 0;
+}
+.ring .draggable:nth-child(4) {
+  left: 18vw;
+  top: 0;
+}
+.ring .draggable:nth-child(5) {
+  left: 24vw;
+  top: 0;
+}
+
+They now appear lined up next to each other, but are still fully draggable.
+
+
+I checked my website on the screen, and all the html sizing work except the the book image and the cats icons in the start page(index.html). I'm now very confused because this was coded so long ago and the structure of this page is really complex for me :(...
+
+I think I didn't fix it 😢. I checked this on my roomate's big monitor screen, but the start page didn't fit. Maybe is it possible that I can edit it with the screen we are gonna use in the presentation on Monday?
+
+The other problem is the scroll bar, in my macbook they all look invisible when I don't scroll them, but on the screen they are white, and it happens to every pages.(I've changed the overflow in plant.html from scroll to auto but it also has the same problem)
+
+I asked chatgpt about this problem, it says I should add this to css:
+
+html, body {
+  scrollbar-width: none;      /* Firefox */
+  -ms-overflow-style: none;   /* IE / Edge legacy */
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  display: none;              /* Chrome / Safari */
+}
+
+I'm not sure if this is gonna work, but can we change the system setting of the computer which we are gonna use for presentation? in system setting--->Appearance--->Show scroll bars--->When scrolling

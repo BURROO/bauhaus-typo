@@ -4,39 +4,44 @@
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Poster Generator</title>
-		<link rel="stylesheet" href="style.css" />
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
+		<link rel="stylesheet" href="style.css" /> 
+	
 	</head>
 	<body>
 		<div id="container">
 			<aside id="aside">
-				<h2>Poster Generator</h2> 
+				<h2>POSTER GENERATOR</h2> 
+
+				<input type="text" id="date" placeholder="select a date or time frame"/>
+
+				<div id="text-fields">
+					<textarea placeholder="hi! what should your poster say? you can type your text here!"></textarea>
+					<textarea placeholder="each text block becomes an element of your poster layout"></textarea>
+					<textarea placeholder="you can also add (+) text blocks if you need more or delete (-) them"></textarea>
+					<textarea placeholder="if you like a layout, you can save it by clicking 'keep layout'"></textarea>
+				</div>
+
+				<div class="aside-controls">
+					<button id="btn-delete" type="button"><span>−</span></button>
+					<button id="btn-add" type="button"><span>+</span></button>
+				</div>
 				
-				<!-- <label for="columns">Columns</label>
-				<input type="number" id="columns" min="0" max="10" >
-			
-				<label for="rows">Rows</label>
-				<input type="number" id="rows" min="0" max="10" > -->
-			
-				<label for="headline">Headline</label>
-				<input type="text" id="headline" value="Headline" placeholder="Headline..." />
-
-				<label for="sub">Subheadline</label>
-				<input type="text" id="sub" value="Subheadline" placeholder="Subheadline..." />
-
-				<label for="info">Information</label>
-				<input type="text" id="info" placeholder="Information..." />
-
-				<label for="date">Date</label>
-				<input type="date" id="date" placeholder="Date..." />
-
-				<button id="btn-generate">Generate</button>
 			</aside>
 
 			<main id="main">
-				<div id="preview"></div>
+				<div id="preview" class="active-preview"></div>
+				<div id="pinned-sidebar" aria-label="Pinned previews"></div>
+				<div class="aside-actions">
+                    <button id="btn-pin" type="button">keep layout</button>
+                    <button id="btn-generate" type="button">GENERATE</button>	
+                </div>
+				<div button id="btn-archive" type="button">go to archive</button></div>
 			</main>
 		</div>
-
+		
+		<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.js"></script>
+  		<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/de.js"></script>
 		<script src="js/fonts.js"></script>
 		<script src="js/grids.js"></script>
 		<script src="js/placement.js"></script>

@@ -10,7 +10,7 @@
     // Rimuove completamente il video dal layout dopo la transizione
     setTimeout(() => {
       video.style.display = 'none';
-    }, 1000); // Aspetta 1 secondo (il tempo della transizione CSS)
+    }, 900); // Aspetta 1 secondo (il tempo della transizione CSS)
     
   }, 5000); 
 
@@ -375,9 +375,6 @@ function closeEverything() {
     const video = document.getElementById('introvideo');
     if(video) video.style.display = "none";
 }
-
-
-
     // }
     // if(canvasI){
     //     canvasI.style.display = "none";
@@ -442,11 +439,70 @@ function openGallery() {
     canvasO.appendChild(galleryO);
 }
 
+
+// +++++++++++++++ CHECKBOX ORIGINALS +++++++++++++++++++++
+
+
+
+// Seleziona tutte le checkbox dentro il div Originals
+const filterCheckboxes = document.querySelectorAll('#Originals input[type="checkbox"]');
+
+filterCheckboxes.forEach(checkbox => {
+    checkbox.addEventListener('change', applyFilters);
+});
+
+function applyFilters() {
+    // 1. Trova quali filtri nazione sono attivi
+    const activeCountries = ['ITA', 'DE', 'JP', 'FR', 'ES', 'ROM', 'NL', 'CZ']
+        .filter(id => document.getElementById(id).checked);
+
+    // 2. Trova quali filtri categoria sono attivi
+    const activeCategories = ['signs', 'posters', 'packaging', 'books', 'tags', 'inscriptions']
+        .filter(id => document.getElementById(id).checked);
+
+    // 3. Prendi tutte le immagini della galleria Originals
+    const images = document.querySelectorAll('.galleryO img');
+
+    images.forEach(img => {
+        const fileName = img.alt.toUpperCase(); // es: ARCH_ITA_MILANO_SIGN_1.WEBP
+        
+        // Verifica nazione: se nessuna è selezionata, passa il test. 
+        // Se qualcuna è selezionata, il nome deve includerne una.
+        const matchesCountry = activeCountries.length === 0 || 
+                               activeCountries.some(country => fileName.includes(`_${country}_`));
+
+        // Verifica categoria: logica simile (usiamo il singolare come nei tuoi file)
+        // Nota: i tuoi ID sono plurali (signs), ma i file spesso singolari (sign). 
+        // Normalizziamo il controllo:
+        const matchesCategory = activeCategories.length === 0 || 
+                                activeCategories.some(cat => {
+                                    const singularCat = cat.replace(/s$/, "").toUpperCase(); 
+                                    return fileName.includes(`_${singularCat}_`) || fileName.includes(`_${cat.toUpperCase()}_`);
+                                });
+
+        // Applica opacità
+        if (matchesCountry && matchesCategory) {
+            img.style.opacity = "1";
+            img.style.pointerEvents = "auto"; // Cliccabile
+        } else {
+            img.style.opacity = "0.5";
+            img.style.pointerEvents = "none"; // Non cliccabile se filtrata
+        }
+    });
+}
+
+
+
+
+
+
+
+
 /* =====================================================
-   GALLERIA FONTS (Uguale alla precedente)
+   MODIFICA: GALLERIA FONTS CON GRUPPI
    ===================================================== */
 function openGalleryF() {
-    // 1. Pulizia e reset scroll
+    // 1. Pulizia e reset
     canvasF.innerHTML = ""; 
     canvasF.scrollTop = 0;
     canvasF.style.display = "block";
@@ -454,61 +510,90 @@ function openGalleryF() {
     const galleryF = document.createElement("div");
     galleryF.className = "galleryF";
 
-    // Usiamo la tua lista lettersImages
+    // Ordiniamo le immagini
+    lettersImages.sort();
+
+    let currentLetter = "";
+
     lettersImages.forEach(name => {
+        const firstLetter = name.split('_')[0].toUpperCase();
+
         const imgF = document.createElement("img");
         imgF.src = `sources/letters/${name}`;
         imgF.alt = name;
         imgF.loading = "lazy";
+
+        // Se è la prima volta che incontriamo questa lettera, diamo l'ID all'immagine
+        if (firstLetter !== currentLetter) {
+            currentLetter = firstLetter;
+            imgF.id = "section-" + currentLetter; // L'ancora è l'immagine stessa
+        }
 
         imgF.addEventListener("click", () => openModalF(imgF.src));
         galleryF.appendChild(imgF);
     });
 
     canvasF.appendChild(galleryF);
+}
 
+/* =====================================================
+   GESTORE CLICK CHECKBOX FONTS (Aggiornato)
+   ===================================================== */
+const categoryLetterContainer = document.getElementById('category_letter');
+
+if (categoryLetterContainer) {
+    categoryLetterContainer.addEventListener('change', (e) => {
+        if (e.target.type === 'checkbox' && e.target.checked) {
+            const letter = e.target.getAttribute('data-letter');
+            const targetElement = document.getElementById("section-" + letter);
+
+            if (targetElement) {
+                // Scorriamo il canvasF fino alla posizione dell'immagine target
+                targetElement.scrollIntoView({ 
+                    behavior: 'smooth', 
+                    block: 'start' 
+                });
+            }
+
+            // Deseleziona le altre per chiarezza
+            categoryLetterContainer.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+                if (cb !== e.target) cb.checked = false;
+            });
+        }
+    });
 }
 
 
-
-
-/* Apertura Modale Originals */
+/* Funzione Generica per aprire il modale */
 function openModalO(src) {
-    const modalO = document.getElementById("image-modalO");
-    const modalImgO = document.getElementById("modal-imgO");
-    modalImgO.src = src;
-    modalO.classList.remove("hidden");
-    document.body.style.overflow = "hidden"; // Blocca lo scroll della pagina
+    const modal = document.getElementById("image-modalO");
+    const modalImg = document.getElementById("modal-imgO");
+    modalImg.src = src;
+    modal.classList.remove("hidden");
 }
 
-/* Apertura Modale Fonts */
 function openModalF(src) {
-    const modalF = document.getElementById("image-modalF");
-    const modalImgF = document.getElementById("modal-imgF");
-    modalImgF.src = src;
-    modalF.classList.remove("hidden");
-    document.body.style.overflow = "hidden";
+    const modal = document.getElementById("image-modalF");
+    const modalImg = document.getElementById("modal-imgF");
+    modalImg.src = src;
+    modal.classList.remove("hidden");
 }
 
-
-// Gestione chiusura Originals
-const modalO = document.getElementById("image-modalO");
-modalO.addEventListener("click", (e) => {
-    // Chiude se clicchi sullo sfondo (id del div) o sulla X (id dello span)
-    if (e.target.id === "image-modalO" || e.target.id === "close-modalO") {
-        modalO.classList.add("hidden");
-        document.body.style.overflow = "auto"; // Ripristina lo scroll
+/* Gestione della chiusura al click fuori dall'immagine */
+[document.getElementById("image-modalO"), document.getElementById("image-modalF")].forEach(modal => {
+    if(modal) {
+        modal.addEventListener("click", (e) => {
+            // Se il target del click è il contenitore scuro (e non l'immagine)
+            if (e.target.tagName !== 'IMG') {
+                modal.classList.add("hidden");
+            }
+        });
     }
 });
 
-// Gestione chiusura Fonts
-const modalF = document.getElementById("image-modalF");
-modalF.addEventListener("click", (e) => {
-    if (e.target.id === "image-modalF" || e.target.id === "close-modalF") {
-        modalF.classList.add("hidden");
-        document.body.style.overflow = "auto";
-    }
-});
+
+
+
 
 // Selezioniamo il pulsante di download tramite il suo stile specifico o aggiungi un ID per comodità
 const downloadBtn = document.querySelector('#downloadBtn');
@@ -527,7 +612,7 @@ downloadBtn.addEventListener('click', () => {
         
         // Creiamo un link temporaneo per forzare il download
         const link = document.createElement('a');
-        link.download = 'il-mio-testo-personalizzato.png';
+        link.download = 'BOFIArchive.png';
         link.href = image;
         link.click();
     });
@@ -606,21 +691,69 @@ function createLetterImage(letter) {
 /***********************
  * RENDER TESTO NEL CANVAS
  ***********************/
-function renderText(text) {
-  wrapper.innerHTML = "";
+// function renderText(text) {
+//   wrapper.innerHTML = "";
 
-  [...text].forEach(char => {
-    if (char === " ") {
-      const space = document.createElement("div");
-      space.style.width = "20px";
-      wrapper.appendChild(space);
-    } else {
-      const letter = char.toUpperCase();
-      const img = createLetterImage(letter);
-      if (img) wrapper.appendChild(img);
+//   [...text].forEach(char => {
+//     if (char === " ") {
+//       const space = document.createElement("div");
+//       space.style.width = "20px";
+//       wrapper.appendChild(space);
+//     } else {
+//       const letter = char.toUpperCase();
+//       const img = createLetterImage(letter);
+//       if (img) wrapper.appendChild(img);
+//     }
+//   });
+// }
+
+
+function renderText(text) {
+    textWrapper.innerHTML = ""; // Svuota il canvas
+
+    for (let char of text) {
+        // 1. GESTIONE INVIO (Cambio riga)
+        if (char === "\n") {
+            const br = document.createElement("div");
+            br.style.flexBasis = "100%"; // Forza il flexbox ad andare a capo
+            br.style.height = "0";
+            textWrapper.appendChild(br);
+            continue;
+        }
+
+        // 2. GESTIONE SPAZIO
+        if (char === " ") {
+            const space = document.createElement("div");
+            // Usiamo lo stesso valore dello slider per rendere lo spazio coerente con le lettere
+            const currentSize = document.getElementById('fontSize').value;
+            space.style.width = `${currentSize}px`; 
+            space.style.height = `${currentSize}px`;
+            space.style.display = "inline-block";
+            textWrapper.appendChild(space);
+            continue;
+        }
+
+        // 3. GESTIONE LETTERE (Tuo codice esistente)
+        const charUpper = char.toUpperCase();
+        const matchingImages = lettersImages.filter(imgName => imgName.startsWith(charUpper + "_"));
+
+        if (matchingImages.length > 0) {
+            const randomImg = matchingImages[Math.floor(Math.random() * matchingImages.length)];
+            const imgElement = document.createElement("img");
+            imgElement.src = `sources/letters/${randomImg}`;
+            imgElement.style.height = document.getElementById('fontSize').value + "px";
+            imgElement.style.width = "auto";
+            textWrapper.appendChild(imgElement);
+        }
     }
-  });
 }
+
+// // AGGIUNTA: Genera uno z-index randomico tra 5 e 50
+//     const randomZ = Math.floor(Math.random() * (50 - 5 + 1)) + 5;
+//     imgElement.style.zIndex = randomZ;
+//     imgElement.style.position = "relative"; // Necessario perché lo z-index funzioni
+
+//     textWrapper.appendChild(imgElement);
 
 /***********************
  * EVENTI
@@ -652,6 +785,21 @@ fontSizeSlider.addEventListener("input", () => {
   wrapper.style.setProperty("--letter-size", `${fontSizeSlider.value}px`);
 });
 
+fontSizeSlider.addEventListener('input', () => {
+    const size = fontSizeSlider.value + "px";
+    
+    // Aggiorna le immagini
+    const images = textWrapper.querySelectorAll('img');
+    images.forEach(img => img.style.height = size);
+    
+    // Aggiorna i div che fungono da spazio (quelli che non hanno la classe della scia o dell'invio)
+    const spaces = textWrapper.querySelectorAll('div:not([style*="flex-basis"])');
+    spaces.forEach(sp => {
+        sp.style.width = size;
+        sp.style.height = size;
+    });
+});
+
 
 
 /* VICINANAZA TESTO */
@@ -680,3 +828,95 @@ function updateLetterDistance(value) {
 }
 
 
+
+
+
+/* =====================================================
+   LOGICA SCIA DI IMMAGINI AL MOVIMENTO DEL MOUSE (SEZIONE INTERACT)
+   ===================================================== */
+
+const showReferencesCheckbox = document.querySelector('#Interact input[type="checkbox"]');
+const interactCanvas = document.getElementById('canvas'); // Il canvas principale per le lettere
+const mouseTrailImages = []; // Array per tenere traccia delle immagini della scia
+
+// Funzione per generare un'immagine casuale dalla cartella archive
+function getRandomArchiveImage() {
+    const randomIndex = Math.floor(Math.random() * archiveImages.length);
+    return `sources/archive/${archiveImages[randomIndex]}`;
+}
+
+// Funzione che crea e posiziona un'immagine al movimento del mouse
+function handleMouseMove(event) {
+    // Limita la creazione di immagini per performance (opzionale, ma consigliato)
+    // Se ne creiamo troppe, il browser potrebbe rallentare.
+    // Qui ne creiamo solo se l'ultima è stata creata almeno 50ms fa
+    const currentTime = new Date().getTime();
+    if (mouseTrailImages.length > 0 && (currentTime - mouseTrailImages[mouseTrailImages.length - 1].timestamp < 100)) {
+        return; 
+    }
+
+    const img = document.createElement("img");
+    img.src = getRandomArchiveImage();
+    img.className = "mouse-trail-image"; // Aggiungiamo una classe per selezionarle facilmente dopo
+    img.style.position = "absolute";
+    img.style.left = `${event.clientX}px`;
+    img.style.top = `${event.clientY}px`;
+    img.style.pointerEvents = "none"; // Non deve interferire con i click
+    
+    // Dimensione casuale per un effetto più interessante (puoi regolarla)
+    const randomSize = Math.floor(Math.random() * (150 - 50 + 1)) + 100; // tra 50px e 150px
+    img.style.width = `${randomSize}px`;
+    img.style.height = "auto";
+    
+    // Opacità leggera e casuale per un effetto "fantasma"
+    img.style.opacity = `${Math.random() * (0.8 - 0.3) + 1}`; // tra 0.3 e 0.8
+    
+    // Z-index casuale per andare sopra o sotto le lettere
+    // Assumiamo che le lettere abbiano un z-index di base, es. 10.
+    // Quindi vogliamo z-index tra 1 e 20, ad esempio.
+    const randomZIndex = Math.floor(Math.random() * 20) + 1; 
+    img.style.zIndex = randomZIndex;
+
+    document.body.appendChild(img); // Aggiungi l'immagine direttamente al body
+    
+    // Memorizza l'immagine e il timestamp per la limitazione e la pulizia
+    mouseTrailImages.push({ element: img, timestamp: currentTime });
+
+    // Opzionale: limita il numero di immagini nella scia
+    // Se vuoi che le immagini più vecchie svaniscano o vengano rimosse dopo un po'
+    if (mouseTrailImages.length > 30) { // Mantieni al massimo 30 immagini
+        const oldImage = mouseTrailImages.shift(); // Rimuovi la più vecchia
+        oldImage.element.remove();
+    }
+}
+
+// Funzione per pulire tutte le immagini della scia
+function clearMouseTrail() {
+    mouseTrailImages.forEach(item => item.element.remove());
+    mouseTrailImages.length = 0; // Svuota l'array
+}
+
+// Listener per la checkbox "Show references"
+showReferencesCheckbox.addEventListener('change', () => {
+    if (showReferencesCheckbox.checked) {
+        // Attiva la scia di immagini
+        document.addEventListener('mousemove', handleMouseMove);
+        // Assicurati che il canvas delle lettere sia visibile se non lo è già
+        interactCanvas.style.display = 'block';
+    } else {
+        // Disattiva la scia di immagini
+        document.removeEventListener('mousemove', handleMouseMove);
+        clearMouseTrail(); // Pulisci le immagini esistenti
+    }
+});
+
+// Aggiungi un'ulteriore pulizia quando si cambia sezione dal pannello
+// per essere sicuri che tutte le scie vengano rimosse se ci si sposta da Interact
+const originalCloseEverything = closeEverything; // Salva la tua funzione originale
+closeEverything = function() {
+    originalCloseEverything(); // Esegui la tua pulizia normale
+    clearMouseTrail(); // Pulisci la scia del mouse
+    // Assicurati che la checkbox sia deselezionata quando esci da Interact
+    showReferencesCheckbox.checked = false; 
+    document.removeEventListener('mousemove', handleMouseMove); // Rimuovi il listener
+};

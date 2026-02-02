@@ -1,87 +1,20 @@
+@font-face {
+  font-family: "ABCDiatypeRoundedVariable";
+  src: url("./fonts/ABCDiatypeRoundedVariableEdu-Regular.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+
 body {
     margin: 0;
     background: rgb(0, 0, 0);
     overflow: hidden;
-    font-family: sans-serif;
+    font-family: "ABCDiatypeRoundedVariable", sans-serif;
+    font-weight: 600;
     color: white;
 }
-
-#controls {
-  position: fixed;
-  top: 24px;
-  left: 24px;
-
-  width: 56px;
-  height: 56px;
-
-  background: #2f2f2f;
-  border-radius: 16px;
-
-  overflow: hidden;
-  transition:
-    width 0.35s cubic-bezier(.34,1.56,.64,1),
-    height 0.35s cubic-bezier(.34,1.56,.64,1),
-    border-radius 0.3s ease;
-}
-
-.toggle {
-  width: 56px;
-  height: 56px;
-  display: grid;
-  place-items: center;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-}
-
-.shape {
-  width: 18px;
-  height: 18px;
-  background: #ffffff;
-
-  border-radius: 0px; /* Quadrat */
-  
-  transition:
-    border-radius 0.35s cubic-bezier(.34,1.56,.64,1),
-    transform 0.25s ease;
-}
-
-body.is-circle .shape {
-  border-radius: 50%;
-  transform: scale(1.1);
-}
-
-
-#controls:hover,
-#controls:focus-within {
-  width: 220px;     /* an dein Layout anpassen */
-  height: 90vh;     /* oder feste Höhe */
-
-  border-radius: 20px;
-}
-
-.controls-inner {
-  opacity: 0;
-  transform: translateY(-8px);
-
-  transition:
-    opacity 0.2s ease,
-    transform 0.3s ease;
-}
-
-#controls:hover .controls-inner,
-#controls:focus-within .controls-inner {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.controls-inner {
-  padding: 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
 
 
 #overlayTextarea {
@@ -101,72 +34,479 @@ body.is-circle .shape {
 }
 
 
-
 canvas {
     width: 100vw;
     height: 100vh;
 }
+
 
 button {
   height: 48px;
   width: 48px;                 /* Start: Quadrat */
   padding-right: 0;
 
-  background: #e5e7eb;
+  background: #666;
   border-radius: 12px;
   border: none;
 }
 
+.force-type-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
 
-.expandButton {
-  display: inline-flex;
+.force-type-grid span {
+  position: relative;  
+  text-align: center;
+  aspect-ratio: 1;
+  display: flex;
   align-items: center;
-
-  height: 48px;
-  width: 48px;                 /* Start: Quadrat */
-  padding-right: 0;
-
-  background: #e5e7eb;
-  border-radius: 12px;
-
-  overflow: hidden;            /* extrem wichtig */
-  transition:
-    width 0.3s cubic-bezier(.34,1.56,.64,1);
+  justify-content: center;
 }
 
-.expandButton:hover,
-.expandButton:focus-within {
-  width: 200px;                /* ausgefahrene Breite */
+.force-type-grid span::before,
+.force-type-grid span::after {
+  content: "";
+  position: absolute;
+  inset: 0;                 /* füllt die ganze Zelle */
+  pointer-events: none;
 }
 
-.icon {
-  width: 48px;
-  height: 48px;
-  flex-shrink: 0;
+.force-type-grid span::before {
+  background:
+    /* oben links */
+    linear-gradient(white, white) left top / 16px 1px no-repeat,
+    linear-gradient(white, white) left top / 1px 16px no-repeat,
 
-  border: none;
-  background: transparent;
-  cursor: pointer;
-  font-size: 1.1rem;
+    /* oben rechts */
+    linear-gradient(white, white) right top / 16px 1px no-repeat,
+    linear-gradient(white, white) right top / 1px 16px no-repeat;
+  
+  transition: none;
 }
 
-.slider {
-  width: 120px;
-  margin: 0 16px 0 8px;
+.force-type-grid span::after {
+  background:
+    /* unten links */
+    linear-gradient(white, white) left bottom / 16px 1px no-repeat,
+    linear-gradient(white, white) left bottom / 1px 16px no-repeat,
 
+    /* unten rechts */
+    linear-gradient(white, white) right bottom / 16px 1px no-repeat,
+    linear-gradient(white, white) right bottom / 1px 16px no-repeat;
+  
+  transition: none;
+}
+
+/* Expand borders when input is checked */
+.force-type-grid input[type="radio"]:checked ~ span::before,
+.force-type-grid span:has(input[type="radio"]:checked)::before {
+  background:
+    /* top line - full width */
+    linear-gradient(white, white) left top / 100% 1px no-repeat,
+    /* left line - full height */
+    linear-gradient(white, white) left top / 1px 100% no-repeat,
+
+    /* top line continues on right */
+    linear-gradient(white, white) right top / 100% 1px no-repeat,
+    /* right line - full height */
+    linear-gradient(white, white) right top / 1px 100% no-repeat;
+  transition: background 0.5s linear;
+}
+
+.force-type-grid input[type="radio"]:checked ~ span::after,
+.force-type-grid span:has(input[type="radio"]:checked)::after {
+  background:
+    /* bottom line - full width */
+    linear-gradient(white, white) left bottom / 100% 1px no-repeat,
+    /* left line continues */
+    linear-gradient(white, white) left bottom / 1px 100% no-repeat,
+
+    /* bottom line continues on right */
+    linear-gradient(white, white) right bottom / 100% 1px no-repeat,
+    /* right line continues */
+    linear-gradient(white, white) right bottom / 1px 100% no-repeat;
+  transition: background 0.5s linear;
+}
+
+
+
+.force-type-grid input[type="radio"] {
+  display: none;
+}
+
+.force-type-grid label {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+/* Individual hover animations for each force type */
+#push:not(:checked) + label:hover {
+  animation: boxerPunch 0.4s ease forwards;
+}
+
+#push:checked + label:hover {
+  animation: boxerPunch 0.4s ease forwards;
+}
+
+#pull:not(:checked) + label:hover {
+  animation: pulledLeft 0.4s ease forwards;
+}
+
+#pull:checked + label:hover {
+  animation: pulledLeft 0.4s ease forwards;
+}
+
+#split:not(:checked) + label:hover {
+  animation: splitApart 0.4s ease forwards;
+}
+
+#split:checked + label:hover {
+  animation: splitApart 0.4s ease forwards;
+}
+
+#spiral:not(:checked) + label:hover {
+  animation: fullRotation 0.6s ease forwards;
+}
+
+#spiral:checked + label:hover {
+  animation: fullRotation 0.6s ease forwards;
+}
+
+#jitter:not(:checked) + label:hover {
+  animation: jitterHover 0.3s ease;
+}
+
+#jitter:checked + label:hover {
+  animation: jitterHover 0.3s ease;
+}
+
+#bell:not(:checked) + label:hover {
+  animation: bellRing 0.8s ease forwards;
+}
+
+#bell:checked + label:hover {
+  animation: bellRing 0.8s ease forwards;
+}
+
+@keyframes boxerPunch {
+  0% { transform: translateX(0); }
+  50% { transform: translateX(4px); }
+  100% { transform: translateX(4px); }
+}
+
+#hiddenGallery {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   opacity: 0;
-  transform: translateX(-10px);
-
-  transition:
-    opacity 0.2s ease,
-    transform 0.3s ease;
+  pointer-events: none;
+  z-index: 9999;
+  transition: opacity 0.15s ease;
 }
 
-.expandButton:hover .slider,
-.expandButton:focus-within .slider {
+#hiddenGallery.is-visible {
   opacity: 1;
-  transform: translateX(0);
 }
+
+#hiddenGalleryImage {
+  max-height: 100vh;
+  max-width: 92vw;
+  object-fit: contain;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
+}
+
+@keyframes pulledLeft {
+  0% { transform: translateX(0); }
+  50% { transform: translateX(-4px); }
+  100% { transform: translateX(-4px); }
+}
+
+@keyframes fullRotation {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes jitterHover {
+  0% { transform: translate(0, 0); }
+  10% { transform: translate(-3px, -3px); }
+  20% { transform: translate(3px, 3px); }
+  30% { transform: translate(-3px, 3px); }
+  40% { transform: translate(3px, -3px); }
+  50% { transform: translate(-2px, 2px); }
+  60% { transform: translate(2px, -2px); }
+  70% { transform: translate(-2px, -2px); }
+  80% { transform: translate(2px, 2px); }
+  90% { transform: translate(-1px, 1px); }
+  100% { transform: translate(0, 0); }
+}
+
+@keyframes splitApart {
+  0% { letter-spacing: normal; }
+  100% { letter-spacing: 0.4em; }
+}
+
+@keyframes bellRing {
+  0% { transform: scaleX(1) scaleY(1); }
+  50% { transform: scaleX(1.35) scaleY(0.75); }
+  100% { transform: scaleX(1.35) scaleY(0.75); }
+}
+
+
+
+
+#controls {
+  color: white;
+  position: fixed;
+  top: 0px;
+  left: 0px;
+
+  width: 56px;
+  height: 100vh;
+
+  background: #1f1f1f;
+  border-radius: 0px;
+  white-space: nowrap;
+
+  overflow: hidden;
+  transition:
+    width 0.55s cubic-bezier(.25,1,.5,1),
+    height 0.55s cubic-bezier(.25,1,.5,1),
+    border-radius 0.55s ease;
+}
+
+
+#controls:hover,
+#controls:has(:focus-visible) {
+  width: 220px;     /* an dein Layout anpassen */
+  height: 100vh;     /* oder feste Höhe */
+}
+
+#controls:hover .controls-inner,
+#controls:has(:focus-visible) .controls-inner {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.controls-inner {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  gap: 12px;
+  opacity: 0;
+  transform: translateY(-8px);
+  transition:
+    opacity 0.183s ease,
+    transform 0.55s cubic-bezier(.25,1,.5,1);
+}
+
+.sliders-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+}
+
+.bottom-Buttons {
+  padding: 16px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 12px;
+  margin-top: auto;
+  margin-bottom: 80px;
+}
+
+.controls-inner > label {
+  padding: 0 16px;
+}
+
+
+.controls-label {
+  position: absolute;
+  top: 90px;                 /* unterhalb der Radios */
+  left: 0;
+
+  width: 56px;               /* Breite des dunklen Streifens */
+  height: calc(100vh - 90px);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  writing-mode: vertical-rl;
+  transform: rotate(180deg); /* ⬅️ auf dem Kopf */
+
+  font-size: 14px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+
+  color: rgb(255, 255, 255);
+  pointer-events: none;
+  
+  opacity: 1;
+  transition: opacity 0.2s;
+  transition-delay: 0.2s;
+}
+
+#controls:hover .controls-label,
+#controls:has(:focus-visible) .controls-label {
+  opacity: 0;
+  transition: opacity 0s;
+  transition-delay: 0s;
+}
+
+
+.mode-switch {
+  height: 80px;
+  background-color: #666;
+
+  display: flex;
+  align-items: stretch;
+  position: relative;
+
+  border-radius: 0px;
+  transition: 
+    border-radius 0.55s ease,
+    height 0.55s cubic-bezier(.25,1,.5,1),
+    margin-top 0.55s cubic-bezier(.25,1,.5,1),
+    margin-left 0.55s cubic-bezier(.25,1,.5,1),
+    margin-right 0.55s cubic-bezier(.25,1,.5,1);
+
+  overflow: hidden;
+}
+
+/* Sliding background bar */
+.mode-switch::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: calc(100% / 3);
+  background: rgba(255,255,255,0.8);
+  transition: left 0.3s ease, border-radius 0.55s ease;
+  z-index: 0;
+  pointer-events: none;
+  border-radius: 0px;
+}
+
+.mode-switch:has(#shapeSquare:checked)::before {
+  left: 0;
+}
+
+.mode-switch:has(#shapeCircle:checked)::before {
+  left: calc(100% / 3);
+}
+
+.mode-switch:has(#noSelectionMode:checked)::before {
+  left: calc(200% / 3);
+}
+
+#controls:hover .mode-switch,
+#controls:has(:focus-visible) .mode-switch {
+  border-radius: 24px;
+  height: 70px;
+  margin-top: 5px;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+#controls:hover .mode-switch::before,
+#controls:has(:focus-visible) .mode-switch::before {
+  border-radius: 24px;
+}
+
+#controls:hover .mode-switch label,
+#controls:has(:focus-visible) .mode-switch label {
+  border-right: none;
+}
+
+.mode-switch input {
+  display: none;
+}
+
+.mode-switch label {
+  flex: 1;
+
+  display: grid;
+  place-items: center;
+
+  cursor: default;
+
+  font-size: 18px;
+
+  background: transparent;
+
+  user-select: none;
+  position: relative;
+  z-index: 1;
+  color: white;
+}
+
+.mode-switch label:last-of-type {
+  border-right: none;
+}
+
+.mode-switch input:checked + label {
+  color: black;
+}
+
+
+#controls:hover .mode-switch input:checked + label,
+#controls:has(:focus-visible) .mode-switch input:checked + label {
+  /* your expanded-state styles here */
+  border-radius: 24px;
+}
+
+
+/* SLDIER STYLES */
+
+input[type="range"] {
+  -webkit-appearance: none; /* Chrome, Safari, Edge */
+  appearance: none;
+  background: transparent;
+  min-width: 60px;
+}
+
+input[type="range"]::-webkit-slider-runnable-track {
+  height: 30px;
+  background: #666;
+  border-radius: 999px;
+}
+
+input[type="range"]::-moz-range-track {
+  height: 30px;
+  background: #666;
+  border-radius: 999px;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 30px;
+  height: 30px;
+  background: white;
+  border-radius: 20px;
+  margin-top: -6px; /* zentriert den Thumb auf dem Track */
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 30px;
+  height: 30px;
+  background: white;
+  border-radius: 20px;
+  border: none;
+  white-space: nowrap;
+}
+
+
+
 
 
 

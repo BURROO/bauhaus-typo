@@ -1,0 +1,45 @@
+body {
+  height: 100vh;
+  width: 100vw;
+  margin: 0;           
+  background: white;
+  font-family: "BradfordLLEdu-Light"; font-weight: lighter;
+}
+
+.full-link {
+  position: fixed;
+  inset: 0;
+  display: block;
+}
+
+@font-face {
+  font-family: "BradfordLLEdu-Light";
+  src: url("fonts/BradfordLLEdu-Light.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+.alphaVid{
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 50vw;
+  height: auto;
+  display: block;
+}
+
+.imprint {
+  font-family: "BradfordLLEdu-Light"; font-weight: lighter;
+  position: fixed;
+  top: 98%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  justify-content: center;
+  font-family: BradfordLLEdu-Light, sans-serif;
+}
+
+a {
+  text-decoration: none;
+  color: gainsboro;
+}

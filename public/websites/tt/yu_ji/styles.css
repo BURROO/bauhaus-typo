@@ -1,198 +1,416 @@
-*{
+* {
     margin: 0;
     padding: 0;
-    font-family: 'Helvetica', 'Helvetica Neue', Arial, sans-serif;
-    font-size: 12px;
     box-sizing: border-box;
 }
 
-#container{
-    display: grid;
-    grid-template-columns: 200px auto;
-    height: auto; /* Allow the container to expand based on content */
-    width: 100vw;
-    position: relative;
+/* ===== 1. 变量定义 (修改：默认改为亮色/白色主题) ===== */
+:root {
+    /* 默认：白底黑字 */
+    --panel-bg-color: #FFFFFF;
+    --text-color: #000000;
+    
+    /* 亮色模式下的辅助色 (深灰，用于边框和标签，保证白底可见) */
+    --border-color: #AAAAAA; 
+    --summary-text-color: #555555; 
 }
 
-#preview, #typing{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 30px;
-    width: 100%;
-    height: 100%;
+/* 基础 Body 样式 */
+body {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    background-color: var(--panel-bg-color); /* 使用变量 */
+    color: var(--text-color);
+    overflow: hidden;
+    /* 添加过渡动画，让切换不生硬 */
+    transition: background-color 0.5s ease, color 0.5s ease;
 }
 
-#typing {
-    position: relative;
-    cursor: text;
+/* ===== 2. 暗色模式定义 (原本的默认样式移到这里) ===== */
+body.dark-mode {
+    background-color: #000000 !important;
+    --panel-bg-color: #000000;
+    --text-color: #FFFFFF;
+    
+    /* 深色模式下的辅助色 (浅灰) */
+    --border-color: #666666; 
+    --summary-text-color: #9AA3A9;
 }
 
-#main{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-    overflow: auto;
-    background-color: #ffffff;
+/* ===== 字体声明 ===== */
+@font-face { font-family: 'PP Rader'; src: url('./fonts/PPRader-Regular.otf') format('opentype'); font-weight: normal; font-style: normal; }
+@font-face { font-family: 'ZNVT9'; src: url('./fonts/ZNVT9.otf') format('opentype'); font-weight: normal; font-style: normal; }
+@font-face { font-family: 'IBM Plex Mono'; src: url('./fonts/IBMPlexMono-Regular.ttf') format('truetype'); font-weight: 400; font-style: normal; }
+@font-face { font-family: 'IBM Plex Mono Medium'; src: url('./fonts/IBMPlexMono-Medium.ttf') format('truetype'); font-weight: 500; font-style: normal; }
+
+/* 标签样式：使用变量以适应不同背景 */
+label, span { 
+    font-family: 'ZNVT9', sans-serif !important; 
+    color: var(--summary-text-color) !important; 
+    transition: color 0.5s ease;
 }
 
-svg{
-    overflow: visible;
-    width: 100%;
-    height: auto; /* Ensure SVG scales with content */
-    /* border: 1px solid red; */
-}
-
-.grid line{
-    stroke: none    ;
-}
-
-svg.showGrid .grid line{
-    stroke: gray !important;
-}
-
-.grid-line.dragging {
-    background: rgba(100, 150, 255, 0.8);
-    box-shadow: 0 0 10px rgba(100, 150, 255, 0.8);
-}
-
-aside{
-    padding: 10px;
-}
-
-#controls label{
-    display: block;
-    padding-top: 20px;
-}
-
-#footer{
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    z-index: 100;
-    cursor: pointer;
-    padding: 20px;
-}
-
-/* 下拉菜单样式 */
-select {
-    width: 100%;
-    padding: 8px;
-    margin-top: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-family: 'Courier New', Courier, monospace;
-    font-size: 12px;
-    background-color: white;
-    cursor: pointer;
-}
-
-select:hover {
-    border-color: #666;
-}
-
-select:focus {
-    outline: none;
-    border-color: #0066cc;
-    box-shadow: 0 0 4px rgba(0, 102, 204, 0.5);
-}
-
-/* 颜色输入框样式 */
-input[type=color] {
-    width: 100%;
-    height: 40px;
-    padding: 2px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    cursor: pointer;
-    margin-top: 8px;
-}
-
-input[type=color]:hover {
-    border-color: #666;
-}
-
-input[type=color]:focus {
-    outline: none;
-    border-color: #0066cc;
-    box-shadow: 0 0 4px rgba(0, 102, 204, 0.5);
-}
-
-/* Styling sliders */
-
-input[type=range] {
-    -webkit-appearance: none;
-    appearance: none;
-}
-
-input[type=range]::-webkit-slider-runnable-track {
-    background: black;
-    height: 1px;
-}
-
-input[type=range]::-webkit-slider-thumb {
-    -webkit-appearance: none; 
-    transform: translate(-50%, -50%);
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background: black;
-    cursor: pointer;
-}
-
-/* 预设控制栏样式 */
-#preset-panel {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    background: white;
-    border: 2px solid #333;
-    border-radius: 8px;
-    padding: 15px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    z-index: 200;
-    min-width: 200px;
-}
-
+/* 预设标题 */
 .preset-header {
-    font-size: 14px;
-    font-weight: bold;
-    margin-bottom: 12px;
-    color: #333;
-    border-bottom: 2px solid #333;
-    padding-bottom: 8px;
+    font-family: 'IBM Plex Mono', monospace !important; font-weight: 400 !important; font-size: 22px !important;
+    color: var(--summary-text-color) !important; letter-spacing: 0px !important;
+    -webkit-text-stroke: 0.2px currentColor !important; line-height: 1.1;
+    border-bottom: 1px solid var(--text-color); padding-bottom: 8px; margin-bottom: 12px;
+    cursor: move; user-select: none;
+    transition: border-color 0.5s ease, color 0.5s ease;
 }
 
-#preset-buttons {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+.control-label, .control-value, .pixel-shape-label, .xy-pad-label, .label-row label, .label-row span {
+    font-family: 'IBM Plex Mono', 'IBM Plex Mono-Regular', monospace !important;
+    font-weight: 400 !important; 
+    color: var(--summary-text-color) !important;
 }
 
-.preset-btn {
-    padding: 10px 15px;
-    background: #f0f0f0;
-    border: 2px solid #999;
-    border-radius: 6px;
-    font-size: 13px;
+/* ===== 模块 2: 全局容器与排版 ===== */
+.global-nav {
+    position: fixed; top: 0; left: 0; width: 100%; z-index: 9999;
+    padding: 20px; display: flex; gap: 10px; justify-content: flex-end; pointer-events: none;
+}
+
+/* 主题按钮：默认(亮色)样式 */
+.theme-btn {
+    pointer-events: auto; width: 38px; height: 38px; border-radius: 50%;
+    /* 亮色模式下，按钮边框黑色，渐变适应亮色 */
+    border: 1px solid #000000; 
+    background: linear-gradient(to right, #FFFFFF 50%, #000000 50%);
+    cursor: pointer; transition: transform 0.2s ease, background 0.5s ease, border-color 0.5s ease; flex-shrink: 0;
+}
+
+/* 主题按钮：暗色模式样式 */
+body.dark-mode .theme-btn { 
+    background: linear-gradient(to right, #000000 50%, #FFFFFF 50%); 
+    border-color: #FFFFFF; 
+}
+
+.global-nav a {
+    pointer-events: auto !important; 
+    display: flex !important; 
+    align-items: center !important; 
+    justify-content: center !important;
+    border-radius: 999px !important; 
+    text-decoration: none !important; 
+    font-family: 'PP Rader', sans-serif !important; 
+    border: 1px solid var(--text-color) !important; 
+    background-color: transparent !important; 
+    font-size: 18px !important; 
+    height: 34px !important; 
+    padding: 0 16px !important; 
+    padding-top: 2px !important;
+    color: var(--text-color) !important; 
+    transition: all 0.2s ease !important; 
     cursor: pointer;
-    font-weight: 500;
-    transition: all 0.3s ease;
-    color: #333;
+}
+.global-nav a:hover {
+    background-color: var(--text-color) !important; 
+    color: var(--panel-bg-color) !important;
+    transform: translateY(-1px);
+}
+.global-nav a[href="tool.html"].active { background-color: #4DDE39 !important; border-color: #4DDE39 !important; color: #000000 !important; box-shadow: 0 0 10px rgba(77, 222, 57, 0.4); }
+.global-nav a[href="index.html"].active { background-color: #FF00FF !important; border-color: #FF00FF !important; color: #FFFFFF !important; box-shadow: 0 0 10px rgba(255, 0, 255, 0.4); }
+
+/* ———— 布局结构 ———— */
+#container {
+    display: grid;
+    grid-template-rows: 1fr 320px; 
+    grid-template-columns: 100%;
+    height: 100vh; width: 100vw; position: relative; overflow: hidden;
+    background-color: var(--panel-bg-color);
+    transition: background-color 0.5s ease;
 }
 
-.preset-btn:hover {
-    background: #e0e0e0;
-    border-color: #555;
-    transform: translateY(-2px);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+#main {
+    grid-row: 1; grid-column: 1;
+    display: flex; align-items: center; justify-content: center;
+    height: 100%; width: 100%; overflow: hidden;
+    background-color: transparent; /* 改为透明，跟随 container */
+    border-bottom: none !important; 
 }
 
-.preset-btn.active {
-    background: #4CAF50;
-    color: white;
-    border-color: #2e7d32;
-    box-shadow: 0 2px 8px rgba(76, 175, 80, 0.4);
+aside {
+    grid-row: 2; grid-column: 1;
+    width: 100%; height: 100%;
+    display: flex; flex-direction: row; align-items: flex-start;
+    gap: 0; padding: 0; 
+    overflow-x: auto; overflow-y: hidden; 
+    background-color: var(--panel-bg-color);
+    
+    /* 保持原来的粗边框 */
+    border-top: 1.45px solid var(--border-color) !important; 
+    transition: background-color 0.5s ease, border-color 0.5s ease;
+}
+
+#controls {
+    display: flex; flex-direction: row; height: 100%;
+    flex: 1 1 0px; width: auto; min-width: min-content;
+}
+
+#preview, #typing {
+    display: flex; align-items: center; justify-content: center;
+    padding: 30px; width: 100%; height: 100%;
+}
+#typing { position: relative; cursor: text; }
+svg { overflow: visible; width: 100%; height: auto; }
+.grid line { stroke: none; }
+svg.showGrid .grid line { stroke: gray !important; }
+
+/* ===== 模块 3: 可折叠面板 ===== */
+
+details {
+    height: 100%;
+    flex: 1 1 0px; 
+    width: 0;
+    min-width: 200px; 
+    display: flex; flex-direction: column;
+    
+    border-right: 1.45px solid var(--border-color) !important;
+    
+    margin: 0 !important; background-color: transparent;
+    padding: 20px 20px;
+    overflow-y: auto;
+    transition: border-color 0.5s ease;
+}
+
+details.wide-panel { flex: 2.5 1 0px; min-width: 400px; }
+details:last-child { border-right: none; }
+details::-webkit-scrollbar { display: none; }
+details > summary {
+    list-style: none; cursor: default; padding: 0;
+    margin-bottom: 16px !important; background-color: transparent !important;
+    font-family: 'IBM Plex Mono', monospace !important; font-weight: 700 !important;
+    font-size: 14px !important; letter-spacing: 1px !important;
+    color: var(--text-color) !important; text-transform: uppercase;
+    border: none !important; width: 100%; text-align: left;
+    display: block; pointer-events: none;
+}
+details > summary::-webkit-details-marker { display: none; }
+details[open] > summary { background-color: transparent !important; color: var(--text-color) !important; border: none !important; }
+
+/* ===== 模块 4: 面板内容 ===== */
+.control-row { display: flex; flex-direction: row; align-items: center; gap: 4px; padding: 0; margin-bottom: 2px !important; }
+.control-label {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-weight: 500;
+    font-size: 11px; color: var(--text-color); white-space: nowrap; flex-shrink: 0; flex-basis: 90px;
+}
+.control-slider { flex: 1; min-width: 60px; background-color: transparent; padding: 0; }
+input[type="range"] { width: 100%; height: 12px; background: transparent; -webkit-appearance: none; appearance: none; cursor: pointer; }
+
+input[type="range"]::-webkit-slider-runnable-track { 
+    width: 100%; height: 1px !important; 
+    background: var(--border-color); 
+    border: none; 
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none; appearance: none; width: 8px; height: 8px; border-radius: 50%;
+    background: var(--text-color); margin-top: -4px; box-shadow: none;
+    transition: background 0.5s ease;
+}
+.control-value { font-size: 11px; text-align: right; min-width: 35px; }
+
+/* ===== 模块 5: 其他控件与统一圆角 ===== */
+
+/* XY Pad (Direction) */
+.xy-pad-wrapper { padding: 0 0 10px 0; margin-bottom: 8px; }
+.xy-pad-label { display: block; margin-bottom: 8px; }
+.xy-pad-container { 
+    width: 100%; height: 105px; background-color: transparent; 
+    border: 1.45px solid var(--border-color) !important; 
+    border-radius: 4px !important;
+    position: relative; cursor: crosshair; 
+    transition: border-color 0.5s ease;
+}
+.xy-pad-axis-h, .xy-pad-axis-v { background-color: var(--border-color) !important; }
+.xy-pad-handle { width: 8px; height: 8px; background-color: var(--text-color); box-shadow: none; }
+
+/* 按钮 */
+.capsule-btn {
+    font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--text-color);
+    background-color: transparent; 
+    border: 1px solid var(--border-color);
+    border-radius: 50px; padding: 4px 12px; cursor: pointer; transition: all 0.2s ease;
+}
+.capsule-btn:hover { background-color: var(--text-color); color: var(--panel-bg-color); }
+
+/* =========================================
+   左侧图标栏布局
+   ========================================= */
+#floating-icons-container {
+    position: relative !important; 
+    height: 100%;
+    width: 80px; 
+    flex: none; 
+    display: flex; 
+    flex-direction: column; 
+    justify-content: flex-start; 
+    align-items: center;
+    padding-top: 0 !important; 
+    margin: 0 !important; 
+    border-right: 1.45px solid var(--border-color) !important; 
+    z-index: 1;
+    transition: border-color 0.5s ease;
+}
+
+.icon-cell {
+    width: 100%;
+    aspect-ratio: 1 / 1; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1.45px solid var(--border-color);
+    box-sizing: border-box;
+    transition: border-color 0.5s ease;
+}
+
+.shape-morph-btn, .gradient-toggle-btn { 
+    margin-bottom: 0 !important; 
+    transform: scale(1); 
+}
+
+/* Grid Layout 内容 */
+.grid-control-content { display: flex; flex-direction: column; width: 100%; height: 100%; }
+.grid-control-content > div:nth-child(2) {
+    width: 100% !important; margin: 0 auto 10px auto !important;
+    border: 1.45px solid var(--border-color) !important; 
+    border-radius: 4px !important; box-sizing: border-box !important; 
+}
+
+.offset-play-btn {
+    width: 20px; height: 20px; border: 1px solid var(--text-color); background: transparent;
+    color: var(--text-color); font-size: 10px; display: flex; align-items: center; justify-content: center; cursor: pointer;
+}
+.offset-play-btn.playing { background: var(--text-color); color: var(--panel-bg-color); }
+
+.credit-text { font-family: 'IBM Plex Mono', monospace !important; font-size: 12px !important; color: var(--text-color) !important; margin-top: 16px !important; }
+.credit-link { color: var(--text-color); text-decoration: none; border-bottom: 1px solid rgba(125, 125, 125, 0.3); }
+.credit-link:hover { color: #FF00FF; border-bottom-color: #FF00FF; }
+
+/* 预设面板 */
+#preset-panel {
+    position: fixed; right: 24px; bottom: 340px !important;
+    background: var(--panel-bg-color); border: 1px solid var(--text-color);
+    border-radius: 8px; padding: 15px; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.18);
+    z-index: 200; min-width: 150px;
+    transition: background 0.5s ease, border-color 0.5s ease;
+}
+#preset-buttons { display: flex; flex-direction: column; gap: 10px; }
+.preset-btn {
+    font-family: 'IBM Plex Mono', monospace !important; font-size: 16px !important;
+    color: var(--summary-text-color) !important; border: 1px solid var(--summary-text-color);
+    border-radius: 999px; padding: 4px 12px; background: transparent; cursor: pointer; width: fit-content;
+}
+.preset-btn:hover, .preset-btn.active { 
+    background: var(--text-color); 
+    color: var(--panel-bg-color) !important; 
+    border-color: var(--text-color); 
+}
+
+/* 图标样式 */
+.gradient-toggle-btn {
+    width: 40px; height: 40px; border-radius: 4px;
+    border: 2px solid var(--summary-text-color); cursor: pointer;
+    background: linear-gradient(90deg, #FFFFFF 0%, #000000 70%);
+}
+.gradient-toggle-btn.is-radial { background: radial-gradient(circle, #FFFFFF 0%, #000000 70%); }
+.shape-morph-btn {
+    width: 40px; height: 40px; background: none; border: none; cursor: pointer;
+    color: var(--summary-text-color); display: flex; align-items: center; justify-content: center;
+}
+.morph-rotator { width: 100%; height: 100%; transform-origin: center; transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1); }
+.morph-icon { width: 100%; height: 100%; position: relative; }
+.morph-icon::before, .morph-icon::after {
+    content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    border: 2px solid currentColor; box-sizing: border-box; transform-origin: center; transition: all 0.6s ease;
+}
+.morph-icon::before { border-radius: 50%; transform: scale(1); opacity: 1; }
+.morph-icon::after { border-radius: 4px; transform: scale(0.5) rotate(-45deg); opacity: 0; }
+.shape-morph-btn.is-square .morph-rotator { transform: rotate(90deg); }
+.shape-morph-btn.is-square .morph-icon::before { opacity: 0; transform: scale(0.5) rotate(45deg); }
+.shape-morph-btn.is-square .morph-icon::after { opacity: 1; transform: scale(1) rotate(0deg); }
+
+/* ===== 模块 6: 颜色功能修复与美化 ===== */
+
+/* 1. 颜色输入容器 */
+.color-input-wrapper {
+    border: 1.45px solid var(--border-color) !important; 
+    border-radius: 4px !important;
+    box-sizing: border-box;
+    position: relative; 
+    overflow: visible !important; 
+    transition: border-color 0.5s ease;
+}
+
+/* 2. 背景颜色输入框 */
+#backgroundColor {
+    border: none !important;
+    border-radius: 4px !important;
+    box-sizing: border-box !important;
+    width: 100%; height: 30px; padding: 0; margin-left: auto;
+}
+
+/* 3. 透明棋盘格背景 */
+.transparency-bg {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    background-image: 
+        linear-gradient(45deg, #ccc 25%, transparent 25%), 
+        linear-gradient(-45deg, #ccc 25%, transparent 25%), 
+        linear-gradient(45deg, transparent 75%, #ccc 75%), 
+        linear-gradient(-45deg, transparent 75%, #ccc 75%);
+    background-size: 10px 10px;
+    background-position: 0 0, 0 5px, 5px -5px, -5px 0px;
+    background-color: #fff;
+    z-index: 0; pointer-events: none; 
+    border-radius: 3px !important;
+}
+
+/* 4. 颜色输入框本体 */
+.color-palette-input {
+    position: relative; z-index: 1;
+    width: 100% !important; height: 100% !important;
+    border: none !important; padding: 0;
+    border-radius: 3px !important;
+}
+
+/* 5. 清除/透明按钮 (小红叉) */
+.clear-color-btn {
+    position: absolute; top: -6px; right: -6px; width: 16px; height: 16px;
+    background-color: #fff; border: 1px solid #999; border-radius: 50%;
+    cursor: pointer; z-index: 10; box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    opacity: 0; transform: scale(0.8); transition: all 0.2s ease; pointer-events: none; 
+}
+.clear-color-btn::after {
+    content: ''; position: absolute; top: 50%; left: 50%; width: 10px; height: 2px;
+    background-color: #ff0000; transform: translate(-50%, -50%) rotate(45deg);
+}
+.color-input-wrapper:hover .clear-color-btn {
+    opacity: 1; transform: scale(1); pointer-events: auto; 
+}
+.clear-color-btn:hover { transform: scale(1.2) !important; border-color: #000; }
+
+input[type="color"]::-webkit-color-swatch-wrapper { padding: 0 !important; }
+input[type="color"]::-webkit-color-swatch { border: none !important; }
+
+/* =========================================
+   👇👇👇 光标闪烁动画 👇👇👇
+   ========================================= */
+
+.typing-cursor {
+    /* 定义闪烁动画：1秒一次，无限循环 */
+    animation: blink-animation 1s step-end infinite;
+    pointer-events: none; /* 防止光标挡住点击 */
+}
+
+/* 定义关键帧：0%和100%是显示，50%是隐藏 */
+@keyframes blink-animation {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
+
+/* 当 JS 添加 hidden 类时 (3秒不打字)，强制隐藏 */
+.typing-cursor.hidden {
+    opacity: 0 !important;
+    animation: none; /* 隐藏时停止动画，节省性能 */
 }

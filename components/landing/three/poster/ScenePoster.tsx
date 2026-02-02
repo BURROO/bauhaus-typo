@@ -22,25 +22,6 @@ export default function ScenePosterWrapper({
   onClick
 }: PosterProps){
 
-    // 
-  const orbitCam: CameraProps = {
-      // position: [0, 0.4, 0.6],
-    position: [0, 2, 6],
-    near: 0.1,
-    far: 10,
-  }
-  // 
-  const interactCam: CameraProps = {
-    // position: [0.02, 3, 0.6], 
-    position: [0, 2, 10],
-    // position: [0.002, 0.04, 0.06], 
-    fov: 45 
-  }
-  // // 
-  // const camSettings = type === 'orbit' 
-  //     ? orbitCam 
-  //     : interactCam
-
   const { setCursor } = useHover()
 
   if(!item) return null

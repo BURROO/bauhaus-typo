@@ -15,93 +15,117 @@
 
 	<body>
 		<div id="controls">
-			<button class="toggle">
-				<span class="shape"></span>
-			</button>
+			<div class="mode-switch">
+				<input type="radio" name="mode" id="shapeSquare" />
+				<label for="shapeSquare">▢</label>
+
+				<input type="radio" name="mode" id="shapeCircle" checked />
+				<label for="shapeCircle">◯</label>
+
+				<input type="radio" name="mode" id="noSelectionMode" />
+				<label for="noSelectionMode">►</label>
+			</div>
+
+			<div class="controls-label">controls</div>
 
 			<div class="controls-inner">
-				<button id="renderBtn">RT</button>
-				<button id="exportBtn">SVG</button>
-				<label for="SliderFontSize">Font Size</label>
-				<input type="range" min="10" max="200" value="30" id="SliderFontSize" />
-				<label for="SliderForceStrength">Force Strength</label>
-				<input
-					type="range"
-					min="0"
-					max="0.3"
-					value="0.025"
-					step="0.005"
-					id="SliderForceStrength"
-				/>
-
-				<label for="SliderRadius">Mouse Radius</label>
-				<input type="range" min="10" max="200" value="120" id="SliderRadius" />
-
-				<label for="SliderLineHeight">Line Height</label>
-				<input
-					type="range"
-					id="SliderLineHeight"
-					min="0.8"
-					max="2.0"
-					step="0.01"
-					value="1.25"
-				/>
-
-				<label for="SliderTracking">Tracking (em)</label>
-				<input
-					type="range"
-					id="SliderTracking"
-					min="-0.2"
-					max="1.0"
-					step="0.01"
-					value="0"
-				/>
-
-				<label>Shape</label>
-				<span>
+				<div class="sliders-section">
+					<label for="SliderFontSize">Font Size</label>
 					<input
-						type="radio"
-						id="shapeCircle"
-						name="shape"
-						value="circle"
-						checked
+						type="range"
+						min="10"
+						max="200"
+						value="15"
+						id="SliderFontSize"
 					/>
-					<label for="shapeCircle">Circle</label>
-				</span>
-				<span>
-					<input type="radio" id="shapeSquare" name="shape" value="square" />
-					<label for="shapeSquare">Square</label>
-				</span>
+					<label for="SliderForceStrength">Force Strength</label>
+					<input
+						type="range"
+						min="0"
+						max="0.3"
+						value="0.025"
+						step="0.005"
+						id="SliderForceStrength"
+					/>
+					<label for="SliderRadius">Mouse Radius</label>
+					<input
+						type="range"
+						min="10"
+						max="200"
+						value="120"
+						id="SliderRadius"
+					/>
+
+					<!-- <label for="SliderLineHeight">Line Height</label>
+					<input
+						type="range"
+						id="SliderLineHeight"
+						min="0.8"
+						max="2.0"
+						step="0.01"
+						value="1.25"
+					/>
+
+					<label for="SliderTracking">Tracking (em)</label>
+					<input
+						type="range"
+						id="SliderTracking"
+						min="-0.2"
+						max="1.0"
+						step="0.01"
+						value="0"
+					/> -->
+				</div>
 
 				<label>Force Type</label>
-				<span>
-					<input type="radio" id="push" name="force" value="push" checked />
-					<label for="push">PUSH</label>
-				</span>
-				<span>
-					<input type="radio" id="pull" name="force" value="pull" />
-					<label for="pull">PULL</label>
-				</span>
-				<span>
-					<input type="radio" id="spin" name="force" value="spin" />
-					<label for="spin">SPIN</label>
-				</span>
+				<div class="force-type-grid">
+					<span data-force-modes="circle square">
+						<input type="radio" id="push" name="force" value="push" checked />
+						<label for="push">PUSH</label>
+					</span>
+					<span data-force-modes="circle">
+						<input type="radio" id="pull" name="force" value="pull" />
+						<label for="pull">PULL</label>
+					</span>
+					<span data-force-modes="square">
+						<input type="radio" id="split" name="force" value="split" />
+						<label for="split">SPLIT</label>
+					</span>
+					<span data-force-modes="square">
+						<input type="radio" id="spiral" name="force" value="spiral" />
+						<label for="spiral">SPIRAL</label>
+					</span>
+					<span data-force-modes="square">
+						<input type="radio" id="jitter" name="force" value="jitter" />
+						<label for="jitter">JITTER</label>
+					</span>
+					<span data-force-modes="square">
+						<input type="radio" id="bell" name="force" value="bell" />
+						<label for="bell">BELL</label>
+					</span>
+				</div>
 
-				<div class="expandButton">
-					<button class="icon">F</button>
-					<input type="range" class="slider" />
+				<div class="bottom-Buttons">
+					<button id=" Btn">SVG</button>
+					<button id="fillTextBtn">Fill</button>
+					<button id="renderBtn" style="background: #e74c3c">Clear</button>
 				</div>
 			</div>
 		</div>
 
 		<textarea
 			id="overlayTextarea"
-			placeholder="Die Galaktische Republik wird von Unruhen erschüttert. Die Besteuerung der Handelsrouten zu weit entfernten Sternensystemen ist der Auslöser. In der Hoffnung, die Angelegenheit durch eine Blockade mit mächtigen Kampfschiffen zu beseitigen, hat die unersättliche Handelsföderation jeglichen Transport zu dem kleinen Planeten Naboo eingestellt. Während der Kongreß der Republik endlose Debatten über diese beunruhigende Kette von Ereignissen führt, entsandte der Oberste Kanzler insgeheim zwei Jedi-Ritter, Wächter des Friedens und der Gerechtigkeit, um den Konflikt beizulegen...."
+			placeholder="They say the British complain about the weather at least three times a day. Personally, I consider that an underestimation bordering on slander. I complain about the weather the way other people hydrate: constantly, instinctively, and with a faint sense of moral duty. It’s one of my most finely honed talents, practically a calling. Too hot. Too cold. Too windy. Not windy enough. The drizzle is rude. The cloud cover is smug. The frost feels judgmental. Some people complain recreationally. I complain as if the climate owes me money. Until last Tuesday, I assumed this was harmless. A personality quirk. A coping mechanism. A British pastime with strong instincts for survival and sarcasm. I only realised the weather had developed a personal vendetta against me the morning my umbrella tried to bite me. To be clear, it wasn’t a mouth or anything. My umbrella, a device whose sole purpose is loyalty in adversity, snapped shut on my fingers like it had been hired to assassinate me. I yelped and dropped it. A gust of wind immediately rolled it away down the pavement, with the vindictive enthusiasm of something that had finally handed in its notice. I glared upward. “Oh, so THAT’S your mood today,” I said. A sunbeam appeared briefly to spotlight the discarded umbrella like a fallen soldier in a crime drama. The sky, in my professional opinion, was smirking. They say the British complain about the weather at least three times a day. Personally, I consider that an underestimation bordering on slander. I complain about the weather the way other people hydrate: constantly, instinctively, and with a faint sense of moral duty. It’s one of my most finely honed talents, practically a calling. Too hot. Too cold. Too windy. Not windy enough. The drizzle is rude. The cloud cover is smug. The frost feels judgmental. Some people complain recreationally. I complain as if the climate owes me money. Until last Tuesday, I assumed this was harmless. A personality quirk. A coping mechanism. A British pastime with strong instincts for survival and sarcasm. I only realised the weather had developed a personal vendetta against me the morning my umbrella tried to bite me. To be clear, it wasn’t a mouth or anything. My umbrella, a device whose sole purpose is loyalty in adversity, snapped shut on my fingers like it had been hired to assassinate me. I yelped and dropped it. A gust of wind immediately rolled it away down the pavement, with the vindictive enthusiasm of something that had finally handed in its notice. I glared upward. “Oh, so THAT’S your mood today,” I said. A sunbeam appeared briefly to spotlight the discarded umbrella like a fallen soldier in a crime drama. The sky, in my professional opinion, was smirking."
 			spellcheck="false"
 		></textarea>
 
 		<canvas id="canvas" resize></canvas>
-		<!-- Reihenfolge is wichtig1 -->
+
+		<div id="hiddenGallery" aria-hidden="true">
+			<img id="hiddenGalleryImage" alt="Hidden gallery image" />
+		</div>
+
+		<script type="text/javascript" src="js/hiddenGallery.js"></script>
 		<script type="text/javascript" src="js/force.js"></script>
 		<script type="text/javascript" src="js/text.js"></script>
 		<script type="text/javascript" src="js/state.js"></script>

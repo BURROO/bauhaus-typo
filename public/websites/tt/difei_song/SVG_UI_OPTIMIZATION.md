@@ -86,8 +86,6 @@ this.shapeType = Math.floor(Math.random() * 9) + 1; // 1-9，对应 SVG Asset 1-
 }
 
 .shape-buttons button {
-    width: 50px;
-    height: 50px;
     display: flex;
     align-items: center;
     justify-content: center;

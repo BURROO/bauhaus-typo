@@ -1,0 +1,1428 @@
+body{
+margin: 4vw;
+cursor: url('img/cursorherz2.png'), 4 4, auto;
+height: 100vh;
+font-family: "Interlope";
+background-image: url(Img/lesbianll.jpg);
+background-size: cover;
+
+}
+@font-face {
+    font-family: "Interlope";
+    src: url(fonts/Interlope-Regular.ttf);
+}
+@font-face {
+    font-family: "Veryverypunk";
+    src: url(fonts/Veryverypunk\ font.otf);
+}
+
+@font-face {
+    font-family: "Hitmepunk";
+    src: url(fonts/Hitmepunk.ttf);
+}
+
+@font-face {
+    font-family: "bianzhidai-Messier";
+    src: url(fonts/bianzhidai-Messier.otf);
+}
+
+@font-face {
+    font-family: "bianzhidai-Ring";
+    src: url(fonts/bianzhidai-Ring.otf);
+}
+
+@font-face {
+    font-family: "bianzhidai-Stitches";
+    src: url(fonts/bianzhidai-Stitches.otf);
+}
+
+@font-face {
+    font-family: "poti";
+    src: url(fonts/poti.ttf);
+}
+
+@font-face {
+    font-family: "terminal-grotesque";
+    src: url(fonts/terminal-grotesque.ttf);
+}
+
+@font-face {
+    font-family: "Pencerino";
+    src: url(fonts/Pencerio-Hairline.ttf)
+}
+
+@font-face {
+    font-family: "Rascal";
+    src: url(fonts/RASCAL__.TTF);
+}
+
+
+.line {
+  display: none;
+  background: none;
+  border: none;
+  color: inherit;
+  font: inherit;
+    cursor: inherit;
+}
+
+
+
+.line.visible {
+  display: block;
+}
+.line.visible {
+  animation: fadeIn 0.6s ease forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(5px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+
+.imgLine {
+    height: 8vh;
+}
+
+.Back{
+    position:absolute;
+    left:93vw;
+    top:90vh;
+    width:5vw;
+}
+
+#BackHerz{
+    position:absolute;
+    width:100%;
+}
+
+#Sterne1{
+
+    position:absolute;
+    width:20vw;
+    left:15vw;
+    
+
+}
+
+#Sterne2{
+    position:absolute;
+    width: 40vw;
+    left:55vw;
+    top:20vh;
+    rotate:90deg;
+}
+
+.text{
+    color:palevioletred;
+    font-family: "interlope";
+}
+
+#Line1 {
+    position:absolute;
+    left:5vh;
+    
+    background:white;
+    border:none;
+    margin:0;
+    padding:0;
+    cursor: pointer;
+    font-family: "terminal-grotesque";
+    font-size: 1vw;
+    color: black;
+}
+
+#Line2 {
+    position:absolute;
+    left:12vh;
+    top:3vh;
+    background:none;
+    border:none;
+    margin:0;
+    padding:0;
+    cursor: pointer;
+    font-family: "interlope";
+    color:white;
+    font-size:1m;
+}
+
+#Line3{
+    position:absolute;
+    left:1vh;
+    top:6vh;
+    background:none;
+    background:beige;
+    border:none;
+    margin:0;
+    padding:0;
+    cursor: pointer;
+    font-family: "interlope";
+    rotate:5deg;
+
+}
+
+#Line4{
+    position:absolute;
+    left:5vh;
+    top:10vh;
+    width:25vw;
+    height:auto;
+    
+    border:none;
+    margin:0;
+    padding:0;
+    cursor: pointer;
+    font-family: "interlope";
+
+}
+
+#Line5{
+    position:absolute;
+    left:-5vh;
+    top:8vh;
+    width:25vw;
+    background: none;
+   
+    
+    border:none;
+    margin:0;
+    padding:0;
+    cursor: pointer;
+    font-family:"Hitmepunk"
+}
+
+#Line5a{
+    position:absolute;
+    left:1vh;
+    top:10vh;
+    width:25vw;
+    background: none;
+    rotate:-2deg;
+    font-size:1vw;
+   
+    
+    border:none;
+    margin:0;
+    padding:0;
+    cursor: pointer;
+    font-family:"terminal-grotesque" 
+
+}
+
+#Line5b{
+    position:absolute;
+    left:0vh;
+    top:22vh;
+    width:35vw;
+    background: none;
+    rotate:-1deg;
+    border:none;
+    margin:0;
+    padding:0;
+    cursor: pointer;
+    font-family:"bianzhidai-Ring";
+    color:white;
+    
+    
+
+}
+
+#Line6{
+    position:absolute;
+    left:1vh;
+    top:13vh;
+    width:25vw;
+    background:white;
+    border:none;
+    margin:0;
+    padding:0;
+    cursor: pointer;
+    font-family:"terminal-grotesque";
+    rotate: -5deg;
+}
+
+#Line7{
+    position:absolute;
+    left:7vh;
+    top:18vh;
+    width:25vw;
+    background:beige;
+    border:none;
+    margin:0;
+    padding:0;
+    cursor: pointer;
+    font-family:"terminal-grotesque";
+    rotate: 1deg;
+    font-size:1vw;
+
+}
+
+#Line8{
+    position:absolute;
+    left:7vh;
+    top:25vh;
+    width:20vw;
+    background:beige;
+    border:none;
+    margin:0;
+    padding:0;
+    cursor: pointer;
+    font-family:"Interlope";
+    rotate: 2deg;
+    font-size:1vw;
+
+}
+
+#Line9{
+    position:absolute;
+    left:1vh;
+    top:27vh;
+    width:15vw;
+    background:black;
+    border:none;
+    margin:0;
+    padding:0;
+    cursor: pointer;
+    font-family:"Interlope";
+    color:white;
+    rotate: 4deg;
+    font-size:0.8em;
+
+}
+
+#Line10{
+    position:absolute;
+    left:1vh;
+    top:30vh;
+    width:20vw;
+    background:black;
+    border:none;
+    margin:0;
+    padding:0;
+    cursor: pointer;
+    font-family:"Hitmepunk";
+    color:white;
+    rotate: 6deg;
+    font-size:1.2em;
+
+}
+
+#Line11{
+    position:absolute;
+    left:4vh;
+    top:33vh;
+    width:30vw;
+    background:none;
+    border:none;
+    margin:0;
+    padding:0;
+    cursor: pointer;
+    font-family:"poti";
+    color:white;
+    rotate: -1deg;
+    font-size:1.5em;
+
+}
+
+#Line12{
+    position:absolute;
+    left:2vh;
+    top:37vh;
+    width:7vw;
+    background:beige;
+    border:none;
+    margin:0;
+    padding:0;
+    cursor: pointer;
+    font-family:"Interlope";
+    color:black;
+    rotate: -1deg;
+    font-size:1.5em;
+
+}
+
+#Line13{
+    position:absolute;
+    left:2vh;
+    top:40vh;
+    width:15vw;
+    background:beige;
+    border:none;
+    margin:0;
+    padding:0;
+    cursor: pointer;
+    font-family:"poti";
+    color:black;
+    rotate: -1deg;
+    font-size:1.5em;
+
+}
+
+#Line14{
+    position:absolute;
+    left:1vh;
+    top:42vh;
+    width:40vw;
+    background:none;
+    border:none;
+    margin:0;
+    padding:0;
+    cursor: pointer;
+    font-family:"Bianzhidai-Stitches";
+    color:black;
+    rotate: -1deg;
+    font-size:1vw;
+
+}
+
+#Line15{
+    position:absolute;
+    left:2vh;
+    top:48vh;
+    width:20vw;
+    background:black;
+    border:none;
+    margin:0;
+    padding:0;
+    cursor: pointer;
+    font-family:"Interlope";
+    color:white;
+    rotate: 5deg;
+    font-size:1vw;
+
+}
+
+#Line16{
+    position:absolute;
+    left:2vh;
+    top:51vh;
+    width:30vw;
+    background:white;
+    border:none;
+    margin:0;
+    padding:0;
+    cursor: pointer;
+    font-family:"Pencerino";
+    color:black;
+    rotate: 3deg;
+    font-size:1.2em;
+
+}
+
+#Line17{
+    position:absolute;
+    left:2vh;
+    top:54vh;
+    width:30vw;
+    background:none;
+    border:none;
+    margin:0;
+    padding:0;
+    cursor: pointer;
+    font-family:"Rascal";
+    color:black;
+    rotate: 3deg;
+    font-size:1.2em;
+
+}
+
+#Line18{
+    position:absolute;
+    left:2vh;
+    top:57vh;
+    width:35vw;
+    background:none;
+    border:none;
+    margin:0;
+    padding:0;
+    cursor: pointer;
+    font-family:"Rascal";
+    color:white;
+    rotate: 3deg;
+    font-size:1.5em;
+
+}
+
+#Line19{
+    position:absolute;
+    left:-15vh;
+    top:60vh;
+    width:35vw;
+    background:none;
+    border:none;
+    margin:0;
+    padding:0;
+    cursor: pointer;
+    font-family:"Pencerino";
+    color:black;
+    rotate: -3deg;
+    font-size:1vw;
+
+}
+
+#Line20{
+    position:absolute;
+    left:2vh;
+    top:64vh;
+    width:27vw;
+    background:black;
+    border:none;
+    margin:0;
+    padding:0;
+    cursor: pointer;
+    font-family:"terminal grotesque";
+    color:white;
+    rotate: 3deg;
+    font-size:0.8em;
+
+}
+
+
+#Line21{
+    position:absolute;
+    left:0vh;
+    top:66vh;
+    width:20vw;
+    background:black;
+    border:none;
+    margin:0;
+    padding:0;
+    cursor: pointer;
+    font-family:"Interlope";
+    color:white;
+    rotate: 4deg;
+    font-size:0.8em;
+
+}
+
+
+#Line22{
+    position:absolute;
+    left:2vh;
+    top:70vh;
+    width:27vw;
+    background:none;
+    border:none;
+    margin:0;
+    padding:0;
+    cursor: pointer;
+    font-family:"bianzhidai-Stitches";
+    color:white;
+    rotate: 3deg;
+    font-size:0.9em;
+
+}
+
+#Line23{
+    position:absolute;
+    left:2vh;
+    top:75vh;
+    width:27vw;
+    background:none;
+    border:none;
+    margin:0;
+    padding:0;
+    cursor: pointer;
+    font-family:"terminal-grotesque";
+    color:black;
+    rotate: 3deg;
+    font-size:0.9em;
+
+}
+
+#Line24{
+    position:absolute;
+    left:0vh;
+    top:76vh;
+    width:15vw;
+    background:none;
+    border:none;
+    margin:0;
+    padding:0;
+    cursor: pointer;
+    font-family:"terminal-grotesque";
+    color:black;
+    rotate: -3deg;
+    font-size:1vw;
+
+}
+
+#Line25{
+    position:absolute;
+    left:0vh;
+    top:78vh;
+    width:30vw;
+    background:beige;
+    border:none;
+    margin:0;
+    padding:0;
+    cursor: pointer;
+    font-family:"helvetica";
+    color:black;
+    rotate: -4deg;
+    font-size:0.8em;
+
+}
+
+#Line26{
+    position:absolute;
+    left:2vh;
+    top:82vh;
+    width:10vw;
+    background:white;
+    border:none;
+    margin:0;
+    padding:0;
+    cursor: pointer;
+    font-family:"Pencerino";
+    color:black;
+    rotate: -6deg;
+    font-size:0.8em;
+
+}
+
+#Line27{
+    position:absolute;
+    left:2vh;
+    top:85vh;
+    width:25vw;
+    background:beige;
+    border:none;
+    margin:0;
+    padding:0;
+    cursor: pointer;
+    font-family:"Hitmepunk";
+    color:black;
+    rotate: -3deg;
+    font-size:1vw;
+
+}
+
+#Line28{
+    position:absolute;
+    left:2vh;
+    top:87vh;
+    width:25vw;
+    background:none;
+    border:none;
+    margin:0;
+    padding:0;
+    cursor: pointer;
+    font-family:"terminal-grotesque";
+    color:black;
+    rotate: -3deg;
+    font-size:1vw;
+
+}
+
+#Line29{
+    position:absolute;
+    left:2vh;
+    top:90vh;
+    width:30vw;
+    background:none;
+    border:none;
+    margin:0;
+    padding:0;
+    cursor: pointer;
+    font-family:"terminal-grotesque";
+    color:black;
+    rotate: -5deg;
+    font-size:1vw;
+
+}
+
+#Line30{
+    position:absolute;
+    left:2vh;
+    top:93vh;
+    width:30vw;
+    background:white;
+    border:none;
+    margin:0;
+    padding:0;
+    cursor: pointer;
+    font-family:"terminal-grotesque";
+    color:black;
+    rotate: -5deg;
+    font-size:0.8em;
+
+}
+
+#Line31{
+    position:absolute;
+    left:1vh;
+    top:97vh;
+    width:20vw;
+    background:white;
+    border:none;
+    margin:0;
+    padding:0;
+    cursor: pointer;
+    font-family:"terminal-grotesque";
+    color:black;
+    rotate: -2deg;
+    font-size:0.8em;
+
+}
+
+#Line32{
+    position:absolute;
+    left:40vh;
+    top:1vh;
+    width:30vw;
+    background:white;
+    border:none;
+    margin:0;
+    padding:0;
+    cursor: pointer;
+    font-family:"terminal-grotesque";
+    color:black;
+    rotate: -1deg;
+    font-size:0.8em;
+
+}
+
+#Line33{
+    position:absolute;
+    left:40vh;
+    top:3vh;
+    width:30vw;
+    background:black;
+    border:none;
+    margin:0;
+    padding:0;
+    cursor: pointer;
+    font-family:"Rascal";
+    color:white;
+    rotate: 2deg;
+    font-size:1vw;
+
+}
+
+#Line34{
+    position:absolute;
+    left:40vh;
+    top:6vh;
+    width:15vw;
+    background:black;
+    border:none;
+    margin:0;
+    padding:0;
+    cursor: pointer;
+    font-family:"Pencerino";
+    color:white;
+    rotate: 2deg;
+    font-size:1vw;
+
+}
+
+#Line35{
+    position:absolute;
+    left:40vh;
+    top:10vh;
+    width:30vw;
+    background:none;
+    border:none;
+    margin:0;
+    padding:0;
+    cursor: pointer;
+    font-family:"Rascal";
+    color:black;
+    rotate: 2deg;
+    font-size:1vw;
+
+}
+
+#Line36{
+    position:absolute;
+    left:40vh;
+    top:13vh;
+    width:30vw;
+    background:beige;
+    border:none;
+    margin:0;
+    padding:0;
+    cursor: pointer;
+    font-family:"Typewriter";
+    color:black;
+    rotate: -1deg;
+    font-size:1vw;
+
+}
+
+#Line37{
+    position:absolute;
+    left:40vh;
+    top:16vh;
+    width:30vw;
+    background:black;
+    border:none;
+    margin:0;
+    padding:0;
+    cursor: pointer;
+    font-family:"Rascal";
+    color:white;
+    rotate: 2deg;
+    font-size:1vw;
+
+}
+
+#Line38{
+    position:absolute;
+    left:60vh;
+    top:22vh;
+    width:20vw;
+    background:black;
+    border:none;
+    margin:0;
+    padding:0;
+    cursor: pointer;
+    font-family:"Interlope";
+    color:white;
+    rotate: 4deg;
+    font-size:0.8em;
+
+}
+
+#Line39{
+    position:absolute;
+    left:50vh;
+    top:25vh;
+    width:10vw;
+    background:white;
+    border:none;
+    margin:0;
+    padding:0;
+    cursor: pointer;
+    font-family:"terminal-grotesque";
+    color:black;
+    rotate: -1deg;
+    font-size:0.8em;
+
+}
+
+#Line40{
+    position:absolute;
+    left:50vh;
+    top:28vh;
+    width:25vw;
+    background:none;
+    border:none;
+    margin:0;
+    padding:0;
+    cursor: pointer;
+    font-family:"terminal-grotesque";
+    color:black;
+    rotate: -3deg;
+    font-size:1vw;
+
+}
+
+#Line41{
+    position:absolute;
+    left:55vh;
+    top:33vh;
+    width:20vw;
+    background:beige;
+    border:none;
+    margin:0;
+    padding:0;
+    cursor: pointer;
+    font-family:"helvetica";
+    color:black;
+    rotate: -4deg;
+    font-size:0.8em;
+
+}
+
+#Line42{
+    position:absolute;
+    left:40vh;
+    top:36vh;
+    width:25vw;
+    background:beige;
+    border:none;
+    margin:0;
+    padding:0;
+    cursor: pointer;
+    font-family:"Hitmepunk";
+    color:black;
+    rotate: -3deg;
+    font-size:1vw;
+
+}
+
+#Line43{
+    position:absolute;
+    left:55vh;
+    top:39vh;
+    width:30vw;
+    background:none;
+    border:none;
+    margin:0;
+    padding:0;
+    cursor: pointer;
+    font-family:"Rascal";
+    color:black;
+    rotate: 2deg;
+    font-size:1vw;
+
+}
+
+#Line44{
+    position:absolute;
+    left:55vh;
+    top:43vh;
+    width:30vw;
+    background:white;
+    border:none;
+    margin:0;
+    padding:0;
+    cursor: pointer;
+    font-family:"terminal-grotesque";
+    color:black;
+    rotate: -5deg;
+    font-size:0.8em;
+
+}
+
+#Line45{
+    position:absolute;
+    left:55vh;
+    top:47vh;
+    width:30vw;
+    background:white;
+    border:none;
+    margin:0;
+    padding:0;
+    cursor: pointer;
+    font-family:"terminal-grotesque";
+    color:black;
+    rotate: -2deg;
+    font-size:1.1vw;
+
+}
+
+#Line46{
+    position:absolute;
+    left:45vh;
+    top:51vh;
+    width:20vw;
+    background:black;
+    border:none;
+    margin:0;
+    padding:0;
+    cursor: pointer;
+    font-family:"Interlope";
+    color:white;
+    rotate: 4deg;
+    font-size:0.8em;
+
+}
+
+#Line47{
+    position:absolute;
+    left:55vh;
+    top:53vh;
+    width:35vw;
+    background:none;
+    border:none;
+    margin:0;
+    padding:0;
+    cursor: pointer;
+    font-family:"bianzhidai-Stitches";
+    color:white;
+    rotate: 3deg;
+    font-size:1vw;
+
+}
+
+#Line48{
+    position:absolute;
+    left:60vh;
+    top:56vh;
+    width:20vw;
+    background:black;
+    border:none;
+    margin:0;
+    padding:0;
+    cursor: pointer;
+    font-family:"Interlope";
+    color:white;
+    rotate: 4deg;
+    font-size:0.8em;
+
+}
+
+#Line49{
+    position:absolute;
+    left:50vh;
+    top:59vh;
+    width:35vw;
+    background:none;
+    border:none;
+    margin:0;
+    padding:0;
+    cursor: pointer;
+    font-family:"bianzhidai-Stitches";
+    color:white;
+    rotate: -3deg;
+    font-size:1vw;
+
+}
+
+#Line50{
+    position:absolute;
+    left:45vh;
+    top:63vh;
+    width:30vw;
+    background:beige;
+    border:none;
+    margin:0;
+    padding:0;
+    cursor: pointer;
+    font-family:"poti";
+    color:black;
+    rotate: -1deg;
+    font-size:1.5em;
+
+}
+
+#Line51{
+    position:absolute;
+    left:55vh;
+    top:67vh;
+    width:30vw;
+    background: none;
+    border:none;
+    margin:0;
+    padding:0;
+    cursor: pointer;
+    font-family:"Hitmepunk";
+    font-size:1vw;
+}
+
+#Line52{
+    position:absolute;
+    left:50vh;
+    top:71vh;
+    width:30vw;
+    background: none;
+    border:none;
+    margin:0;
+    padding:0;
+    cursor: pointer;
+    font-family:"Hitmepunk";
+    font-size:1.2em;
+    color:white;
+}
+
+#Line53{
+    position:absolute;
+    left:55vh;
+    top:74vh;
+    width:30vw;
+    background:none;
+    border:none;
+    margin:0;
+    padding:0;
+    cursor: pointer;
+    font-family:"Rascal";
+    color:black;
+    rotate: 2deg;
+    font-size:1vw;
+
+}
+
+#Line54{
+    position:absolute;
+    left:50vh;
+    top:77vh;
+    width:30vw;
+    background:none;
+    border:none;
+    margin:0;
+    padding:0;
+    cursor: pointer;
+    font-family:"terminal-grotesque";
+    color:black;
+    rotate: -3deg;
+    font-size:1vw;
+
+}
+
+#Line55{
+    position:absolute;
+    left:53vh;
+    top:79vh;
+    width:30vw;
+    background:none;
+    border:none;
+    margin:0;
+    padding:0;
+    cursor: pointer;
+    font-family:"terminal-grotesque";
+    color:white;
+    rotate: -1deg;
+    font-size:1vw;
+
+}
+
+#Line55{
+    position:absolute;
+    left:50vh;
+    top:80vh;
+    width:30vw;
+    background:none;
+    border:none;
+    margin:0;
+    padding:0;
+    cursor: pointer;
+    font-family:"Pencerino";
+    color:black;
+    rotate: 3deg;
+    font-size:1.2em;
+
+}
+
+#Line56{
+    position:absolute;
+    left:50vh;
+    top:83vh;
+    width:35vw;
+    background:none;
+    border:none;
+    margin:0;
+    padding:0;
+    cursor: pointer;
+    font-family:"Rascal";
+    color:white;
+    rotate: 3deg;
+    font-size:1.5em;
+
+}
+
+#Line57{
+    position:absolute;
+    left:55vh;
+    top:90vh;
+    width:20vw;
+    background:black;
+    border:none;
+    margin:0;
+    padding:0;
+    cursor: pointer;
+    font-family:"Interlope";
+    color:white;
+    rotate: 4deg;
+    font-size:0.8em;
+
+}
+
+#Line58{
+    position:absolute;
+    left:45vh;
+    top:93vh;
+    width:35vw;
+    background:beige;
+    border:none;
+    margin:0;
+    padding:0;
+    cursor: pointer;
+    font-family:"helvetica";
+    color:black;
+    rotate: -4deg;
+    font-size:0.8em;
+
+}
+
+#Line59{
+    position:absolute;
+    left:55vh;
+    top:95vh;
+    width:35vw;
+    background:none;
+    border:none;
+    margin:0;
+    padding:0;
+    cursor: pointer;
+    font-family:"Pencerino";
+    color:black;
+    rotate: -4deg;
+    font-size:1vw;
+
+}
+
+#Line60{
+    position:absolute;
+    left:95vh;
+    top:1vh;
+    width:30vw;
+    background:none;
+    border:none;
+    margin:0;
+    padding:0;
+    cursor: pointer;
+    font-family:"Rascal";
+    color:white;
+    rotate: 2deg;
+    font-size:1.2em;
+
+}
+
+#Line61{
+    position:absolute;
+    left:90vh;
+    top:4vh;
+    width:20vw;
+    background:black;
+    border:none;
+    margin:0;
+    padding:0;
+    cursor: pointer;
+    font-family:"Interlope";
+    color:white;
+    rotate: 4deg;
+    font-size:0.8em;
+
+}
+
+#Line62{
+    position:absolute;
+    left:97vh;
+    top:7vh;
+    width:30vw;
+    background:white;
+    border:none;
+    margin:0;
+    padding:0;
+    cursor: pointer;
+    font-family:"terminal-grotesque";
+    color:black;
+    rotate: -5deg;
+    font-size:1vw;
+
+}
+
+#Line63{
+    position:absolute;
+    left:92vh;
+    top:10vh;
+    width:35vw;
+    background:none;
+    border:none;
+    margin:0;
+    padding:0;
+    cursor: pointer;
+    font-family:"Hitmepunk";
+    color:black;
+    rotate: -4deg;
+    font-size:1.3em;
+
+}
+
+#Line64{
+    position:absolute;
+    left:90vh;
+    top:13vh;
+    width:35vw;
+    background:none;
+    border:none;
+    margin:0;
+    padding:0;
+    cursor: pointer;
+    font-family:"bianzhidai-Stitches";
+    color:white;
+    rotate: -3deg;
+    font-size:1vw;
+
+}
+
+#Line65{
+    position:absolute;
+    left:97vh;
+    top:16vh;
+    width:20vw;
+    background:beige;
+    border:none;
+    margin:0;
+    padding:0;
+    cursor: pointer;
+    font-family:"helvetica";
+    color:black;
+    rotate: -4deg;
+    font-size:0.8em;
+
+}
+
+#Line66{
+    position:absolute;
+    left:100vh;
+    top:19vh;
+    width:30vw;
+    background:none;
+    border:none;
+    margin:0;
+    padding:0;
+    cursor: pointer;
+    font-family:"terminal-grotesque";
+    color:black;
+    rotate: 1deg;
+    font-size:1.3em;
+
+}
+
+#Line67{
+    position:absolute;
+    left:96vh;
+    top:22vh;
+    width:25vw;
+    background:black;
+    border:none;
+    margin:0;
+    padding:0;
+    cursor: pointer;
+    font-family:"Rascal";
+    color:white;
+    rotate: 2deg;
+    font-size:1vw;
+
+}
+
+#Line68{
+    position:absolute;
+    left:96vh;
+    top:25vh;
+    width:35vw;
+    background:none;
+    border:none;
+    margin:0;
+    padding:0;
+    cursor: pointer;
+    font-family:"bianzhidai-Stitches";
+    color:white;
+    rotate: -3deg;
+    font-size:1vw;
+
+}
+
+#Line69{
+    position:absolute;
+    left:100vh;
+    top:28vh;
+    width:30vw;
+    background:beige;
+    border:none;
+    margin:0;
+    padding:0;
+    cursor: pointer;
+    font-family:"helvetica";
+    color:black;
+    rotate: -4deg;
+    font-size:0.8em;
+
+}
+
+#Line70{
+    position:absolute;
+    left:93vh;
+    top:31vh;
+    width:40vw;
+    background:beige;
+    border:none;
+    margin:0;
+    padding:0;
+    cursor: pointer;
+    font-family:"Rascal";
+    color:black;
+    rotate: -1deg;
+    font-size:1vw;
+
+}
+
+#Line71{
+    position:absolute;
+    left:96vh;
+    top:35vh;
+    width:10vw;
+    background:black;
+    border:none;
+    margin:0;
+    padding:0;
+    cursor: pointer;
+    font-family:"Interlope";
+    color:white;
+    rotate: 4deg;
+    font-size:0.8em;
+
+}
+
+#Line72{
+    position:absolute;
+    left:95vh;
+    top:38vh;
+    width:35vw;
+    background:none;
+    border:none;
+    margin:0;
+    padding:0;
+    cursor: pointer;
+    font-family:"Rascal";
+    color:black;
+    rotate: 2deg;
+    font-size:1.2em;
+
+}
+
+#Line73{
+    position:absolute;
+    left:150vh;
+    top:42vh;
+    width:5vw;
+    background:white;
+    border:none;
+    margin:0;
+    padding:0;
+    cursor: pointer;
+    font-family:"terminal-grotesque";
+    color:black;
+    rotate: -1deg;
+    font-size:0.8em;
+
+}
+
+#Line74{
+    position:absolute;
+    left:110vh;
+    top:42vh;
+    width:20vw;
+    background:black;
+    border:none;
+    margin:0;
+    padding:0;
+    cursor: pointer;
+    font-family:"Hitmepunk";
+    color:white;
+    rotate: 6deg;
+    font-size:1.2em;
+
+}
+
+#Line75{
+    position:absolute;
+    left:120vh;
+    top:47vh;
+    width:15vw;
+    background:black;
+    border:none;
+    margin:0;
+    padding:0;
+    cursor: pointer;
+    font-family:"Interlope";
+    color:white;
+    rotate: 4deg;
+    font-size:0.8em;
+
+}

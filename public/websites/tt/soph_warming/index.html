@@ -1,69 +1,32 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Things I Wish I Said — Distort Demo</title>
-
-  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Index</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="frame">
-    <div class="page">
+  <div class="index-page">
+    <div class="index-top-text">
+      things i wish i said <span class="emphasis">(but didn’t)</span> things i wish i said <span class="emphasis">(and will now)</span>
+    </div>
 
-      <header class="header">
-        <h1 class="title">things i wish i said</h1>
+    <div class="ready-button-wrapper">
+      <a class="ready-button" href="pageInput.html">
+        <span>ready?</span>
+      </a>
+    </div>
 
-        <div class="top-inputs">
-          <div class="top-input"><input id="top-left" type="text" placeholder="- first line -" /></div>
-          <div class="top-input"><input id="top-center" type="text" placeholder="- second line -" /></div>
-          <div class="top-input"><input id="top-right" type="text" placeholder="- third line -" /></div>
-        </div>
-      </header>
+    <div class="stars-container">
+      <img src="IMG/STARS.png" alt="shapes" />
+    </div>
 
-      <main class="content">
-        <div class="text-lines">
-          <div class="line-wrapper" data-line="0">
-            <canvas id="metaball-canvas"></canvas>
-          </div>
-        </div>
-      </main>
-
-      <footer class="footer">
-        <div class="slider-wrap">
-          <div class="slider-bar"></div>
-          <div class="slider-label">Distortion</div>
-          <div class="slider-sub">Change intensity</div>
-          <input id="slider-distortion" class="range" type="range" min="0" max="100" value="0" />
-        </div>
-
-        <div class="slider-wrap">
-          <div class="slider-bar"></div>
-          <div class="slider-label">Slider 2</div>
-          <div class="slider-sub">No functionality yet</div>
-          <input class="range" type="range" min="0" max="100" value="50" />
-        </div>
-
-        <div class="slider-wrap">
-          <div class="slider-bar"></div>
-          <div class="slider-label">Slider 3</div>
-          <div class="slider-sub">No functionality yet</div>
-          <input class="range" type="range" min="0" max="100" value="50" />
-        </div>
-
-        <div class="slider-wrap">
-          <div class="slider-bar"></div>
-          <div class="slider-label">Slider 4</div>
-          <div class="slider-sub">No functionality yet</div>
-          <input class="range" type="range" min="0" max="100" value="50" />
-        </div>
-      </footer>
-
+    <div class="index-instructions">
+      write down three sentences, three words, a poem with three lines, anything really.<br /><br>
+      write down the most random thing that you will never say out loud. don’t worry, your thoughts are safe here.<br /><br>
+      you won’t even recognize your own words once we’re done here.
     </div>
   </div>
-
-  <script src="scripts/metaballs.js"></script>
-  <script src="scripts/script.js"></script>
 </body>
 </html>

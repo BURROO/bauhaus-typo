@@ -1,0 +1,129 @@
+* { 
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    text-align: center;
+    font-size: 58px;
+    font-family: "Comfortaa", sans-serif;
+    padding: 0;
+    /* border: 2px solid green; */
+}
+
+p {
+ font-family: "Comfortaa", sans-serif;
+ max-width: 50vw;
+ margin-left: 2vw;
+}
+
+a {
+    font-family: "Comfortaa", sans-serif;
+    margin-left: 1vw;
+    margin-right: 1vw;
+}
+
+.rectangle {
+    position: -webkit-sticky;
+    position: sticky;
+    bottom: 0;
+    margin:0;
+  height: 6vw;
+  width: 100%;
+  background-color: #5189a3;
+  font-family: 'Courier New', Courier, monospace; color: aliceblue; 
+  font-size: 11pt;
+}
+
+#eject {
+    height: 1.6vw; 
+    margin-left: 17vw;
+    position: absolute; right: 5%; top: 40%;
+    border: 2px solid white;
+    padding: 0.4vw;
+    border-radius: 4px;
+}
+
+.comfortaa {
+  font-family: "Comfortaa", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 300;
+  font-style: normal;
+}
+
+body{
+    background-color: rgb(236, 216, 189);
+}
+
+h2{
+    margin-left: 5%;
+    margin-top: 40px; 
+}
+
+.mobler {
+    align-self: center;
+
+}
+
+#vas {
+    /* margin-left: 2%; */
+    max-height: 25vw;
+    height: 7.5vw;   
+}
+
+#dörr {
+    max-height: 30vw;
+}
+
+#lampa {
+    max-height: 8vw;
+    margin-left: 13%;
+}
+
+#soffa {
+    max-width: 25vw;
+    margin-left: 5%;
+}
+
+#stol {
+    max-width: 10vw;
+    margin-left: 24vw;
+}
+
+/* #vas {
+    height: 8.5vw;
+    position: sticky;
+    top: 0;
+    margin-left: 60vw;
+    padding-bottom: 2vw;
+}
+
+#soffa {
+    position: sticky;
+    top: 0;
+    margin-left: 25vw;
+    max-width: 25vw;   
+    padding-bottom: 2vw;
+}
+
+#dörr {
+    position: sticky;
+    top: 0;
+    max-height: 30vw;
+    margin-left: 2vwx;
+}
+
+#stol {
+    position: sticky;
+    top: 0;
+    margin-left: 78vw;
+    max-width: 20vw;
+}
+
+#lampa {
+    position: sticky;
+    top: 0;
+    height: 8vw;
+    margin-left: 15vw;
+} */
+

@@ -1,0 +1,26 @@
+Hello hello!
+sehr wichtig meine website funktioniert leider nur mit einem tweak 
+der über das terminal geschehen muss.
+
+ich hatte leider nicht die chance das auf dem bildschirm selber zu testen.
+aber laut diverser ki befragung muss vorher im terminal ein kleiner server aufgestezt werden
+damit das local storage system funktioniert. ansonsten funktionieren die schritte leider nicht
+und die website wäre damit quasi nicht bedienbar. hier die anleitung, ich schau dass ich das ganze 
+auch nochmal teste aber wenn du auch die chance hast wäre ich sehr dankbar!
+
+Wenn es auch ohne funktioniert umso besser!
+
+    Open a terminal/command prompt.
+    Go to the folder that contains your index.html (and style.css, IMG/, etc.):
+    Code
+
+    cd /path/to/your/project
+
+    Start the local server (works fully offline):
+    Code
+
+    python -m http.server 8000
+
+    In Chrome, open: http://localhost:8000/index.html
+
+ganz ganz liebe grüße! Soph

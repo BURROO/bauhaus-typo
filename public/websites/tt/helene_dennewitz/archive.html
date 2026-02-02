@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>POSTER ARCHIVE</title>
+  <style>
+
+    /* Fonts */
+  @font-face {
+  font-family: "Erika Mono";
+  src: url("G2ErikaMono-Bold.ttf") format("truetype");
+}
+*::-webkit-scrollbar{
+    display: none;
+}
+    :root { --gap: 18px; }
+    html,body { height:100%; margin:0; padding-bottom: 50px; background: black; color:#fff; font-family: "Erika Mono", monospace; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; }
+    .wrap { max-width:2000px; margin:40px auto; padding:20px; box-sizing:border-box; }
+    h1 { margin: -40px -5px 20px; font-size:30px; text-transform:uppercase; }
+    .grid { display:grid; grid-template-columns: repeat(8, 1fr); gap: var(--gap); }
+    .cell { background: black; border:1px solid rgba(0, 0, 0, 0); padding:50px; box-sizing:border-box; }
+    .thumb:hover { transform: translateY(-6px) scale(2); }
+    .thumb { position: relative; width: 100%; height: 0; padding-bottom: 140%; background: #222; border-radius: 2px; overflow: hidden; transition: transform 360ms cubic-bezier(0.4, 0, 0.2, 1);}
+    .thumb img { position: absolute; inset: 0; margin: 0; width: 100%; height: 100%; object-fit: cover; display: block; background: transparent; transition: transform 360ms cubic-bezier(0.4, 0, 0.2, 1);}
+    .ts { margin-top:8px; font-size:12px; color:#ddd; text-align:center; }
+    .empty { color:#ffffff; padding:40px; text-align:center; grid-column:1/-1; }
+    @media (max-width:1100px) { .grid { grid-template-columns: repeat(4, 1fr); } }
+    @media (max-width:860px)  { .grid { grid-template-columns: repeat(3, 1fr); } }
+    @media (max-width:620px)  { .grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width:420px)  { .grid { grid-template-columns: repeat(1, 1fr); } }
+#btn-back {
+  font-family: 'Erika Mono', monospace;
+  position: fixed;
+  bottom: 10px;
+  left: 20px;
+  color: #fff;
+  background: none;
+  border: none;
+  text-decoration: underline;
+  cursor: pointer;
+  font-size: 14px;
+  z-index: 1001;
+}
+
+#btn-back:hover {
+  transform: rotate(360deg);
+  transition: transform 500ms ease;
+}
+/* footer fixed to viewport bottom and body reserves space for it */
+#footer {
+    position: fixed; 
+    width: 100%; 
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    color: #fff;
+    box-sizing: border-box;
+    padding-bottom: -20px;;
+    font-size: 9px;
+    text-align: center;
+    background-color: transparent;
+    z-index: 1000;
+    }
+    
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>poster archive</h1>
+    <div id="archiveGrid" class="grid" aria-live="polite"></div>
+    <button id="btn-back" type="button">go to generator</button>
+  </div>
+
+  <script>
+    (function() {
+      function loadPinned() {
+        try {
+          const raw = localStorage.getItem('pinnedPreviews');
+          return raw ? JSON.parse(raw) : [];
+        } catch (e) { return []; }
+      }
+      function formatTs(ts) {
+        try { return new Date(ts).toLocaleString(); } catch (e) { return String(ts); }
+      }
+
+      const grid = document.getElementById('archiveGrid');
+      const items = loadPinned();
+      if (!items.length) {
+        const empty = document.createElement('div');
+        empty.className = 'empty';
+        empty.innerText = 'no poster layouts yet.';
+        grid.appendChild(empty);
+      } else {
+        items.forEach(item => {
+          const cell = document.createElement('div');
+          cell.className = 'cell';
+          const thumb = document.createElement('div');
+          thumb.className = 'thumb';
+          const img = document.createElement('img');
+          img.src = item.img || '';
+          img.alt = 'pinned preview';
+          thumb.appendChild(img);
+          const tsEl = document.createElement('div');
+          tsEl.className = 'ts';
+          tsEl.innerText = formatTs(item.ts);
+          cell.appendChild(thumb);
+          cell.appendChild(tsEl);
+          grid.appendChild(cell);
+        });
+      }
+
+      // back button uses history back in same tab
+      document.getElementById('btn-back').addEventListener('click', function() {
+        history.back();
+      });
+    })();
+  </script>
+  <footer id="footer"> 
+    <p>concept & design by helene dennewitz | for transcoding typography | typography & type design | bauhaus-university weimar | winter semester 25:26 | typefaces in use: g2 erika mono & helvetica <a href="#"></a></p>
+  </footer>
+</body>
+</html>

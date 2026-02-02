@@ -1,20 +1,135 @@
+// Constants / DOM refs
 const preview = document.getElementById('preview');
 const btnGenerate = document.getElementById('btn-generate');
+const textFieldsContainer = document.getElementById('text-fields') || (function createContainer() {
+  const c = document.createElement('div');
+  c.id = 'text-fields';
+  const aside = document.getElementById('aside');
+  if (aside) aside.insertBefore(c, aside.querySelector('#date') || null);
+  return c;
+})();
 
-/* -------------------------
-   Grid selection (random)
-   - currentGrid holds the chosen grid object { cols, rows } (single-layer)
-   ------------------------- */
-let currentGridIndex = 2;
-let currentGrid = Array.isArray(window.grids) && window.grids[currentGridIndex]
-  ? window.grids[currentGridIndex]
-  : { cols: 4, rows: 6 };
+const btnAdd = document.getElementById('btn-add');
+const btnDelete = document.getElementById('btn-delete');
 
-function pickRandomGrid() {
-  if (!Array.isArray(window.grids) || window.grids.length === 0) return;
-  currentGridIndex = Math.floor(Math.random() * window.grids.length);
-  currentGrid = window.grids[currentGridIndex];
-  preview.dataset.gridIndex = currentGridIndex;
+function getTextAreas() {
+  return Array.from(textFieldsContainer.querySelectorAll('textarea'));
+}
+
+function selectTextarea(ta) {
+  getTextAreas().forEach(t => t.classList.remove('selected'));
+  if (ta) {
+    ta.classList.add('selected');
+    ta.focus();
+  }
+  updateDeleteButtonState();
+}
+
+// Ensure at least one textarea remains; disable delete when only one left
+function updateDeleteButtonState() {
+  if (!btnDelete) return;
+  const count = getTextAreas().length;
+  btnDelete.disabled = count <= 1;
+}
+
+// Add new textarea and auto-select it
+if (btnAdd) {
+  btnAdd.addEventListener('click', () => {
+    const ta = document.createElement('textarea');
+    ta.placeholder = 'heres a new text block...';
+    ta.rows = 3;
+    ta.style.boxSizing = 'border-box';
+    textFieldsContainer.appendChild(ta);
+    selectTextarea(ta);
+  });
+}
+
+// Click to select a textarea (delegation)
+textFieldsContainer.addEventListener('click', (e) => {
+  const ta = e.target.closest && e.target.closest('textarea');
+  if (!ta) return;
+  selectTextarea(ta);
+});
+
+// Delete selected textarea (or last if none selected), but never remove the last remaining textarea
+if (btnDelete) {
+  btnDelete.addEventListener('click', () => {
+    const areas = getTextAreas();
+    if (areas.length <= 1) return; // keep at least one
+    const selected = textFieldsContainer.querySelector('textarea.selected');
+    let idx;
+    if (selected) {
+      idx = areas.indexOf(selected);
+    } else {
+      idx = areas.length - 1;
+    }
+    // remove the target
+    areas[idx].remove();
+    // choose new selection: prefer previous sibling, else first remaining
+    const remaining = getTextAreas();
+    const newIndex = Math.max(0, Math.min(remaining.length - 1, idx - 1));
+    if (remaining.length) selectTextarea(remaining[newIndex]);
+    updateDeleteButtonState();
+  });
+}
+
+// initial state: ensure at least one textarea and select first
+(function ensureInitialTextareas(){
+  const areas = getTextAreas();
+  if (areas.length === 0) {
+    const ta = document.createElement('textarea');
+    ta.placeholder = 'start typing...';
+    ta.rows = 3;
+    ta.style.boxSizing = 'border-box';
+    textFieldsContainer.appendChild(ta);
+    selectTextarea(ta);
+  } else {
+    selectTextarea(areas[0]);
+  }
+})();
+updateDeleteButtonState();
+
+/* small custom alert dialog to replace native alert() so styling matches UI */
+function showCustomAlert(message, title = 'Notice') {
+  let overlay = document.getElementById('custom-alert-overlay');
+  if (!overlay) {
+    overlay = document.createElement('div');
+    overlay.id = 'custom-alert-overlay';
+    overlay.innerHTML = `
+      <div id="custom-alert" role="alertdialog" aria-modal="true" aria-labelledby="custom-alert-title">
+        <div class="alert-title" id="custom-alert-title"></div>
+        <div class="alert-body" id="custom-alert-body"></div>
+        <div class="alert-actions">
+          <button class="alert-btn primary ok">OK</button>
+        </div>
+      </div>`;
+    document.body.appendChild(overlay);
+
+    // close handlers
+    overlay.querySelector('.ok').addEventListener('click', () => hideCustomAlert());
+    overlay.addEventListener('click', (e) => {
+      if (e.target === overlay) hideCustomAlert();
+    });
+
+    // keyboard: Esc closes
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && overlay.classList.contains('show')) hideCustomAlert();
+    });
+  }
+
+  overlay.querySelector('#custom-alert-title').textContent = title;
+  overlay.querySelector('#custom-alert-body').textContent = message;
+
+  overlay.classList.add('show');
+  // focus management
+  const ok = overlay.querySelector('.ok');
+  if (ok) ok.focus();
+}
+
+function hideCustomAlert() {
+  const overlay = document.getElementById('custom-alert-overlay');
+  if (!overlay) return;
+  overlay.classList.remove('show');
 }
 
 /* -------------------------
@@ -23,54 +138,85 @@ function pickRandomGrid() {
 function randInt(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
 function choice(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
 
-/* -------------------------
-   Read input modules
-   ------------------------- */
-function getTextModules() {
-  const modules = [];
-  const headline = document.getElementById('headline').value.trim();
-  if (headline) modules.push({ key: 'headline', value: headline, weight: 900 });
-  const sub = document.getElementById('sub').value.trim();
-  if (sub) modules.push({ key: 'sub', value: sub, weight: 500 });
-  const info = document.getElementById('info').value.trim();
-  if (info) modules.push({ key: 'info', value: info, weight: 300 });
-  const date = document.getElementById('date').value.trim();
-  if (date) modules.push({ key: 'date', value: date, weight: 200 });
-  return modules;
+/* palette for layer visuals */
+const LAYER_COLORS = [
+  'rgba(44, 41, 41, 0.08)',
+  'rgba(44, 41, 41, 0.08)',
+  'rgba(44, 41, 41, 0.08)',
+  'rgba(44, 41, 41, 0.08)'
+];
+
+// ...existing code...
+function applyRandomTypography(root = preview, cfg = {}) {
+  if (!root) return;
+
+  const weights = Array.isArray(cfg.weights) ? cfg.weights : [90, 100, 200, 300, 400, 500, 600, 700, 800, 900];
+  const [minTracking, maxTracking] = Array.isArray(cfg.trackingRange) ? cfg.trackingRange : [-0.3, 0.9];
+  const [minScaleX, maxScaleX] = Array.isArray(cfg.scaleXRange) ? cfg.scaleXRange : [0.01, 3.05];
+  const [minScaleY, maxScaleY] = Array.isArray(cfg.scaleYRange) ? cfg.scaleYRange : [0.01, 3.10]; // vertical stretch range
+  const [minSlant, maxSlant] = Array.isArray(cfg.slantRange) ? cfg.slantRange : [-20, 20]; // deg skewX
+  const [minLH, maxLH] = Array.isArray(cfg.lineHeightRange) ? cfg.lineHeightRange : [0.01, 2.25];
+
+  const selector = '.text-block:not([data-typography-applied]), .repeat-text:not([data-typography-applied])';
+  const nodes = Array.from(root.querySelectorAll(selector));
+  nodes.forEach(el => {
+    const w = choice(weights);
+    const tracking = (Math.random() * (maxTracking - minTracking)) + minTracking;
+    const scaleX = (Math.random() * (maxScaleX - minScaleX)) + minScaleX;
+    const scaleY = (Math.random() * (maxScaleY - minScaleY)) + minScaleY;
+    const slant = (Math.random() * (maxSlant - minSlant)) + minSlant;
+    const lineH = (Math.random() * (maxLH - minLH)) + minLH;
+
+    el.style.fontWeight = String(w);
+    el.style.letterSpacing = tracking.toFixed(3) + 'em';
+    el.style.lineHeight = lineH.toFixed(3); // unitless string
+
+    // preserve original transform once
+    if (!el.dataset.origTransform) {
+      el.dataset.origTransform = el.style.transform || '';
+      el.style.transformOrigin = el.style.transformOrigin || '50% 50%';
+    }
+
+    const base = (el.dataset.origTransform || '').trim();
+    const stretchTransform = `scale(${scaleX.toFixed(3)},${scaleY.toFixed(3)}) skewX(${slant.toFixed(2)}deg)`;
+    el.style.transform = (base ? (base + ' ') : '') + stretchTransform;
+
+    el.dataset.typographyApplied = '1';
+  });
 }
 
 /* -------------------------
-   Grid drawing + fitting
+   Grid selection (random)
+   ------------------------- */
+let currentGridIndex = 0;
+let currentGrid = Array.isArray(window.grids) && window.grids.length
+  ? window.grids[0]
+  : { cols: 4, rows: 6 };
+
+function pickRandomGrid() {
+  if (!Array.isArray(window.grids) || window.grids.length === 0) return;
+  currentGridIndex = Math.floor(Math.random() * window.grids.length);
+  currentGrid = window.grids[currentGridIndex];
+  if (typeof preview !== 'undefined' && preview) {
+    preview.dataset.gridIndex = currentGridIndex;
+  }
+}
+
+/* -------------------------
+   Single-layer draw + fit (fallback)
    ------------------------- */
 function drawGrid() {
   preview.querySelectorAll('.grid-line').forEach(el => el.remove());
 
-  const cols = currentGrid.cols;
+  const { cols, rows } = currentGrid;
+  const color = LAYER_COLORS[0];
+
   for (let i = 1; i < cols; i++) {
-    const col = document.createElement('div');
-    col.className = 'grid-line grid-col';
-    col.style.width = '1px';
-    col.style.height = preview.clientHeight + 'px';
-    col.style.background = 'rgba(0,0,255,0.12)';
-    col.style.position = 'absolute';
-    col.style.left = (i * preview.clientWidth / cols) + 'px';
-    col.style.top = '0';
-    col.style.pointerEvents = 'none';
-    preview.appendChild(col);
+    preview.appendChild(makeVLine(i / cols, color));
   }
 
-  const rows = currentGrid.rows;
   for (let r = 1; r < rows; r++) {
-    const row = document.createElement('div');
-    row.className = 'grid-line grid-row';
-    row.style.height = '1px';
-    row.style.width = preview.clientWidth + 'px';
-    row.style.background = 'rgba(0,0,255,0.12)';
-    row.style.position = 'absolute';
-    row.style.top = (r * preview.clientHeight / rows) + 'px';
-    row.style.left = '0';
-    row.style.pointerEvents = 'none';
-    preview.appendChild(row);
+    preview.appendChild(makeHLine(r / rows, color));
   }
 }
 
@@ -81,15 +227,233 @@ function fitAllModules() {
     }
   });
 }
+/* -------------------------
+   Generate (multi-layer)
+   ------------------------- */
+btnGenerate.addEventListener('click', () => {
+// ensure preview uses its current computed size for layout (no scaling)
+  const rect = preview.getBoundingClientRect();
+  const logicalW = Math.round(rect.width);
+  const logicalH = Math.round(rect.height);
+  preview.style.width = logicalW + 'px';
+  preview.style.height = logicalH + 'px';
+  // keep CSS-based centering transform untouched (do not clear inline transform here)
+
+  preview.querySelectorAll('.layer-container, .text-block, .grid-line, .repeat-text').forEach(el => el.remove());
+  const modules = getTextModules();
+  if (modules.length === 0) { showCustomAlert('please fill in at least one text field!', 'missing content'); return; }
+  const layerCount = Math.max(1, Math.min(4, Math.round(Math.random() * 3) + 1));
+  const gridsForLayers = pickRandomLayerGrids(layerCount);
+  const layerEls = createLayerContainers(gridsForLayers);
+  layerEls.forEach((le, i) => drawGridOnLayer(le, gridsForLayers[i]));
+  placeModulesAcrossLayers(modules, layerEls, gridsForLayers);
+  fitAllModulesLayers(layerEls, gridsForLayers);
+  repositionRepeatsLayers(layerEls, gridsForLayers);
+
+  applyRandomTypography(preview); 
+  updateGridVisibility(); 
+
+  // ensure handle is correctly placed
+});
 
 /* -------------------------
-   Decorative repeating text (stores placement data)
+   Multi-layer helpers
+   ------------------------- */
+function pickRandomLayerGrids(n = 1) {
+  const pool = Array.isArray(window.grids) && window.grids.length ? [...window.grids] : [{ cols: 4, rows: 6 }];
+  n = Math.max(1, Math.min(4, n));
+  const picked = [];
+  while (picked.length < n && pool.length) {
+    picked.push(pool.splice(Math.floor(Math.random() * pool.length), 1)[0]);
+  }
+  picked.sort((a, b) => (b.cols * b.rows) - (a.cols * a.rows)); // finest first
+  return picked;
+}
+
+function createLayerContainers(grids) {
+  preview.querySelectorAll('.layer-container').forEach(el => el.remove());
+  const layers = [];
+  grids.forEach((g, i) => {
+    const layer = document.createElement('div');
+    layer.className = 'layer-container';
+    layer.style.position = 'absolute';
+    layer.style.left = '0';
+    layer.style.top = '0';
+    layer.style.width = '100%';
+    layer.style.height = '100%';
+    layer.style.pointerEvents = 'none'; // let clicks pass to preview; text-blocks remain interactive
+    layer.style.zIndex = String(10 + i);
+    layer.dataset.cols = g.cols;
+    layer.dataset.rows = g.rows;
+    layer.dataset.gridColor = LAYER_COLORS[i % LAYER_COLORS.length] || 'rgba(0,0,0,0.06)';
+    preview.appendChild(layer);
+    layers.push(layer);
+  });
+  return layers;
+}
+
+function drawGridOnLayer(layerEl, grid) {
+  layerEl.querySelectorAll('.grid-line, svg.grid-overlay').forEach(n => n.remove());
+  const cols = grid.cols || 4;
+  const rows = grid.rows || 6;
+  const color = layerEl.dataset.gridColor || LAYER_COLORS[0];
+  for (let i = 1; i < cols; i++) {
+    const col = document.createElement('div');
+    col.className = 'grid-line grid-col';
+    col.style.position = 'absolute';
+    col.style.width = '1px';
+    col.style.top = '0';
+    col.style.bottom = '0';
+    col.style.left = (i * layerEl.clientWidth / cols) + 'px';
+    col.style.background = color;
+    col.style.pointerEvents = 'none';
+    layerEl.appendChild(col);
+  }
+  for (let r = 1; r < rows; r++) {
+    const row = document.createElement('div');
+    row.className = 'grid-line grid-row';
+    row.style.position = 'absolute';
+    row.style.height = '1px';
+    row.style.left = '0';
+    row.style.right = '0';
+    row.style.top = (r * layerEl.clientHeight / rows) + 'px';
+    row.style.background = color;
+    row.style.pointerEvents = 'none';
+    layerEl.appendChild(row);
+  }
+}
+
+function placeModulesAcrossLayers(modules, layerEls, gridsForLayers) {
+  if (!modules || modules.length === 0) return;
+  const sorted = modules.slice().sort((a, b) => (b.weight || 0) - (a.weight || 0));
+  const layerCount = layerEls.length;
+  const chunk = Math.ceil(sorted.length / Math.max(1, layerCount));
+  sorted.forEach((mod, idx) => {
+    const group = Math.min(Math.floor(idx / chunk), layerCount - 1);
+    const layerIndex = Math.max(0, layerCount - 1 - group);
+    const targetLayer = layerEls[layerIndex];
+    const grid = gridsForLayers[layerIndex];
+    placeModuleOnGrid(mod, targetLayer, grid.cols, grid.rows);
+  });
+  const bgCount = Math.max(1, Math.min(layerCount - 1, 2));
+  for (let i = 0; i < bgCount; i++) {
+    const bgLayer = layerEls[i];
+    const grid = gridsForLayers[i];
+    if (typeof createRepeatingText === 'function') {
+      createRepeatingText(modules, bgLayer, grid);
+    }
+    bgLayer.querySelectorAll('.repeat-text').forEach(r => r.style.pointerEvents = 'none');
+  }
+
+  // apply random typography to any newly created text-blocks
+  applyRandomTypography(preview);
+}
+
+function fitAllModulesLayers(layerEls, gridsForLayers) {
+  layerEls.forEach((le, idx) => {
+    const cols = gridsForLayers[idx].cols;
+    const rows = gridsForLayers[idx].rows;
+    le.querySelectorAll('.text-block').forEach(tb => {
+      if (typeof fitModuleToGrid === 'function') fitModuleToGrid(tb, le, cols, rows);
+    });
+  });
+}
+
+function repositionRepeatsLayers(layerEls, gridsForLayers) {
+  layerEls.forEach((le, idx) => {
+    const grid = gridsForLayers[idx];
+    if (!grid) return;
+    le.querySelectorAll('.repeat-text').forEach(el => {
+      const col = parseInt(el.dataset.col, 10) || 0;
+      const row = parseInt(el.dataset.row, 10) || 0;
+      const jitterX = parseFloat(el.dataset.jitterX) || 0;
+      const jitterY = parseFloat(el.dataset.jitterY) || 0;
+      const rot = el.dataset.rot === '90' ? 90 : 0;
+      const cellW = le.clientWidth / Math.max(1, grid.cols);
+      const cellH = le.clientHeight / Math.max(1, grid.rows);
+      const left = Math.round(col * cellW + cellW / 2 + jitterX);
+      const top = Math.round(row * cellH + cellH / 2 + jitterY);
+      el.style.left = left + 'px';
+      el.style.top = top + 'px';
+      el.style.transform = `translate(-50%,-50%) rotate(${rot}deg)`;
+      el.style.zIndex = '0';
+    });
+  });
+}
+
+function redrawAllLayers() {
+  const layerEls = Array.from(preview.querySelectorAll('.layer-container'));
+  if (!layerEls.length) {
+    drawGrid();
+    fitAllModules();
+    repositionRepeats();
+    return;
+  }
+  const gridsForLayers = layerEls.map(l => ({ cols: parseInt(l.dataset.cols, 10) || 4, rows: parseInt(l.dataset.rows, 10) || 6 }));
+  layerEls.forEach((le, i) => {
+    le.querySelectorAll('.grid-line, svg.grid-overlay').forEach(n => n.remove());
+    drawGridOnLayer(le, gridsForLayers[i]);
+  });
+  fitAllModulesLayers(layerEls, gridsForLayers);
+  repositionRepeatsLayers(layerEls, gridsForLayers);
+}
+
+/* GET text modules from inputs */
+
+function getTextModules() {
+  const modules = [];
+
+  // date first (low weight)
+  const dateEl = document.getElementById('date');
+  if (dateEl && dateEl.value && dateEl.value.trim()) {
+    modules.push({ key: 'date', value: dateEl.value.trim(), weight: random });
+  }
+
+  // explicit single-line inputs (preferred)
+  const explicitEls = [
+    { id: 'headline', key: 'headline', weight: 900 },
+    { id: 'sub', key: 'sub', weight: 500 },
+    { id: 'info', key: 'info', weight: 300 }
+  ].map(def => ({ el: document.getElementById(def.id), key: def.key, weight: def.weight }))
+   .filter(x => x.el);
+
+  if (explicitEls.length) {
+    explicitEls.forEach(item => {
+      const v = (item.el.value || '').trim();
+      if (v) modules.push({ key: item.key, value: v, weight: item.weight });
+    });
+  } else {
+    // fallback: use all textareas inside #aside
+    document.querySelectorAll('#aside textarea').forEach((ta, idx) => {
+      const v = (ta.value || '').trim();
+      if (v) modules.push({ key: `textarea_${idx}`, value: v, weight: 400 });
+    });
+  }
+
+  return modules;
+}
+
+/* init flatpickr (if available) */
+(function initDatePicker(){
+  const dateInput = document.getElementById('date');
+  if (!dateInput || typeof flatpickr !== 'function') return;
+  flatpickr(dateInput, {
+    mode: 'range',
+    allowInput: true,
+    dateFormat: 'd.m.Y',
+    locale: 'en',
+    clickOpens: true
+  });
+})();
+
+/* -------------------------
+   Repeating decorative text
    ------------------------- */
 function createRepeatingText(modules, previewEl, grid) {
   const cols = grid.cols;
   const rows = grid.rows;
-  const cellW = previewEl.clientWidth / cols;
-  const cellH = previewEl.clientHeight / rows;
+  const cellW = previewEl.clientWidth / Math.max(1, cols);
+  const cellH = previewEl.clientHeight / Math.max(1, rows);
 
   const source = modules.length ? modules.map(m => m.value) : ['repeat'];
   const count = randInt(4, 12);
@@ -99,41 +463,38 @@ function createRepeatingText(modules, previewEl, grid) {
     const el = document.createElement('div');
     el.className = 'repeat-text';
     el.innerText = txt;
-
     const fs = randInt(8, 18);
     el.style.position = 'absolute';
     el.style.fontSize = fs + 'px';
-    // el.style.opacity = (Math.random() * 0.45 + 0.12).toFixed(2);
     el.style.pointerEvents = 'none';
-    el.style.color = '#000'; 
-    el.style.fontFamily = 'Arial Black, sans-serif';
+    el.style.color = '#000';
+    el.style.fontFamily = '"Helvetica", sans-serif';
     el.style.whiteSpace = 'nowrap';
     el.style.transform = `translate(-50%,-50%) rotate(${Math.random() < 0.2 ? 90 : 0}deg)`;
-
     const col = randInt(0, Math.max(0, cols - 1));
     const row = randInt(0, Math.max(0, rows - 1));
     const jitterX = (Math.random() - 0.5) * (cellW * 0.2);
     const jitterY = (Math.random() - 0.5) * (cellH * 0.2);
-
-    // store placement so we can reposition on resize
     el.dataset.col = col;
     el.dataset.row = row;
     el.dataset.jitterX = jitterX;
     el.dataset.jitterY = jitterY;
     el.dataset.rot = Math.random() < 0.2 ? '90' : '0';
-
     previewEl.appendChild(el);
   }
 }
 
-/* -------------------------
-   Reposition repeats after resize/redraw
-   ------------------------- */
 function repositionRepeats() {
-  const cols = currentGrid.cols;
-  const rows = currentGrid.rows;
-  const cellW = preview.clientWidth / cols;
-  const cellH = preview.clientHeight / rows;
+  const layerEls = Array.from(preview.querySelectorAll('.layer-container'));
+  if (layerEls.length) {
+    const grids = layerEls.map(l => ({ cols: parseInt(l.dataset.cols, 10) || 4, rows: parseInt(l.dataset.rows, 10) || 6 }));
+    repositionRepeatsLayers(layerEls, grids);
+    return;
+  }
+  const cols = currentGrid.cols || 4;
+  const rows = currentGrid.rows || 6;
+  const cellW = preview.clientWidth / Math.max(1, cols);
+  const cellH = preview.clientHeight / Math.max(1, rows);
 
   preview.querySelectorAll('.repeat-text').forEach(el => {
     const col = parseInt(el.dataset.col, 10) || 0;
@@ -141,618 +502,556 @@ function repositionRepeats() {
     const jitterX = parseFloat(el.dataset.jitterX) || 0;
     const jitterY = parseFloat(el.dataset.jitterY) || 0;
     const rot = el.dataset.rot === '90' ? 90 : 0;
-
     const left = Math.round(col * cellW + cellW / 2 + jitterX);
     const top = Math.round(row * cellH + cellH / 2 + jitterY);
-
     el.style.left = left + 'px';
     el.style.top = top + 'px';
     el.style.transform = `translate(-50%,-50%) rotate(${rot}deg)`;
-    el.style.zIndex = '0'; // keep repeats behind main text
+    el.style.zIndex = '0';
   });
 }
 
-/* -------------------------
-   Generate handler
-   ------------------------- */
+// Replace the top of the generate handler so it doesn't rely on scaling
+// ...existing code...
 btnGenerate.addEventListener('click', () => {
-  // keep controls like resize handle; remove previous content lines and repeats
-  preview.querySelectorAll('.text-block, .grid-line, .repeat-text').forEach(el => el.remove());
+  // ensure preview has explicit pixel size before generation (no scaling)
+  const rect = preview.getBoundingClientRect();
+  preview.style.width = Math.round(rect.width) + 'px';
+  preview.style.height = Math.round(rect.height) + 'px';
 
+  // remove transform/scale setup (scaling disabled)
+  // preview.style.transformOrigin = 'top left';
+  // preview.style.transform = `scale(${currentScale})`;
+
+  preview.querySelectorAll('.layer-container, .text-block, .grid-line, .repeat-text').forEach(el => el.remove());
   const modules = getTextModules();
-  if (modules.length === 0) {
-    alert('Bitte mindestens ein Textfeld ausfüllen!');
-    return;
-  }
+  if (modules.length === 0) { showCustomAlert('please fill in at least one text field!', 'missing content'); return; }
+  const layerCount = Math.max(1, Math.min(4, Math.round(Math.random() * 3) + 1));
+  const gridsForLayers = pickRandomLayerGrids(layerCount);
+  const layerEls = createLayerContainers(gridsForLayers);
+  layerEls.forEach((le, i) => drawGridOnLayer(le, gridsForLayers[i]));
+  placeModulesAcrossLayers(modules, layerEls, gridsForLayers);
+  fitAllModulesLayers(layerEls, gridsForLayers);
+  repositionRepeatsLayers(layerEls, gridsForLayers);
+  applyRandomTypography(preview);
 
-  pickRandomGrid();
-  drawGrid();
-
-  // place main modules (placement.js provides placeModuleOnGrid)
-  modules.forEach(module => placeModuleOnGrid(module, preview, currentGrid.cols, currentGrid.rows));
-
-  // fit them precisely
-  fitAllModules();
-
-  // ensure any existing repeats are repositioned (safe)
-  repositionRepeats();
-
-  // optionally add repeating decorative text
-  if (Math.random() < 0.7) createRepeatingText(modules, preview, currentGrid);
-
-  // position repeats after creation
-  repositionRepeats();
+  updateGridVisibility();
 });
 
-/* -------------------------
-   Preview initial size & style
-   ------------------------- */
-preview.style.position = 'absolute';
-preview.style.left = '50px';
-preview.style.top = '50px';
-preview.style.width = '300px';
-preview.style.height = '450px';
-preview.style.cursor = 'grab';
+function placeModulesAcrossLayers(modules, layerEls, gridsForLayers) {
+  if (!modules || modules.length === 0) return;
+  const sorted = modules.slice().sort((a, b) => (b.weight || 0) - (a.weight || 0));
+  const layerCount = layerEls.length;
+  const chunk = Math.ceil(sorted.length / Math.max(1, layerCount));
+  sorted.forEach((mod, idx) => {
+    const group = Math.min(Math.floor(idx / chunk), layerCount - 1);
+    const layerIndex = Math.max(0, layerCount - 1 - group);
+    const targetLayer = layerEls[layerIndex];
+    const grid = gridsForLayers[layerIndex];
+    placeModuleOnGrid(mod, targetLayer, grid.cols, grid.rows);
+  });
+  const bgCount = Math.max(1, Math.min(layerCount - 1, 2));
+  for (let i = 0; i < bgCount; i++) {
+    const bgLayer = layerEls[i];
+    const grid = gridsForLayers[i];
+    if (typeof createRepeatingText === 'function') {
+      createRepeatingText(modules, bgLayer, grid);
+    }
+    bgLayer.querySelectorAll('.repeat-text').forEach(r => r.style.pointerEvents = 'none');
+  }
+}
+
 
 /* -------------------------
-   Drag & Resize variables
+   Simplified preview sizing (scaling removed)
    ------------------------- */
+function initPreviewBaseSize() {
+  // set explicit pixel size from computed layout only (no horizontal positioning)
+  const rect = preview.getBoundingClientRect();
+  preview.style.position = preview.style.position || 'absolute';
+  // lock computed pixel width/height so layout doesn't scale unexpectedly
+  preview.style.width = Math.round(rect.width) + 'px';
+  preview.style.height = Math.round(rect.height) + 'px';
+  preview.style.cursor = 'grab';
+}
+initPreviewBaseSize();
+
+// Replace the simple mousemove handler with the reliable pointer-based drag implementation
+// (enables two-axis dragging; initial horizontal centering is provided by CSS until the user moves)
 let isDragging = false;
 let dragOffsetX = 0;
 let dragOffsetY = 0;
+let hasUserMoved = false; // becomes true once the user starts moving the preview (switches from CSS centering to JS control)
 
-let isResizing = false;
-let startX = 0;
-let startWidth = 0;
+if (preview) {
+  // ensure preview positioned and cursor set
+  if (getComputedStyle(preview).position === 'static') preview.style.position = 'absolute';
+  preview.style.cursor = preview.style.cursor || 'grab';
 
-/* -------------------------
-   Resize handle (bottom-right)
-   ------------------------- */
-const resizeHandle = document.createElement('div');
-resizeHandle.style.position = 'absolute';
-resizeHandle.style.width = '10px';
-resizeHandle.style.height = '10px';
-resizeHandle.style.right = '0';
-resizeHandle.style.bottom = '0';
-resizeHandle.style.cursor = 'se-resize';
-resizeHandle.style.background = 'black';
-resizeHandle.style.zIndex = '100';
-preview.appendChild(resizeHandle);
+  const clamp = (v, a, b) => Math.max(a, Math.min(v, b));
 
-/* -------------------------
-   Mouse / pointer handlers
-   ------------------------- */
-preview.addEventListener('mousedown', e => {
-  if (e.target !== preview) return;
-  isDragging = true;
-  dragOffsetX = e.clientX - preview.offsetLeft;
-  dragOffsetY = e.clientY - preview.offsetTop;
-  preview.style.cursor = 'grabbing';
-});
+  preview.addEventListener('pointerdown', (e) => {
+    if (e.pointerType === 'mouse' && e.button !== 0) return;
 
-resizeHandle.addEventListener('mousedown', e => {
-  isResizing = true;
-  startX = e.clientX;
-  startWidth = preview.offsetWidth;
-  e.stopPropagation();
-});
+    // get current visual rect BEFORE mutating styles
+    const rect = preview.getBoundingClientRect();
 
-window.addEventListener('mousemove', e => {
-  if (isDragging) {
-    let newLeft = e.clientX - dragOffsetX;
-    let newTop = e.clientY - dragOffsetY;
+    const parent = preview.offsetParent || preview.parentElement || document.body;
+    const pRect = parent.getBoundingClientRect();
 
-    const main = preview.parentElement;
-    newLeft = Math.max(0, Math.min(newLeft, main.clientWidth - preview.offsetWidth));
-    newTop = Math.max(0, Math.min(newTop, main.clientHeight - preview.offsetHeight));
+    // If this is the first manual move, convert from CSS centering to JS-controlled
+    // absolute positioning by setting inline left/top to the current visual position
+    // (calculated from the visual rect), then clear the centering transform so
+    // inline left/top take effect. After that recompute drag offsets relative
+    // to the parent so the pointer doesn't jump on first move.
+    if (!preview.style.left) {
+      const leftInParent = rect.left - pRect.left + (parent.scrollLeft || 0);
+      const topInParent = rect.top - pRect.top + (parent.scrollTop || 0);
+      preview.style.left = Math.round(leftInParent) + 'px';
+      preview.style.top = Math.round(topInParent) + 'px';
+      // clear any stylesheet centering transform by overriding inline
+      preview.style.transform = 'none';
+      hasUserMoved = true;
+      // recompute offsets so dragging starts smoothly from the pointer location
+      dragOffsetX = e.clientX - (pRect.left + leftInParent);
+      dragOffsetY = e.clientY - (pRect.top + topInParent);
+    } else {
+      // ensure top exists if only left was set previously
+      if (!preview.style.top) {
+        const topInParent = rect.top - pRect.top + (parent.scrollTop || 0);
+        preview.style.top = Math.round(topInParent) + 'px';
+      }
+      // fall back to computing offsets from the current rect
+      dragOffsetX = e.clientX - rect.left;
+      dragOffsetY = e.clientY - rect.top;
+    }
 
-    preview.style.left = newLeft + 'px';
-    preview.style.top = newTop + 'px';
-    return;
+    isDragging = true;
+    try { preview.setPointerCapture(e.pointerId); } catch (err) { /* noop */ }
+    preview.style.cursor = 'grabbing';
+    e.preventDefault();
+  });
+
+  window.addEventListener('pointermove', (e) => {
+    if (!isDragging) return;
+
+    const parent = preview.offsetParent || preview.parentElement || document.body;
+    const pRect = parent.getBoundingClientRect();
+    const visualW = preview.offsetWidth || preview.getBoundingClientRect().width;
+    const visualH = preview.offsetHeight || preview.getBoundingClientRect().height;
+
+    // target in viewport -> convert to parent coords for both axes
+    const targetLeft = e.clientX - dragOffsetX;
+    const targetTop  = e.clientY - dragOffsetY;
+    let newLeft = targetLeft - pRect.left + (parent.scrollLeft || 0);
+    let newTop  = targetTop  - pRect.top  + (parent.scrollTop  || 0);
+
+    const maxLeft = Math.max(0, (parent.clientWidth || Math.round(pRect.width)) - visualW);
+    const maxTop  = Math.max(0, (parent.clientHeight || Math.round(pRect.height)) - visualH);
+
+    newLeft = clamp(newLeft, 0, maxLeft);
+    newTop  = clamp(newTop, 0, maxTop);
+
+    preview.style.left = Math.round(newLeft) + 'px';
+    preview.style.top  = Math.round(newTop)  + 'px';
+
+    if (typeof updateResizeHandle === 'function') updateResizeHandle();
+  }, { passive: true });
+
+  const endDrag = (e) => {
+    if (!isDragging) return;
+    isDragging = false;
+    try { preview.releasePointerCapture && preview.releasePointerCapture(e.pointerId); } catch (err) { /* noop */ }
+    preview.style.cursor = 'grab';
+  };
+  window.addEventListener('pointerup', endDrag, { passive: true });
+  window.addEventListener('pointercancel', endDrag, { passive: true });
+}
+
+// debounce helper for resize
+function debounce(fn, wait = 120) {
+  let t;
+  return function (...args) {
+    clearTimeout(t);
+    t = setTimeout(() => fn.apply(this, args), wait);
+  };
+}
+
+// On resize: re-lock width/height and, if user already moved the preview,
+// clamp inline left/top so the preview stays visible.
+window.addEventListener('resize', debounce(() => {
+  initPreviewBaseSize();
+  if (!preview) return;
+  if (hasUserMoved) {
+    const parent = preview.offsetParent || preview.parentElement || document.body;
+    const pRect = parent.getBoundingClientRect();
+    const visualW = preview.offsetWidth || preview.getBoundingClientRect().width;
+    const visualH = preview.offsetHeight || preview.getBoundingClientRect().height;
+    const maxLeft = Math.max(0, (parent.clientWidth || Math.round(pRect.width)) - visualW);
+    const maxTop  = Math.max(0, (parent.clientHeight || Math.round(pRect.height)) - visualH);
+
+    if (preview.style.left) {
+      let left = parseFloat(preview.style.left) || 0;
+      left = Math.max(0, Math.min(left, maxLeft));
+      preview.style.left = Math.round(left) + 'px';
+    }
+    if (preview.style.top) {
+      let top = parseFloat(preview.style.top) || 0;
+      top = Math.max(0, Math.min(top, maxTop));
+      preview.style.top = Math.round(top) + 'px';
+    }
+  }
+}), { passive: true });
+
+
+
+// DIESER CODE WURDE HINZUGEFÜGT
+
+
+
+
+
+// 1) EINE HILFsFUNKTION; DIE DEN INLINE STYLE (SVG UNTERSTÜTZT CSS NICHT RICHTIG ALS EIGENES FILE…)
+function inlineComputedStyles(source, target) {
+  const srcEls = source.querySelectorAll('*');
+  const tgtEls = target.querySelectorAll('*');
+
+  srcEls.forEach((src, i) => {
+    const tgt = tgtEls[i];
+    if (!tgt) return;
+
+    const cs = getComputedStyle(src);
+    let style = '';
+
+    for (const prop of cs) {
+      style += `${prop}:${cs.getPropertyValue(prop)};`;
+    }
+
+    tgt.setAttribute('style', style);
+  });
+}
+
+// 2) HILFSFUNKTION ZUM AUSLESEN DER VERWENDETEN SCHRIFTEN
+function collectFontFaceCSS(rootEl) {
+  const families = new Set();
+
+  rootEl.querySelectorAll('*').forEach(el => {
+    const ff = getComputedStyle(el).fontFamily;
+    if (ff) {
+      ff.split(',').forEach(f =>
+        families.add(f.trim().replace(/['"]/g, ''))
+      );
+    }
+  });
+
+  let css = '';
+
+  for (const sheet of document.styleSheets) {
+    let rules;
+    try {
+      rules = sheet.cssRules;
+    } catch {
+      continue;
+    }
+
+    for (const rule of rules) {
+      if (
+        rule.type === CSSRule.FONT_FACE_RULE &&
+        families.has(rule.style.fontFamily.replace(/['"]/g, ''))
+      ) {
+        css += rule.cssText + '\n';
+      }
+    }
   }
 
-  if (isResizing) {
-    let dx = e.clientX - startX;
-    let newWidth = startWidth + dx;
-    let newHeight = newWidth * 1.5; // keep 2:3 aspect
+  return css;
+}
 
-    const main = preview.parentElement;
-    newWidth = Math.max(100, Math.min(newWidth, main.clientWidth - preview.offsetLeft));
-    newHeight = Math.max(150, Math.min(newHeight, main.clientHeight - preview.offsetTop));
+// 3) DIE NEUE FUNKTION FÜR DIE PIN
+async function capturePreviewAsDataURL(previewEl, scale = 0.25) {
+  if (!previewEl) return null;
 
-    preview.style.width = newWidth + 'px';
-    preview.style.height = newHeight + 'px';
+  await document.fonts.ready;
 
-    // best-effort update for any positioned text-blocks
-    preview.querySelectorAll('.text-block').forEach(block => {
-      block.style.maxWidth = `${preview.clientWidth - 10}px`;
+  const rect = previewEl.getBoundingClientRect();
+  const w = Math.max(1, Math.round(rect.width));
+  const h = Math.max(1, Math.round(rect.height));
+
+  const clone = previewEl.cloneNode(true);
+
+  clone.removeAttribute('id');
+  clone.querySelectorAll('[id]').forEach(n => n.removeAttribute('id'));
+  clone.querySelectorAll(
+    'button, input, textarea, .preview-resize-handle, .preview-toolbar, .debug-overlay'
+  ).forEach(n => n.remove());
+
+  clone.style.boxSizing = 'border-box';
+  clone.style.width = w + 'px';
+  clone.style.height = h + 'px';
+  clone.style.position = 'static';
+  clone.style.left = '0';
+  clone.style.top = '0';
+  clone.style.right = 'auto';
+  clone.style.bottom = 'auto';
+  clone.style.transform = 'none';
+  clone.style.translate = 'none';
+
+  inlineComputedStyles(previewEl, clone);
+
+  const fontCSS = collectFontFaceCSS(previewEl);
+  const serialized = new XMLSerializer().serializeToString(clone);
+
+  const svg = `
+<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}">
+  <style>
+    ${fontCSS}
+  </style>
+  <rect fill="transparent" x="0" y="0" width="20" height="20" />
+  <foreignObject x="0" y="0" width="100%" height="100%" >
+    <div xmlns="http://www.w3.org/1999/xhtml" >
+      ${serialized}
+    </div>
+  </foreignObject>
+</svg>
+`;
+
+  const img = new Image();
+
+  return new Promise(resolve => {
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      canvas.width = Math.round(w * scale);
+      canvas.height = Math.round(h * scale);
+
+      const ctx = canvas.getContext('2d');
+      const bg = getComputedStyle(previewEl).backgroundColor;
+
+      ctx.fillStyle =
+        bg && bg !== 'rgba(0,0,0,0)' ? bg : '#fff';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+      resolve(canvas.toDataURL('image/png'));
+    };
+
+    img.onerror = () => resolve(null);
+    img.src =
+      'data:image/svg+xml;charset=utf-8,' +
+      encodeURIComponent(svg);
+  });
+}
+
+// ENDE PHIIPPS CODE 
+
+function savePinnedDataUrl(dataUrl) {
+  if (!dataUrl) return;
+  try {
+    const raw = localStorage.getItem('pinnedPreviews');
+    const arr = raw ? JSON.parse(raw) : [];
+    arr.unshift({ ts: Date.now(), img: dataUrl });
+    // If adding this item would make the pinned array exceed 100,
+    // wipe the archive as requested (remove the 'pinnedPreviews' key).
+    // Otherwise persist the newest 100 entries.
+    if (Array.isArray(arr) && arr.length > 100) {
+      try {
+        localStorage.removeItem('pinnedPreviews');
+        // optional: could also notify the user here via UI if desired
+        console.warn('Pinned previews exceeded 100 — archive wiped.');
+      } catch (rmErr) {
+        // swallow removal errors to avoid breaking flow
+      }
+    } else {
+      // keep only the newest N entries to avoid filling up localStorage
+      // (data URLs can be large; reduce cap to 100 to keep usage reasonable)
+      localStorage.setItem('pinnedPreviews', JSON.stringify(arr.slice(0, 100)));
+    }
+  } catch (e) { /* ignore storage errors */ }
+}
+
+/* existing IIFE that clones and appends into #pinned-sidebar
+   now also persists a dataURL and ensures clicking sidebar navigates to archive.html */
+(function () {
+  const pinBtn = document.getElementById('btn-pin');
+  const sidebar = document.getElementById('pinned-sidebar');
+  if (!pinBtn) return;
+
+  if (sidebar) {
+    sidebar.style.cursor = 'pointer';
+    // define handler before attaching to avoid ReferenceError
+    function pinnedSidebarToArchive() { window.location.href = './archive.html'; }
+    sidebar.removeEventListener('click', pinnedSidebarToArchive);
+    sidebar.addEventListener('click', pinnedSidebarToArchive);
+  }
+
+  pinBtn.addEventListener('click', async () => {
+    const previewEl = document.getElementById('preview');
+    const sidebarEl = document.getElementById('pinned-sidebar');
+    if (!previewEl || !sidebarEl) return;
+
+    // require at least one generated layout element before allowing pin
+    // (no action if user hasn't generated anything yet)
+    if (previewEl.querySelectorAll('.layer-container, .text-block, .repeat-text').length === 0) {
+      return;
+    }
+
+    // --- existing clone + append (keeps behavior you like) ---
+    const card = document.createElement('div');
+    card.className = 'pinned-card sidebar-item';
+
+    const wrapper = document.createElement('div');
+    wrapper.className = 'thumb-wrapper';
+
+    const clone = previewEl.cloneNode(true);
+    clone.removeAttribute('id');
+    clone.querySelectorAll('[id]').forEach(n => n.removeAttribute('id'));
+    clone.querySelectorAll('button, input, textarea, .preview-resize-handle, .preview-toolbar, .resize-handle, .debug-overlay').forEach(n => n.remove());
+
+    clone.className = 'thumb-clone';
+    const srcW = previewEl.offsetWidth || previewEl.getBoundingClientRect().width;
+    const srcH = previewEl.offsetHeight || previewEl.getBoundingClientRect().height;
+    clone.style.width = srcW + 'px';
+    clone.style.height = srcH + 'px';
+    clone.style.boxSizing = 'border-box';
+
+    wrapper.appendChild(clone);
+    card.appendChild(wrapper);
+    sidebarEl.appendChild(card);
+
+    const availW = Math.max(1, wrapper.clientWidth);
+    const availH = Math.max(1, wrapper.clientHeight);
+    const scale = Math.min(availW / srcW, availH / srcH);
+    clone.style.transform = `translate(-50%,-50%) scale(${scale})`;
+
+    card.scrollIntoView({ behavior: 'smooth', block: 'end' });
+
+    // --- new: also capture a persistent dataURL and save to localStorage for the archive ---
+    const dataUrl = await capturePreviewAsDataURL(previewEl, 0.25);
+    if (dataUrl) savePinnedDataUrl(dataUrl);
+  });
+
+  const btn = document.getElementById('btn-archive');
+  if (btn) {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      window.location.href = './archive.html';
     });
+  }
 
-    // redraw grid and re-fit modules to keep alignment
-    drawGrid();
-    fitAllModules();
+// Quick hide/show grids helper ------------------------------------------------
+// Set HIDE_GRIDS_DEFAULT = true to start with grids hidden for quick visual checks.
+const HIDE_GRIDS_DEFAULT = true;
+let gridsHidden = !!HIDE_GRIDS_DEFAULT;
 
-    // reposition decorative repeats so they stay aligned to the grid
-    repositionRepeats();
+function updateGridVisibility() {
+  // target all grid lines (single-layer and per-layer) and any SVG/grid overlays
+  const nodes = document.querySelectorAll('.grid-line, svg.grid-overlay');
+  nodes.forEach(n => {
+    n.style.display = gridsHidden ? 'none' : '';
+  });
+  // also hide entire layer outlines if you want (optional)
+  // document.querySelectorAll('.layer-container').forEach(l => l.style.outline = gridsHidden ? 'none' : '');
+}
+
+// programmatic toggle
+function toggleGridVisibility(show) {
+  if (typeof show === 'boolean') gridsHidden = !show;
+  else gridsHidden = !gridsHidden;
+  updateGridVisibility();
+  console.log('Grid visibility -> hidden:', gridsHidden);
+  return !gridsHidden;
+}
+
+// keyboard shortcut: Ctrl/Cmd + X toggles grid
+document.addEventListener('keydown', (e) => {
+  if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'x') {
+    toggleGridVisibility();
   }
 });
 
-window.addEventListener('mouseup', () => {
-  isDragging = false;
-  isResizing = false;
-  preview.style.cursor = 'grab';
-}); 
-
-// const preview = document.getElementById('preview');
-// const btnGenerate = document.getElementById('btn-generate');
-
-// /* -------------------------
-//    Grid selection (random)
-//    ------------------------- */
-// let currentGridIndex = 2;
-// let currentGrid = Array.isArray(window.grids) && window.grids[currentGridIndex]
-//   ? window.grids[currentGridIndex]
-//   : { cols: 4, rows: 6 };
-
-// function pickRandomGrid() {
-//   if (!Array.isArray(window.grids) || window.grids.length === 0) return;
-//   currentGridIndex = Math.floor(Math.random() * window.grids.length);
-//   currentGrid = window.grids[currentGridIndex];
-//   preview.dataset.gridIndex = currentGridIndex;
-// }
-
-// /* -------------------------
-//    Small helpers
-//    ------------------------- */
-// function randInt(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
-// function choice(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
-
-// /* -------------------------
-//    Read input modules
-//    ------------------------- */
-// function getTextModules() {
-//   const modules = [];
-//   const headline = document.getElementById('headline').value.trim();
-//   if (headline) modules.push({ key: 'headline', value: headline, weight: 900 });
-//   const sub = document.getElementById('sub').value.trim();
-//   if (sub) modules.push({ key: 'sub', value: sub, weight: 500 });
-//   const info = document.getElementById('info').value.trim();
-//   if (info) modules.push({ key: 'info', value: info, weight: 300 });
-//   const date = document.getElementById('date').value.trim();
-//   if (date) modules.push({ key: 'date', value: date, weight: 200 });
-//   return modules;
-// }
-
-// /* -------------------------
-//    Grid drawing + fitting
-//    ------------------------- */
-// function drawGrid() {
-//   preview.querySelectorAll('.grid-line').forEach(el => el.remove());
-
-//   const cols = currentGrid.cols;
-//   for (let i = 1; i < cols; i++) {
-//     const col = document.createElement('div');
-//     col.className = 'grid-line grid-col';
-//     col.style.width = '1px';
-//     col.style.height = preview.clientHeight + 'px';
-//     col.style.background = 'rgba(0,0,255,0.12)';
-//     col.style.position = 'absolute';
-//     col.style.left = (i * preview.clientWidth / cols) + 'px';
-//     col.style.top = '0';
-//     col.style.pointerEvents = 'none';
-//     preview.appendChild(col);
-//   }
-
-//   const rows = currentGrid.rows;
-//   for (let r = 1; r < rows; r++) {
-//     const row = document.createElement('div');
-//     row.className = 'grid-line grid-row';
-//     row.style.height = '1px';
-//     row.style.width = preview.clientWidth + 'px';
-//     row.style.background = 'rgba(0,0,255,0.12)';
-//     row.style.position = 'absolute';
-//     row.style.top = (r * preview.clientHeight / rows) + 'px';
-//     row.style.left = '0';
-//     row.style.pointerEvents = 'none';
-//     preview.appendChild(row);
-//   }
-// }
-
-// function fitAllModules() {
-//   preview.querySelectorAll('.text-block').forEach(el => {
-//     if (typeof fitModuleToGrid === 'function') {
-//       fitModuleToGrid(el, preview, currentGrid.cols, currentGrid.rows);
-//     }
-//   });
-// }
-
-// /* -------------------------
-//    Decorative repeating text
-//    ------------------------- */
-// function createRepeatingText(modules, previewEl, grid) {
-//   const cols = grid.cols;
-//   const rows = grid.rows;
-//   const cellW = previewEl.clientWidth / cols;
-//   const cellH = previewEl.clientHeight / rows;
-
-//   const source = modules.length ? modules.map(m => m.value) : ['repeat'];
-//   const count = randInt(4, 12);
-
-//   for (let i = 0; i < count; i++) {
-//     const txt = choice(source);
-//     const el = document.createElement('div');
-//     el.className = 'repeat-text';
-//     el.innerText = txt;
-
-//     const fs = randInt(8, 18);
-//     el.style.position = 'absolute';
-//     el.style.fontSize = fs + 'px';
-//     el.style.opacity = (Math.random() * 0.45 + 0.12).toFixed(2);
-//     el.style.pointerEvents = 'none';
-//     el.style.color = '#000';
-//     el.style.whiteSpace = 'nowrap';
-//     el.style.transform = `translate(-50%,-50%) rotate(${Math.random() < 0.2 ? 90 : 0}deg)`;
-
-//     const col = randInt(0, Math.max(0, cols - 1));
-//     const row = randInt(0, Math.max(0, rows - 1));
-//     const jitterX = (Math.random() - 0.5) * (cellW * 0.2);
-//     const jitterY = (Math.random() - 0.5) * (cellH * 0.2);
-
-//     // store placement so we can reposition on resize
-//     el.dataset.col = col;
-//     el.dataset.row = row;
-//     el.dataset.jitterX = jitterX;
-//     el.dataset.jitterY = jitterY;
-//     el.dataset.rot = Math.random() < 0.2 ? '90' : '0';
-
-//     previewEl.appendChild(el);
-//   }
-// }
-
-// /* -------------------------
-//    Reposition repeats after resize/redraw
-//    ------------------------- */
-// function repositionRepeats() {
-//   const cols = currentGrid.cols;
-//   const rows = currentGrid.rows;
-//   const cellW = preview.clientWidth / cols;
-//   const cellH = preview.clientHeight / rows;
-
-//   preview.querySelectorAll('.repeat-text').forEach(el => {
-//     const col = parseInt(el.dataset.col, 10) || 0;
-//     const row = parseInt(el.dataset.row, 10) || 0;
-//     const jitterX = parseFloat(el.dataset.jitterX) || 0;
-//     const jitterY = parseFloat(el.dataset.jitterY) || 0;
-//     const rot = el.dataset.rot === '90' ? 90 : 0;
-
-//     const left = Math.round(col * cellW + cellW / 2 + jitterX);
-//     const top = Math.round(row * cellH + cellH / 2 + jitterY);
-
-//     el.style.left = left + 'px';
-//     el.style.top = top + 'px';
-//     el.style.transform = `translate(-50%,-50%) rotate(${rot}deg)`;
-//     el.style.zIndex = '0';
-//   });
-// }
-
-// /* -------------------------
-//    Snapshot / Artboards
-//    - save, list thumbnails, load, export/import
-//    ------------------------- */
-// const snapshots = []; // { name, html, gridIndex, width, height }
-
-// function getSnapshotHtml() {
-//   // clone only text blocks and repeats (not resize handle, not grid lines)
-//   const tmp = document.createElement('div');
-//   preview.querySelectorAll('.text-block, .repeat-text').forEach(el => tmp.appendChild(el.cloneNode(true)));
-//   return tmp.innerHTML;
-// }
-
-// function saveSnapshot(name) {
-//   const html = getSnapshotHtml();
-//   const snap = {
-//     name: name || `Artboard ${snapshots.length + 1}`,
-//     html,
-//     gridIndex: currentGridIndex,
-//     width: preview.style.width || preview.clientWidth + 'px',
-//     height: preview.style.height || preview.clientHeight + 'px'
-//   };
-//   snapshots.push(snap);
-//   renderSnapshotsList();
-// }
-
-// function loadSnapshot(index) {
-//   const s = snapshots[index];
-//   if (!s) return;
-//   // clear existing content (keep resize handle)
-//   preview.querySelectorAll('.text-block, .repeat-text, .grid-line').forEach(el => el.remove());
-//   // restore preview size & grid selection
-//   currentGridIndex = s.gridIndex || 2;
-//   currentGrid = Array.isArray(window.grids) && window.grids[currentGridIndex] ? window.grids[currentGridIndex] : currentGrid;
-//   preview.style.width = s.width;
-//   preview.style.height = s.height;
-//   // insert saved nodes
-//   preview.insertAdjacentHTML('beforeend', s.html);
-//   drawGrid();
-//   fitAllModules();
-//   repositionRepeats();
-// }
-
-// function exportSnapshots() {
-//   const data = JSON.stringify(snapshots);
-//   const blob = new Blob([data], { type: 'application/json' });
-//   const url = URL.createObjectURL(blob);
-//   const a = document.createElement('a');
-//   a.href = url;
-//   a.download = 'artboards.json';
-//   a.click();
-//   URL.revokeObjectURL(url);
-// }
-
-// function importSnapshots(json) {
-//   try {
-//     const arr = JSON.parse(json);
-//     if (!Array.isArray(arr)) throw new Error('Invalid format');
-//     arr.forEach(s => snapshots.push(s));
-//     renderSnapshotsList();
-//   } catch (err) {
-//     alert('Import failed: ' + err.message);
-//   }
-// }
-
-// function renderSnapshotsList() {
-//   let panel = document.getElementById('snapshots-panel');
-//   if (!panel) {
-//     panel = document.createElement('div');
-//     panel.id = 'snapshots-panel';
-//     panel.style.position = 'fixed';
-//     panel.style.right = '12px';
-//     panel.style.top = '12px';
-//     panel.style.width = '220px';
-//     panel.style.maxHeight = '70vh';
-//     panel.style.overflowY = 'auto';
-//     panel.style.background = 'rgba(255,255,255,0.95)';
-//     panel.style.border = '1px solid #ddd';
-//     panel.style.padding = '8px';
-//     panel.style.zIndex = 9999;
-//     document.body.appendChild(panel);
-//   }
-//   panel.innerHTML = '';
-
-//   const title = document.createElement('div');
-//   title.innerText = 'Artboards';
-//   title.style.fontWeight = '700';
-//   title.style.marginBottom = '6px';
-//   panel.appendChild(title);
-
-//   // controls: save, export, import
-//   const controls = document.createElement('div');
-//   controls.style.display = 'flex';
-//   controls.style.gap = '6px';
-//   controls.style.marginBottom = '8px';
-
-//   const input = document.createElement('input');
-//   input.placeholder = 'name';
-//   input.style.flex = '1';
-//   input.style.fontSize = '12px';
-
-//   const saveBtn = document.createElement('button');
-//   saveBtn.innerText = 'Save';
-//   saveBtn.onclick = () => saveSnapshot(input.value || undefined);
-
-//   const exportBtn = document.createElement('button');
-//   exportBtn.innerText = 'Export';
-//   exportBtn.onclick = exportSnapshots;
-
-//   controls.appendChild(input);
-//   controls.appendChild(saveBtn);
-//   controls.appendChild(exportBtn);
-//   panel.appendChild(controls);
-
-//   // import field
-//   const imp = document.createElement('input');
-//   imp.type = 'file';
-//   imp.accept = 'application/json';
-//   imp.style.fontSize = '12px';
-//   imp.onchange = (ev) => {
-//     const f = ev.target.files[0];
-//     if (!f) return;
-//     const r = new FileReader();
-//     r.onload = () => importSnapshots(r.result);
-//     r.readAsText(f);
-//     imp.value = '';
-//   };
-//   panel.appendChild(imp);
-
-//   // list thumbnails
-//   snapshots.forEach((s, i) => {
-//     const item = document.createElement('div');
-//     item.style.display = 'flex';
-//     item.style.alignItems = 'center';
-//     item.style.marginTop = '8px';
-//     item.style.borderTop = '1px solid #eee';
-//     item.style.paddingTop = '6px';
-
-//     const thumb = document.createElement('div');
-//     thumb.style.width = '56px';
-//     thumb.style.height = '78px';
-//     thumb.style.overflow = 'hidden';
-//     thumb.style.border = '1px solid #ccc';
-//     thumb.style.marginRight = '8px';
-//     thumb.style.background = '#fff';
-//     // scaled preview inside thumb
-//     const inner = document.createElement('div');
-//     inner.style.transformOrigin = '0 0';
-//     inner.style.transform = `scale(${Math.min(56 / parseInt(s.width, 10) || 0.18, 78 / parseInt(s.height, 10) || 0.18)})`;
-//     inner.style.width = s.width;
-//     inner.style.height = s.height;
-//     inner.style.pointerEvents = 'none';
-//     inner.innerHTML = s.html;
-//     thumb.appendChild(inner);
-
-//     const meta = document.createElement('div');
-//     meta.style.flex = '1';
-//     meta.style.fontSize = '12px';
-
-//     const name = document.createElement('div');
-//     name.innerText = s.name;
-//     name.style.fontWeight = '600';
-
-//     const actions = document.createElement('div');
-//     actions.style.display = 'flex';
-//     actions.style.gap = '6px';
-//     actions.style.marginTop = '6px';
-
-//     const loadBtn = document.createElement('button');
-//     loadBtn.innerText = 'Load';
-//     loadBtn.onclick = () => loadSnapshot(i);
-
-//     const dupBtn = document.createElement('button');
-//     dupBtn.innerText = 'Duplicate';
-//     dupBtn.onclick = () => saveSnapshot(s.name + ' (copy)');
-
-//     const delBtn = document.createElement('button');
-//     delBtn.innerText = 'Delete';
-//     delBtn.onclick = () => {
-//       snapshots.splice(i, 1);
-//       renderSnapshotsList();
-//     };
-
-//     actions.appendChild(loadBtn);
-//     actions.appendChild(dupBtn);
-//     actions.appendChild(delBtn);
-
-//     meta.appendChild(name);
-//     meta.appendChild(actions);
-
-//     item.appendChild(thumb);
-//     item.appendChild(meta);
-
-//     panel.appendChild(item);
-//   });
-// }
-
-// /* -------------------------
-//    Generate handler
-//    ------------------------- */
-// btnGenerate.addEventListener('click', () => {
-//   preview.querySelectorAll('.text-block, .grid-line, .repeat-text').forEach(el => el.remove());
-
-//   const modules = getTextModules();
-//   if (modules.length === 0) {
-//     alert('Bitte mindestens ein Textfeld ausfüllen!');
-//     return;
-//   }
-
-//   pickRandomGrid();
-//   drawGrid();
-
-//   modules.forEach(module => placeModuleOnGrid(module, preview, currentGrid.cols, currentGrid.rows));
-
-//   fitAllModules();
-
-//   repositionRepeats();
-
-//   if (Math.random() < 0.7) createRepeatingText(modules, preview, currentGrid);
-//   repositionRepeats();
-// });
-
-// /* -------------------------
-//    Preview initial size & style
-//    ------------------------- */
-// preview.style.position = 'absolute';
-// preview.style.left = '50px';
-// preview.style.top = '50px';
-// preview.style.width = '300px';
-// preview.style.height = '450px';
-// preview.style.cursor = 'grab';
-
-// /* -------------------------
-//    Drag & Resize variables
-//    ------------------------- */
-// let isDragging = false;
-// let dragOffsetX = 0;
-// let dragOffsetY = 0;
-
-// let isResizing = false;
-// let startX = 0;
-// let startWidth = 0;
-
-// /* -------------------------
-//    Resize handle (bottom-right)
-//    ------------------------- */
-// const resizeHandle = document.createElement('div');
-// resizeHandle.style.position = 'absolute';
-// resizeHandle.style.width = '15px';
-// resizeHandle.style.height = '15px';
-// resizeHandle.style.right = '0';
-// resizeHandle.style.bottom = '0';
-// resizeHandle.style.cursor = 'se-resize';
-// resizeHandle.style.background = 'red';
-// resizeHandle.style.zIndex = '100';
-// preview.appendChild(resizeHandle);
-
-// /* -------------------------
-//    Mouse / pointer handlers
-//    ------------------------- */
-// preview.addEventListener('mousedown', e => {
-//   if (e.target !== preview) return;
-//   isDragging = true;
-//   dragOffsetX = e.clientX - preview.offsetLeft;
-//   dragOffsetY = e.clientY - preview.offsetTop;
-//   preview.style.cursor = 'grabbing';
-// });
-
-// resizeHandle.addEventListener('mousedown', e => {
-//   isResizing = true;
-//   startX = e.clientX;
-//   startWidth = preview.offsetWidth;
-//   e.stopPropagation();
-// });
-
-// window.addEventListener('mousemove', e => {
-//   if (isDragging) {
-//     let newLeft = e.clientX - dragOffsetX;
-//     let newTop = e.clientY - dragOffsetY;
-
-//     const main = preview.parentElement;
-//     newLeft = Math.max(0, Math.min(newLeft, main.clientWidth - preview.offsetWidth));
-//     newTop = Math.max(0, Math.min(newTop, main.clientHeight - preview.clientHeight));
-
-//     preview.style.left = newLeft + 'px';
-//     preview.style.top = newTop + 'px';
-//     return;
-//   }
-
-//   if (isResizing) {
-//     let dx = e.clientX - startX;
-//     let newWidth = startWidth + dx;
-//     let newHeight = newWidth * 1.5;
-
-//     const main = preview.parentElement;
-//     newWidth = Math.max(100, Math.min(newWidth, main.clientWidth - preview.offsetLeft));
-//     newHeight = Math.max(150, Math.min(newHeight, main.clientHeight - preview.offsetTop));
-
-//     preview.style.width = newWidth + 'px';
-//     preview.style.height = newHeight + 'px';
-
-//     preview.querySelectorAll('.text-block').forEach(block => {
-//       block.style.maxWidth = `${preview.clientWidth - 10}px`;
-//     });
-
-//     drawGrid();
-//     fitAllModules();
-//     repositionRepeats();
-//   }
-// });
-
-// window.addEventListener('mouseup', () => {
-//   isDragging = false;
-//   isResizing = false;
-//   preview.style.cursor = 'grab';
-// });
-
-// /* -------------------------
-//    Initialize snapshot UI
-//    ------------------------- */
-// renderSnapshotsList();
+// initialize visibility on load
+document.addEventListener('DOMContentLoaded', updateGridVisibility);
+
+// expose for console debugging
+window.toggleGridVisibility = toggleGridVisibility;
+window.updateGridVisibility = updateGridVisibility; 
+
+})();
+
+/* small wiggle on button press/click/keyboard activation
+   - pointerdown gives immediate feedback for mouse/touch
+   - keydown handles Enter / Space when button has focus
+*/
+(function enableButtonWiggle() {
+  const DURATION_MS = 20;      // must match --wiggle-duration in CSS
+  const ITERATIONS = 7;         // must match --wiggle-iterations in CSS
+  const BUFFER = 60;            // small safety buffer
+  const TOTAL_MS = DURATION_MS * ITERATIONS + BUFFER;
+
+  function triggerWiggle(btn) {
+    if (!btn || !btn.classList) return;
+    if (btn.classList.contains('wiggle')) return;
+    btn.classList.add('wiggle');
+    setTimeout(() => btn.classList.remove('wiggle'), TOTAL_MS);
+  }
+
+  // pointerdown covers mouse/touch immediacy
+  document.addEventListener('pointerdown', (ev) => {
+    const btn = ev.target.closest && ev.target.closest('button');
+    if (btn) triggerWiggle(btn);
+  }, { capture: true });
+
+  // keyboard activation (Space / Enter) when a button is focused
+  document.addEventListener('keydown', (ev) => {
+    const active = document.activeElement;
+    if (!active || active.tagName !== 'BUTTON') return;
+    if (ev.key === 'Enter' || ev.key === ' ' || ev.key === 'Spacebar') {
+      triggerWiggle(active);
+    }
+  });
+})();
+
+(function enableButtonWiggle() {
+  const DURATION_MS = 280;      // should match --wiggle-duration in CSS
+  const ITERATIONS = 7;         // should match --wiggle-iterations in CSS
+  const BUFFER = 60;
+  const TOTAL_MS = DURATION_MS * ITERATIONS + BUFFER;
+
+  const ROTATE_MS = 420; // matches animation-duration in CSS for rotate30
+
+  function triggerWiggle(btn) {
+    if (!btn || !btn.classList) return;
+    // skip wiggle for special rotating buttons to avoid transform conflicts
+    if (btn.id === 'btn-archive' || btn.id === 'btn-back') return;
+    if (btn.classList.contains('wiggle')) return;
+    btn.classList.add('wiggle');
+    setTimeout(() => btn.classList.remove('wiggle'), TOTAL_MS);
+  }
+
+  function triggerRotate(btn) {
+    if (!btn || !btn.classList) return;
+    if (btn.classList.contains('rotate-30')) return;
+    btn.classList.add('rotate-30');
+    setTimeout(() => btn.classList.remove('rotate-30'), ROTATE_MS + 40);
+  }
+
+  // pointerdown covers mouse/touch immediacy
+  document.addEventListener('hover', (ev) => {
+    const btn = ev.target.closest && ev.target.closest('button');
+    if (!btn) return;
+    if (btn.id === 'btn-archive' || btn.id === 'btn-back') {
+      triggerRotate(btn);
+    } else {
+      triggerWiggle(btn);
+    }
+  }, { capture: true });
+
+  // keyboard activation (Space / Enter) when a button is focused
+  document.addEventListener('keydown', (ev) => {
+    const active = document.activeElement;
+    if (!active || active.tagName !== 'BUTTON') return;
+    if (ev.key === 'Enter' || ev.key === ' ' || ev.key === 'Spacebar') {
+      if (active.id === 'btn-archive' || active.id === 'btn-back') triggerRotate(active);
+      else triggerWiggle(active);
+    }
+  });
+})();

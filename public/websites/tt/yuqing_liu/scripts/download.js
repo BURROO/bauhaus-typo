@@ -1,9 +1,9 @@
 
 // ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
-// 1. Copy Vector to Illustrator
+// 1. Copy Vector to Illustrator (已删除按钮，功能已注释)
 
+/*
 const btnCopyText = document.getElementById('btn-copy-text')
-
 
 btnCopyText.onclick = () => {
 
@@ -22,3 +22,4 @@ btnCopyText.onclick = () => {
     navigator.clipboard.writeText(svgString)
 
 }
+*/

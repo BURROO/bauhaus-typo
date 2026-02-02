@@ -1,15 +1,3 @@
-// const grids = [
-//     { name: 'Grid A', cols: 2, rows: 2 },
-//     { name: 'Grid B', cols: 3, rows: 3 },
-//     { name: 'Grid C', cols: 4, rows: 4 }, 
-//     { name: 'Grid D', cols: 5, rows: 5 },
-//     { name: 'Grid E', cols: 6, rows: 6 }, 
-//     { name: 'Grid F', cols: 7, rows: 7 },
-
-// ];
-
-// ...existing code...
-
 /**
  * Generate grid definitions programmatically instead of hand-writing each entry.
  * Tweak MIN/MAX and filters below to control which combos are created.

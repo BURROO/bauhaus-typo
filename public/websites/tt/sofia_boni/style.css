@@ -35,10 +35,9 @@ button{
     line-height: 10px;
     /* border: 1px solid black; */
     font-size: 10px;
-    font-family: 'Sofia Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-   
+    font-family: 'Sofia_Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
-
+   
 /* Pulsanti in alto a destra */
 /*.top-buttons {
     width: 100px;
@@ -59,7 +58,7 @@ button{
     right: 250px;
     display: flex;
     gap: 5px;
-    z-index: 20;
+    z-index: 30;
 }
 
 #O{
@@ -70,7 +69,7 @@ button{
     right: 140px;
     display: flex;
     gap: 5px;
-    z-index: 20;
+    z-index: 30;
 }
 
 #F{
@@ -81,7 +80,7 @@ button{
     right: 250px;
     display: flex;
     gap: 5px;
-    z-index: 20;
+    z-index: 30;
 }
 
 #I{
@@ -92,7 +91,7 @@ button{
     right: 140px;
     display: flex;
     gap: 5px;
-    z-index: 20;
+    z-index: 30;
 }
 
 .top-buttons .btn {
@@ -104,26 +103,27 @@ button{
     transform: scale(1.05);
 }
 
-
+.btn{
+    border: 1px solid black;
+}
   
   
 /* Pannello a tendina */
 #side-panel {
     position: fixed;
-    font-family: "Playwrite RO", cursive;  
+    font-family: "Playwrite_RO", cursive;  
     font-optical-sizing: auto;
     font-weight: 50;
     font-style: normal;
     line-height: 100%;
-    top: 50px;
+    /* top: 50px; */
     right: -420px; /*nascosto */
     width: 420px;
-    
-    height: 100vh;
+    height: 100%;
     background: #ffffff;
     /* box-shadow: -4px 0 10px rgba(0,0,0,0.1); */
     transition: right 0.4s ease;
-    z-index: 15;
+    z-index: 25;
 }
 
 #side-panel.open {
@@ -142,6 +142,7 @@ button{
 
 
 #Beginning{
+    padding-top: 50px;
     background-color: #e01224;
     text-align:left;
     text-rendering: auto;
@@ -151,6 +152,7 @@ button{
 }
 
 #Originals{
+    padding-top: 50px;
     background-color: #2f75c9;
     padding-left: 20px;
     height: 170vh;
@@ -158,7 +160,8 @@ button{
 }
 
 #Fonts{
-    background-color: #79cb16;
+    padding-top: 50px;
+    background-color: #7cb929;
     padding-left: 20px;
     height: 170vh;
     width: 360px;
@@ -172,7 +175,7 @@ button{
     padding-right: 5px;
     padding-bottom: 5px;
     line-height: 16px;
-    font-family: 'Sofia Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-family:  'Sofia_Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
 .filters_text{
@@ -183,16 +186,28 @@ button{
     padding-left: 5px;
     padding-right: 5px;
     padding-bottom: 2px;
-    font-family: 'Sofia Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-family:  'Sofia_Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;;
 }
+
+#category_letter{column-count: 3; }
 
 input[type=checkbox]{
   accent-color:  #000000;  
 }
 
-input[type=text]{
+#textInput {
     width: 320px;
+    height: 60px;
+    padding: 8px;
+    font-family:  'Sofia_Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-size: 14px;
+    resize: none; /* Impedisce all'utente di trascinare l'angolo per ingrandirla */
+    border: 1px solid black;
+    outline: none;
+    text-wrap: 300px; /* Aggiunge una scrollbar interna se il testo supera le 3 righe */
+    white-space: pre-wrap; /* Mantiene gli spazi e va a capo correttamente */
 }
+
 
 
 .button{
@@ -201,16 +216,18 @@ input[type=text]{
     padding-right: 6px;
     margin-top: 2px;
     margin-right: 60px;
-    font-family: 'Sofia Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-family: 'Sofia_Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
-#randomizeBtn{
+/* #randomizeBtn{
+    margin-top: 50px;
     position:absolute;
     right: 20px
 
-}
+} */
 
 #Interact{
+    padding-top: 50px;
     background-color: #F3B61F;
     padding-left: 20px;
     height: 170vh;
@@ -222,16 +239,18 @@ input[type=text]{
 
 /*sliders comandi e stile*/
 label {
+    
   display: block;
   margin-bottom: 8px;
   font-weight: 500;
 }
 
 input[type="range"] {
+    
   -webkit-appearance: none;
   appearance: inherit;
   width: 300px;
-  height: 6px;
+  height: 1px;
   background: #000000;
   border-radius: 3px;
   outline: none;
@@ -241,30 +260,22 @@ input[type="range"] {
 /* pallino (thumb) - Chrome, Safari */
 input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
-  width: 30px;
-  height: 30px;
+  width: 15px;
+  height: 15px;
   background: #000000;
   border-radius: 0%;
   cursor: ew-resize;
   border: none;
 }
 
-/* pallino - Firefox */
-input[type="range"]::-moz-range-thumb {
-  width: 18px;
-  height: 18px;
-  background: #CC2936;
-  border-radius: 50%;
-  border: none;
-  cursor: pointer;
-}
 
 /* barra - Firefox */
 input[type="range"]::-moz-range-track {
-  background: #ffdb27;
+  background: #F3B61F;
   height: 6px;
-  border-radius: 3px;
+  border-radius: px;
 }
+
 
 /*++++++++++++++++++++++++++++++++SCRITTURA LETTERE++++++++++++++++++++++++++++++++++++++++++++*/
 
@@ -309,9 +320,8 @@ input[type="range"]::-moz-range-track {
     flex-direction: row !important; /* Forza l'allineamento orizzontale */
     flex-wrap: wrap;               /* Permette di andare a capo se il testo è lungo */
     align-items: center;
-    justify-content: flex-start;
+    align-content: flex-start;
     width: 100%;                   /* Fondamentale per dare un limite al canvas */
-
     position:absolute;
     top: 60px;  
     gap: 1px; 
@@ -344,6 +354,7 @@ input[type="range"]::-moz-range-track {
     /* min-height: 100vh;
     padding: 40px; */
     transition: background-color 0.4s ease;
+    z-index: 1;
 }
 
 
@@ -358,12 +369,41 @@ input[type="range"]::-moz-range-track {
 }
 
 #canvasF{
+    scroll-behavior: smooth;
+    width: 72.65%;
     display:none;
-    background-color: #79cb16;
+    background-color: #7cb929;
     height: 100%;             /* Altezza massima (es. 80% della finestra) */
     overflow-y: auto;      /* Attiva lo scroll verticale se serve */
     padding: 20px;
     display: none;         /* Inizialmente nascosti */
+}
+
+
+/* La tua griglia originale rimane invariata */
+.galleryF {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 20px;
+    align-items: start;
+}
+
+/* Assicura che le immagini siano quadrate e con sfondo bianco */
+.galleryF img {
+    width: 100%;
+    aspect-ratio: 1 / 1; /* Forza il quadrato */
+    object-fit: contain; /* Mantiene la lettera intera senza tagliarla */
+    background-color: white;
+    cursor: pointer;
+    display: block;
+}
+
+/* Elemento invisibile per lo scroll */
+.scroll-anchor {
+    width: 0;
+    height: 0;
+    visibility: hidden;
+    pointer-events: none;
 }
 
 #canvas{
@@ -400,42 +440,48 @@ input[type="range"]::-moz-range-track {
     transform: scale(1.05);
 } */
 
+
+
+
 /* MODALE */
-#image-modalO,
-#image-modalF {
+/*  lo sfondo che copre tutto */
+#image-modalO, #image-modalF {
     position: fixed;
-    inset: 0;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.8); /* Nero all'80% di opacità */
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 1000;
+    z-index: 2000; /* Molto alto per stare sopra a tutto */
+    cursor: zoom-out; /* Suggerisce che cliccando si chiude */
 }
 
-
-#image-modalF{
-background: rgba(131, 131, 131, 0.9);}
-
-#image-modalO.hidden,
-#image-modalF.hidden {
-    display: none;
-}
-
-#image-modalO img,
-#image-modalF img {
+/* L'immagine dentro il modale */
+#image-modalO img, #image-modalF img {
     max-width: 90%;
     max-height: 90%;
+    box-shadow: 0 0 30px rgba(0,0,0,0.5);
+    cursor: default; /* Sull'immagine il cursore torna normale */
+    border: 5px solid black;
+    background-color: WHITE;
 }
 
-#close-modalO,
-#close-modalF {
-    position: absolute;
-    top: 20px;
-    right: 30px;
-    font-size: 40px;
-    color: white;
-    cursor: pointer;
+/* Classe per nascondere */
+.hidden {
+    display: none !important;
 }
 
 
+
+/* Stile per le immagini della scia del mouse */
+.mouse-trail-image {
+    object-fit: contain; /* Mantiene le proporzioni */
+    transition: opacity 0.5s ease-out; /* Effetto di dissolvenza quando spariscono */
+    user-select: none; /* Impedisce la selezione testuale */
+    -webkit-user-drag: none; /* Impedisce il trascinamento dell'immagine */
+}
 
 

@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en" data-step="0">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Input</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="page3">
+    <div class="main-panel">
+      <!-- simple centered inputs -->
+      <div style="position: absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:12px; padding:200px;">
+        <input id="line1" type="text" placeholder="- first line -" style=" font-size: 2vw; width:70vw; padding:10px; font-family:'Press Start 2P', monospace; border:4px solid #fff; background:#000; color:#fff; text-align:center;" />
+        <input id="line2" type="text" placeholder="- second line -" style=" font-size: 3vw; width:70vw; padding:10px; font-family:'Press Start 2P', monospace; border:4px solid #fff; background:#000; color:#fff; text-align:center;" />
+        <input id="line3" type="text" placeholder="- third line -" style=" font-size: 2vw; width:70vw; padding:10px; font-family:'Press Start 2P', monospace; border:4px solid #fff; background:#000; color:#fff; text-align:center;" />
+        <button id="saveInput" style=" font-size: 1vw; margin-top:12px; padding:12px 18px; font-family:'Press Start 2P', monospace; border:2px solid #fff; background:#000; color:#fff; cursor:pointer;">
+          save & continue
+        </button>
+      </div>
+    </div>
+    
+  
+  </div>
+  <script>
+    const btn = document.getElementById('saveInput');
+    btn?.addEventListener('click', () => {
+      const lines = [
+        document.getElementById('line1').value,
+        document.getElementById('line2').value,
+        document.getElementById('line3').value,
+      ];
+      localStorage.setItem('inputLines', JSON.stringify(lines));
+      window.location.href = 'page1.html';
+    });
+  </script>
+  <script src="app-flip-toggle.js" defer></script>
+</body>
+</html>

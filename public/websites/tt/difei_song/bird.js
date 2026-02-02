@@ -12,8 +12,8 @@ class Bird {
         // per-bird pixel offset (applied when drawing). Set by initBirds or slider.
         this.offsetX = 0;
         this.offsetY = 0;
-        // per-bird random shape (1-8 for SVG Asset 1-8)
-        this.shapeType = Math.floor(Math.random() * 8) + 1; // Random shape from 1-8
+        // per-bird random shape (0-9 for all available shapes)
+        this.shapeType = Math.floor(Math.random() * 10); // Random shape from 0-9
         // last movement heading (used for orientation when velocity is tiny)
         this.hx = 0;
         this.hy = -1;
@@ -93,6 +93,12 @@ class Bird {
     }
 
     update(birds, occupiedAlive, sepW, aliW, cohW, foods, gameState) {
+        // Free floating mode: update position directly from velocity and return early
+        if (gameState.useGridMovement === false) {
+            this.updateFreeFloating(birds, sepW, aliW, cohW, foods, gameState);
+            return;
+        }
+
         // Boids rules
         const separation = this.separate(birds, gameState);
         const alignment = this.align(birds, gameState);
@@ -206,6 +212,14 @@ class Bird {
             moveChance = 1.0;
         } else {
             moveChance = 0.5;
+        }
+
+        // Slowdown (Option A): when speedMultiplier < 1, reduce move frequency
+        {
+            const smForProb = (typeof gameState.speedMultiplier === 'number') ? gameState.speedMultiplier : 1.0;
+            if (smForProb < 1) {
+                moveChance = Math.max(0, Math.min(1, moveChance * smForProb));
+            }
         }
 
         let step = inPanic ? 2 : 1;
@@ -487,8 +501,9 @@ class Bird {
 
     predatorForce(gameState) {
         const dims = this.getGridDimensions(gameState);
+        const offsetX = gameState.renderOffsetX || 0;
         const offsetY = gameState.renderOffsetY || 0;
-        let px = Math.floor(gameState.mouseX / gameState.cellSize);
+        let px = Math.floor((gameState.mouseX - offsetX) / gameState.cellSize);
         let py = Math.floor((gameState.mouseY - offsetY) / gameState.cellSize);
 
         // wrap mouse coords into grid
@@ -548,6 +563,354 @@ class Bird {
         return { x: fx / mag, y: fy / mag };
     }
 
+    updateFreeFloating(birds, sepW, aliW, cohW, foods, gameState) {
+        // Free floating mode: continuous movement in pixel space, same logic as grid but with pixel coordinates
+        const canvasWidth = gameState.canvasWidth || 800;
+        const canvasHeight = gameState.canvasHeight || 600;
+        const cellSize = gameState.cellSize || 20;
+
+        // Boids rules (same as grid mode, but in pixel space)
+        const separation = this.separateFreeFloat(birds, gameState);
+        const alignment = this.alignFreeFloat(birds, gameState);
+        const cohesion = this.cohereFreeFloat(birds, gameState);
+
+        // Food attraction
+        let foodForce = this.foodForceFreeFloat(foods, gameState);
+        const G = gameState.effectiveGrid || gameState.gridSize;
+        const FOOD_WEIGHT = G * FOOD_WEIGHT_SCALE;
+
+        // Predator avoidance
+        let predatorForce = this.predatorForceFreeFloat(gameState);
+        let predMag = Math.sqrt(predatorForce.x * predatorForce.x + predatorForce.y * predatorForce.y);
+        let predatorActive = predMag > PREDATOR_FORCE_THRESHOLD;
+        let inPanic = predMag > PANIC_THRESHOLD;
+        let R = 100; // pixel-based radius
+        let weightScale = G * PREDATOR_WEIGHT_SCALE;
+        const PREDATOR_WEIGHT = PREDATOR_BASE_WEIGHT * weightScale;
+
+        // Force priority (same logic as grid)
+        let fx = 0, fy = 0;
+
+        // During homing, override all boids rules
+        if (gameState.homingPhase) {
+            const now = Date.now();
+            const lastToggle = gameState.homingLastToggle || 0;
+            let dxh = this.homeX - this.x;
+            let dyh = this.homeY - this.y;
+            
+            // Toroidal wrapping for homing
+            if (Math.abs(dxh) > canvasWidth / 2) {
+                dxh = dxh > 0 ? dxh - canvasWidth : dxh + canvasWidth;
+            }
+            if (Math.abs(dyh) > canvasHeight / 2) {
+                dyh = dyh > 0 ? dyh - canvasHeight : dyh + canvasHeight;
+            }
+
+            const rampStart = gameState.homingPhaseStartTime || lastToggle;
+            const rampMs = gameState.homingRampMs || HOMING_RAMP_MS;
+            const rampT = Math.max(0, Math.min(1, (now - rampStart) / rampMs));
+
+            let homeW = (typeof gameState.homeWeight === 'number') ? gameState.homeWeight : HOME_WEIGHT;
+            let bias = (typeof this.homeBias === 'number') ? this.homeBias : 1.0;
+
+            // Spring-like force toward home (scale down for pixel space)
+            fx = dxh * homeW * bias * rampT * 0.05;
+            fy = dyh * homeW * bias * rampT * 0.05;
+
+            // Also boost alignment during homing
+            if (alignment && (typeof gameState.homingAlignmentBoost === 'number')) {
+                fx += alignment.x * (gameState.homingAlignmentBoost - 1.0) * (gameState.aliWeight || 1.0) * rampT;
+                fy += alignment.y * (gameState.homingAlignmentBoost - 1.0) * (gameState.aliWeight || 1.0) * rampT;
+            }
+        } else if (predatorActive) {
+            // Priority 1: Escape from predator
+            fx = predatorForce.x * PREDATOR_WEIGHT;
+            fy = predatorForce.y * PREDATOR_WEIGHT;
+        } else {
+            let foodMag = Math.sqrt(foodForce.x * foodForce.x + foodForce.y * foodForce.y);
+
+            if (foodMag > 0.001) {
+                // Priority 2: Hunt food
+                fx = foodForce.x * FOOD_WEIGHT
+                    + separation.x * sepW
+                    + alignment.x * aliW
+                    + cohesion.x * cohW;
+
+                fy = foodForce.y * FOOD_WEIGHT
+                    + separation.y * sepW
+                    + alignment.y * aliW
+                    + cohesion.y * cohW;
+            } else {
+                // Priority 3: Pure boids behavior
+                fx = separation.x * sepW
+                    + alignment.x * aliW
+                    + cohesion.x * cohW;
+
+                fy = separation.y * sepW
+                    + alignment.y * aliW
+                    + cohesion.y * cohW;
+            }
+        }
+
+        // Apply velocity updates
+        this.vx += fx;
+        this.vy += fy;
+
+        // Stronger damping for free mode to prevent too-fast movement
+        const freeModeBaseDamping = 0.85; // Heavier damping than grid mode
+        let finalDamp = freeModeBaseDamping;
+        if (gameState.homingPhase) {
+            const now2 = Date.now();
+            const rampStart2 = gameState.homingPhaseStartTime || gameState.homingLastToggle || 0;
+            const rampMs2 = gameState.homingRampMs || HOMING_RAMP_MS;
+            const rampFactor2 = Math.max(0, Math.min(1, (now2 - rampStart2) / rampMs2));
+            finalDamp = freeModeBaseDamping * (1 - rampFactor2) + (typeof gameState.homingDamping === 'number' ? gameState.homingDamping : HOMING_DAMPING) * rampFactor2;
+        }
+        this.vx *= finalDamp;
+        this.vy *= finalDamp;
+
+        // Limit max velocity to prevent erratic behavior
+        const maxVel = 5;
+        const velMag = Math.sqrt(this.vx * this.vx + this.vy * this.vy);
+        if (velMag > maxVel) {
+            this.vx = (this.vx / velMag) * maxVel;
+            this.vy = (this.vy / velMag) * maxVel;
+        }
+
+        // Noise (reduced during homing ramp)
+        let noiseAmp = 0.3; // Reduced noise for smoother movement
+        if (gameState.homingPhase) {
+            const now3 = Date.now();
+            const rampStart3 = gameState.homingPhaseStartTime || gameState.homingLastToggle || 0;
+            const rampMs3 = gameState.homingRampMs || HOMING_RAMP_MS;
+            const rampFactor3 = Math.max(0, Math.min(1, (now3 - rampStart3) / rampMs3));
+            const noiseReduction = (typeof gameState.homingNoiseReduction === 'number') ? gameState.homingNoiseReduction : HOMING_NOISE_REDUCTION;
+            noiseAmp = 0.3 * (1 - rampFactor3) + noiseReduction * rampFactor3;
+        }
+        this.vx += (Math.random() * 2 - 1) * noiseAmp;
+        this.vy += (Math.random() * 2 - 1) * noiseAmp;
+
+        // Update position
+        this.x += this.vx;
+        this.y += this.vy;
+
+        // Toroidal wrapping for canvas
+        if (this.x < 0) this.x += canvasWidth;
+        if (this.x >= canvasWidth) this.x -= canvasWidth;
+        if (this.y < 0) this.y += canvasHeight;
+        if (this.y >= canvasHeight) this.y -= canvasHeight;
+
+        // Update heading for visual orientation
+        const mag = Math.sqrt(this.vx * this.vx + this.vy * this.vy);
+        if (mag > 0.0001) {
+            this.hx = this.vx / mag;
+            this.hy = this.vy / mag;
+        }
+
+        // Emit chirps in free mode based on movement energy
+        if (typeof maybeEmitBirdChirp === 'function') {
+            // Only attempt chirp when moving enough to be perceptible
+            if (mag > 0.05) {
+                maybeEmitBirdChirp(this, gameState);
+            }
+        }
+    }
+
+    separateFreeFloat(birds, gameState) {
+        // Same separation logic as grid, but in pixel space with toroidal wrapping
+        let steer = { x: 0, y: 0 };
+        let count = 0;
+        const canvasWidth = gameState.canvasWidth || 800;
+        const canvasHeight = gameState.canvasHeight || 600;
+        // Dynamic distance based on canvas size: ~5-7% of canvas width
+        let desired = Math.min(canvasWidth, canvasHeight) * 0.06;
+
+        for (let b of birds) {
+            if (b === this) continue;
+            let dx = b.x - this.x;
+            let dy = b.y - this.y;
+            
+            // Toroidal wrapping for toroidal space
+            if (Math.abs(dx) > canvasWidth / 2) {
+                dx = dx > 0 ? dx - canvasWidth : dx + canvasWidth;
+            }
+            if (Math.abs(dy) > canvasHeight / 2) {
+                dy = dy > 0 ? dy - canvasHeight : dy + canvasHeight;
+            }
+            
+            let d = Math.sqrt(dx * dx + dy * dy);
+
+            if (d > 0 && d < desired) {
+                let scale = (desired - d + 1);
+                steer.x += (this.x - b.x) * scale / (d + 1e-6);
+                steer.y += (this.y - b.y) * scale / (d + 1e-6);
+                count++;
+            }
+        }
+
+        if (count > 0) {
+            steer.x /= count;
+            steer.y /= count;
+            // Normalize and scale for reasonable magnitude
+            const mag = Math.sqrt(steer.x * steer.x + steer.y * steer.y);
+            if (mag > 1e-6) {
+                steer.x = (steer.x / mag) * 2;
+                steer.y = (steer.y / mag) * 2;
+            }
+        }
+        return steer;
+    }
+
+    alignFreeFloat(birds, gameState) {
+        // Same alignment logic as grid, but in pixel space
+        let sum = { x: 0, y: 0 };
+        let count = 0;
+        const canvasWidth = gameState.canvasWidth || 800;
+        const canvasHeight = gameState.canvasHeight || 600;
+        // Dynamic distance: ~10% of canvas
+        let neighbor = Math.min(canvasWidth, canvasHeight) * 0.1;
+
+        for (let b of birds) {
+            if (b === this) continue;
+            let dx = b.x - this.x;
+            let dy = b.y - this.y;
+            
+            // Toroidal wrapping
+            if (Math.abs(dx) > canvasWidth / 2) {
+                dx = dx > 0 ? dx - canvasWidth : dx + canvasWidth;
+            }
+            if (Math.abs(dy) > canvasHeight / 2) {
+                dy = dy > 0 ? dy - canvasHeight : dy + canvasHeight;
+            }
+            
+            let d = Math.sqrt(dx * dx + dy * dy);
+
+            if (d > 0 && d < neighbor) {
+                sum.x += b.vx;
+                sum.y += b.vy;
+                count++;
+            }
+        }
+
+        if (count > 0) {
+            sum.x /= count;
+            sum.y /= count;
+            // Normalize
+            const mag = Math.sqrt(sum.x * sum.x + sum.y * sum.y);
+            if (mag > 1e-6) {
+                sum.x = (sum.x / mag) * 1.5;
+                sum.y = (sum.y / mag) * 1.5;
+            }
+        }
+        return sum;
+    }
+
+    cohereFreeFloat(birds, gameState) {
+        // Same cohesion logic as grid, but in pixel space
+        let sum = { x: 0, y: 0 };
+        let count = 0;
+        const canvasWidth = gameState.canvasWidth || 800;
+        const canvasHeight = gameState.canvasHeight || 600;
+        // Dynamic distance: ~12% of canvas
+        let neighbor = Math.min(canvasWidth, canvasHeight) * 0.12;
+
+        for (let b of birds) {
+            if (b === this) continue;
+            let dx = b.x - this.x;
+            let dy = b.y - this.y;
+            
+            // Toroidal wrapping
+            if (Math.abs(dx) > canvasWidth / 2) {
+                dx = dx > 0 ? dx - canvasWidth : dx + canvasWidth;
+            }
+            if (Math.abs(dy) > canvasHeight / 2) {
+                dy = dy > 0 ? dy - canvasHeight : dy + canvasHeight;
+            }
+            
+            let d = Math.sqrt(dx * dx + dy * dy);
+
+            if (d > 0 && d < neighbor) {
+                // Track actual position accounting for wrapping
+                let targetX = b.x;
+                let targetY = b.y;
+                
+                // Unwrap to consistent side
+                if (Math.abs(this.x + canvasWidth - b.x) < Math.abs(this.x - b.x)) {
+                    targetX += canvasWidth;
+                }
+                if (Math.abs(this.y + canvasHeight - b.y) < Math.abs(this.y - b.y)) {
+                    targetY += canvasHeight;
+                }
+                
+                sum.x += targetX;
+                sum.y += targetY;
+                count++;
+            }
+        }
+
+        if (count > 0) {
+            sum.x = sum.x / count - this.x;
+            sum.y = sum.y / count - this.y;
+            // Normalize and scale for reasonable magnitude
+            const mag = Math.sqrt(sum.x * sum.x + sum.y * sum.y);
+            if (mag > 1e-6) {
+                sum.x = (sum.x / mag) * 1.2;
+                sum.y = (sum.y / mag) * 1.2;
+            }
+            return sum;
+        }
+        return sum;
+    }
+
+    foodForceFreeFloat(foods, gameState) {
+        // Same food attraction logic as grid
+        let sum = { x: 0, y: 0 };
+        const canvasWidth = gameState.canvasWidth || 800;
+        const canvasHeight = gameState.canvasHeight || 600;
+        const cellSize = gameState.cellSize || 20;
+
+        for (let f of foods) {
+            // Convert grid food coords to pixel coords
+            let fx = f.x * cellSize + cellSize / 2 - this.x;
+            let fy = f.y * cellSize + cellSize / 2 - this.y;
+            
+            // Toroidal wrapping for food attraction
+            if (Math.abs(fx) > canvasWidth / 2) {
+                fx = fx > 0 ? fx - canvasWidth : fx + canvasWidth;
+            }
+            if (Math.abs(fy) > canvasHeight / 2) {
+                fy = fy > 0 ? fy - canvasHeight : fy + canvasHeight;
+            }
+            
+            let d = Math.sqrt(fx * fx + fy * fy) + 1e-6;
+            let strength = 100 / (d + 1);
+            sum.x += (fx / d) * strength;
+            sum.y += (fy / d) * strength;
+        }
+        return sum;
+    }
+
+    predatorForceFreeFloat(gameState) {
+        // Predator avoidance in pixel space
+        if (!gameState.predatorX || !gameState.predatorY) return { x: 0, y: 0 };
+        const canvasWidth = gameState.canvasWidth || 800;
+        const canvasHeight = gameState.canvasHeight || 600;
+        
+        let dx = this.x - gameState.predatorX;
+        let dy = this.y - gameState.predatorY;
+        
+        // Toroidal wrapping for predator
+        if (Math.abs(dx) > canvasWidth / 2) {
+            dx = dx > 0 ? dx - canvasWidth : dx + canvasWidth;
+        }
+        if (Math.abs(dy) > canvasHeight / 2) {
+            dy = dy > 0 ? dy - canvasHeight : dy + canvasHeight;
+        }
+        
+        let dist = Math.sqrt(dx * dx + dy * dy) + 1e-6;
+        return { x: (dx / dist) * 0.2, y: (dy / dist) * 0.2 };
+    }
+
     getPredatorRadius(gridSize) {
         let t = Math.max(0, Math.min(1, (gridSize - PREDATOR_RADIUS_MIN_GRID) / 
             (PREDATOR_RADIUS_MAX_GRID - PREDATOR_RADIUS_MIN_GRID)));
@@ -555,10 +918,30 @@ class Bird {
     }
 
     display(gameState, cellSize, mask = false) {
-        let cx = this.x * cellSize + cellSize / 2 + (this.offsetX || 0);
-        const offsetY = gameState.renderOffsetY || 0;
-        let cy = this.y * cellSize + cellSize / 2 + (this.offsetY || 0) + offsetY;
+        let cx, cy;
+        if (gameState.useGridMovement === false) {
+            // Free floating: use pixel coordinates directly
+            cx = this.x + (this.offsetX || 0);
+            cy = this.y + (this.offsetY || 0);
+        } else {
+            // Grid mode: convert grid to pixel coordinates
+            const offsetX = gameState.renderOffsetX || 0;
+            const offsetY = gameState.renderOffsetY || 0;
+            cx = this.x * cellSize + cellSize / 2 + (this.offsetX || 0) + offsetX;
+            cy = this.y * cellSize + cellSize / 2 + (this.offsetY || 0) + offsetY;
+        }
         let size = cellSize * gameState.birdSizeScale;
+
+        // Check if bird shape would touch canvas edges - if so, don't display it
+        const canvasWidth = gameState.canvasWidth || (canvas ? canvas.width : 800);
+        const canvasHeight = gameState.canvasHeight || (canvas ? canvas.height : 600);
+        const halfSize = size / 2;
+        
+        // If any part of the bird would be outside canvas bounds, don't render it
+        if (cx - halfSize < 0 || cx + halfSize > canvasWidth || 
+            cy - halfSize < 0 || cy + halfSize > canvasHeight) {
+            return; // Skip rendering this bird
+        }
 
         // Determine which shape to use: per-bird shape or global shape mode
         let shapeMode = gameState.useRandomShapes ? this.shapeType : gameState.shapeMode;

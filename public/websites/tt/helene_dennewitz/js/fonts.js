@@ -1,10 +1,6 @@
 // font families to randomly choose from
 const fontFamilies = [
-'Arial, sans-serif', 
-'Arial Black, sans-serif', 
-'Arial Narrow, sans-serif', 
-'Arial Rounded MT Bold, sans-serif', 
-'Arial Unicode MS, sans-serif', 
+'Helvetica', 'sans-serif',
 
 ];
 
