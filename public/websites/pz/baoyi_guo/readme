@@ -200,3 +200,6 @@ body::-webkit-scrollbar {
 }
 
 I'm not sure if this is gonna work, but can we change the system setting of the computer which we are gonna use for presentation? in system setting--->Appearance--->Show scroll bars--->When scrolling
+
+to the kitten images:
+for example I can change the value of clay.img from left: 50vw; to right:9vw;but bottom:10vh;didn't work, the images will disappear,however if I write bottom:-10vh; I can see the image on the screen.

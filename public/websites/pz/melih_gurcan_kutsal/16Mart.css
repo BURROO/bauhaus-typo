@@ -1,0 +1,333 @@
+/* --- RESET & FONTS --- */
+:root {
+    --bg-color: #000;
+    --text-color: #f0f0f0;
+    --punk-red: #cc0000;
+    --font-header: 'Oswald', sans-serif;
+    --font-body: 'Courier Prime', monospace;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: var(--font-header);
+    height: 100vh;
+    overflow: hidden; /* Scroll yok */
+}
+
+/* --- KONTEYNER AYARLARI (DÜZELTİLDİ) --- */
+.shattered-container {
+    display: flex;
+    width: 100vw; /* Ekran genişliğine tam otursun */
+    height: 100vh;
+    margin: 0; /* Kaydırma yok */
+    background: #000;
+    align-items: stretch;
+    padding: 0 10px; /* Kenarlara çok yapışmasın diye minik boşluk */
+}
+
+/* --- GENEL PANEL STİLİ --- */
+.panel {
+    position: relative;
+    flex: 1; /* Hepsi eşit genişlikte başlar */
+    border-right: 2px solid #000;
+    overflow: hidden;
+    transition: flex 0.6s cubic-bezier(0.25, 1, 0.5, 1); /* Yumuşak geçiş */
+    cursor: crosshair;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #080808;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+}
+
+/* Son panelin sağ çizgisini kaldır */
+.panel:last-child {
+    border-right: none;
+}
+
+/* --- FARKLI AÇILAR (ROTATION / SKEW) --- */
+
+/* Panel 1: Sola Yatık */
+.deg1 {
+    rotate: calc(10deg);
+    transform: skewX(8deg); 
+    z-index: 1;
+    background: #050505;
+    border-left: 2px solid #000;
+}
+
+/* Panel 2: Sağa Yatık */
+.deg2 {
+    rotate: calc(-10deg);
+    transform: skewX(-10deg);
+    z-index: 2;
+    background: #0a0a0a;
+}
+
+/* Panel 3: Sola Yatık */
+.deg3 {
+    rotate: calc(15deg);
+    transform: skewX(5deg);
+    z-index: 3;
+    background: #050505;
+}
+
+/* Panel 4: Sağa Yatık (Kapanış) */
+.deg4 {
+    rotate: calc(25deg);
+    transform: skewX(-5deg);
+    z-index: 4;
+    background: #0a0a0a;
+}
+
+/* --- HOVER ETKİLEŞİMİ --- */
+.panel:hover {
+    flex: 6; /* Genişleme oranı */
+    z-index: 50; /* En öne gelir */
+    border: 2px solid var(--punk-red);
+    transform: skewX(0deg); /* Hover olunca DÜZELSİN (Okuma kolaylığı için) */
+}
+
+/* --- ARKA PLAN VİDEOSU --- */
+.bg-video {
+    position: absolute;
+    top: 0; left: -50%; 
+    width: 200%; /* Geniş tutuyoruz ki eğiklikte boşluk kalmasın */
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.3; /* Normalde soluk */
+    filter: grayscale(100%) contrast(150%);
+    transition: 0.5s;
+    
+    /* ÖNEMLİ: Mouse'un videoya takılmasını engeller, panele basmasını sağlar */
+    pointer-events: none; 
+}
+
+.panel:hover .bg-video {
+    opacity: 1;
+    filter: grayscale(0%) contrast(110%);
+}
+
+.panel:hover .bg-video {
+    opacity: 1;
+    filter: grayscale(0%) contrast(110%);
+}
+
+/* --- İÇERİK DÜZELTME (COUNTER-SKEW) --- */
+/* Panel eğikken içeriği ters eğerek yazının düz durmasını sağlıyoruz */
+.deg1 .content { rotate: calc(2deg); }
+.deg2 .content { rotate: calc(-2deg); }
+.deg3 .content { rotate: calc(-5deg); }
+.deg4 .content { rotate: calc(5deg); }
+
+/* Hover olunca panel düzeldiği için içeriği de sıfırlıyoruz */
+.panel:hover .content {
+    transform: skewX(0deg);
+}
+
+.content {
+    position: relative;
+    z-index: 10;
+    text-align: center;
+    width: 100%;
+    transition: transform 0.5s;
+    /* İçeriğin taşmasını engellemek için */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+
+
+/* --- YAZILAR --- */
+.vertical-title {
+    position: absolute;
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    font-size: clamp(1.5rem, 3vw, 3rem); /* Responsive Font */
+    color: #555;
+    text-transform: uppercase;
+    letter-spacing: 5px;
+    transition: opacity 0.2s;
+    background: #000;
+    padding: 15px 5px;
+    white-space: nowrap; /* Satır kaymasını engelle */
+}
+
+.panel:hover .vertical-title {
+    opacity: 0; /* Hoverda kaybolsun */
+}
+
+/* --- İÇ METİN (Açılınca Görünen) --- */
+.inner-text {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.4s ease 0.1s;
+    width: 90%; /* Kenarlardan taşmayı önler */
+    max-width: 800px;
+}
+
+.panel:hover .inner-text {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.inner-text h1 {
+    font-size: clamp(2.5rem, 5vw, 5rem); /* Responsive Başlık */
+    color: var(--punk-red);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    background: #000;
+    display: inline-block;
+    padding: 5px 15px;
+}
+
+.inner-text p.typewriter {
+    font-family: var(--font-body);
+    font-size: clamp(0.9rem, 1.2vw, 1.2rem); /* Responsive Metin */
+    line-height: 1.4;
+    color: #ccc;
+    background: rgba(0,0,0,0.85);
+    padding: 20px;
+    text-align: left;
+    border-left: 4px solid var(--punk-red);
+    box-shadow: 10px 10px 0 #000;
+}
+
+.highlight {
+    color: var(--punk-red);
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+/* --- MOBİL UYUMLULUK --- */
+@media (max-width: 768px) {
+    .shattered-container {
+        flex-direction: column;
+        width: 100vw; margin: 0; height: auto;
+    }
+    .panel {
+        transform: skewX(0) !important;
+        height: 200px;
+        width: 100%;
+        border-bottom: 2px solid #222;
+        margin: 0;
+    }
+    .panel:hover { height: 500px; flex: none; }
+    .content { transform: skewX(0) !important; }
+    .vertical-title { writing-mode: horizontal-tb; transform: rotate(0); }
+}
+
+
+
+/* --- KAOTİK YAN ŞERİTLER (MARAŞ STİLİ) --- */
+
+a.side-strip {
+    position: fixed; 
+    top: -10%; 
+    height: 120vh; /* Ekrandan uzun */
+    width: 45px; 
+    z-index: 100; /* Panellerin üzerinde dursun */
+    opacity: 0.6; 
+    writing-mode: vertical-rl; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center;
+    font-family: 'Oswald', sans-serif; /* 16 Mart fontu */
+    font-size: 1.2rem; 
+    letter-spacing: 3px; 
+    color: #888;
+    overflow: hidden;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    border: none;
+    background: rgba(0,0,0,0.3);
+    
+    /* Videoların üzerinde "hayalet" gibi durması için */
+    mix-blend-mode: exclusion; 
+}
+
+/* SOL TARAFTAKİ KAOS (Dönüş Açıları) */
+.left-strip { 
+    left: 5px; 
+    transform: rotate(2deg); 
+    border-right: 1px dashed #444;
+}
+.left-strip2 { 
+    left: 40px; 
+    transform: rotate(-1.5deg) translateY(20px);
+    z-index: 99;
+}
+.left-strip3 { 
+    left: 75px; 
+    transform: rotate(1deg) translateY(-20px);
+    z-index: 98;
+    opacity: 0.4;
+}
+
+/* SAĞ TARAFTAKİ KAOS (Dönüş Açıları) */
+.right-strip { 
+    right: 5px; 
+    transform: rotate(-2deg); 
+    border-left: 1px dashed #444;
+}
+.right-strip2 { 
+    right: 40px; 
+    transform: rotate(1.5deg) translateY(30px);
+    z-index: 99;
+}
+.right-strip3 { 
+    right: 75px; 
+    transform: rotate(-1deg) translateY(-10px);
+    z-index: 98;
+    opacity: 0.4;
+}
+
+/* İçerik Animasyonu */
+.strip-content { animation: scroll-strip 15s linear infinite; }
+
+/* Sağ taraftakiler ters yöne aksın */
+.right-strip .strip-content, 
+.right-strip2 .strip-content, 
+.right-strip3 .strip-content { 
+    animation-direction: reverse; 
+}
+
+/* --- HOVER EFEKTLERİ --- */
+/* Üzerine gelince netleşsin, kırmızı olsun ve öne çıksın */
+a.side-strip:hover {
+    opacity: 1 !important;
+    background: var(--punk-red); 
+    color: #000;
+    z-index: 200 !important; /* En, en öne */
+    transform: scale(1.05) rotate(0deg) !important; /* Dümdüz olsun */
+    mix-blend-mode: normal; /* Karışım modunu kapat, net görünsün */
+    box-shadow: 0 0 20px var(--punk-red);
+    cursor: pointer;
+}
+
+a.side-strip:hover .strip-content {
+    font-weight: bold;
+    color: #000;
+}
+
+/* Animasyon Tanımı */
+@keyframes scroll-strip {
+    from { transform: translateY(0); } 
+    to { transform: translateY(-50%); }
+}
+
+/* MOBİL GİZLEME (Opsiyonel: Mobilde ekranı kapatmasın diye) */
+@media (max-width: 768px) {
+    .left-strip2, .left-strip3, .right-strip2, .right-strip3 {
+        display: none; /* Mobilde sadece 1'er tane kalsın */
+    }
+    .left-strip, .right-strip {
+        width: 30px;
+        font-size: 0.8rem;
+    }
+}

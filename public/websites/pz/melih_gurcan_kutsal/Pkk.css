@@ -1,0 +1,175 @@
+/* --- TEMEL AYARLAR --- */
+:root {
+    --bg-color: #050505;
+    --card-bg: #111;
+    --text-color: #e0e0e0;
+    --highlight: #ff0000; /* PKK dosyasında kırmızı tema */
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: 'Courier Prime', monospace;
+    overflow-x: hidden;
+    height: 100vh;
+}
+
+/* --- NAVİGASYON (ÖNCEKİ SAYFALARLA AYNI) --- */
+a.side-strip {
+    position: fixed; top: 0; height: 100vh; width: 40px; 
+    z-index: 999; opacity: 0.5; writing-mode: vertical-rl; 
+    display: flex; align-items: center; justify-content: center;
+    background: rgba(0,0,0,0.8); text-decoration: none; color: #c71616;
+    transition: 0.3s;
+    border: none; mix-blend-mode: exclusion;
+}
+.left-strip { left: 0; border-right: 1px solid #333; }
+.right-strip { right: 0; border-left: 1px solid #333; }
+.strip-content { animation: scroll-v 10s linear infinite; font-family: 'Chakra Petch', sans-serif; }
+a.side-strip:hover { color: var(--highlight); opacity: 1; }
+@keyframes scroll-v { from {transform: translateY(0);} to {transform: translateY(-50%);} }
+
+/* --- HEADER --- */
+.header-overlay {
+    position: absolute; top: 20px; left: 50%; transform: translateX(-50%);
+    text-align: center; z-index: 50; pointer-events: none;
+    mix-blend-mode: overlay;
+}
+.header-overlay h1 { font-family: 'Chakra Petch', sans-serif; font-size: 3rem; color: #f5f5f5; letter-spacing: 5px; }
+.header-overlay p { font-size: 1rem; color: var(--highlight); }
+
+/* --- ARŞİV KONTEYNERİ (IZGARA) --- */
+.archive-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100vh;
+    padding: 60px 0; /* Header ve footer payı */
+    gap: 10px; /* Satırlar arası boşluk */
+}
+
+/* --- HAREKETLİ SATIRLAR --- */
+.scroll-row {
+    width: 100%;
+    height: 22vh; /* Ekranı 4 satıra böl */
+    overflow: hidden; /* Taşanı gizle */
+    position: relative;
+    border-top: 1px solid #222;
+    border-bottom: 1px solid #222;
+    background: #0a0a0a;
+    display: flex;
+    align-items: center;
+}
+
+/* İçerik Şeridi (Resimlerin olduğu uzun şerit) */
+.row-inner {
+    display: flex;
+    gap: 20px;
+    padding: 0 20px;
+    width: max-content; /* İçerik kadar uza */
+    /* Animasyon JS ile değil CSS ile sonsuz döngü için klonlama gerekir ama 
+       basitlik için çok uzun süre giden bir animasyon yapacağız */
+}
+
+/* Sola Akanlar */
+.left-scroll .row-inner {
+    animation: scroll-left 40s linear infinite;
+}
+/* Sağa Akanlar */
+.right-scroll .row-inner {
+    animation: scroll-right 40s linear infinite;
+    /* Başlangıçta soldan değil sağdan başlaması için yön ayarı */
+    flex-direction: row-reverse; 
+}
+
+/* --- SATIR HOVER (DURDURMA) --- */
+.scroll-row:hover .row-inner {
+    animation-play-state: paused;
+}
+
+/* --- KART YAPISI --- */
+.archive-card {
+    position: relative;
+    height: 18vh; /* Satıra sığsın */
+    min-width: 250px; /* Resim genişliği */
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    cursor: pointer;
+    border: 1px solid #333;
+    overflow: hidden;
+}
+
+.archive-card img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    filter: grayscale(100%) contrast(120%);
+    transition: 0.4s;
+}
+
+/* --- KART HOVER (BÜYÜME VE BİLGİ) --- */
+.archive-card:hover {
+    transform: scale(1.5); /* Büyüt */
+    z-index: 100;
+    box-shadow: 0 0 30px #b67777;
+    border-color: var(--highlight);
+    min-width: 450px; /* Yazı için yer aç */
+}
+
+.archive-card:hover img {
+    filter: grayscale(0%);
+    width: 50%; /* Resmi sola sıkıştır */
+    float: left; /* Yazı sağına gelsin diye */
+}
+
+/* --- BİLGİ KUTUSU (BAŞLANGIÇTA GİZLİ) --- */
+.info-box {
+    position: absolute;
+    top: 0; right: 0;
+    width: 50%; /* Resmin geri kalan yarısı */
+    height: 100%;
+    background: rgba(0,0,0,0.9);
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    opacity: 0; /* Gizli */
+    transition: 0.3s 0.1s; /* Hafif gecikmeli gelsin */
+    border-left: 2px solid var(--highlight);
+}
+
+.archive-card:hover .info-box {
+    opacity: 1; /* Göster */
+}
+
+.info-box h3 {
+    font-family: 'Chakra Petch', sans-serif;
+    color: var(--highlight);
+    font-size: 0.9rem;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+}
+
+.info-box p {
+    font-size: 0.7rem;
+    line-height: 1.4;
+    color: #ccc;
+}
+
+/* --- ANİMASYONLAR --- */
+@keyframes scroll-left {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); } /* Yarıya kadar kaydır */
+}
+
+@keyframes scroll-right {
+    0% { transform: translateX(-50%); } /* Tersten başla */
+    100% { transform: translateX(0); }
+}
+
+/* ARKA PLAN NOISE */
+.noise-bg {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: url('https://media.giphy.com/media/oEI9uBYSzLpBK/giphy.gif');
+    opacity: 0.05; pointer-events: none; z-index: -1;
+}

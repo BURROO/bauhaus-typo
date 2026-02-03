@@ -28,8 +28,9 @@ body{
 
 .image-container {
     position:absolute;
-    width: 1000px;
-    left: 50vw;
+    width: 100vw;
+    height: 100%;
+    left: 65vw;
     top: 0;
     transform: translate(-50%);
 }
@@ -103,8 +104,8 @@ p {
     width: 20%; 
     z-index: 10;
     position: absolute;
-    top: 60vh;
-    left: 50vw;
+    right:8vw;
+    top:60vh;
 }
 .clay-img:hover {
     transition: all 0.3s ease-in-out;
@@ -115,7 +116,7 @@ p {
     z-index: 10;
     position: absolute;
     top: 25vh;
-    left: 50vw;
+    right:9vw;
 }
 .pizza-img:hover {
     transition: all 0.3s ease-in-out;
@@ -137,7 +138,7 @@ p {
     z-index: 10;
     position: absolute;
     top: 8vh;
-    left: 37vw;
+    right:23vw;
 }
 .plant-img:hover {
     transition: all 0.3s ease-in-out;
@@ -159,7 +160,7 @@ p {
     z-index: 10;
     position: absolute;
     top: 53vh;
-    left: 33vw;
+    right:22vw;
 }
 .aluminum-img:hover {
     transition: all 0.3s ease-in-out;
