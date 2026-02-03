@@ -38,7 +38,7 @@ export const ContextMenuProvider = ({
   // Set the initial mode
   const [screenWidth, setScreenWidth] = useState<number|null>(null);
   const [screenHeight, setScreenHeight] = useState<number|null>(null);
-  const [activeIndex, setActiveIndex] = useState<number|null>(null)
+  const [activeIndex, setActiveIndex] = useState<number|null>(0)
   const [isHovered, setIsHovered] = useState<boolean>(false)
 
   const [view, setView] = useState<'outside'|'inside'>('outside')

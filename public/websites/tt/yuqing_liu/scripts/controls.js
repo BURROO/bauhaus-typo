@@ -185,88 +185,38 @@ const controlsSelect = [
 const controlsSwitch = []
 
 // Helper function to update preview in control panel
+// 🔥 修改：更新预览 - 动态显示输入文本的第一个字符
 const updatePreview = () => {
-    const svgPreview = document.getElementById('svg-preview')
-    if (!svgPreview) return
+    const previewSvg = document.getElementById('svg-preview');
+    if (!previewSvg) return;
     
-    if (!window.magnifierState) {
-        window.magnifierState = {
-            zoom: 12,
-            mouseX: 0,
-            mouseY: 0,
-            isActive: false
-        };
+    previewSvg.innerHTML = '';
+    
+    // 🔥 关键修改：从当前输入文本获取第一个字符
+    const inputText = bitmapFont.preview.text || '';
+    const character = inputText.charAt(0) || 'A'; // 如果没有输入，默认显示 'A'
+    const currentLetter = bitmapFont.glyphs[character] || bitmapFont.glyphs['.notdef'];
+    
+    const previewGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+    previewGroup.setAttribute('transform', 'translate(500, 100)');
+    
+    // 只渲染字体，不添加同心圆和文字
+    for (let i = 0; i < 5; i++) {
+        for (let k = 0; k < 5; k++) {
+            const pixelIndex = k * 5 + i;
+            const currentPixel = currentLetter[pixelIndex];
+            
+            if (currentPixel !== 1) continue;
+            
+            const x = (i - 2) * 40;
+            const y = (k - 2) * 40;
+            
+            const pixel = renderPixel(x, y, 15, 0);
+            previewGroup.appendChild(pixel);
+        }
     }
     
-    // 清空预览区域
-    svgPreview.innerHTML = ''
-    
-    // 🔥 修改：同心圆 + 圆形文字路径
-    const centerCircles = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-    centerCircles.setAttribute('id', 'center-circles');
-    centerCircles.setAttribute('opacity', '0.6');
-    
-    // 创建5个同心圆
-    const numRings = 5;
-    const maxRadius = 45;
-    
-    for (let i = 1; i <= numRings; i++) {
-        const circleRing = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-        circleRing.setAttribute('cx', '50%');
-        circleRing.setAttribute('cy', '50%');
-        const radius = `${10 + (i - 1) * (maxRadius - 10) / (numRings - 1)}%`;
-        circleRing.setAttribute('r', radius);
-        circleRing.setAttribute('fill', 'none');
-        circleRing.setAttribute('stroke', 'currentColor');
-        circleRing.setAttribute('stroke-width', '2');
-        centerCircles.appendChild(circleRing);
-    }
-    
-    // 🔥 修改：圆形路径文字 "MAGNIFY" - 围绕最外层圆（45%）
-    const textPathGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-    textPathGroup.setAttribute('id', 'circular-text');
-    
-    // 定义圆形路径（最外层圆，半径 45%）
-    const textRadius = 45;
-    const pathId = 'text-circle-path';
-    const defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
-    const circlePath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-    
-    // 计算圆形路径（从顶部12点位置开始，顺时针）
-    const centerX = 200; // 50% of 400
-    const centerY = 150; // 50% of 300
-    const r = (textRadius / 100) * Math.min(400, 300); // 相对于 viewBox
-    
-    // 使用完整圆形路径
-    const pathData = `
-        M ${centerX}, ${centerY - r}
-        A ${r}, ${r} 0 1, 1 ${centerX - 0.001}, ${centerY - r}
-    `;
-    
-    circlePath.setAttribute('id', pathId);
-    circlePath.setAttribute('d', pathData);
-    circlePath.setAttribute('fill', 'none');
-    defs.appendChild(circlePath);
-    textPathGroup.appendChild(defs);
-    
-    // 创建文字元素
-    const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-    text.setAttribute('font-family', 'Courier New, Courier, monospace');
-    text.setAttribute('font-size', '11'); // 🔥 修改：字号从 10 改为 11，与控制面板一致
-    text.setAttribute('fill', 'currentColor');
-    text.setAttribute('letter-spacing', '2'); // 🔥 修改：字间距从 3 改为 2，更紧凑
-    
-    const textPath = document.createElementNS('http://www.w3.org/2000/svg', 'textPath');
-    textPath.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', `#${pathId}`);
-    textPath.setAttribute('startOffset', '50%');
-    textPath.setAttribute('text-anchor', 'middle');
-    textPath.textContent = 'MAGNIFY';
-    
-    text.appendChild(textPath);
-    textPathGroup.appendChild(text);
-    
-    svgPreview.appendChild(centerCircles);
-    svgPreview.appendChild(textPathGroup);
+    previewSvg.appendChild(previewGroup);
 }
 
 // 🔥 新增：放大镜功能 - 在主视图上添加鼠标悬停监听
@@ -834,7 +784,7 @@ const createRadialButton = () => {
 
 createRadialButton()
 
-// 修复:右侧纵向渐变色条 - 确保主视图字体颜色更新
+// 修复:右侧纵向渐变色条 - 确保主視圖字體顏色更新
 const colorGradientBar = document.getElementById('color-gradient-bar');
 
 if (colorGradientBar) {
@@ -1829,6 +1779,9 @@ window.addEventListener('load', () => {
                     ? 2 * progress * progress
                     : 1 - 2 * (1 - progress) * (1 - progress);
                 
+                
+
+                
                 // 根据配置计算参数
                 bitmapFont.parameters.radius = currentConfig.startRadius + (currentConfig.endRadius - currentConfig.startRadius) * easeProgress;
                 bitmapFont.parameters.axisCount = Math.round(currentConfig.startAxis + (currentConfig.endAxis - currentConfig.startAxis) * easeProgress);
@@ -2066,3 +2019,17 @@ const resetMagnifier = () => {
     // 恢复初始视图
     updatePreview();
 };
+
+// 🔥 新增：控制右下角按钮的提示文字显示
+const showControlsBtn = document.getElementById('show-controls-btn');
+const controlsTooltip = document.querySelector('.controls-btn-tooltip');
+
+if (showControlsBtn && controlsTooltip) {
+    showControlsBtn.addEventListener('mouseenter', () => {
+        controlsTooltip.style.opacity = '1';
+    });
+    
+    showControlsBtn.addEventListener('mouseleave', () => {
+        controlsTooltip.style.opacity = '0';
+    });
+}

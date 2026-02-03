@@ -155,18 +155,14 @@ const List = ({ dataStudents, dataCourses}: Props) => {
                     <ListFooter
                     height={rowHeight*4}
                     setFilter={(filter) => {
-
                         updateFilter(filter)
-                        // setFilter()
                     }}
                     filter={filter}
-                    setSorting={setSorting}
-                    // sorting={sorting}
+                    // setSorting={setSorting}
                     setSearchTerm={setSearchTerm}
-                    // searchTerm={searchTerm}
                     />
                 </div>
-                <div 
+                {/* <div 
                 style={{ 
                     position: "fixed", 
                     zIndex: -1,
@@ -177,7 +173,7 @@ const List = ({ dataStudents, dataCourses}: Props) => {
                 }}>
                     <Background text={"Bauhaus Typography"} dir={1}/>
                     <Background text={"EXHIBITION"} dir={-1}/>
-                </div>
+                </div> */}
             </div>
             <ListSVG
             dataStudents={dataStudents}

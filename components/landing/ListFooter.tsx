@@ -1,18 +1,16 @@
-import { TypeCourse, TypeCoursesNames } from '@/types/project-type';
+import {TypeCoursesNames } from '@/types/project-type';
 import styles from './ListFooter.module.css'
 
 
-
-
-interface Sorting {
-    column: 'Name' | 'Title' | 'Course';
-    direction: 'asc' | 'desc'
-}
+// interface Sorting {
+//     column: 'Name' | 'Title' | 'Course';
+//     direction: 'asc' | 'desc'
+// }
 
 interface Props {
     setFilter: (value: string) => void;
     filter: string;
-    setSorting: (value: any) => void;
+    // setSorting: (value: any) => void;
     // sorting: Sorting
     setSearchTerm: (value: string) => void;
     // searchTerm: string;
@@ -22,7 +20,7 @@ interface Props {
 const ListFooter = ({
     setFilter,
     filter,
-    setSorting,
+    // setSorting,
     // sorting,
     setSearchTerm,
     // searchTerm,

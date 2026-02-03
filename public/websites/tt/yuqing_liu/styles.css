@@ -397,7 +397,7 @@ aside h2{
     width: 100%;
     padding: 5px;
     background: transparent;
-    border: 1px solid currentColor;
+    border: 0.3px solid currentColor; /* 🔥 从 1px 改为 0.3px */
     color: inherit;
     font-size: 11px;
     cursor: default;
@@ -648,13 +648,13 @@ input[type=color]::-moz-color-swatch {
     position: absolute;
     bottom: calc(100% + 8px);
     left: 50%;
-    transform: translateX(-50%);
+    transform: translateX(-50%); /* 🔥 移除旋转，保持文字正向 */
     font-size: 9px;
     color: rgba(128, 128, 128, 0.7);
     white-space: nowrap;
     pointer-events: none;
     opacity: 0;
-    transition: opacity 0.3s ease;
+    transition: opacity 0.3s ease; /* 🔥 只过渡透明度，不过渡 transform */
     font-family: 'Courier New', Courier, monospace;
     letter-spacing: 0.05em;
     font-weight: bold;
@@ -662,6 +662,7 @@ input[type=color]::-moz-color-swatch {
 
 #show-controls-btn:hover::before {
     opacity: 1;
+    /* 🔥 删除：不改变 transform，文字始终保持正向 */
 }
 
 /* 新增：右上角播放按钮的提示文字 - 下方 */
@@ -822,15 +823,15 @@ input[type=color]::-moz-color-swatch {
     margin: 0;
     background: transparent;
     color: currentColor;
-    border: 1px solid currentColor; /* 🔥 细线框（1px） */
+    border: 0.3px solid currentColor; /* 🔥 从 1px 改为 0.3px */
     cursor: pointer;
     font-family: 'Courier New', Courier, monospace;
-    font-size: 12px; /* 🔥 与控制面板一致 */
+    font-size: 12px;
     letter-spacing: 0.05em;
     text-transform: uppercase;
     transition: opacity 0.3s ease;
     box-sizing: border-box;
-    box-shadow: none; /* 🔥 无阴影 */
+    box-shadow: none;
 }
 
 #btn-download-font:hover {
@@ -854,19 +855,49 @@ input[type=color]::-moz-color-swatch {
     padding: 10px 12px;
     margin: 0;
     box-sizing: border-box;
-    border: 1px solid currentColor; /* 🔥 细线框（1px） */
+    border: 0.3px solid currentColor; /* 🔥 从 1px 改为 0.3px */
     background: transparent;
     color: currentColor;
     font-family: 'Courier New', Courier, monospace;
-    font-size: 12px; /* 🔥 与控制面板一致 */
+    font-size: 12px;
     letter-spacing: 0.02em;
     resize: vertical;
     min-height: 60px;
     outline: none;
-    box-shadow: none; /* 🔥 无阴影 */
+    box-shadow: none;
 }
 
 #type-input:focus {
     border-color: currentColor;
     outline: none;
+}
+
+/* 修改：右下角控制按钮 - 移除 ::before 伪元素的提示 */
+#show-controls-btn::before {
+    display: none; /* 🔥 完全隐藏伪元素 */
+}
+
+/* 🔥 新增：独立的提示文字元素（不受按钮旋转影响）*/
+.controls-btn-tooltip {
+    position: fixed; /* 🔥 使用 fixed 定位，独立于按钮 */
+    right: 5px;
+    bottom: calc(20px + 40px + 8px); /* 🔥 按钮底部 + 按钮高度 + 间距 */
+    font-size: 9px;
+    color: rgba(128, 128, 128, 0.7);
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    font-family: 'Courier New', Courier, monospace;
+    letter-spacing: 0.05em;
+    font-weight: bold;
+    z-index: 1001; /* 🔥 确保在按钮上方 */
+    text-align: center;
+    transform-origin: center center; /* 🔥 确保不旋转 */
+}
+
+/* 🔥 悬停按钮时显示提示 */
+#show-controls-btn:hover + .controls-btn-tooltip,
+#show-controls-btn:hover ~ .controls-btn-tooltip {
+    opacity: 1;
 }
