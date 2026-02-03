@@ -231,25 +231,36 @@ export const convertTableToSVG = ({ data, screenWidth, screenHeight, rowHeight, 
 export const adjustYtoOrder = (orderedList: TypeProjectForSVG[][]) => {
 
 
+        let accY = 0;
 
     return  orderedList.map((row: TypeProjectForSVG[], i, all) => {
 
-        const accHeight = all.slice(0, i).reduce((acc, item) => acc+ item[0].height, 0)
+
+            const y = accY;
+            accY += row[0].height;
+
+            return row.map(col => ({
+                ...col,
+                y
+            }));
 
 
-        return row.map(col => {
+        // const accHeight = all.slice(0, i).reduce((acc, item) => acc+ item[0].height, 0)
 
-            // const y = i * col.height
 
-            const y = accHeight
+        // return row.map(col => {
+
+        //     // const y = i * col.height
+
+        //     const y = accHeight
 
             
-            return ({
-                ...col,
-                y: y,
-                fill: col.fill,
-            })
-        })
+        //     return ({
+        //         ...col,
+        //         y: y,
+        //         fill: col.fill,
+        //     })
+        // })
     })
 }
 
