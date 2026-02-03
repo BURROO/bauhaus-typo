@@ -53,25 +53,27 @@ const Background = ({ text, dir }: Props) => {
 
     }, [])
 
+    const [animate, setAnimate] = useState(false)
 
-    if(!isInactive) return;
+    useEffect(() => {
+        requestAnimationFrame(() => {
+            setAnimate(true)
+        })
+    }, [])
+
+
+    // if(!isInactive) return;
 
 
     return (
         <div
         className={styles.background}
-        style={{ 
-            // filter: isInactive ? "" : `blur(50px)`,
-            // opacity: isInactive ? "" : 0.2,
-            // filter: isInactive ? "" : `blur(50px)`,
-            // opacity: isInactive ? "" : 0.2,
-        }}
         >
-            <div className={styles.backgroundWrapper}
+            <div 
+            // className={styles.backgroundWrapper}
+            className={`${styles.backgroundWrapper} ${animate ? styles.animate : ""}`}
              style={{
-                // animationPlayState: isInactive ? "" : "paused" ,
                 animationDirection: dir === 1 ? 'normal' : 'reverse',
-                // transform: `translate(calc(${-ofst/30}%))`, 
                 animationDuration: `${text.length * (isInactive ? 2000 : 4000)}ms`
             }}
             >

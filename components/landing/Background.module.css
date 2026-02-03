@@ -39,8 +39,22 @@
   letter-spacing: -0.05rem;
   color: white;
   line-height: 0.95;
-  animation: marquee 16s infinite linear;
+  /* animation: marquee 16s infinite linear; */
   width: max-content;
   text-transform: uppercase;
   /* transform: translateX(-50%); */
+}
+
+.backgroundWrapperStatic {
+  font-size: 68vh;
+  line-height: 0.95;
+  font-family: "UfficioMono-Bold";
+  color: white;
+  transform: translateX(0);
+  will-change: auto;
+}
+
+.animate {
+  animation: marquee 16s infinite linear;
+  will-change: transform;
 }
