@@ -37,7 +37,7 @@ const Layout = ({ children }: Props) => {
             <ContextMenuProvider>
                 {children}
             </ContextMenuProvider>
-            {/* {!isPreloaded && <Preloader onDone={() => setIsPreloaded(true)}/>} */}
+            {!isPreloaded && <Preloader onDone={() => setIsPreloaded(true)}/>}
         </>
     )
 }
