@@ -59,8 +59,8 @@
 
 .websiteIframe{
   position: absolute;
-  width: 100%;
-  height: 100%;
+  width: 80%;
+  height: 80%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -73,8 +73,8 @@
 
 .websiteIframe iframe{
   position: absolute;
-  width: 80%;
-  height: 80%;
+  width: 100%;
+  height: 100%;
   overflow: hidden;
   border: none;
   border-radius: 7px;

@@ -22,13 +22,13 @@ const Background = ({ text, dir }: Props) => {
             // Handle activity logic
             setIsInactive(false)
             // 
-            clearTimeout(timeout)
+            // clearTimeout(timeout)
 
-            timeout = setTimeout(() => {
+            // timeout = setTimeout(() => {
 
-                setIsInactive(true)
+            //     setIsInactive(true)
 
-            }, 5000)
+            // }, 5000)
         }
         const mouseOut = () => {
 

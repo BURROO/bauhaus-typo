@@ -2,9 +2,11 @@
 
 import { TypeProject } from '@/types/project-type'
 import styles from './Slideshow.module.css'
-import {  useMemo, useState } from 'react';
+import {  useEffect, useMemo, useState } from 'react';
 
 import { getAssetSlideShow } from '@/util/getAssets';
+import { useMousePos } from '../hook/useMousePos';
+import Button from './Button';
 
 
 interface Props{
@@ -41,6 +43,19 @@ const Slideshow = ({
     const fullScreen = item.COURSE === "Bauhaus Master Lectures"
 
 
+    const [hoverText, setHoverText ] = useState<string|null>(null)
+
+
+    const mousePos = useMousePos({}, !!hoverText)
+    // useEffect(() => {
+
+
+    //     if(mousePos)
+
+    //     setHoverText()
+    // }, [mousePos])
+
+
     return (
         <>
             <div className={`${styles.slideshow} ${fullScreen ? styles.fullScreen : ''}`}>
@@ -69,9 +84,40 @@ const Slideshow = ({
                         ))
                     }
                 </div>
-                {activeSlide > 0 && <div className={styles.goLeft} onClick={() => goPrev()}/>}
-                {activeSlide < slides.length-1 && <div className={styles.goRight} onClick={() => goNext()} />}
+                {activeSlide > 0 && (
+                    <div
+                    className={styles.goLeft}
+                    onClick={() => goPrev()}
+                    onMouseEnter={() => {
+                        setHoverText('Look at previous')
+                    }}
+                    onMouseLeave={() => {
+                        setHoverText(null)
+                    }}
+                    />
+                )}
+                {activeSlide < slides.length-1 && (
+                    <div 
+                    className={styles.goRight} 
+                    onClick={() => goNext()} 
+                      onMouseEnter={() => {
+                        setHoverText('Look at next')
+                    }}
+                    onMouseLeave={() => {
+                        setHoverText(null)
+                    }}
+                    />
+                )}
             </div>
+            {
+                mousePos &&
+                hoverText && 
+                <div style={{ position: 'fixed', left: mousePos?.x+ 20, top: mousePos.y - 20, pointerEvents: "none"}} >
+                    <Button text={hoverText} onClick={() => {
+                        // 
+                    }}/>
+                </div>
+            }
             {/* <div className={styles.thumbails}>
                 {
                     slides.map((slide, i) => (

@@ -10,6 +10,7 @@ import Button from '@/components/general/Button'
 import { ButtonWrapper } from '../PageWrapper'
 import { getAssetWebsite } from '@/util/getAssets'
 import { ContextMenu } from '@/components/context/ContextMenu'
+import { setDefaultAutoSelectFamily } from 'net'
 
 interface Props {
     item: TypeProject
@@ -24,6 +25,7 @@ const Website = ({ item }: Props) => {
 
     // const [view, setView] = useState<'video' | 'iframe'>('video')
     const { view, setView } = useContext(ContextMenu)
+    const [isFullscreen, setIsFullscreen] = useState(false)
     const iframeContainerRef = useRef<HTMLDivElement>(null)
 
     const interactCam: CameraProps = {
@@ -32,47 +34,46 @@ const Website = ({ item }: Props) => {
     }
 
     const openFullscreenIframe = () => {
-        setView('inside')
+        requestAnimationFrame(() => {
+            const el = iframeContainerRef.current
+            if (!el) return
 
-        // requestAnimationFrame(() => {
-        //     const el = iframeContainerRef.current
-        //     if (!el) return
-
-        //     if (el.requestFullscreen) el.requestFullscreen()
-        //     else if ((el as any).webkitRequestFullscreen) {
-        //         (el as any).webkitRequestFullscreen()
-        //     }
-        // })
+            if (el.requestFullscreen) el.requestFullscreen()
+            else if ((el as any).webkitRequestFullscreen) {
+                (el as any).webkitRequestFullscreen()
+            }
+        })
     }
 
     // 👇 Listen for ESC / fullscreen exit
-    // useEffect(() => {
-    //     const onFullscreenChange = () => {
-    //         const isFullscreen =
-    //             document.fullscreenElement ||
-    //             (document as any).webkitFullscreenElement
+    useEffect(() => {
+        const onFullscreenChange = () => {
+            const fullscreenEl =
+                document.fullscreenElement ||
+                (document as any).webkitFullscreenElement
 
-    //         if (!isFullscreen) {
-    //             // Fullscreen exited → stay on iframe preview
-    //             setView('video')
-    //         }
-    //     }
+            setIsFullscreen(!!fullscreenEl)
+        }
 
-    //     document.addEventListener('fullscreenchange', onFullscreenChange)
-    //     document.addEventListener('webkitfullscreenchange', onFullscreenChange)
+        document.addEventListener('fullscreenchange', onFullscreenChange)
+        document.addEventListener('webkitfullscreenchange', onFullscreenChange)
 
-    //     return () => {
-    //         document.removeEventListener('fullscreenchange', onFullscreenChange)
-    //         document.removeEventListener('webkitfullscreenchange', onFullscreenChange)
-    //     }
-    // }, [])
+        return () => {
+            document.removeEventListener('fullscreenchange', onFullscreenChange)
+            document.removeEventListener('webkitfullscreenchange', onFullscreenChange)
+        }
+    }, [])
+
 
     const website = getAssetWebsite({ item })
 
     return (
         <div className={styles.website}>
             {view === 'inside' && src && (
-                <div ref={iframeContainerRef} className={styles.websiteIframe}>
+                <div 
+                ref={iframeContainerRef} 
+                className={styles.websiteIframe}
+                >
                     <iframe
                     src={src}
                     // src="/websites/tt/hannes_altmann/index.html"
@@ -88,6 +89,18 @@ const Website = ({ item }: Props) => {
                     //     allow-top-navigation-by-user-activation
                     //   "
                     />
+                    {isFullscreen &&
+                        <div style={{ 
+                            position: "absolute", 
+                            top: 0, 
+                            right: 0
+                        }}>
+                            <Button
+                            onClick={() => setView("outside")}
+                            text={'Close Fullscreen'}
+                            />
+                        </div>
+                    }
                 </div>
             )}
 
@@ -118,20 +131,15 @@ const Website = ({ item }: Props) => {
 
             {website && view === "inside" && <ButtonWrapper>
                 <Button
-                    // onClick={
-                    //     view === 'outside'
-                    //         ? openFullscreenIframe
-                    //         : () => setView('outside')
-                    // }
-                    // text={view === 'outside' ? 'Try Website' : 'See Showcase'}
-                    // onClick={
-                    //     view === 'outside'
-                    //         ? openFullscreenIframe
-                    //         : () => setView('outside')
-                    // }
                     onClick={() => setView("outside")}
                     text={'Look at Showcase'}
                 />
+                {view === "inside" && <Button
+                    onClick={() => {
+                        openFullscreenIframe()
+                    }}
+                    text={'Open Fullscreen'}
+                />}
             </ButtonWrapper>}
         </div>
     )

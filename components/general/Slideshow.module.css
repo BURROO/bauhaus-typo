@@ -19,7 +19,8 @@
 .goLeft, .goRight{
   position: absolute;
   height: 100%;
-  width: calc(50vw - 50px);
+  /* width: calc(50vw - 50px); */
+  width: 100vw;
   /* background-color: red; */
 }
 

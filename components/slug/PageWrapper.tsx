@@ -16,6 +16,7 @@ import { useRouter } from "next/navigation";
 import { ContextMenu } from "../context/ContextMenu";
 import Button from "../general/Button";
 import { getAssetWebsite } from "@/util/getAssets";
+import { useMousePos } from "../hook/useMousePos";
 // import Cards from "./cards/Cards";
 
 const Book = dynamic(
@@ -70,33 +71,8 @@ const PageWrapper = ({ item }: Props) => {
         }
     }, [view])
 
+    const mousePos = useMousePos({}, isHovered)
 
-    const [mousePos, setMousePos ] = useState<null|{x: number; y: number }>(null)
-
-
-    useEffect(() => {
-
-        const handleMousePos = (e: any) => {
-
-            const { clientX: x, clientY: y} = e
-            
-            setMousePos({ x, y })
-        }
-
-        if(isHovered){
-            window.addEventListener("mousemove", handleMousePos)
-        }else{
-            setMousePos(null)
-            window.removeEventListener("mousemove", handleMousePos)
-        }
-
-        return () => {
-
-            setMousePos(null)
-            window.removeEventListener("mousemove", handleMousePos)
-        }
-
-    }, [isHovered])
 
     const type = getType(item)
 
@@ -128,7 +104,9 @@ const PageWrapper = ({ item }: Props) => {
                 mousePos && 
                 view === 'outside' &&
                 <div style={{ position: 'fixed', left: mousePos?.x+ 20, top: mousePos.y - 20, pointerEvents: "none"}} key={view}>
-                    <Button text={buttonText} onClick={() => {
+                    <Button 
+                    text={buttonText} 
+                    onClick={() => {
                         // 
                     }}/>
                 </div>
