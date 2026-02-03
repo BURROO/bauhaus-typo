@@ -29,7 +29,8 @@ const Website = ({ item }: Props) => {
     const iframeContainerRef = useRef<HTMLDivElement>(null)
 
     const interactCam: CameraProps = {
-        position: [0, 0, 0.35],
+        // position: [0, 0, 0.35],
+        position: [0, 0, 0.25],
         fov: 45,
     }
 

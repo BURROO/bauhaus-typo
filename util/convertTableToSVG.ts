@@ -165,10 +165,38 @@ export const convertTableToSVG = ({ data, screenWidth, screenHeight, rowHeight, 
             //     svgPath += colSquare
             // }
             // @ts-ignore
-            const activeDataRow = activeIndex  !== null && data[activeIndex] && data[activeIndex][col.text]
+            const activeDataRow = activeIndex !== null && data[activeIndex] && data[activeIndex][col.text]
 
-            const setActive = activeDataRow === currColRowText && k !== 0 && k !== 1 && k !== 3
-            // const setActive = activeDataRow === currColRowText && k !== 0 && k !== 1 && k !== 3
+            // const distToActiveRow = activeIndex && activeDataRow ? activeIndex - i : -1
+            // console.log("distToActiveRow", distToActiveRow)
+
+            // Check ech prev or if is also has an actvice el!!
+            const currentIndex = i
+            const check =
+                activeIndex !== null &&
+                (() => {
+                    const from = Math.min(activeIndex, currentIndex);
+                    const to   = Math.max(activeIndex, currentIndex);
+
+                    const slice = data.slice(from, to + 1);
+                    if (slice.length === 0) return false;
+
+                    // @ts-ignore
+                    const reference = slice[0]?.[col.text];
+
+                    // @ts-ignore
+                    return slice.every(row => row?.[col.text] === reference);
+                })();
+
+
+            const setActiveRow = 
+                // is same as other
+                activeDataRow === currColRowText &&
+                check &&
+                k !== 0 && 
+                k !== 1 && 
+                k !== 3
+            // const setActiveRow = activeDataRow === currColRowText && k !== 0 && k !== 1 && k !== 3
 
 
 
@@ -188,7 +216,7 @@ export const convertTableToSVG = ({ data, screenWidth, screenHeight, rowHeight, 
                 // fill: i === 0 ? false : colsActive[k],
                 fill: colsActive[k],
                 index: item.index,
-                isActive: activeIndex === i || setActive || false,
+                isActive: activeIndex === i || setActiveRow || false,
                 data: item
             }) 
         }
@@ -228,13 +256,12 @@ export const adjustYtoOrder = (orderedList: TypeProjectForSVG[][]) => {
 
 export const convertAreaToSVG = ({ textToRender }: { textToRender: TypeProjectForSVG[][] }): {svgPath: string; svgActivePath: string} => {
 
-
     let svgPath = ``;
     let svgActivePath =``
 
-
-
     const activeCol = textToRender.find(row => row[0].isActive)
+    // const activeIndex = textToRender.findIndex(row => row[0].isActive)
+    // const activeCol = textToRender[activeIndex]
 
 
     textToRender.forEach((row: TypeProjectForSVG[], i, all) => {
@@ -251,12 +278,7 @@ export const convertAreaToSVG = ({ textToRender }: { textToRender: TypeProjectFo
             const colSquare = `M ${x} ${y} L ${x+width} ${y} L ${x+width} ${y+height} L ${x} ${y+height} `
 
 
-            const isCurrColSameAsIndex = activeCol && activeCol[k].text === col.text && k !== 0 && k !== 1 && k !== 3
-            // const isCurrColSameAsIndex = activeCol && activeCol[k].text === col.text
-
-
-
-            if(col.isActive || isCurrColSameAsIndex){
+            if(col.isActive ){
                 svgActivePath += colSquare
             }else{
                 if(col.fill){

@@ -32,7 +32,7 @@ const DefFiltersSVG = ({ gradientId }: Props) => {
                         <stop offset="45%" stopColor="rgb(150, 150, 150)"/>
                         <stop offset="50%" stopColor="rgb(180,180,180)"/>
                         <stop offset="100%" stopColor="rgb(190,190,190)"/>
-
+{/* 
                         <animateTransform
                         attributeName="gradientTransform"
                         type="translate"
@@ -41,16 +41,14 @@ const DefFiltersSVG = ({ gradientId }: Props) => {
                         to={`${screenWidth} 0`}
                         dur="6s"
                         repeatCount="indefinite"
-                        />
+                        /> */}
             </linearGradient>
-                <filter id="blurMe">
+            {/* <filter id="blurMe">
                 <feGaussianBlur stdDeviation="5" />
-            </filter>
-                <filter id="screenPrintEffect">
-                    {/* <!-- Generate noise pattern --> */}
+            </filter> */}
+                {/* <filter id="screenPrintEffect">
                     <feTurbulence type="turbulence" baseFrequency="0.95" numOctaves="3" result="turbulence"/>
                 
-                    {/* <!-- Convert to grayscale and boost contrast --> */}
                     <feColorMatrix
                     in="turbulence"
                     type="matrix"
@@ -60,15 +58,13 @@ const DefFiltersSVG = ({ gradientId }: Props) => {
                 0 0 0 0.8 0"
                 result="grayscale"/>
                 
-                    {/* <!-- Apply threshold to create sharp black/white dots --> */}
                     <feComponentTransfer in="grayscale" result="thresholded">
                     <feFuncA type="discrete" tableValues="0 1"/>
                     </feComponentTransfer>
                 
-                    {/* <!-- Use the pattern as a mask or displacement map --> */}
                     <feComposite in="SourceGraphic" in2="thresholded" operator="in" result="screenPrinted"/>
-                </filter>
-            <filter id="metalFoil">
+                </filter> */}
+            {/* <filter id="metalFoil">
                 <feTurbulence
                     type="fractalNoise"
                     baseFrequency="0.02"
@@ -94,8 +90,8 @@ const DefFiltersSVG = ({ gradientId }: Props) => {
                     0   0   1.4 0 0
                     0   0   0   1 0"
                 />
-            </filter>
-            <filter id="paperInkGrain" x="-20%" y="-20%" width="140%" height="140%">
+            </filter> */}
+            {/* <filter id="paperInkGrain" x="-20%" y="-20%" width="140%" height="140%">
                 <feTurbulence
                     type="fractalNoise"
                     baseFrequency="0.9"
@@ -130,7 +126,7 @@ const DefFiltersSVG = ({ gradientId }: Props) => {
                     in2="paper"
                     operator="multiply"
                 />
-            </filter>
+            </filter> */}
         </>
     )
 }
