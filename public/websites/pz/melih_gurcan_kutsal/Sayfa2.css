@@ -20,15 +20,16 @@ body {
   overflow: hidden;
 }
 
-.video-bg-container iframe {
+.video-bg-container video {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 100vw;
-  height: 56.25vw; 
-  min-height: 100vh;
-  min-width: 177.77vh;
+  min-width: 100%;
+  min-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: cover;
 }
 
 /* Ana İçerik ve Ortalama */

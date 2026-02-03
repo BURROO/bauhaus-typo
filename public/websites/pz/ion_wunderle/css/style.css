@@ -9,25 +9,6 @@ html, body {
   cursor: url("cursor.png")5 9,auto;
   background-image: url("background.png");
   background-size: contain;
-  background-blend-mode: multiply;
-}
-
-#popupcd{
-  position: fixed;
-  left: 400px;
-  top: 100px;
-}
-
-#popup{
-  opacity: 30%;
-  background-color: black;
-  position: fixed;
-  width: 100%;
-  height: 100%;
-}
-
-#popup:target{
-  display: none;
 }
 
 label,select{
@@ -41,15 +22,17 @@ select:hover,option{
 
 /* Startseite */
 .ueberschrift{
-    margin-top: 20px;
-    font-size: 70pt;
+    margin-top: 5rem;
+    font-size: 5vw;
     text-align: center;
-    line-height: 60pt;
+    line-height: 4vw;
     letter-spacing: -6pt;
+    color: greenyellow;
 }
 
 em{
   font-style: normal;
+  mix-blend-mode: luminosity;
 }
 
 em:hover{
@@ -57,6 +40,7 @@ em:hover{
     color: greenyellow;
     -webkit-text-stroke: 3px black;
     font-style: italic;
+    mix-blend-mode: normal;
 }
 
 @keyframes coloranimation {
@@ -78,14 +62,14 @@ em:hover{
   }
 }
 
-.unterueberschrift{
+.sevenwish{
     position: fixed;
-    right: 30px;
-    top: 290px;
+    right: 5rem;
+    top: 28rem;
     margin-top: 20px;
     rotate: calc(10deg);
     text-shadow: 1px 1px 1px black;
-    font-size: 42pt;
+    font-size: 3vw;
     text-align: center;
     line-height: 60pt;
     letter-spacing: -3pt;
@@ -108,6 +92,7 @@ em:hover{
 }
 
 label{
+  font-size: 1.3vw;
     border: 1px solid black;
     background-color: white;
     padding: 3px 8px;
@@ -115,24 +100,24 @@ label{
 }
 
 option{
-    font-size: 50pt;
+    font-size: 4vw;
     appearance: none;
 }
 
 select{
-    font-size: 10pt;
+    font-size: 1vw;
     background-color: greenyellow;
     border: solid 1px black;
-    border-radius: 6px;
+    border-radius: .3vw;
 }
 
 .letsgo{
     color: black;
     margin-top: 30px;
-    font-size: 20pt;
+    font-size: 2vw;
     background-color: white;
     border: 3px black solid;
-    border-radius: 30px;
+    border-radius: 5vw;
     padding: 3px;
     padding-left: 8px;
     padding-right: 8px;
@@ -150,7 +135,7 @@ select{
 
 .container{
     margin-top: 30px;
-    height: 300px;
+    height: 30rem;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -161,20 +146,28 @@ select{
     margin-top: none;
     margin: 10px;
     width: 12vw;
-    font-size: 13pt;
+    font-size: 1.3vw;
     margin-top: 30px;
+    line-height: 1vw;
     hyphens: auto;
+    color: greenyellow;
+    -webkit-text-stroke: 1px greenyellow;
     text-align: justify;
+    mix-blend-mode: luminosity;
 }
 
 .container:hover{
-    color: greenyellow;
-    -webkit-text-stroke: 1px black;
-    font-style: italic;
-    background-blend-mode: difference;
+}
+
+.textt:hover{
+  font-style: italic;
+  mix-blend-mode: normal;
+  color: greenyellow;
+  -webkit-text-stroke: 1px white;
 }
 
 .buttoncont{
+  margin-top: 2rem;
     display: flex;
     align-items: center;
     justify-content: center;

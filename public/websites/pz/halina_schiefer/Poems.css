@@ -144,7 +144,7 @@ background-size: cover;
     cursor: pointer;
     font-family: "interlope";
     color:white;
-    font-size:1m;
+    font-size:1vw;
 }
 
 #Line3{
@@ -287,7 +287,7 @@ background-size: cover;
     font-family:"Interlope";
     color:white;
     rotate: 4deg;
-    font-size:0.8em;
+    font-size:0.8vw;
 
 }
 
@@ -304,7 +304,7 @@ background-size: cover;
     font-family:"Hitmepunk";
     color:white;
     rotate: 6deg;
-    font-size:1.2em;
+    font-size:1.2vw;
 
 }
 
@@ -321,8 +321,7 @@ background-size: cover;
     font-family:"poti";
     color:white;
     rotate: -1deg;
-    font-size:1.5em;
-
+    font-size:1.5vw;
 }
 
 #Line12{
@@ -338,7 +337,7 @@ background-size: cover;
     font-family:"Interlope";
     color:black;
     rotate: -1deg;
-    font-size:1.5em;
+    font-size:1.5vw;
 
 }
 
@@ -355,7 +354,7 @@ background-size: cover;
     font-family:"poti";
     color:black;
     rotate: -1deg;
-    font-size:1.5em;
+    font-size:1.5vw;
 
 }
 
@@ -370,7 +369,7 @@ background-size: cover;
     padding:0;
     cursor: pointer;
     font-family:"Bianzhidai-Stitches";
-    color:black;
+    color:beige;
     rotate: -1deg;
     font-size:1vw;
 
@@ -406,7 +405,7 @@ background-size: cover;
     font-family:"Pencerino";
     color:black;
     rotate: 3deg;
-    font-size:1.2em;
+    font-size:1.2vw;
 
 }
 
@@ -423,7 +422,7 @@ background-size: cover;
     font-family:"Rascal";
     color:black;
     rotate: 3deg;
-    font-size:1.2em;
+    font-size:1.2vw;
 
 }
 
@@ -440,7 +439,7 @@ background-size: cover;
     font-family:"Rascal";
     color:white;
     rotate: 3deg;
-    font-size:1.5em;
+    font-size:1.5vw;
 
 }
 
@@ -474,7 +473,7 @@ background-size: cover;
     font-family:"terminal grotesque";
     color:white;
     rotate: 3deg;
-    font-size:0.8em;
+    font-size:0.8vw;
 
 }
 
@@ -492,7 +491,7 @@ background-size: cover;
     font-family:"Interlope";
     color:white;
     rotate: 4deg;
-    font-size:0.8em;
+    font-size:0.8vw;
 
 }
 
@@ -510,7 +509,7 @@ background-size: cover;
     font-family:"bianzhidai-Stitches";
     color:white;
     rotate: 3deg;
-    font-size:0.9em;
+    font-size:0.9vw;
 
 }
 
@@ -527,7 +526,7 @@ background-size: cover;
     font-family:"terminal-grotesque";
     color:black;
     rotate: 3deg;
-    font-size:0.9em;
+    font-size:0.9vw;
 
 }
 
@@ -561,7 +560,7 @@ background-size: cover;
     font-family:"helvetica";
     color:black;
     rotate: -4deg;
-    font-size:0.8em;
+    font-size:0.8vw;
 
 }
 
@@ -578,7 +577,7 @@ background-size: cover;
     font-family:"Pencerino";
     color:black;
     rotate: -6deg;
-    font-size:0.8em;
+    font-size:0.8vw;
 
 }
 
@@ -646,7 +645,7 @@ background-size: cover;
     font-family:"terminal-grotesque";
     color:black;
     rotate: -5deg;
-    font-size:0.8em;
+    font-size:0.8vw;
 
 }
 
@@ -663,7 +662,7 @@ background-size: cover;
     font-family:"terminal-grotesque";
     color:black;
     rotate: -2deg;
-    font-size:0.8em;
+    font-size:0.8vw;
 
 }
 
@@ -680,7 +679,7 @@ background-size: cover;
     font-family:"terminal-grotesque";
     color:black;
     rotate: -1deg;
-    font-size:0.8em;
+    font-size:0.8vw;
 
 }
 
@@ -782,7 +781,7 @@ background-size: cover;
     font-family:"Interlope";
     color:white;
     rotate: 4deg;
-    font-size:0.8em;
+    font-size:0.8vw;
 
 }
 
@@ -799,7 +798,7 @@ background-size: cover;
     font-family:"terminal-grotesque";
     color:black;
     rotate: -1deg;
-    font-size:0.8em;
+    font-size:0.8vw;
 
 }
 
@@ -833,7 +832,7 @@ background-size: cover;
     font-family:"helvetica";
     color:black;
     rotate: -4deg;
-    font-size:0.8em;
+    font-size:0.8vw;
 
 }
 
@@ -884,7 +883,7 @@ background-size: cover;
     font-family:"terminal-grotesque";
     color:black;
     rotate: -5deg;
-    font-size:0.8em;
+    font-size:0.8vw;
 
 }
 
@@ -918,7 +917,7 @@ background-size: cover;
     font-family:"Interlope";
     color:white;
     rotate: 4deg;
-    font-size:0.8em;
+    font-size:0.8vw;
 
 }
 
@@ -952,7 +951,7 @@ background-size: cover;
     font-family:"Interlope";
     color:white;
     rotate: 4deg;
-    font-size:0.8em;
+    font-size:0.8vw;
 
 }
 
@@ -986,7 +985,7 @@ background-size: cover;
     font-family:"poti";
     color:black;
     rotate: -1deg;
-    font-size:1.5em;
+    font-size:1.5vw;
 
 }
 
@@ -1015,7 +1014,7 @@ background-size: cover;
     padding:0;
     cursor: pointer;
     font-family:"Hitmepunk";
-    font-size:1.2em;
+    font-size:1.2vw;
     color:white;
 }
 
@@ -1083,7 +1082,7 @@ background-size: cover;
     font-family:"Pencerino";
     color:black;
     rotate: 3deg;
-    font-size:1.2em;
+    font-size:1.2vw;
 
 }
 
@@ -1100,7 +1099,7 @@ background-size: cover;
     font-family:"Rascal";
     color:white;
     rotate: 3deg;
-    font-size:1.5em;
+    font-size:1.5vw;
 
 }
 
@@ -1117,7 +1116,7 @@ background-size: cover;
     font-family:"Interlope";
     color:white;
     rotate: 4deg;
-    font-size:0.8em;
+    font-size:0.8vw;
 
 }
 
@@ -1134,7 +1133,7 @@ background-size: cover;
     font-family:"helvetica";
     color:black;
     rotate: -4deg;
-    font-size:0.8em;
+    font-size:0.8vw;
 
 }
 
@@ -1168,7 +1167,7 @@ background-size: cover;
     font-family:"Rascal";
     color:white;
     rotate: 2deg;
-    font-size:1.2em;
+    font-size:1.2vw;
 
 }
 
@@ -1185,7 +1184,7 @@ background-size: cover;
     font-family:"Interlope";
     color:white;
     rotate: 4deg;
-    font-size:0.8em;
+    font-size:0.8vw;
 
 }
 
@@ -1219,7 +1218,7 @@ background-size: cover;
     font-family:"Hitmepunk";
     color:black;
     rotate: -4deg;
-    font-size:1.3em;
+    font-size:1.3vw;
 
 }
 
@@ -1253,7 +1252,7 @@ background-size: cover;
     font-family:"helvetica";
     color:black;
     rotate: -4deg;
-    font-size:0.8em;
+    font-size:0.8vw;
 
 }
 
@@ -1270,7 +1269,7 @@ background-size: cover;
     font-family:"terminal-grotesque";
     color:black;
     rotate: 1deg;
-    font-size:1.3em;
+    font-size:1.3vw;
 
 }
 
@@ -1306,12 +1305,371 @@ background-size: cover;
     rotate: -3deg;
     font-size:1vw;
 
+
+}
+
+#Line68a{
+    position:absolute;
+    left:96vh;
+    top:27vh;
+    width:35vw;
+    background:none;
+    border:none;
+    margin:0;
+    padding:0;
+    cursor: pointer;
+    font-family:"bianzhidai-Stitches";
+    color:white;
+    rotate: -3deg;
+    font-size:1vw;
+
+} 
+
+#Line68b{
+    position:absolute;
+    left:100vh;
+    top:30vh;
+    width:35vw;
+    background:none;
+    border:none;
+    margin:0;
+    padding:0;
+    cursor: pointer;
+    font-family:"Pencerino";
+    color:beige;
+    rotate: -4deg;
+    font-size:1vw;
+
+}
+
+#Line68c{
+    position:absolute;
+    left:100vh;
+    top:32vh;
+    width:20vw;
+    background:beige;
+    border:none;
+    margin:0;
+    padding:0;
+    cursor: pointer;
+    font-family:"helvetica";
+    color:black;
+    rotate: -4deg;
+    font-size:0.8vw;
+
+}
+
+#Line68d{
+    position:absolute;
+    left:96vh;
+    top:35vh;
+    width:25vw;
+    background:black;
+    border:none;
+    margin:0;
+    padding:0;
+    cursor: pointer;
+    font-family:"Rascal";
+    color:white;
+    rotate: 2deg;
+    font-size:1vw;
+
+}
+
+#Line68e{
+    position:absolute;
+    left:90vh;
+    top:37vh;
+    width:20vw;
+    background:black;
+    border:none;
+    margin:0;
+    padding:0;
+    cursor: pointer;
+    font-family:"Interlope";
+    color:white;
+    rotate: 4deg;
+    font-size:0.8vw;
+
+}
+
+#Line68f{
+    position:absolute;
+    left:95vh;
+    top:39vh;
+    width:30vw;
+    background:none;
+    border:none;
+    margin:0;
+    padding:0;
+    cursor: pointer;
+    font-family:"Rascal";
+    color:white;
+    rotate: 2deg;
+    font-size:1.2vw;
+
+}
+
+#Line68g{
+    position:absolute;
+    left:110vh;
+    top:42vh;
+    width:20vw;
+    background:black;
+    border:none;
+    margin:0;
+    padding:0;
+    cursor: pointer;
+    font-family:"Hitmepunk";
+    color:white;
+    rotate: 6deg;
+    font-size:1.2vw;
+
+}
+
+#Line68h{
+    position:absolute;
+    left:97vh;
+    top:45vh;
+    width:30vw;
+    background:white;
+    border:none;
+    margin:0;
+    padding:0;
+    cursor: pointer;
+    font-family:"terminal-grotesque";
+    color:black;
+    rotate: -5deg;
+    font-size:1vw;
+
+}
+
+#Line68i{
+    position:absolute;
+    left:95vh;
+    top:46vh;
+    width:35vw;
+    background:none;
+    border:none;
+    margin:0;
+    padding:0;
+    cursor: pointer;
+    font-family:"Rascal";
+    color:black;
+    rotate: -5deg;
+    font-size:1.2vw;
+
+}
+
+#Line68j{
+    position:absolute;
+    left:96vh;
+    top:48vh;
+    width:35vw;
+    background:none;
+    border:none;
+    margin:0;
+    padding:0;
+    cursor: pointer;
+    font-family:"bianzhidai-Stitches";
+    color:white;
+    rotate: -3deg;
+    font-size:1vw;
+
+} 
+
+#Line68k{
+    position:absolute;
+    left:95vh;
+    top:52vh;
+    width:35vw;
+    background:none;
+    border:none;
+    margin:0;
+    padding:0;
+    cursor: pointer;
+    font-family:"Rascal";
+    color:beige;
+    rotate: 2deg;
+    font-size:1.2vw;
+
+}
+
+#Line68l{
+    position:absolute;
+    left:120vh;
+    top:55vh;
+    width:15vw;
+    background:black;
+    border:none;
+    margin:0;
+    padding:0;
+    cursor: pointer;
+    font-family:"Interlope";
+    color:white;
+    rotate: 4deg;
+    font-size:0.8vw;
+
+}
+
+#Line68m{
+    position:absolute;
+    left:100vh;
+    top:57vh;
+    width:30vw;
+    background:none;
+    border:none;
+    margin:0;
+    padding:0;
+    cursor: pointer;
+    font-family:"terminal-grotesque";
+    color:white;
+    rotate: 1deg;
+    font-size:1.3vw;
+
+}
+
+#Line68n{
+    position:absolute;
+    left:120vh;
+    top:60vh;
+    width:15vw;
+    background:black;
+    border:none;
+    margin:0;
+    padding:0;
+    cursor: pointer;
+    font-family:"Interlope";
+    color:white;
+    rotate: 4deg;
+    font-size:0.8vw;
+
+}
+
+#Line68o{
+    position:absolute;
+    left:95vh;
+    top:62vh;
+    width:35vw;
+    background:none;
+    border:none;
+    margin:0;
+    padding:0;
+    cursor: pointer;
+    font-family:"Rascal";
+    color:beige;
+    rotate: 2deg;
+    font-size:1.2vw;
+
+}
+
+#Line68p{
+    position:absolute;
+    left:110vh;
+    top:65vh;
+    width:20vw;
+    background:black;
+    border:none;
+    margin:0;
+    padding:0;
+    cursor: pointer;
+    font-family:"Hitmepunk";
+    color:white;
+    rotate: 6deg;
+    font-size:1.2vw;
+
+}
+
+#Line68q{
+    position:absolute;
+    left:120vh;
+    top:68vh;
+    width:15vw;
+    background:black;
+    border:none;
+    margin:0;
+    padding:0;
+    cursor: pointer;
+    font-family:"Interlope";
+    color:white;
+    rotate: 4deg;
+    font-size:0.8vw;
+
+}
+
+#Line68r{
+    position:absolute;
+    left:110vh;
+    top:70vh;
+    width:20vw;
+    background:black;
+    border:none;
+    margin:0;
+    padding:0;
+    cursor: pointer;
+    font-family:"Hitmepunk";
+    color:white;
+    rotate: 6deg;
+    font-size:1.2vw;
+
+}
+
+
+#Line68s{
+    position:absolute;
+    left:90vh;
+    top:72vh;
+    width:20vw;
+    background:black;
+    border:none;
+    margin:0;
+    padding:0;
+    cursor: pointer;
+    font-family:"Interlope";
+    color:white;
+    rotate: 4deg;
+    font-size:0.8vw;
+
+}
+
+#Line68t{
+    position:absolute;
+    left:120vh;
+    top:75vh;
+    width:15vw;
+    background:beige;
+    border:none;
+    margin:0;
+    padding:0;
+    cursor: pointer;
+    font-family:"Interlope";
+    color:black;
+    rotate: 4deg;
+    font-size:0.8vw;
+
+}
+
+#Line68u{
+    position:absolute;
+    left:95vh;
+    top:77vh;
+    width:35vw;
+    background:none;
+    border:none;
+    margin:0;
+    padding:0;
+    cursor: pointer;
+    font-family:"Rascal";
+    color:beige;
+    rotate: 2deg;
+    font-size:1.2vw;
+
 }
 
 #Line69{
     position:absolute;
     left:100vh;
-    top:28vh;
+    top:80vh;
     width:30vw;
     background:beige;
     border:none;
@@ -1321,14 +1679,16 @@ background-size: cover;
     font-family:"helvetica";
     color:black;
     rotate: -4deg;
-    font-size:0.8em;
+    font-size:0.8vw;
 
 }
 
+
+
 #Line70{
     position:absolute;
-    left:93vh;
-    top:31vh;
+    left:100vh;
+    top:83vh;
     width:40vw;
     background:beige;
     border:none;
@@ -1344,8 +1704,8 @@ background-size: cover;
 
 #Line71{
     position:absolute;
-    left:96vh;
-    top:35vh;
+    left:150vh;
+    top:85vh;
     width:10vw;
     background:black;
     border:none;
@@ -1355,14 +1715,14 @@ background-size: cover;
     font-family:"Interlope";
     color:white;
     rotate: 4deg;
-    font-size:0.8em;
+    font-size:0.8vw;
 
 }
 
 #Line72{
     position:absolute;
     left:95vh;
-    top:38vh;
+    top:87vh;
     width:35vw;
     background:none;
     border:none;
@@ -1372,14 +1732,14 @@ background-size: cover;
     font-family:"Rascal";
     color:black;
     rotate: 2deg;
-    font-size:1.2em;
+    font-size:1.2vw;
 
 }
 
 #Line73{
     position:absolute;
     left:150vh;
-    top:42vh;
+    top:90vh;
     width:5vw;
     background:white;
     border:none;
@@ -1389,14 +1749,14 @@ background-size: cover;
     font-family:"terminal-grotesque";
     color:black;
     rotate: -1deg;
-    font-size:0.8em;
+    font-size:0.8vw;
 
 }
 
 #Line74{
     position:absolute;
     left:110vh;
-    top:42vh;
+    top:91vh;
     width:20vw;
     background:black;
     border:none;
@@ -1406,14 +1766,14 @@ background-size: cover;
     font-family:"Hitmepunk";
     color:white;
     rotate: 6deg;
-    font-size:1.2em;
+    font-size:1.2vw;
 
 }
 
 #Line75{
     position:absolute;
     left:120vh;
-    top:47vh;
+    top:95vh;
     width:15vw;
     background:black;
     border:none;
@@ -1423,6 +1783,6 @@ background-size: cover;
     font-family:"Interlope";
     color:white;
     rotate: 4deg;
-    font-size:0.8em;
+    font-size:0.8vw;
 
 }

@@ -1,3 +1,12 @@
+* { 
+    margin: 0;
+    padding: 0;
+}
+
+body {
+  background-color: black;
+}
+
 .rectangle {
     position: -webkit-sticky;
     position: sticky;
@@ -17,4 +26,48 @@
     border: 2px solid white;
     padding: 0.4vw;
     border-radius: 4px;
+}
+
+#box {
+  height: 88vh;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+
+.hen {
+  max-width: 100%;
+  position: fixed;
+  /* border: 2px solid green; */
+}
+
+#button {
+  color: rgb(0, 0, 0);
+  position: absolute;
+  top: 19vh;
+  left: 49vw;
+  transform: rotate(-3deg);
+  padding: 15px;
+  font-family: "kuhlman-vf", sans-serif;
+  text-align: center;
+  /* border: 2px solid green; */
+  font-size: calc(10pt + 0.9vh);
+  white-space: pre-line;
+
+}
+
+input[type="checkbox"] {
+    display: none;
+    
+}
+
+#item + label:before {
+    content: url('bilder/Close.jpg');
+      max-width: 100%;
+   
+}
+
+#item:checked + label:before {
+    content: url('bilder/Open.jpg');
+    
 }

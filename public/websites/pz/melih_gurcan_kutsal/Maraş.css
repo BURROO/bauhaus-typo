@@ -32,11 +32,15 @@ body {
 }
 
 .noise-bg {
-    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    z-index: -10; opacity: 0.40; filter: grayscale(100%) contrast(200%);
-    pointer-events: none; object-fit: cover;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    z-index: -10;
+    opacity: 0.15; /* Arka plan olduğu için silik */
+    filter: grayscale(100%) contrast(150%);
+    pointer-events: none;
+    object-fit: cover; /* VİDEO İÇİN ÖNEMLİ: Ekranı kapla */
 }
-
 /* --- İÇERİK DÜZENİ --- */
 .container {
     max-width: 900px; margin: 0 auto; padding: 100px 20px;
@@ -205,15 +209,28 @@ a.side-strip:hover .strip-content {
         font-size: 1rem;
     }
 }
-/* --- GÖRSEL ALANLARI --- */
+
+/* --- GÖRSEL AYARLARI (EKLENECEK KISIM) --- */
+.evidence-img {
+    max-width: 100%; /* Görsel asla konteynerdan taşmasın */
+    height: auto;    /* Oranları korusun */
+    display: block;  /* Blok element olsun */
+    margin: 0 auto;  /* Ortala */
+    box-shadow: 0 0 15px rgba(0,0,0,0.8); /* Biraz gölge iyi durur */
+    border: 1px solid #333; /* İnce bir çerçeve */
+}
+
+
+/* --- GÜNCELLENMİŞ WRAPPER --- */
 .punk-image-wrapper {
-    scale: 1;
-    margin: 60px 0; 
+    width: 100%;       /* Genişliği ebeveyne yay */
+    max-width: 800px;  /* Çok devasa olmasını engelle */
+    margin: 60px auto; /* Dikeyde boşluk, yatayda ortala */
     text-align: center;
     position: relative;
     padding: 10px;
+    /* transform özellikleri HTML'den geliyor, buraya dokunma */
 }
-
 /* Animasyonlar */
 @keyframes text-flicker {
     0% { opacity: 1; } 50% { opacity: 0.8; } 100% { opacity: 1; }

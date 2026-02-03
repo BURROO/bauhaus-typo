@@ -97,17 +97,15 @@ body {
   left: 0;
   right: 0;
 
-  z-index: var(--z-head);;             
+  z-index: var(--z-head);
   background: white;
 
   font-family: "TTSerif", serif;
- padding: 16px 40px 20px 40px;
-font-size: 1.125rem;
+  padding: 16px 40px 20px 40px;
+font-size: clamp(1.15rem, 2vh, 1.85rem);
   line-height: 1.6;
 
   pointer-events: auto;
-
-  
 }
 
 .collage{

@@ -3,6 +3,12 @@
     padding: 0;
 }
 
+#head {
+    max-height: 25vw; 
+    margin: auto; display: block; 
+    top: 2vw;
+}
+
 h1 {
     text-align: center;
     font-size: 58px;
@@ -11,16 +17,35 @@ h1 {
     /* border: 2px solid green; */
 }
 
+#GD {
+    font-size: 1.6vw;
+    margin-left: 4%; 
+    line-height: 2.5vw; 
+    margin-top: 5vw;
+    border: 0.2vw solid rgb(197, 84, 9); 
+    padding: 1vw; width: 30vw; border-radius: 1.8vw;
+}
+
 p {
  font-family: "Comfortaa", sans-serif;
- max-width: 50vw;
+ max-width: 40vw;
  margin-left: 2vw;
+ text-align: center;
+ line-height: calc(9px + 0.9vw);
+ margin-bottom: 5vw;
 }
 
 a {
     font-family: "Comfortaa", sans-serif;
     margin-left: 1vw;
     margin-right: 1vw;
+    max-width: 20vw;
+    text-align: center;
+    color: rgb(0, 109, 193);
+}
+
+a:hover {
+    color: rgb(207, 35, 198);
 }
 
 .rectangle {
@@ -69,26 +94,89 @@ h2{
     /* margin-left: 2%; */
     max-height: 25vw;
     height: 7.5vw;   
+    animation: majasmove 7.5s forwards;
+    animation-delay: 2s;
 }
 
 #dörr {
     max-height: 30vw;
+     animation: majasmoveD 7.5s forwards;
+    animation-delay: 8s;
 }
 
 #lampa {
     max-height: 8vw;
     margin-left: 13%;
+    animation: majasmoveL 7.5s forwards;
+    animation-delay: 1s;
 }
 
 #soffa {
     max-width: 25vw;
     margin-left: 5%;
+    animation: majasmoveS 7.5s forwards;
+    animation-delay: 15s;
 }
 
 #stol {
     max-width: 10vw;
     margin-left: 24vw;
+    animation: majasmoveF 7.5s forwards;
+    animation-delay: 12s;
 }
+
+#merch {
+    max-height: 20vw; 
+    margin: auto; 
+    display: block; 
+    /* margin-top: -3vw; */
+    margin-bottom: 5vw;
+}
+
+figure {
+    margin-right: 3vw;
+}
+
+figcaption {
+    font-size: calc(6pt + 0.5vw);
+    max-width: 20vw;
+}
+
+
+
+/* @keyframes floatUp {
+    0% { rotate: 0 deg;}
+    100% { rotate: 40 deg; }
+} */
+
+
+@keyframes majasmove {
+    0% {top: 10px; left: 20px;}
+    100% {transform: rotate(180deg); translate:0vw -157vw; }
+}
+
+@keyframes majasmoveD {
+    0% {top: 10px; left: 20px;}
+    100% {transform: rotate(180deg); translate:0vw -135vw; }
+}
+
+@keyframes majasmoveF {
+    0% {top: 10px; left: 20px;}
+    100% {transform: rotate(180deg); translate:0vw -153vw; }
+}
+
+@keyframes majasmoveS {
+    0% {top: 10px; left: 20px;}
+    100% {transform: rotate(180deg); translate:0vw -152vw; }
+}
+
+@keyframes majasmoveL {
+    0% {top: 10px; left: 20px;}
+    100% {transform: rotate(180deg); translate:0vw -158vw; }
+}
+
+
+
 
 /* #vas {
     height: 8.5vw;

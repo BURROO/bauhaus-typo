@@ -6,16 +6,14 @@ const basePath = isSubPage ? "../source/" : "source/";
 
 const images = [
   "marjan-blan-_kUxT8WkoeY-unsplash.jpg",
-  "marjan-blan-_kUxT8WkoeY-unsplash(1).jpg",
-  "marjan-blan--Vc-ok8CeBU-unsplash.jpg",
-  "marjan-blan-5Ft4NWTmeJE-unsplash.jpg",
   "marjan-blan-5Ft4NWTmeJE-unsplash(1).jpg",
-  "marjan-blan-6CeiUegNFiE-unsplash.jpg",
   "marjan-blan-40M5j2ygjnw-unsplash.jpg",
   "marjan-blan-794QUz5-cso-unsplash.jpg",
   "marjan-blan-ADfPdLBMeY8-unsplash.jpg",
   "marjan-blan-GOP07ZOjBEU-unsplash.jpg",
   "marjan-blan-qqz06qPB_F0-unsplash.jpg",
+  "marjan-blan--Vc-ok8CeBU-unsplash.jpg"
+
 ].map(img => basePath + img);
 
 document.body.style.backgroundImage =
@@ -31,13 +29,36 @@ const entries = document.querySelectorAll(".entry");
 const isMainPage = document.querySelector('input[name="entry"]') !== null;
 
 let currentIndex = 0;
-let radios, prevBtn, nextBtn, dayIndicator;
+let radios, prevBtn, nextBtn, dayIndicator, navLinks;
 
 if (isMainPage) {
   radios = document.querySelectorAll('input[name="entry"]');
   prevBtn = document.getElementById("prev");
   nextBtn = document.getElementById("next");
   dayIndicator = document.getElementById("dayIndicator");
+  navLinks = document.querySelectorAll('.topnav a[data-target]');
+}
+if (isMainPage && navLinks) {
+  navLinks.forEach((link, index) => {
+    link.addEventListener("click", () => {
+      showEntry(index);
+    });
+  });
+}
+
+/* ===============================
+   UPDATE NAVIGATION ACTIVE STATE
+================================ */
+function updateNavigation(index) {
+  if (!navLinks) return;
+  
+  navLinks.forEach((link, i) => {
+    if (i === index) {
+      link.classList.add("active");
+    } else {
+      link.classList.remove("active");
+    }
+  });
 }
 
 /* ===============================
@@ -77,6 +98,8 @@ function showEntry(index) {
   if (dayIndicator) dayIndicator.textContent = `Day ${index + 1}`;
   if (radios) radios[index].checked = true;
 
+  updateNavigation(index);
+
   // remember last read entry
   localStorage.setItem("lastEntryIndex", index);
 
@@ -99,22 +122,45 @@ function updateSubLinks() {
 
 
 /* ===============================
-   NAVIGATION
+   NAVIGATION + STARTUP
 ================================ */
 if (isMainPage) {
   prevBtn.addEventListener("click", () => showEntry(Math.max(currentIndex - 1, 0)));
   nextBtn.addEventListener("click", () => showEntry(Math.min(currentIndex + 1, entries.length - 1)));
 
-  radios.forEach((radio, index) => radio.addEventListener("change", () => showEntry(index)));
+  radios.forEach((radio, index) => {
+    radio.addEventListener("change", () => showEntry(index));
+  });
 
   document.addEventListener("DOMContentLoaded", () => {
-    const hash = window.location.hash.replace("#", "");
+    const params = new URLSearchParams(window.location.search);
+    const fromSub = params.get("from");
+
+    const cameFromLanding = params.get("fromLanding") === "true";
+
+    const intro = document.getElementById("introBox");
+
+        if (intro) {
+          if (cameFromLanding) {
+            intro.open = true;
+          } else {
+            intro.open = false;
+          }
+        }
+
+
+
     let startIndex = 0;
 
-    if (hash) {
-      const hashIndex = [...entries].findIndex(e => e.id === hash);
+    if (fromSub) {
+      const hashIndex = [...entries].findIndex(e => e.id === fromSub);
       if (hashIndex !== -1) startIndex = hashIndex;
-    } else {
+    }
+    else if (cameFromLanding) {
+      startIndex = 0;
+      localStorage.setItem("lastEntryIndex", 0);
+    }
+    else {
       const savedIndex = localStorage.getItem("lastEntryIndex");
       if (savedIndex !== null) startIndex = parseInt(savedIndex, 10);
     }
@@ -122,6 +168,7 @@ if (isMainPage) {
     showEntry(startIndex);
   });
 }
+
 
 /* ===============================
    KEYBOARD NAVIGATION
@@ -157,7 +204,7 @@ if (!isMainPage) {
         typeByLine(p);
         break;
       case "row":
-        typeRowLetters(p,50);
+        typeRowLetters(p,10);
         break;
       case "letterPerRow":
         typeByLetterPerRow(p);
@@ -176,7 +223,7 @@ if (!isMainPage) {
 /* =============================================================================================
    TYPEWRITER FUNCTIONS
 ================================================================================================ */
-function typeByLetter(p, speed = 20) {
+function typeByLetter(p, speed = 25) {
   const html = p.dataset.text;
   p.innerHTML = "";
 
@@ -316,7 +363,7 @@ function typeByWord(p, speed = 100) {
   typeNode();
 }
 
-function typeByLine(p, speed = 100) {
+function typeByLine(p, speed = 700) {
   const html = p.dataset.text.trim();
   const lines = html.replace(/<br\s*\/?>/gi, "\n").split("\n").map(l => l.trim()).filter(l => l !== "");
   p.innerHTML = "";

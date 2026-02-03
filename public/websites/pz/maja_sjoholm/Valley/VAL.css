@@ -6,11 +6,12 @@
 
 body {
   background-image: url(bilder/Bord.jpg);
-  height: 110vw;
+  height: 100vh;
 }
 
 .box {
-  height: 150vw;
+  height: 150vh;
+  max-width: 100%;
 }
 
 .rectangle {
@@ -55,7 +56,7 @@ you can do this with the nth-child pseudo class this .draggable:nth-child(1) mea
   left: 5vw; top: 10vh; 
 }
 .draggable:nth-child(2) { 
-  left: 7vw; top: 12vh; 
+  left: 12vw; top: 12vh; 
 }
 .draggable:nth-child(3) { 
   left: 32vw; top: 50vh; 
@@ -64,40 +65,40 @@ you can do this with the nth-child pseudo class this .draggable:nth-child(1) mea
   left: 13vw; top: 40vh; 
 }
 .draggable:nth-child(5) { 
-  left: 15vw; top: 60vh; 
+  left: 58vw; top: 6vh; 
 }
 .draggable:nth-child(6) { 
-  left: 15vw; top: 60vh; 
+  left: 25vw; top: 43vh; 
 }
 .draggable:nth-child(7) { 
-  left: 15vw; top: 60vh; 
+  left: 37vw; top: 60vh; 
 }
 .draggable:nth-child(8) { 
-  left: 15vw; top: 80vh; 
+  left: 18vw; top: 80vh; 
 }
 .draggable:nth-child(9) { 
   left: 65vw; top: 80vh; 
 }
 .draggable:nth-child(10) { 
-  left: 15vw; top: 60vh; 
+  left: 4vw; top: 88vh; 
 }
 .draggable:nth-child(11) { 
-  left: 35vw; top: 60vh; 
+  left: 55vw; top: 60vh; 
 }
 .draggable:nth-child(12) { 
   left: 15vw; top: 60vh; 
 }
 .draggable:nth-child(13) { 
-  left: 80vw; top: 20vw; 
+  left: 80vw; top: 73vh; 
 }
 .draggable:nth-child(14) { 
-  left: 85vw; top: 20vh; 
+  left: 84vw; top: 20vh; 
 }
 .draggable:nth-child(15) { 
-  left: 15vw; top: 90vh; 
+  left: 69vw; top: 96vh; 
 }
 .draggable:nth-child(16) { 
-  left: 15vw; top: 60vh; 
+  left: 15vw; top: 80vh; 
 }
 .draggable:nth-child(17) { 
   left: 45vw; top: 90vh; 
@@ -109,5 +110,5 @@ you can do this with the nth-child pseudo class this .draggable:nth-child(1) mea
   left: 35vw; top: 18vh; 
 }
 .draggable:nth-child(20) { 
-  left: 55vw; top: 110vh; 
+  left: 55vw; top: 90vh; 
 }

@@ -7,13 +7,7 @@ confertble with what I'm doing, and not changing my design all the time.
 Questions:
 
 Valley:
-    I found how to make a img draggable, but I want to use the effect on multiple different images but the function uses
-    an id to make the effect. How can I apply it on all of the different images? I tried changing it to a class but that didn't work, maybe
-    I messed it up. I don't understand what everything in the code does :P
 
-
-    Hey!
-You were very close with the draggable function i repaired it and made some coments for you, there is also some important bits in the css for that :)
 
 Other:
    -I had an idea about mmoving the scrollbar on the page to under the music button so that the scrollbar looks like the music-time-bar-thing when you play a song. I tried to google how to do it but I could figure out how...
@@ -52,15 +46,7 @@ Add this to your head:
 
 
 
-Some things to think about:
--> Heavy inline styles
-Example:
-<a href="Valley/Valley.html" class="collumn" style="position: fixed; top: 14vw; left: 18vw;">
-Not invalid, but:
-Hard to maintain
-Hard to debug
-Impossible to reuse
-Move to CSS if this grows.
+
 
 
 Hey, 
@@ -109,6 +95,24 @@ some examples https://codepen.io/alvarotrigo/pen/eYoJYew https://codepen.io/ash1
                                 Add one — it affects tabs, bookmarks, accessibility.
                                 
                                         - Added!
+
+                                    I found how to make a img draggable, but I want to use the effect on multiple different images but the function uses
+    an id to make the effect. How can I apply it on all of the different images? I tried changing it to a class but that didn't work, maybe
+    I messed it up. I don't understand what everything in the code does :P
+
+
+    Hey!
+You were very close with the draggable function i repaired it and made some coments for you, there is also some important bits in the css for that :)
+
+Some things to think about:
+-> Heavy inline styles
+Example:
+<a href="Valley/Valley.html" class="collumn" style="position: fixed; top: 14vw; left: 18vw;">
+Not invalid, but:
+Hard to maintain
+Hard to debug
+Impossible to reuse
+Move to CSS if this grows.
 
 
     

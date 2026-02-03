@@ -3,43 +3,35 @@
 // =========================
 console.log("JS FILE LOADED");
 
+let allPopups = [];
+let fakeCursor = null;
+
 let hanger;
 let hanger_pos = 256;
 let hanger_width = 0;
 let hanger_height = 0;
-let fakeCursor = null;
-let hanger_target = hanger_pos;
 
-const allPopups = [];
-
-const complaintsNotesState = {
-  notes: [],        
-  activeId: null,
-  counter: 1
-};
-
+// teleport globals
+let teleportTimer = null;
+let teleportOn = false;
 
 // =========================
 // DOORHANGER
 // =========================
 function show_doorhanger() {
-
   hanger = document.getElementById("doorhanger");
   if (!hanger) return;
 
   hanger.src = "img/cookies.png";
-
   hanger.style.position = "fixed";
   hanger.style.left = hanger_pos + "px";
-  hanger.style.top = "-300px";              // Start außerhalb
+  hanger.style.top = "-300px";
   hanger.style.transition = "top 0.6s ease";
 
-  hanger.addEventListener("load", () => {
-
-    hanger_width  = hanger.offsetWidth;
+  const onReady = () => {
+    hanger_width = hanger.offsetWidth;
     hanger_height = hanger.offsetHeight;
 
-    // ▶️ Einfahren
     requestAnimationFrame(() => {
       hanger.style.top = "4px";
     });
@@ -47,120 +39,77 @@ function show_doorhanger() {
     window.addEventListener("mousemove", on_mouse_move);
 
     window.addEventListener("mouseout", (e) => {
-      if (!e.relatedTarget) {
-        hanger.style.top = "4px";
-      }
+      if (!e.relatedTarget) hanger.style.top = "4px";
     });
 
     window.addEventListener("resize", () => {
-      hanger_pos = Math.max(
-        0,
-        Math.min(window.innerWidth - hanger_width, hanger_pos)
-      );
+      hanger_pos = Math.max(0, Math.min(window.innerWidth - hanger_width, hanger_pos));
       hanger.style.left = hanger_pos + "px";
     });
-  });
+  };
+
+  if (hanger.complete) onReady();
+  else hanger.addEventListener("load", onReady, { once: true });
 }
 
+function on_mouse_move(e) {
+  if (!hanger) return;
 
-// =========================
-// MOUSE LOGIC (ORIGINAL)
-// =========================
-document.addEventListener("mousemove", (e) => {
-  fakeCursor.style.left = e.clientX + "px";
-  fakeCursor.style.top  = e.clientY + "px";
-
-  if (fakeCursor.classList.contains("loading")) return;
-
-  const el = document.elementFromPoint(e.clientX, e.clientY);
-  if (!el) return;
-
-  // ❌ EXPLIZIT NICHT outline bei printer poll + introduction titlebar
-  if (
-    el.closest(".printer-poll-window .titlebar") ||
-    el.closest(".printer-introduction .titlebar")
-  ) {
-    fakeCursor.classList.remove("outline");
-    fakeCursor.classList.add("filled");
-    return;
-  }
-
-  // ✅ normale clickable-regel
-  if (
-    el.closest(".clickable, .popup-img, .line.title, #checkbox-container")
-  ) {
-    fakeCursor.classList.add("outline");
-    fakeCursor.classList.remove("filled");
+  if (hanger_width * 2 > window.innerWidth) {
+    if (e.clientX > hanger_pos && e.clientX < hanger_pos + hanger_width) {
+      hanger.style.top = Math.min(4, e.clientY - hanger_height - 10) + "px";
+    } else {
+      hanger.style.top = "4px";
+    }
   } else {
-    fakeCursor.classList.remove("outline");
-    fakeCursor.classList.add("filled");
+    hanger.style.top = "4px";
+
+    if (e.clientY - 10 < hanger_height) {
+      if (e.clientX > hanger_pos && e.clientX < hanger_pos + hanger_width) {
+        if (e.clientX < hanger_width) {
+          hanger_pos = e.clientX;
+        } else if (e.clientX > window.innerWidth - hanger_width) {
+          hanger_pos = e.clientX - hanger_width;
+        } else {
+          hanger_pos =
+            e.clientX - ((e.clientX - hanger_pos < hanger_width / 2) ? 0 : hanger_width);
+        }
+        hanger.style.left = hanger_pos + "px";
+      }
+    }
   }
-});
+}
 
-
-
-// =========================
-// INIT
-// =========================
 window.addEventListener("load", show_doorhanger);
 
-
 // =========================
-// FAKE CURSOR (EINZIGER MOUSEMOVE)
+// FAKE CURSOR (nur EIN System)
 // =========================
 document.addEventListener("DOMContentLoaded", () => {
   fakeCursor = document.getElementById("fake-cursor");
   if (!fakeCursor) return;
 
   document.addEventListener("mousemove", (e) => {
-    // Cursor folgt immer
     fakeCursor.style.left = e.clientX + "px";
     fakeCursor.style.top  = e.clientY + "px";
 
-    // Während Loading: KEINE Zustandswechsel
     if (fakeCursor.classList.contains("loading")) return;
 
     const el = document.elementFromPoint(e.clientX, e.clientY);
-    if (
-      el &&
-      el.closest(".clickable, .popup-img, .line.title, #checkbox-container")
-    ) {
-      fakeCursor.classList.add("outline");
-      fakeCursor.classList.remove("filled");
-    } else {
-      fakeCursor.classList.remove("outline");
-      fakeCursor.classList.add("filled");
-    }
+    if (!el) return;
+
+    const isClickable = !!el.closest(
+      ".fc-heart-wrap, .clickable, a, button, input, .popup-img, .line.title, #checkbox-container, [data-clickable]"
+    );
+
+    fakeCursor.classList.toggle("outline", isClickable);
+    fakeCursor.classList.toggle("filled", !isClickable);
   });
 });
 
-const cursor = document.getElementById("fake-cursor");
-
-const clickableSelectors = [
-  ".line.title",
-  "a",
-  "button",
-  ".star-label",
-  "input",
-  "[data-clickable]"
-];
-
-document.addEventListener("mouseover", (e) => {
-  if (e.target.closest(clickableSelectors.join(","))) {
-    cursor.classList.add("outline");
-  }
-});
-
-document.addEventListener("mouseout", (e) => {
-  if (e.target.closest(clickableSelectors.join(","))) {
-    cursor.classList.remove("outline");
-  }
-});
-
-
-
-
-/* working titles */
+// =========================
+// WORKING TITLES
+// =========================
 document.addEventListener("DOMContentLoaded", () => {
   const trigger = document.getElementById("working-title");
   if (!trigger) return;
@@ -217,9 +166,7 @@ document.addEventListener("DOMContentLoaded", () => {
     document.body.appendChild(img);
     allPopups.push(img);
 
-    setTimeout(() => {
-      img.style.opacity = "1";
-    }, delay);
+    setTimeout(() => { img.style.opacity = "1"; }, delay);
 
     img.addEventListener("click", (e) => {
       e.stopPropagation();
@@ -239,135 +186,24 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
-
-
-
-// =========================
-// FLIRTING CRIMES WINDOW
-// =========================
-document.addEventListener("DOMContentLoaded", () => {
-  const dtitle = document.getElementById("flirting-crimes");
-  if (!dtitle) return;
-
-  dtitle.addEventListener("click", () => {
-    const win = document.createElement("div");
-    win.className = "fake-window clickable";
-
-   win.innerHTML = `
-  <div class="titlebar">
-    <span>flirting_crimes</span>
-    <span class="close">×</span>
-  </div>
-  <div class="content">
-    <div class="flirt-bg">
-      <div class="star-layer"></div>
-      <div class="popup-text clickable" id="flirting-text">click me</div>
-    </div>
-  </div>
-`;
-
-const starLayer = win.querySelector(".star-layer");
-
-function spawnStars(layer, count = 48){
-  layer.innerHTML = "";
-  for (let i = 0; i < count; i++){
-    const s = document.createElement("div");
-    s.className = "star";
-
-    // random position
-    s.style.left = (Math.random() * 100) + "%";
-    s.style.top  = (Math.random() * 100) + "%";
-
-    // random size + timings
-    const size = 3 + Math.random() * 5; // 3..8px
-    s.style.setProperty("--s", size + "px");
-    s.style.setProperty("--tw", (900 + Math.random() * 2200) + "ms");
-    s.style.setProperty("--dr", (6500 + Math.random() * 12000) + "ms");
-
-    // random drift direction
-    const dx = (Math.random() * 40 - 20).toFixed(1);  // -20..20px
-    const dy = (Math.random() * 28 - 14).toFixed(1);  // -14..14px
-    s.style.setProperty("--dx", dx + "px");
-    s.style.setProperty("--dy", dy + "px");
-
-    // random phase offset
-    s.style.animationDelay = (-Math.random() * 3000) + "ms";
-
-    layer.appendChild(s);
-  }
-}
-
-spawnStars(starLayer, 55);
-
-
-    document.body.appendChild(win);
-    allPopups.push(win);
-
-    const texts = [
-      "my dog looked almost exactly like that.",
-      "be a good girl",
-      "you look so innocent!",
-      "may i tear your clothes apart?",
-      "hey, you look super likeable!"
-    ];
-
-    let i = 0;
-    const textEl = win.querySelector("#flirting-text");
-    textEl.textContent = texts[0];
-
-    textEl.addEventListener("click", (e) => {
-      e.stopPropagation();
-      i = (i + 1) % texts.length;
-      textEl.textContent = texts[i];
-    });
-
-    win.querySelector(".close").addEventListener("click", () => {
-      win.remove();
-    });
-  });
-});
-
-
 // =========================
 // PURE CONNECTION → LOADING CURSOR
 // =========================
 document.addEventListener("DOMContentLoaded", () => {
   const pure = document.getElementById("pure-connection");
-  const fakeCursor = document.getElementById("fake-cursor");
-  if (!pure || !fakeCursor) return;
+  const fc = document.getElementById("fake-cursor");
+  if (!pure || !fc) return;
 
   pure.addEventListener("click", (e) => {
     e.preventDefault();
-    fakeCursor.classList.add("loading");
-
-    setTimeout(() => {
-      fakeCursor.classList.remove("loading");
-    }, 6000);
+    fc.classList.add("loading");
+    setTimeout(() => fc.classList.remove("loading"), 6000);
   });
 });
 
-
 // =========================
-// CLEAN
-// =========================
-document.addEventListener("DOMContentLoaded", () => {
-  const cleanBtn = document.getElementById("clean-button");
-  if (!cleanBtn) return;
-
-  cleanBtn.addEventListener("click", () => {
-    allPopups.forEach(popup => popup.remove());
-    allPopups.length = 0;
-  });
-});
-
-
- // =========================
 // PRINTERS
 // =========================
-
-
-
-// ---- Steps (1–12)
 const printerSteps = [
   { title: "printer ragebait", text: "step 1: open the print file.", img: "img/drucker_error-02.jpg" },
   { title: "printer ragebait", text: "step 2: click »print«.", img: "img/drucker_error-03.jpg" },
@@ -383,8 +219,6 @@ const printerSteps = [
   { title: "printer ragebait", final: true }
 ];
 
-
-// ---- Step Window
 function openPrinterStep(index) {
   const step = printerSteps[index];
   if (!step) return;
@@ -401,7 +235,6 @@ function openPrinterStep(index) {
       <span>${step.title}</span>
       <span class="close clickable">×</span>
     </div>
-
     <div class="content">
       ${isFinal
         ? `<p class="pixel-error" data-text="error">error</p>`
@@ -416,34 +249,26 @@ function openPrinterStep(index) {
   document.body.appendChild(win);
   allPopups.push(win);
 
-  // click anywhere -> next step (aber NICHT auf close)
   win.addEventListener("click", (e) => {
-    if (e.target.closest(".close")) return; // wichtig
+    if (e.target.closest(".close")) return;
     e.stopPropagation();
     if (!isFinal) openPrinterStep(index + 1);
   });
 }
 
-
-
-// ------------------------
-// 1) Trigger: Klick auf "printer ragebait" Text
-// ------------------------
 document.addEventListener("DOMContentLoaded", () => {
   const trigger = document.getElementById("printer-ragebait");
   if (!trigger) return;
+
   trigger.addEventListener("click", (e) => {
     e.stopPropagation();
     openPrinterPoll();
   });
 });
 
-// ------------------------
-// 2) Poll Window
-// ------------------------
 function openPrinterPoll() {
   const win = document.createElement("div");
-  win.className = "fake-window printer-poll-window";
+  win.className = "fake-window printer-poll-window clickable";
 
   win.innerHTML = `
     <div class="titlebar">
@@ -483,82 +308,64 @@ function openPrinterPoll() {
       openPrinterResult(option.dataset.answer);
     });
   });
-
-  // ❌ WEG: close.style.display = "none";
 }
 
-
-// ------------------------
-// 3) Result Window
-// ------------------------
 function openPrinterResult(answer) {
   const win = document.createElement("div");
-  win.className = "fake-window printer-result-window";
+  win.className = "fake-window printer-result-window clickable";
 
- const isCorrect = answer === "fear";
-
-win.innerHTML = `
-  <div class="titlebar">
-    <span>printer ragebait</span>
-    <span class="close clickable">×</span>
-  </div>
-  <div class="content">
-    <h3>${isCorrect ? "correct" : "wrong"}</h3>
-    <p>
-      ${isCorrect ? "the printer sensed weakness." : "the printer sensed weakness anyway."}
-    </p>
-  </div>
-`;
-
-
-
-  document.body.appendChild(win);
-  allPopups.push(win);
-
-  // Close -> Introduction öffnen
-  win.querySelector(".close").addEventListener("click", (e) => {
-    e.stopPropagation();
-    openPrinterIntroduction();
-  });
-}
-
-// ------------------------
-// 4) Introduction Window (Manual)
-// ------------------------
-function openPrinterIntroduction() {
-  const win = document.createElement("div");
-  win.className = "fake-window printer-introduction";
+  const isCorrect = answer === "fear";
 
   win.innerHTML = `
     <div class="titlebar">
       <span>printer ragebait</span>
       <span class="close clickable">×</span>
     </div>
-
     <div class="content">
-      <h3>still here?</h3>
-      <p>then kindly go read the damn printing manual.<br>(it will not help)</p>
-      <p style="margin-top:10px;font-size:12px;opacity:0.75;"</p>
+      <h3>${isCorrect ? "correct" : "wrong"}</h3>
+      <p>${isCorrect ? "the printer sensed weakness." : "the printer sensed weakness anyway."}</p>
     </div>
   `;
 
   document.body.appendChild(win);
   allPopups.push(win);
 
-  // click anywhere (aber NICHT auf close) -> steps starten
+  win.querySelector(".close").addEventListener("click", (e) => {
+    e.stopPropagation();
+    openPrinterIntroduction();
+  });
+}
+
+function openPrinterIntroduction() {
+  const win = document.createElement("div");
+  win.className = "fake-window printer-introduction clickable";
+
+  win.innerHTML = `
+    <div class="titlebar">
+      <span>printer ragebait</span>
+      <span class="close clickable">×</span>
+    </div>
+    <div class="content">
+      <h3>still here?</h3>
+      <p>then kindly go read the damn printing manual.<br>(it will not help)</p>
+      <p style="margin-top:10px;font-size:12px;opacity:0.75;"></p>
+    </div>
+  `;
+
+  document.body.appendChild(win);
+  allPopups.push(win);
+
   win.addEventListener("click", (e) => {
-    if (e.target.closest(".close")) return; // verhindert conflict
+    if (e.target.closest(".close")) return;
     e.stopPropagation();
     openPrinterStep(0);
   });
 }
 
-
+// Global close (remove + untrack)
 document.addEventListener("click", (e) => {
   const close = e.target.closest(".fake-window .close");
   if (!close) return;
-
-  // DEKO-KREUZ: nix machen
   if (close.classList.contains("close-deco")) return;
 
   e.preventDefault();
@@ -567,78 +374,39 @@ document.addEventListener("click", (e) => {
   const win = close.closest(".fake-window");
   if (!win) return;
 
- 
+  win.remove();
+  const i = allPopups.indexOf(win);
+  if (i > -1) allPopups.splice(i, 1);
 });
 
-
-
-
-/*verification*/
+// =========================
+// BETRAYAL CAPTCHA
+// =========================
 document.addEventListener("DOMContentLoaded", () => {
   const trigger = document.getElementById("betrayal-captcha");
   if (!trigger) return;
 
   const betrayalImages = [
-    "img/betrayal_01.jpg",
-    "img/betrayal_02.jpg",
-    "img/betrayal_03.webp",
-    "img/betrayal_04.webp",
-    "img/betrayal_05.webp",
-    "img/betrayal_06.webp",
-    "img/betrayal_07.jpg",
-    "img/betrayal_08.jpg",
-    "img/betrayal_09.jpg",
-    "img/betrayal_10.jpg",
-    "img/betrayal_11.jpg",
-    "img/betrayal_12.png",
-    "img/betrayal_13.jpg",
-    "img/betrayal_14.jpg",
-    "img/betrayal_15.jpg",
-    "img/betrayal_16.jpg",
-    "img/betrayal_17.jpg",
-    "img/betrayal_18.jpg",
-    "img/betrayal_19.jpg",
-    "img/betrayal_20.jpeg",
-    "img/betrayal_21.jpg",
-    "img/betrayal_22.jpg",
-    "img/betrayal_23.jpg",
-    "img/betrayal_24.webp",
-    "img/betrayal_25.jpg",
-    "img/betrayal_26.jpg",
-    "img/betrayal_27.jpg",
+    "img/betrayal_01.jpg","img/betrayal_02.jpg","img/betrayal_03.webp","img/betrayal_04.webp",
+    "img/betrayal_05.webp","img/betrayal_06.webp","img/betrayal_07.jpg","img/betrayal_08.jpg",
+    "img/betrayal_09.jpg","img/betrayal_10.jpg","img/betrayal_11.jpg","img/betrayal_12.png",
+    "img/betrayal_13.jpg","img/betrayal_14.jpg","img/betrayal_15.jpg","img/betrayal_16.jpg",
+    "img/betrayal_17.jpg","img/betrayal_18.jpg","img/betrayal_19.jpg","img/betrayal_20.jpeg",
+    "img/betrayal_21.jpg","img/betrayal_22.jpg","img/betrayal_23.jpg","img/betrayal_24.webp",
+    "img/betrayal_25.jpg","img/betrayal_26.jpg","img/betrayal_27.jpg",
   ];
 
   const GRID_SIZE = 9;
 
   const interfaceLies = [
-   "interesting choice.",
-  "that one feels empty.",
-  "too confident.",
-  "you hesitated.",
-  "most people miss one.",
-  "that was fast.",
-  "are you sure about that?",
-  "no, not like that.",
-  "you skipped something.",
-  "this says more about you.",
-  "that wasn't necessary.",
-  "you seem certain.",
-  "try to be honest.",
-  "almost.",
-  "not quite."
+    "interesting choice.","that one feels empty.","too confident.","you hesitated.","most people miss one.",
+    "that was fast.","are you sure about that?","no, not like that.","you skipped something.","this says more about you.",
+    "that wasn't necessary.","you seem certain.","try to be honest.","almost.","not quite."
   ];
 
   const nextRemembering = [
-    "next",
-    "try again",
-    "no, really. next.",
-    "fine.",
-    "you missed something.",
-    "just continue.",
-    "this won't help.",
-    "why are you still here?",
-    "you can stop.",
-    "you can stop."
+    "next","try again","no, really. next.","fine.","you missed something.","just continue.",
+    "this won't help.","why are you still here?","you can stop.","you can stop."
   ];
 
   function shuffle(arr) {
@@ -657,17 +425,13 @@ document.addEventListener("DOMContentLoaded", () => {
     win.innerHTML = `
       <div class="titlebar">
         <span>betrayal verification</span>
-        <span class="close">×</span>
+        <span class="close clickable">×</span>
       </div>
       <div class="content">
         <div class="betrayal-overtitle">category</div>
         <div class="betrayal-title">select all images with potential for betrayal</div>
-        <div class="betrayal-hint" id="betrayal-hint">
-          click everything that feels like betrayal
-        </div>
-
+        <div class="betrayal-hint" id="betrayal-hint">click everything that feels like betrayal</div>
         <div class="betrayal-grid" id="betrayal-grid"></div>
-
         <div class="betrayal-controls">
           <div class="betrayal-status" id="betrayal-status">0 selected</div>
           <div style="display:flex; gap:8px;">
@@ -693,33 +457,25 @@ document.addEventListener("DOMContentLoaded", () => {
     let rounds = 0;
     let nextMood = 0;
 
-    function setStatus() {
-      statusEl.textContent = `${selectedCount} selected`;
-    }
-
-    function refillIfNeeded() {
-      if (deck.length < GRID_SIZE) deck = shuffle(betrayalImages);
-    }
+    function setStatus() { statusEl.textContent = `${selectedCount} selected`; }
+    function refillIfNeeded() { if (deck.length < GRID_SIZE) deck = shuffle(betrayalImages); }
 
     function lie(force = false) {
       if (!force && Math.random() > 0.55) return;
-      hintEl.textContent =
-        interfaceLies[Math.floor(Math.random() * interfaceLies.length)];
+      hintEl.textContent = interfaceLies[Math.floor(Math.random() * interfaceLies.length)];
     }
 
     function meta() {
       if (rounds === 4) hintEl.textContent = "it doesn't get clearer.";
       if (rounds === 7) hintEl.textContent = "most people stop here.";
       if (rounds === 10) hintEl.textContent = "you can leave if you want.";
-      if (rounds > 12 && Math.random() < 0.25)
-        hintEl.textContent = "this keeps going.";
+      if (rounds > 12 && Math.random() < 0.25) hintEl.textContent = "this keeps going.";
     }
 
     function clearSelection() {
       selectedCount = 0;
       setStatus();
-      gridEl.querySelectorAll(".betrayal-tile.selected")
-        .forEach(t => t.classList.remove("selected"));
+      gridEl.querySelectorAll(".betrayal-tile.selected").forEach(t => t.classList.remove("selected"));
     }
 
     function renderGrid() {
@@ -740,7 +496,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
           const tiles = [...gridEl.querySelectorAll(".betrayal-tile")];
 
-          // --- ADD-ON 2: falsches Tile reagiert (12%)
           let targetTile = tile;
           if (Math.random() < 0.12 && tiles.length > 1) {
             const others = tiles.filter(t => t !== tile);
@@ -750,10 +505,8 @@ document.addEventListener("DOMContentLoaded", () => {
           targetTile.classList.toggle("selected");
           selectedCount = gridEl.querySelectorAll(".betrayal-tile.selected").length;
           setStatus();
-
           lie();
 
-          // --- ADD-ON 1: Selbst-Entauswahl (25%)
           if (targetTile.classList.contains("selected") && Math.random() < 0.25) {
             setTimeout(() => {
               targetTile.classList.remove("selected");
@@ -796,271 +549,6 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
-
-/*complaints*/
-function openComplaintsLogin() {
-  const win = document.createElement("div");
-  win.className = "fake-window complaints-login clickable";
-
-  win.innerHTML = `
-    <div class="titlebar">
-      <div class="traffic">
-        <span class="dot red"></span>
-        <span class="dot yellow"></span>
-        <span class="dot green"></span>
-      </div>
-      <div class="title">chat</div>
-      <span class="close">×</span>
-    </div>
-
-    <div class="content">
-      <div class="complaints-login-ui">
-        <div class="complaints-url">gamechatshop.com/chat.html</div>
-
-        <label>username</label>
-        <input type="text" value="rnununwayyy" readonly />
-
-        <label>password</label>
-        <input type="password" value="••••••••••••••" readonly />
-
-        <div class="remember">
-          <input type="checkbox" checked />
-          <span>remember me on this computer</span>
-        </div>
-
-        <button type="button" class="login-btn">login</button>
-        <div class="tiny">please log in.</div>
-      </div>
-    </div>
-  `;
-
-  document.body.appendChild(win);
-  allPopups.push(win);
-
-  const closeBtn = win.querySelector(".close");
-  const loginBtn = win.querySelector(".login-btn");
-  const tiny = win.querySelector(".tiny");
-
-  closeBtn.addEventListener("click", (e) => {
-    e.stopPropagation();
-    win.remove();
-    allPopups.splice(allPopups.indexOf(win), 1);
-  });
-
- loginBtn.addEventListener("click", (e) => {
-  e.stopPropagation();
-  tiny.textContent = "logging in…";
-
-  // nach kurzer fake-verzögerung: Notes öffnen
-  setTimeout(() => {
-    tiny.textContent = "connected.";
-    openComplaintsNotes(); // <-- neues Notes Fenster
-  }, 650);
-});
-}
-
-document.addEventListener("DOMContentLoaded", () => {
-  const trigger = document.getElementById("complaints-box");
-  if (!trigger) return;
-
-  trigger.addEventListener("click", (e) => {
-    e.stopPropagation();
-    openComplaintsLogin();
-  });
-});
-
-function openComplaintsNotes() {
-  const win = document.createElement("div");
-  win.className = "fake-window complaints-notes clickable";
-
-  win.innerHTML = `
-    <div class="titlebar">
-      <div class="traffic">
-        <span class="dot red"></span>
-        <span class="dot yellow"></span>
-        <span class="dot green"></span>
-      </div>
-      <div class="title">notes</div>
-    </div>
-
-    <div class="content">
-      <div class="complaints-notes-sidebar">
-        <div class="label">complaints</div>
-        <div id="complaints-notes-list"></div>
-      </div>
-
-      <div class="complaints-notes-main">
-        <div class="complaints-notes-toolbar">
-          <div class="left">
-            <div class="note-title" id="complaints-note-title">untitled note</div>
-            <div class="note-sub" id="complaints-note-sub">draft</div>
-          </div>
-          <div class="right">
-            <button class="notes-btn" type="button" id="complaints-discard">discard</button>
-            <button class="notes-btn primary" type="button" id="complaints-submit">submit</button>
-          </div>
-        </div>
-
-        <div class="complaints-notes-editor">
-          <textarea id="complaints-editor" spellcheck="false"
-            placeholder="type your complaint… (the system is listening. allegedly.)"></textarea>
-        </div>
-      </div>
-    </div>
-  `;
-
-  document.body.appendChild(win);
-  allPopups.push(win);
-
-  const listEl   = win.querySelector("#complaints-notes-list");
-  const editorEl = win.querySelector("#complaints-editor");
-  const titleEl  = win.querySelector("#complaints-note-title");
-  const subEl    = win.querySelector("#complaints-note-sub");
-  const discard  = win.querySelector("#complaints-discard");
-  const submit   = win.querySelector("#complaints-submit");
-
-  // ---- helpers
-  const nowStamp = () => {
-    const d = new Date();
-    return d.toLocaleString(undefined, { month: "short", day: "2-digit", hour: "2-digit", minute: "2-digit" });
-  };
-
-  const makeTitle = (body) => {
-    const t = (body || "").trim().split("\n")[0].trim();
-    if (!t) return "untitled complaint";
-    return t.length > 22 ? t.slice(0, 22).trim() + "…" : t;
-  };
-
-  const setActive = (id) => {
-    complaintsNotesState.activeId = id;
-    renderList();
-  };
-
-  const getActive = () => complaintsNotesState.notes.find(n => n.id === complaintsNotesState.activeId);
-
-  // ---- rendering
-  function renderList() {
-    listEl.innerHTML = "";
-
-    // Wenn es noch keine Notizen gibt: kleine Platzhalter-Note anzeigen (nicht speichernd)
-    if (complaintsNotesState.notes.length === 0) {
-      const empty = document.createElement("div");
-      empty.className = "complaints-notes-item";
-      empty.innerHTML = `
-        <div class="name">no notes yet</div>
-        <div class="preview">submit something. or don’t.</div>
-        <div class="meta">${nowStamp()}</div>
-      `;
-      listEl.appendChild(empty);
-      return;
-    }
-
-    // Neueste oben
-    const sorted = complaintsNotesState.notes.slice().sort((a,b) => b.createdAt - a.createdAt);
-
-    sorted.forEach((note) => {
-      const item = document.createElement("div");
-      item.className = "complaints-notes-item clickable";
-      if (note.id === complaintsNotesState.activeId) item.classList.add("active");
-
-      const preview = (note.body || "").trim().replace(/\s+/g, " ");
-      const previewShort = preview.length > 48 ? preview.slice(0, 48) + "…" : (preview || "…");
-
-      item.innerHTML = `
-        <div class="name">${note.title}</div>
-        <div class="preview">${previewShort}</div>
-        <div class="meta">${note.stamp}</div>
-      `;
-
-      item.addEventListener("click", (e) => {
-        e.stopPropagation();
-        // beim Klick alte Notiz laden (read-only-ish Gefühl)
-        const n = note;
-        titleEl.textContent = n.title;
-        subEl.textContent = "submitted";
-        editorEl.value = n.body;
-        setActive(n.id);
-      });
-
-      listEl.appendChild(item);
-    });
-  }
-
-  function openFreshDraft() {
-    titleEl.textContent = "untitled note";
-    subEl.textContent = "draft";
-    editorEl.value = "";
-    editorEl.placeholder = "type your complaint… (the system is listening. allegedly.)";
-    setActive(null);
-    editorEl.focus();
-  }
-
-  // initial state
-  renderList();
-  openFreshDraft();
-
-  // discard = leeren
-  discard.addEventListener("click", (e) => {
-    e.stopPropagation();
-    editorEl.value = "";
-    subEl.textContent = "draft (wiped)";
-    editorEl.placeholder = "okay. nothing happened.";
-  });
-
-  // submit = speichern + neue draft öffnen
-  submit.addEventListener("click", (e) => {
-    e.stopPropagation();
-
-    const body = editorEl.value || "";
-    const trimmed = body.trim();
-
-    // wenn leer: beleidigt
-    if (!trimmed) {
-      subEl.textContent = "draft (empty)";
-      editorEl.placeholder = "submit what, exactly?";
-      return;
-    }
-
-    const newNote = {
-      id: "c" + (complaintsNotesState.counter++),
-      title: makeTitle(trimmed),
-      body: trimmed,
-      createdAt: Date.now(),
-      stamp: nowStamp()
-    };
-
-    complaintsNotesState.notes.push(newNote);
-
-    // subtiler lie: "saved locally" (aber du machst nichts persistentes)
-    subEl.textContent = "saved.";
-    titleEl.textContent = newNote.title;
-
-    // Note als „active“ markieren, damit sie kurz highlighted ist
-    setActive(newNote.id);
-
-    // nach kurzer Zeit: neue leere Notiz öffnen
-    setTimeout(() => {
-      openFreshDraft();
-      renderList();
-    }, 350);
-  });
-}
-
-
-document.addEventListener("DOMContentLoaded", () => {
-  const targets = document.querySelectorAll(
-    ".printer-step p, .printer-introduction p, .printer-result-window p"
-  );
-
-  targets.forEach(el => {
-    el.innerHTML = el.innerHTML.replace(
-      /\(([^)]+)\)/g,
-      '<span class="paren">($1)</span>'
-    );
-  });
-});
-
-
 // =========================
 // SUB SCAM – VIDEO HINTER TV
 // =========================
@@ -1071,16 +559,11 @@ document.addEventListener("DOMContentLoaded", () => {
   trigger.addEventListener("click", (e) => {
     e.stopPropagation();
 
-    // toggle
     const existing = document.querySelector(".subscam-tv");
-    if (existing) {
-      existing.remove();
-      return;
-    }
+    if (existing) { existing.remove(); return; }
 
     const tv = document.createElement("div");
     tv.className = "subscam-tv clickable";
-
     tv.innerHTML = `
       <video loop playsinline>
         <source src="video/sub_scam_fernseher.mp4" type="video/mp4">
@@ -1092,19 +575,84 @@ document.addEventListener("DOMContentLoaded", () => {
     allPopups.push(tv);
 
     const video = tv.querySelector("video");
-
-    // ⭐ DAS ist der entscheidende Teil ⭐
     video.currentTime = 0;
     video.volume = 1.0;
 
     const playPromise = video.play();
     if (playPromise && playPromise.catch) {
-      playPromise.catch(err => {
-        console.warn("Autoplay with sound blocked:", err);
-      });
+      playPromise.catch(err => console.warn("Autoplay with sound blocked:", err));
     }
   });
 });
+
+// =========================
+// TELEPORT (SAFE: zerstört keine transforms von DVD/Hearts)
+// =========================
+function rand(min, max) { return Math.random() * (max - min) + min; }
+function clamp(v, min, max) { return Math.max(min, Math.min(max, v)); }
+
+function getMovables() {
+  const nodes = [
+    ...document.querySelectorAll(
+      ".popup-img, .fake-window, .subscam-tv, .printer-step, .betrayal-window, .complaints-login, .complaints-notes"
+    )
+  ];
+  for (const el of allPopups) if (el && el.nodeType === 1) nodes.push(el);
+  return [...new Set(nodes)].filter(el => document.body.contains(el));
+}
+
+function teleportElement(el) {
+  // NIE anfassen:
+  if (el.id === "clean-button") return;
+  if (el.classList.contains("dvd-clean")) return;
+  if (el.classList.contains("fc-heart-wrap")) return;
+
+  const rect = el.getBoundingClientRect();
+  const w = Math.max(40, rect.width);
+  const h = Math.max(40, rect.height);
+
+  const maxX = window.innerWidth - w - 8;
+  const maxY = window.innerHeight - h - 8;
+
+  const x = clamp(rand(8, maxX), 8, maxX);
+  const y = clamp(rand(8, maxY), 8, maxY);
+
+  el.classList.add("teleport-hide");
+
+  setTimeout(() => {
+    el.style.left = x + "px";
+    el.style.top = y + "px";
+    el.style.right = "auto";
+    el.style.bottom = "auto";
+
+    // nur "Fenster/Popups", nicht allgemeine transforms killen
+    if (el.classList.contains("fake-window") || el.classList.contains("popup-img")) {
+      el.style.transform = "none";
+    }
+
+    el.classList.remove("teleport-hide");
+    el.classList.add("teleport-show");
+    setTimeout(() => el.classList.remove("teleport-show"), 140);
+  }, 90);
+}
+
+function startTeleporting(intervalMs = 650, moveEachTick = 4) {
+  stopTeleporting();
+  teleportOn = true;
+
+  teleportTimer = setInterval(() => {
+    const els = getMovables();
+    if (!els.length) return;
+    const shuffled = els.slice().sort(() => Math.random() - 0.5);
+    shuffled.slice(0, moveEachTick).forEach(teleportElement);
+  }, intervalMs);
+}
+
+function stopTeleporting() {
+  teleportOn = false;
+  if (teleportTimer) clearInterval(teleportTimer);
+  teleportTimer = null;
+}
 
 // =========================
 // OUT OF SYNC → CHAOS MODE
@@ -1121,183 +669,753 @@ document.addEventListener("DOMContentLoaded", () => {
   chaos.addEventListener("click", (e) => {
     e.stopPropagation();
 
-    // Liste deiner "Eskalations"-Trigger
+    if (!teleportOn) startTeleporting(520, 6);
+    else stopTeleporting();
+
     const triggers = [
-      document.getElementById("working-title"),      // spawnt 25 ordnernamen popups
-      document.getElementById("flirting-crimes"),    // fake window
-      document.getElementById("printer-ragebait"),   // poll + result + manual + steps (klick-weiter)
-      document.getElementById("betrayal-captcha"),   // betrayal window
-      document.getElementById("complaints-box"),     // login + notes
-      document.getElementById("sub-scam"),           // tv/video (falls du das so gebaut hast)
-      document.getElementById("pure-connection"),    // loading cursor
-      document.getElementById("doorhanger")          // optional: falls du darauf noch extra click-effekte baust
+      document.getElementById("working-title"),
+      document.getElementById("flirting-crimes"),
+      document.getElementById("printer-ragebait"),
+      document.getElementById("betrayal-captcha"),
+      document.getElementById("complaints-box"),
+      document.getElementById("sub-scam"),
+      document.getElementById("pure-connection"),
     ];
 
-    // Wichtig: leicht staffeln, damit sich nichts “verschluckt”
     let t = 0;
     triggers.forEach((el) => {
       setTimeout(() => fireClick(el), t);
       t += 120;
     });
 
-    // EXTRA: noch mehr Müll → working-title nochmal (mehr popups)
     setTimeout(() => fireClick(document.getElementById("working-title")), t + 250);
     setTimeout(() => fireClick(document.getElementById("working-title")), t + 500);
 
-    // EXTRA: Printer Steps sofort hochjagen (wenn openPrinterStep global existiert)
-    // Damit es wirklich "voll" wird, ohne dass du 11x klicken musst:
     setTimeout(() => {
-      if (typeof openPrinterStep === "function") {
-        // 1–11 in schneller Folge
-        for (let i = 0; i < 11; i++) {
-          setTimeout(() => openPrinterStep(i), i * 90);
-        }
-        // final error
-        setTimeout(() => openPrinterStep(11), 11 * 90 + 150);
-      }
+      for (let i = 0; i < 11; i++) setTimeout(() => openPrinterStep(i), i * 90);
+      setTimeout(() => openPrinterStep(11), 11 * 90 + 150);
     }, t + 650);
-
-    // EXTRA: Complaints Notes auch direkt öffnen (falls Funktion global ist)
-    setTimeout(() => {
-      if (typeof openComplaintsNotes === "function") openComplaintsNotes();
-    }, t + 900);
   });
 });
 
 // =========================
-// TELEPORT POPUPS (MOVE BY DISAPPEARING)
+// FLIRTING CRIMES (komplett)
 // =========================
-let teleportTimer = null;
-let teleportOn = false;
+// =========================
+// FLIRTING CRIMES – HEARTS (responsive, robust)
+// uses: img/herz.png
+// trigger: #flirting-crimes
+// optional stars layer: #global-stars (your existing CSS for stars can stay)
+// =========================
+if (!window.__fc_init__) {
+  window.__fc_init__ = true;
 
-function rand(min, max) {
-  return Math.random() * (max - min) + min;
-}
+  const flirting = {
+    starsOn: false,
+    timers: [],
+    lanes: null,
+    lanesSig: "",
+    queueBusy: false,
+    activeHearts: 0,
+    runWantsStop: false,
+    heartW: 260,
+  };
 
-function clamp(v, min, max) {
-  return Math.max(min, Math.min(max, v));
-}
+  const heartQueue = [];
 
-function getMovables() {
-  // alles, was typischerweise bei dir "aufpoppt"
-  const nodes = [
-    ...document.querySelectorAll(
-      ".popup-img, .fake-window, .subscam-tv, .printer-step, .betrayal-window, .complaints-login, .complaints-notes"
-    )
-  ];
+  // --- helpers ---
+  function tset(fn, ms) {
+    const id = setTimeout(fn, ms);
+    flirting.timers.push(id);
+    return id;
+  }
 
-  // zusätzlich: alles, was du in allPopups trackst (falls was nicht im selector ist)
-  if (Array.isArray(window.allPopups)) {
-    for (const el of window.allPopups) {
-      if (el && el.nodeType === 1) nodes.push(el);
+  function clearAllTimers() {
+    flirting.timers.forEach((id) => clearTimeout(id));
+    flirting.timers.length = 0;
+  }
+
+  function shuffle(arr) {
+    const a = arr.slice();
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
+  function clamp(v, min, max) {
+    return Math.max(min, Math.min(max, v));
+  }
+
+  // --- stars (optional, safe) ---
+  function spawnGlobalStars(count = 110) {
+    const layer = document.getElementById("global-stars");
+    if (!layer) return;
+
+    layer.innerHTML = "";
+    for (let i = 0; i < count; i++) {
+      const s = document.createElement("div");
+      s.className = "star";
+      s.dataset.fc = "1";
+      s.style.left = Math.random() * 100 + "%";
+      s.style.top = Math.random() * 100 + "%";
+
+      const size = 3 + Math.random() * 6;
+      s.style.setProperty("--s", size + "px");
+      s.style.setProperty("--tw", 900 + Math.random() * 2400 + "ms");
+      s.style.setProperty("--dr", 6500 + Math.random() * 12000 + "ms");
+      s.style.animationDelay = -Math.random() * 3000 + "ms";
+
+      layer.appendChild(s);
+    }
+
+    layer.classList.add("on");
+    flirting.starsOn = true;
+  }
+
+  function stopGlobalStars() {
+    const layer = document.getElementById("global-stars");
+    if (!layer) return;
+    layer.classList.remove("on");
+    layer.innerHTML = "";
+    flirting.starsOn = false;
+  }
+
+  function maybeStopStars() {
+    if (flirting.runWantsStop && flirting.activeHearts <= 0 && heartQueue.length === 0) {
+      stopGlobalStars();
+      flirting.runWantsStop = false;
     }
   }
 
-  // dupes raus
-  return [...new Set(nodes)].filter(el => document.body.contains(el));
-}
+  // --- lane math (responsive) ---
+  const MARGIN = 24;
 
-function teleportElement(el) {
-  // nur Elemente bewegen, die "sichtbar" sind
-  const rect = el.getBoundingClientRect();
-  const w = Math.max(40, rect.width);
-  const h = Math.max(40, rect.height);
+  function lanesSignature() {
+    return `${window.innerWidth}x${window.innerHeight}@${window.devicePixelRatio || 1}`;
+  }
 
-  // viewport bounds
-  const maxX = window.innerWidth - w - 8;
-  const maxY = window.innerHeight - h - 8;
+  function measureHeartWidthPx() {
+    // create hidden img with your real asset to measure actual width at current CSS
+    const tmpWrap = document.createElement("div");
+    tmpWrap.style.position = "fixed";
+    tmpWrap.style.left = "-9999px";
+    tmpWrap.style.top = "-9999px";
+    tmpWrap.style.visibility = "hidden";
+    tmpWrap.style.pointerEvents = "none";
+    tmpWrap.dataset.fc = "1";
 
-  const x = clamp(rand(8, maxX), 8, maxX);
-  const y = clamp(rand(8, maxY), 8, maxY);
+    const tmpImg = document.createElement("img");
+    tmpImg.src = "img/herz.png";
+    tmpImg.className = "falling-heart";
+    tmpImg.alt = "";
+    tmpImg.draggable = false;
+    tmpImg.dataset.fc = "1";
 
-  // Teleport: kurz verschwinden, neue Position, wieder erscheinen
-  el.classList.add("teleport-hide");
+    tmpWrap.appendChild(tmpImg);
+    document.body.appendChild(tmpWrap);
 
-  setTimeout(() => {
-    // Wichtig: wir setzen direkt top/left und neutralisieren ggf. center-transform
-    el.style.left = x + "px";
-    el.style.top = y + "px";
-    el.style.right = "auto";
-    el.style.bottom = "auto";
+    const w = tmpImg.getBoundingClientRect().width || 260;
+    tmpWrap.remove();
 
-    // Falls das Element normalerweise per translate(-50%,-50%) zentriert wird:
-    // wir überschreiben es, damit top/left wirklich gelten
-    el.style.transform = "none";
+    return w;
+  }
 
-    el.classList.remove("teleport-hide");
-    el.classList.add("teleport-show");
-    setTimeout(() => el.classList.remove("teleport-show"), 140);
-  }, 90);
-}
+  function laneGapPx() {
+    // nice spacing across sizes
+    // (bigger screens -> larger gap)
+    return clamp(Math.round(window.innerWidth * 0.05), 26, 120);
+  }
 
-function startTeleporting(intervalMs = 650, moveEachTick = 4) {
-  stopTeleporting();
-  teleportOn = true;
+  function buildLanes() {
+    const heartW = measureHeartWidthPx();
+    flirting.heartW = heartW;
 
-  teleportTimer = setInterval(() => {
-    const els = getMovables();
-    if (!els.length) return;
+    const gap = laneGapPx();
+    const laneW = heartW + gap;
 
-    // wähle pro Tick nur ein paar aus (sonst ist es zu heftig)
-    const shuffled = els.slice().sort(() => Math.random() - 0.5);
-    shuffled.slice(0, moveEachTick).forEach(teleportElement);
-  }, intervalMs);
-}
+    const usable = Math.max(0, window.innerWidth - MARGIN * 2);
+    const count = Math.max(1, Math.floor(usable / laneW));
 
-function startOverwhelmTeleporting() {
-  stopTeleporting();
-  teleportOn = true;
-
-  // Werte zum Tunen:
-  const intervalMs = 100;      // 🔥 Tick speed (kleiner = schneller)
-  const moveEachTick = 20;    // 🔥 wie viele pro Tick springen
-  const fullWipeEvery = 9;    // alle X Ticks: alle auf einmal springen (0 = aus)
-
-  let tick = 0;
-
-  teleportTimer = setInterval(() => {
-    tick++;
-
-    const els = getMovables();
-    if (!els.length) return;
-
-    // gelegentlich: kompletter Bildschirm-"wipe"
-    const doWipe = fullWipeEvery > 0 && (tick % fullWipeEvery === 0);
-
-    if (doWipe) {
-      els.forEach(teleportElement);
-      return;
+    const lanes = [];
+    for (let i = 0; i < count; i++) {
+      const x = MARGIN + (i + 0.5) * laneW;
+      lanes.push({ x, busyUntil: 0 });
     }
 
-    // sonst: viele zufällige pro Tick
-    const shuffled = els.slice().sort(() => Math.random() - 0.5);
-    shuffled.slice(0, Math.min(moveEachTick, shuffled.length)).forEach(teleportElement);
+    return lanes;
+  }
 
-  }, intervalMs);
+  function ensureLanes() {
+    const sig = lanesSignature();
+    if (!flirting.lanes || flirting.lanesSig !== sig) {
+      flirting.lanes = buildLanes();
+      flirting.lanesSig = sig;
+    }
+  }
+
+  function reserveLane(durationMs) {
+    ensureLanes();
+
+    const now = Date.now();
+    const lanes = flirting.lanes;
+
+    // find a free lane, else use the soonest one
+    let lane = lanes.find((l) => l.busyUntil <= now);
+    if (!lane) {
+      lane = lanes.reduce((best, l) => (l.busyUntil < best.busyUntil ? l : best), lanes[0]);
+    }
+
+    const wait = Math.max(0, lane.busyUntil - now);
+    lane.busyUntil = now + wait + durationMs + 900;
+
+    return { x: lane.x, wait };
+  }
+
+  // --- spawn heart ---
+  function spawnHeartNow(text) {
+    // duration between 7–12s feels good
+    const dur = 7 + Math.random() * 5;
+    const durMs = dur * 1000;
+
+    let lane = { x: window.innerWidth * 0.5, wait: 0 };
+    try {
+      lane = reserveLane(durMs);
+    } catch (e) {
+      console.warn("[flirting-crimes] reserveLane failed:", e);
+    }
+
+    const { x, wait } = lane;
+
+    const doSpawn = () => {
+      const wrap = document.createElement("div");
+      wrap.className = "fc-heart-wrap clickable";
+      wrap.dataset.fc = "1";
+
+      // IMPORTANT: fixed coordinates (stable on large screens)
+      wrap.style.position = "fixed";
+      wrap.style.left = x + "px";
+      wrap.style.top = "-180px";
+
+      // animation via your CSS @keyframes fc-fall
+      wrap.style.animationName = "fc-fall";
+      wrap.style.animationDuration = `${dur}s`;
+      wrap.style.animationTimingFunction = "linear";
+      wrap.style.animationFillMode = "forwards";
+      wrap.style.animationPlayState = "running";
+
+      wrap.style.setProperty("--r", (Math.random() * 16 - 8).toFixed(1) + "deg");
+
+      const img = document.createElement("img");
+      img.src = "img/herz.png";
+      img.className = "falling-heart";
+      img.alt = "";
+      img.draggable = false;
+      img.dataset.fc = "1";
+
+      const label = document.createElement("div");
+      label.className = "falling-heart-label";
+      label.textContent = text;
+      label.dataset.fc = "1";
+
+      wrap.appendChild(img);
+      wrap.appendChild(label);
+
+      document.body.appendChild(wrap);
+
+      // track so Clean can remove safely
+      if (typeof allPopups !== "undefined" && Array.isArray(allPopups)) {
+        allPopups.push(wrap);
+      }
+
+      flirting.activeHearts++;
+
+      // click = pause briefly (optional)
+      const PAUSE_MS = 2600;
+      wrap.addEventListener("click", (e) => {
+        e.stopPropagation();
+        if (wrap.dataset.paused === "1") return;
+        wrap.dataset.paused = "1";
+        wrap.style.animationPlayState = "paused";
+        tset(() => {
+          if (!document.body.contains(wrap)) return;
+          wrap.style.animationPlayState = "running";
+          wrap.dataset.paused = "0";
+        }, PAUSE_MS);
+      });
+
+      // cleanup
+      tset(() => {
+        if (document.body.contains(wrap)) wrap.remove();
+        flirting.activeHearts--;
+        maybeStopStars();
+      }, durMs + 400);
+    };
+
+    if (wait > 0) tset(doSpawn, wait);
+    else doSpawn();
+  }
+
+  // --- queue pump ---
+  function pumpQueue() {
+    if (flirting.queueBusy) return;
+    flirting.queueBusy = true;
+
+    const startDelay = 900 + Math.random() * 600;
+
+    tset(function runNext() {
+      if (heartQueue.length === 0) {
+        flirting.queueBusy = false;
+        maybeStopStars();
+        return;
+      }
+
+      const item = heartQueue.shift();
+      spawnHeartNow(item.text);
+
+      const nextDelay = 1200 + Math.random() * 1400;
+      tset(runNext, nextDelay);
+    }, startDelay);
+  }
+
+  function startRun(lines) {
+    const bag = shuffle(lines);
+    bag.forEach((txt) => heartQueue.push({ text: txt }));
+    pumpQueue();
+    flirting.runWantsStop = true;
+  }
+
+  // --- public clear for Clean button ---
+  function clearFlirtingCrimes() {
+    clearAllTimers();
+    heartQueue.length = 0;
+    flirting.queueBusy = false;
+    flirting.lanes = null;
+    flirting.lanesSig = "";
+    flirting.activeHearts = 0;
+    flirting.runWantsStop = false;
+    stopGlobalStars();
+
+    // remove only our spawned nodes
+    document.querySelectorAll('[data-fc="1"]').forEach((el) => el.remove());
+  }
+
+  window.clearFlirtingCrimes = clearFlirtingCrimes;
+
+  // --- init trigger ---
+  document.addEventListener("DOMContentLoaded", () => {
+    const trigger = document.getElementById("flirting-crimes");
+    if (!trigger) return;
+
+    const lines = [
+      "my dog looked almost exactly like that. i don’t know which one of you i’d rather get to know now…",
+      "be a good girl!",
+      "you look so innocent!",
+      "may i tear your clothes apart?",
+      "what do you think would be the hottest thing a girl can like?",
+      "hey, you look super likeable! or am i mistaken?",
+      "tired of being an adult? be my baby then",
+      "you’ll be mcdonalds and i’ll be nike, cause i’ll be doing it and you’ll be loving it.",
+      "well hey baby are you an english tense? because what we have is past perfect.",
+      "i would get into the candy-van for you!",
+      "your hand looks lonely. may i hold it?",
+      "can i massage and lick your feet for 100€?",
+      "heyy, i would like to massage your feet and clean your shoes if you don’t mind.",
+      "how would you feel about having a buddy who licks you clean after another guy has come inside you?",
+      "may i?",
+      "may god continue to send u terrible matches, until u choose me",
+    ];
+
+    const invalidate = () => {
+      flirting.lanes = null;
+      flirting.lanesSig = "";
+    };
+    window.addEventListener("resize", invalidate);
+    window.addEventListener("orientationchange", invalidate);
+
+    trigger.addEventListener("click", (e) => {
+  console.log("FLIRTING CRIMES CLICK ✅", e.target);
+  e.stopPropagation();
+  ensureLanes();
+  if (!flirting.starsOn) spawnGlobalStars(110);
+  startRun(lines);
+});
+
+  });
 }
 
-function stopTeleporting() {
-  teleportOn = false;
-  if (teleportTimer) clearInterval(teleportTimer);
-  teleportTimer = null;
-}
 
+// =========================
+// CLEAN (einziger Handler)
+// =========================
 document.addEventListener("DOMContentLoaded", () => {
-  const chaos = document.getElementById("out-of-sync");
-  if (!chaos) return;
+  const cleanBtn = document.getElementById("clean-button");
+  if (!cleanBtn) return;
 
-  chaos.addEventListener("click", (e) => {
+  cleanBtn.addEventListener("click", (e) => {
     e.stopPropagation();
 
-    if (!teleportOn) {
-      // schneller = nervöser
-      startTeleporting(520, 6);  // alle 520ms, 6 elemente pro tick
+    stopTeleporting();
+
+    // tracked popups
+    allPopups.forEach(p => p?.remove?.());
+    allPopups.length = 0;
+
+    // flirting clean (wenn vorhanden)
+    if (typeof window.clearFlirtingCrimes === "function") {
+      window.clearFlirtingCrimes();
     } else {
-      stopTeleporting();
+      document.querySelectorAll('[data-fc="1"]').forEach(el => el.remove());
     }
   });
 });
 
+// =========================
+// CLEAN BUTTON DVD (robust init)
+// =========================
+if (!window.__dvd_clean_init__) {
+  window.__dvd_clean_init__ = true;
 
+  const dvd = {
+    el: null,
+    raf: 0,
+    x: 60,
+    y: 60,
+    vx: 1.2,
+    vy: 0.95,
+    hue: 0,
+    last: 0,
+  };
 
+  function clampLocal(v, min, max) {
+    return Math.max(min, Math.min(max, v));
+  }
 
+  function setHue(h) {
+    dvd.hue = ((h % 360) + 360) % 360;
+    dvd.el.style.filter = `hue-rotate(${dvd.hue}deg) saturate(1.7) brightness(1.1)`;
+  }
+
+  function bumpHue() {
+    setHue(dvd.hue + 60 + Math.random() * 200);
+  }
+
+  function tick(ts) {
+    if (!dvd.el) return;
+
+    const dt = dvd.last ? Math.min(40, ts - dvd.last) : 16;
+    dvd.last = ts;
+
+    const r = dvd.el.getBoundingClientRect();
+    const w = r.width || 120;
+    const h = r.height || 40;
+
+    const maxX = Math.max(0, window.innerWidth - w);
+    const maxY = Math.max(0, window.innerHeight - h);
+
+    dvd.x += dvd.vx * (dt / 16);
+    dvd.y += dvd.vy * (dt / 16);
+
+    let hit = false;
+
+    if (dvd.x <= 0) { dvd.x = 0; dvd.vx *= -1; hit = true; }
+    else if (dvd.x >= maxX) { dvd.x = maxX; dvd.vx *= -1; hit = true; }
+
+    if (dvd.y <= 0) { dvd.y = 0; dvd.vy *= -1; hit = true; }
+    else if (dvd.y >= maxY) { dvd.y = maxY; dvd.vy *= -1; hit = true; }
+
+    if (hit) bumpHue();
+
+    dvd.x = clampLocal(dvd.x, 0, maxX);
+    dvd.y = clampLocal(dvd.y, 0, maxY);
+
+    dvd.el.style.transform = `translate3d(${dvd.x}px, ${dvd.y}px, 0)`;
+    dvd.raf = requestAnimationFrame(tick);
+  }
+
+  function start() {
+    const btn = document.getElementById("clean-button");
+    if (!btn) return false;
+
+    dvd.el = btn;
+    dvd.el.classList.add("dvd-clean", "clickable");
+
+    const r = dvd.el.getBoundingClientRect();
+    const w = r.width || 120;
+    const h = r.height || 40;
+
+    dvd.x = Math.random() * Math.max(1, window.innerWidth - w);
+    dvd.y = Math.random() * Math.max(1, window.innerHeight - h);
+
+    setHue(Math.random() * 360);
+
+    cancelAnimationFrame(dvd.raf);
+    dvd.last = 0;
+    dvd.raf = requestAnimationFrame(tick);
+    return true;
+  }
+
+  function startWithRetries() {
+    if (start()) return;
+    let tries = 0;
+    const timer = setInterval(() => {
+      tries++;
+      if (start() || tries > 20) clearInterval(timer);
+    }, 150);
+  }
+
+  document.addEventListener("DOMContentLoaded", startWithRetries);
+  window.addEventListener("load", startWithRetries);
+
+  window.addEventListener("resize", () => {
+    if (!dvd.el) return;
+    const r = dvd.el.getBoundingClientRect();
+    dvd.x = clampLocal(dvd.x, 0, Math.max(0, window.innerWidth - r.width));
+    dvd.y = clampLocal(dvd.y, 0, Math.max(0, window.innerHeight - r.height));
+  });
+}
+
+// =========================
+// COMPLAINTS (Login + Notes)
+// =========================
+(function () {
+  if (window.__complaints_ready__) return;
+  window.__complaints_ready__ = true;
+
+  const STORAGE_KEY = "betrayal_complaints_notes_v1";
+  const state = { notes: [], counter: 1, activeId: null };
+
+  function load() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return;
+      const data = JSON.parse(raw);
+      if (!Array.isArray(data.notes)) return;
+      state.notes = data.notes;
+      state.counter = data.counter || (data.notes.length + 1);
+    } catch {}
+  }
+
+  function save() {
+    localStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify({ notes: state.notes, counter: state.counter })
+    );
+  }
+
+  function stamp() {
+    const d = new Date();
+    return d.toLocaleString(undefined, {
+      month: "short",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+  }
+
+  function titleFrom(title, body) {
+    const t = (title || "").trim();
+    if (t) return t.slice(0, 32);
+    const b = (body || "").trim().split("\n")[0];
+    return b ? b.slice(0, 32) : "untitled complaint";
+  }
+
+  // ---------- LOGIN WINDOW ----------
+  function loginWindow() {
+    const w = document.createElement("div");
+    w.className = "fake-window complaints-login clickable";
+
+    w.innerHTML = `
+      <div class="titlebar">
+        <div class="traffic">
+          <span class="dot red"></span>
+          <span class="dot yellow"></span>
+          <span class="dot green"></span>
+        </div>
+        <div class="title">login</div>
+        <span class="close clickable" aria-label="close">×</span>
+      </div>
+
+      <div class="content">
+        <div class="complaints-login-head"></div>
+
+        <form class="complaints-login-form" autocomplete="off">
+          <div class="complaints-login-field">
+            <label for="cl-user">username</label>
+            <input id="cl-user" value="please_stay" readonly>
+          </div>
+
+          <div class="complaints-login-field">
+            <label for="cl-pass">password</label>
+            <input id="cl-pass" type="password" value="••••••••••••••" readonly>
+          </div>
+
+          <div class="complaints-login-actions">
+            <button type="button" class="notes-btn primary login-btn clickable">login</button>
+          </div>
+        </form>
+
+        <div class="complaints-login-foot">please log in.</div>
+      </div>
+    `;
+
+    return w;
+  }
+
+  function openLogin() {
+    const w = loginWindow();
+    document.body.appendChild(w);
+    allPopups.push(w);
+
+    // schließen: roter dot ODER x
+    const close = w.querySelector(".dot.red, .close");
+    if (close) {
+      close.addEventListener("click", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        w.remove();
+        const i = allPopups.indexOf(w);
+        if (i > -1) allPopups.splice(i, 1);
+      });
+    }
+
+    // login -> notes
+    const loginBtn = w.querySelector(".login-btn");
+    if (loginBtn) {
+      loginBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        w.remove();
+        const i = allPopups.indexOf(w);
+        if (i > -1) allPopups.splice(i, 1);
+
+        // nächster tick: robust gegen globale click-handler
+        setTimeout(() => openNotes(), 0);
+      });
+    }
+  }
+
+  // ---------- NOTES WINDOW ----------
+  function notesWindow() {
+    const w = document.createElement("div");
+    w.className = "fake-window complaints-notes clickable";
+    w.innerHTML = `
+      <div class="titlebar">
+        <div class="traffic">
+          <span class="dot red"></span>
+          <span class="dot yellow"></span>
+          <span class="dot green"></span>
+        </div>
+        <div class="title">notes</div>
+      </div>
+      <div class="content">
+        <div class="complaints-notes-sidebar">
+          <div class="label">complaints</div>
+          <div class="complaints-notes-list"></div>
+        </div>
+        <div class="complaints-notes-main">
+          <div class="complaints-notes-toolbar">
+            <input class="note-title-input" placeholder="untitled note">
+            <button class="notes-btn primary clickable">submit</button>
+          </div>
+          <div class="complaints-notes-editor">
+            <textarea placeholder="type your complaint… (the system is listening. allegedly.)"></textarea>
+          </div>
+        </div>
+      </div>`;
+    return w;
+  }
+
+  function render(win) {
+    const list = win.querySelector(".complaints-notes-list");
+    list.innerHTML = "";
+
+    if (!state.notes.length) {
+      list.innerHTML = `<div class="complaints-notes-item">no notes yet</div>`;
+      return;
+    }
+
+    state.notes
+      .slice()
+      .sort((a, b) => b.createdAt - a.createdAt)
+      .forEach((n) => {
+        const d = document.createElement("div");
+        d.className = "complaints-notes-item clickable";
+        if (n.id === state.activeId) d.classList.add("active");
+        d.innerHTML = `
+          <div class="name">${n.title}</div>
+          <div class="preview">${(n.body || "").slice(0, 60)}</div>
+          <div class="meta">${n.stamp}</div>`;
+        d.onclick = () => {
+          state.activeId = n.id;
+          win.querySelector(".note-title-input").value = n.title;
+          win.querySelector("textarea").value = n.body;
+          render(win);
+        };
+        list.appendChild(d);
+      });
+  }
+
+  function fresh(win) {
+    state.activeId = null;
+    win.querySelector(".note-title-input").value = "";
+    win.querySelector("textarea").value = "";
+    render(win);
+  }
+
+  function openNotes() {
+    load();
+    const w = notesWindow();
+    document.body.appendChild(w);
+    allPopups.push(w);
+
+    const close = w.querySelector(".dot.red");
+    if (close) {
+      close.onclick = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        w.remove();
+        const i = allPopups.indexOf(w);
+        if (i > -1) allPopups.splice(i, 1);
+      };
+    }
+
+    const btn = w.querySelector(".notes-btn");
+    const title = w.querySelector(".note-title-input");
+    const area = w.querySelector("textarea");
+
+    btn.onclick = (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+
+      const body = area.value.trim();
+      if (!body) return;
+
+      const note = {
+        id: "c" + state.counter++,
+        title: titleFrom(title.value, body),
+        body,
+        createdAt: Date.now(),
+        stamp: stamp(),
+      };
+
+      state.notes.push(note);
+      save();
+      fresh(w);
+    };
+
+    render(w);
+    fresh(w);
+  }
+
+  // ---------- TRIGGER ----------
+  document.addEventListener("click", (e) => {
+    const t = e.target.closest("#complaints-box");
+    if (!t) return;
+    e.preventDefault();
+    e.stopPropagation();
+    openLogin();
+  });
+})();

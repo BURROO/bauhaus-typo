@@ -115,5 +115,19 @@ a{
 
 }
 
+.no-releases{
+    position: fixed;
+    top: 10rem;
+    left: 25rem;
+    background-color: greenyellow;
+    width: 50rem;
+    height: 16rem;
+    color: black;
+    padding: .2vw;
+    font-size: 4vw;
+    letter-spacing: -.2vw;
+    line-height: 3vw;
+    border: 10px solid red;
+}
 
 

@@ -112,6 +112,22 @@ body {
     border: 1px dashed transparent;
     z-index: 100;
     cursor: grab;
+    transform-origin: center center;
+    /* Rendi il bordo di selezione invisibile di default */
+    outline: 2px solid transparent; 
+    transition: outline 0.2s;
+}
+
+/* Impedisce il trascinamento predefinito dell'immagine del browser */
+.draggable-asset {
+    touch-action: none;
+    user-select: none;
+    -webkit-user-drag: none;
+}
+
+/* Visual feedback durante il ridimensionamento */
+.can-get-bigger {
+    outline: 2px dashed #88ff00;
 }
 
 /* Quando trasciniamo, mostriamo un bordo per capire che è attiva */
@@ -234,16 +250,7 @@ button{
     pointer-events: none;
     z-index: 999;
 }
-#canvas {
-    position: fixed;
-    right: 20px;
-    top: 0;
-    width: 595px;
-    height: 842px;
-    /* border: 1px solid black; */
-    pointer-events: none;
-    z-index: 1; 
-}
+
 
 /* FOOTER */
 .hover-target { position: fixed; bottom: 10px; left: 20px; cursor: help; }
@@ -306,26 +313,41 @@ button{
 
 
 
-
+#canvas {
+    position: fixed;
+    right: 20px;
+    top: 20px;
+    width: 595px;
+    height: 842px;
+    /* border: 1px solid black; */
+    pointer-events: none;
+    z-index: 1; 
+    overflow: hidden; /* Importante: taglia le immagini fuori dal foglio */
+    pointer-events: auto !important; /* Deve ricevere i click per le immagini dentro */
+    z-index: 5;
+    /* box-shadow: 0 0 20px rgba(0,0,0,0.5); */
+}
 
 
 .canvas {
-  position: relative;
-  width: 210mm;
-  height: 297mm;
+  
+  /* width: 210mm;
+  height: 297mm; */
   background: white;
   margin: 20px;
-  /* box-shadow: 0 0 20px rgba(0,0,0,.2); */
-  overflow: hidden;
+  
 }
 
 .draggable-asset {
-  /* position: absolute; */
+  position: absolute; /* Fondamentale per il posizionamento relativo al canvas */
   transform-origin: center center;
   cursor: grab;
   user-select: none;
+  touch-action: none;
   
 }
+
+
 
 /* .draggable-asset.selected {
   outline: 2px solid #0077ff;

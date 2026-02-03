@@ -12,9 +12,9 @@
     <div class="shattered-container">
         
         <div class="panel deg1">
-            <iframe class="bg-video" 
-                    src="https://www.youtube.com/embed/QNFH-iPSfyk?enablejsapi=1&mute=1&controls=0&loop=1&playlist=QNFH-iPSfyk" 
-                    frameborder="0" allow="autoplay; encrypted-media"></iframe>
+            <video class="bg-video" muted loop playsinline>
+                <source src="Görseller\16mart\16Mart_11.mp4" type="video/mp4">
+            </video>
             
             <div class="overlay"></div>
             <div class="content">
@@ -37,9 +37,9 @@
         </div>
 
         <div class="panel deg2">
-            <iframe class="bg-video" 
-                    src="https://www.youtube.com/embed/4gLwQImSVcE?enablejsapi=1&mute=1&controls=0&loop=1&playlist=4gLwQImSVcE" 
-                    frameborder="0" allow="autoplay; encrypted-media"></iframe>
+            <video class="bg-video" muted loop playsinline>
+                <source src="Görseller\16mart\16Mart_22.mp4" type="video/mp4">
+            </video>
 
             <div class="overlay"></div>
             <div class="content">
@@ -48,25 +48,25 @@
                     <h1>Bombing and Assault</h1>
                     <p class="typewriter">
                         As soon as the students exited,
-                         attackers from within right-wing 
-                         groups threw American-made TNT bombs—registered in 
-                         the NATO inventory—into the crowd while shouting 
-                         "Down with communists." Immediately after the explosion, 
-                         a volley of gunfire was opened on the defenseless students. 
-                         This brutal attack resulted in the deaths of 7 students and left
-                          41 others seriously injured. The fact that the police chief on the scene, 
-                          Reşat Altay, ordered officers who wanted to pursue the attackers to 
-                          "stop" revealed the
-                         internal state cooperation in the organization of the assault.
+                        attackers from within right-wing 
+                        groups threw American-made TNT bombs—registered in 
+                        the NATO inventory—into the crowd while shouting 
+                        "Down with communists." Immediately after the explosion, 
+                        a volley of gunfire was opened on the defenseless students. 
+                        This brutal attack resulted in the deaths of 7 students and left
+                        41 others seriously injured. The fact that the police chief on the scene, 
+                        Reşat Altay, ordered officers who wanted to pursue the attackers to 
+                        "stop" revealed the
+                        internal state cooperation in the organization of the assault.
                     </p>
                 </div>
             </div>
         </div>
 
         <div class="panel deg3">
-            <iframe class="bg-video" 
-                    src="https://www.youtube.com/embed/4gLwQImSVcE?enablejsapi=1&mute=1&controls=0&loop=1&playlist=4gLwQImSVcE" 
-                    frameborder="0" allow="autoplay; encrypted-media"></iframe>
+            <video class="bg-video" muted loop playsinline>
+                <source src="Görseller\16mart\16mart_3.mp4" type="video/mp4">
+            </video>
             
             <div class="overlay"></div>
             <div class="content">
@@ -78,11 +78,11 @@
                         names behind the massacre were directly linked to the 
                         MHP and the Grey Wolves (Ülkü Ocakları). Years later, 
                         it was revealed that Abdullah Çatlı supplied the bombs and
-                         Zülküf İsot was the individual who threw them. The name of police
-                          officer Reşat Altay continued to appear in connection with similar 
-                          negligence in later dark events, such as the Gazi Massacre and the Hrant 
-                          Dink assassination. The limited number of defendants tried in the case
-                           were acquitted through lack of evidence or 
+                        Zülküf İsot was the individual who threw them. The name of police
+                        officer Reşat Altay continued to appear in connection with similar 
+                        negligence in later dark events, such as the Gazi Massacre and the Hrant 
+                        Dink assassination. The limited number of defendants tried in the case
+                        were acquitted through lack of evidence or 
                         political interference, fostering a culture of impunity.
                     </p>
                 </div>
@@ -90,9 +90,9 @@
         </div>
 
         <div class="panel deg4">
-            <iframe class="bg-video" 
-                    src="https://www.youtube.com/embed/4gLwQImSVcE?enablejsapi=1&mute=1&controls=0&loop=1&playlist=4gLwQImSVcE" 
-                    frameborder="0" allow="autoplay; encrypted-media"></iframe>
+            <video class="bg-video" muted loop playsinline>
+                <source src="Görseller\16mart\16Mart4.mp4" type="video/mp4">
+            </video>
 
             <div class="overlay"></div>
             <div class="content">
@@ -101,12 +101,12 @@
                     <h1>COMPLICITY</h1>
                     <p class="typewriter">
                         Despite decades of legal struggle and the emergence of new evidence,
-                         the March 16 Massacre case was closed in 2008 during the AKP government’s 
-                         term on the grounds of the statute of limitations. This decision was upheld
-                          by the Court of Appeals in 2010. This massacre went down in history as one
-                           of the bloodiest links in the counter-guerrilla activities designed to
-                            drag society into chaos and create the image that the "state had lost
-                             control," 
+                        the March 16 Massacre case was closed in 2008 during the AKP government’s 
+                        term on the grounds of the statute of limitations. This decision was upheld
+                        by the Court of Appeals in 2010. This massacre went down in history as one
+                        of the bloodiest links in the counter-guerrilla activities designed to
+                        drag society into chaos and create the image that the "state had lost
+                        control," 
                         thereby preparing the ground for the September 12, 1980, military coup.
                     </p>
                 </div>
@@ -116,22 +116,23 @@
     </div>
 
     <script>
-        // --- YOUTUBE KONTROL SCRIPTI ---
-        // YouTube Iframe API'sini manuel tetikleyen kod
-        
         const panels = document.querySelectorAll('.panel');
 
         panels.forEach(panel => {
-            const iframe = panel.querySelector('iframe');
+            const video = panel.querySelector('video');
 
+            // Mouse panelin üzerine gelince video oynasın
             panel.addEventListener('mouseenter', () => {
-                // Mouse gelince oynat komutu gönder
-                iframe.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
+                if (video) {
+                    video.play();
+                }
             });
 
+            // Mouse panelden gidince video dursun
             panel.addEventListener('mouseleave', () => {
-                // Mouse gidince durdur komutu gönder
-                iframe.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
+                if (video) {
+                    video.pause();
+                }
             });
         });
     </script>
@@ -148,15 +149,14 @@
     </a>
 
     <a href="KanlıMayıs.html" class="side-strip right-strip">
-        <div class="strip-content">Bloddy May - Bloddy May - Bloddy May - Bloddy May - Bloddy May - Bloddy May - Bloddy May - Bloddy May - </div>
+        <div class="strip-content">Bloody May - Bloody May - Bloody May - Bloody May - Bloody May - Bloody May - Bloody May - Bloody May - </div>
     </a>
     <a href="KanlıMayıs.html" class="side-strip right-strip2">
-        <div class="strip-content">Bloddy May - Bloddy May - Bloddy May - Bloddy May - Bloddy May - Bloddy May - Bloddy May - Bloddy May - </div>
+        <div class="strip-content">Bloody May - Bloody May - Bloody May - Bloody May - Bloody May - Bloody May - Bloody May - Bloody May - </div>
     </a>
     <a href="KanlıMayıs.html" class="side-strip right-strip3">
-        <div class="strip-content">Bloddy May - Bloddy May - Bloddy May - Bloddy May - Bloddy May - Bloddy May - Bloddy May - Bloddy May - </div>
+        <div class="strip-content">Bloody May - Bloody May - Bloody May - Bloody May - Bloody May - Bloody May - Bloody May - Bloody May - </div>
     </a>
-
 
 </body>
 </html>

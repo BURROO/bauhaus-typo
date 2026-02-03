@@ -41,8 +41,8 @@ body{
     font-family: "Princess";
     src: url(fonts/PrincessSofia-Regular.ttf);
 }
-/* Go-back heart */
-#HerzZurück{
+
+#HerzZurueck{
   position:absolute;
   height:auto;
   width:5vw;
@@ -226,11 +226,7 @@ body{
     margin: 4vh 10px;
     padding: 1rem;
   }
-  /* #HerzZurück {
-    width: 10vw;
-    left: 78vw;
-    top: 70vh;
-  } */
+
 }
 
 

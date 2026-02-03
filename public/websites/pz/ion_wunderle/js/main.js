@@ -38,16 +38,6 @@ function createReleaseInformation(data) {
   )
 }
 
-
-// Klick → URL aus JSON
-  if (item.url) {
-    div.addEventListener("click", () => {
-    window.open(item.url, "_blank");
-    });
-
-  div.style.cursor = "help";
-}
-
     // Arrays als CSV speichern, Strings direkt
     div.dataset.year = item.year;
     div.dataset.genre = Array.isArray(item.genre) ? item.genre.join(",") : item.genre;
@@ -106,6 +96,30 @@ function applyFilters() {
 
     release.style.display = show ? "block" : "none";
   });
+
+  toggleEmptyState();
+}
+
+function toggleEmptyState() {
+  const grid = document.querySelector(".releases-grid");
+  let emptyState = document.querySelector(".no-releases");
+
+  const releases = document.querySelectorAll(".release");
+
+  // TRUE, wenn mindestens ein Release sichtbar ist
+  const hasVisibleReleases = [...releases].some(release => {
+    return window.getComputedStyle(release).display !== "none";
+  });
+
+  // Empty-State einmal erstellen
+  if (!emptyState) {
+    emptyState = document.createElement("div");
+    emptyState.className = "no-releases";
+    emptyState.textContent = "sorry, for your applied filters.... there are no releases............... available yet... I´m working on it! please select some new..... filters!..........................................";
+    grid.appendChild(emptyState);
+  }
+
+  emptyState.style.display = hasVisibleReleases ? "none" : "block";
 }
 
 // Optional: Filter speichern, wenn Dropdowns geändert werden

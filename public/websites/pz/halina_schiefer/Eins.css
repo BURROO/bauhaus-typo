@@ -534,7 +534,7 @@ background-repeat: no-repeat;
 
 }
 
-.Türen{
+.Tueren{
 
   width:100vw;
   height: 100vh;
@@ -570,7 +570,7 @@ background-repeat: no-repeat;
   top: 42vh;
 }
 
-.image-wrapperTür3{
+.image-wrapperTuer3{
 
  
   position:relative;
@@ -581,13 +581,13 @@ background-repeat: no-repeat;
   /* pointer-events: none; */
 } 
 
-.Türoffen3 .Türzu3{
+.Tueroffen3 .Tuerzu3{
   opacity: 0;
   animation: showImage2 0s ease-in 3s forwards; 
 
 }
 
-.Türoffen .Türzu{
+.Tueroffen .Tuerzu{
   opacity: 0;
   animation: showImage 0s ease-in 3s forwards; 
 
@@ -605,7 +605,7 @@ background-repeat: no-repeat;
   }
 } 
 
-.Türoffen{
+.Tueroffen{
 /* border: 1pt green solid; */
 position:absolute;
 height: auto;
@@ -624,7 +624,7 @@ transition: opacity 0.3s ease;
 
 }
 
-.Türoffen3{
+.Tueroffen3{
 /* border: 1pt green solid; */
 position:absolute;
 height: auto;
@@ -642,7 +642,7 @@ transition: opacity 0.3s ease;
 }
 
 
-.Türzu{
+.Tuerzu{
 /* border: 1pt purple solid; */
   height: auto;
   width: 9vw;
@@ -656,7 +656,7 @@ transition: opacity 0.3s ease;
 
 } 
 
-.Türzu3{
+.Tuerzu3{
 
   height: auto;
   width: 18vw;
@@ -668,31 +668,31 @@ transition: opacity 0.3s ease;
 
 } 
 
-.image-wrapper:hover .Türzu{
+.image-wrapper:hover .Tuerzu{
   opacity:0;
 }
 
-.image-wrapper:hover .Türoffen{
+.image-wrapper:hover .Tueroffen{
   opacity:1;
 }
 
-.image-wrapper2:hover .Türzu{
+.image-wrapper2:hover .Tuerzu{
   opacity:0;
 }
 
-.image-wrapper2:hover .Türoffen{
+.image-wrapper2:hover .Tueroffen{
   opacity:1;
 }
 
-.image-wrapperTür3:hover .Türzu3{
+.image-wrapperTuer3:hover .Tuerzu3{
   opacity:0;
 }
 
-.image-wrapperTür3:hover .Türoffen3{
+.image-wrapperTuer3:hover .Tueroffen3{
   opacity:1;
 }
 
-#SchnöSilber1{
+#SchnoeSilber1{
 
   position:absolute;
   width:35vw;
@@ -703,7 +703,7 @@ transition: opacity 0.3s ease;
   
 } 
 
-#SchnöSilber2{
+#SchnoeSilber2{
 
   position:absolute;
   width:25vw;
@@ -715,7 +715,7 @@ transition: opacity 0.3s ease;
  
 
 
-#Schnörkel8{
+#Schnoerkel8{
 
   position:absolute;
   width:55vw;
@@ -725,7 +725,7 @@ transition: opacity 0.3s ease;
   
 } 
 
-#Schnörkel9{
+#Schnoerkel9{
 
   position:absolute;
   width:45vw;

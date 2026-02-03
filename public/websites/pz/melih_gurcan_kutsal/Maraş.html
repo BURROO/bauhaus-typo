@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MARAŞ '78: UNDERGROUND ARCHIVE</title>
+    <title>MARAŞ '78: Breaking Point </title>
     <link rel="stylesheet" href="Maraş.css">
     <link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Rubik+Glitch&family=Bebas+Neue&display=swap" rel="stylesheet">
     <style>
@@ -18,11 +18,10 @@
     <div id="main-stage">
         <div class="flashlight-layer"></div>
 
-        <iframe class="noise-bg" 
-        src="https://www.youtube.com/embed/0DPe5vK-Yjk?autoplay=1&mute=1&loop=1&playlist=0DPe5vK-Yjk&controls=0&showinfo=0&rel=0" 
-        frameborder="0" 
-        allow="autoplay; encrypted-media" 
-        allowfullscreen></iframe>
+        <video class="noise-bg" autoplay muted loop playsinline>
+            <source src="Görseller\maras\maras.mp4" type="video/mp4">
+            Tarayıcınız video etiketini desteklemiyor.
+        </video>
 
         <a href="KanlıMayıs.html" class="side-strip left-strip">
     <div class="strip-content">BLOODY MAY - BLOODY MAY - BLOODY MAY - BLOODY MAY - BLOODY MAY - BLOODY MAY - BLOODY MAY - </div>
@@ -51,7 +50,7 @@
 
             <main>
                 <div class="punk-image-wrapper" style="transform: rotate(-3deg);">
-                    <img src="https://haber.sol.org.tr/sites/default/files/styles/702x468/public/images/content/article/2025/12/19/maras-tanigi.jpg.webp?h=7d1b4d45&itok=yVMKeeoE" class="evidence-img" alt="Evidence 1">
+                    <img src="Görseller\maras\maras1.png" class="evidence-img" alt="Evidence 1">
                     <div class="tape-label">"To the war for Allah", they were also marking houses "X" as their targets</div>
                 </div>
 
@@ -69,7 +68,7 @@
                 </div>
 
                 <div class="punk-image-wrapper" style="transform: rotate(2deg); margin-left: auto;">
-                    <img src="https://demokrathaberorg.teimg.com/demokrathaber-org/images/haberler/maras_katliami_dosyasinda_katillerin_ozel_yasami_gerekce_gosterilerek_hak_arayisinin_onune_gecildi_h43090.jpg" class="evidence-img" alt="Evidence 2">
+                    <img src="Görseller\maras\maras2.png" class="evidence-img" alt="Evidence 2">
                     <div class="tape-label">Aftermath</div>
                 </div>
 
@@ -89,8 +88,8 @@
                     </div>
                 </div>
 
-                <div class="punk-image-wrapper" style="transform: rotate(-1deg); width: 80%;">
-                    <img src="https://icdn.ensonhaber.com/resimler/galeri/Mara_Katliamnn_ilk_kez_yaynlanan_fotoraflar_7.jpeg" class="evidence-img" alt="Evidence 3">
+                <div class="punk-image-wrapper" style="transform: rotate(-1deg);">
+                    <img src="Görseller\maras\maras3.png" class="evidence-img" alt="Evidence 3">
                     <div class="tape-label">Aftermath</div>
                 </div>
 
@@ -115,7 +114,7 @@
     <script>
         /* --- JAVASCRIPT --- */
         
-        // Giriş animasyonu kaldırıldığı için sadece Fener Efekti kaldı
+        // Fener Efekti
         document.addEventListener('mousemove', (e) => {
             const root = document.documentElement;
             root.style.setProperty('--cursor-x', e.clientX + 'px');
