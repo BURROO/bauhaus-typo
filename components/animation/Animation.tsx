@@ -66,7 +66,6 @@ const Animation = ({
                 {selectedCourse === 'PZ' && <AnimationWebsite key={selectedCourse} radius={radius} data={data.filter((d) => d.COURSE === 'Handmade Websites as Punk Zines')} animation={animation} />}
             </group>
         </ScreenWrapper>
-
         <AnimationSettings
         selectedCourse={selectedCourse}
         setSelectedCourse={setSelectedCourse}
