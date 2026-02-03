@@ -1,0 +1,19 @@
+* {
+    cursor: url("Cursor/cursorherz2.png") 4 4, auto;
+}
+
+
+body{
+margin: 0;
+background-color: black;
+height: 100vh;
+font-family: 'terminal';    
+
+}
+
+
+@font-face {
+    font-family: 'terminal';
+    src: url('fonts/Feroniapi-MediumItalic.otf')
+}
+

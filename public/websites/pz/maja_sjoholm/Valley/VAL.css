@@ -1,0 +1,114 @@
+
+* { 
+    margin: 0;
+    padding: 0;
+}
+
+body {
+  background-image: url(bilder/Bord.jpg);
+  height: 100vh;
+}
+
+.box {
+  height: 150vh;
+  max-width: 100%;
+}
+
+.rectangle {
+    position: -webkit-sticky;
+    position: sticky;
+    bottom: 0;
+    margin:0;
+  height: 6vw;
+  width: 100%;
+  background-color: #5189a3;
+  font-family: 'Courier New', Courier, monospace; color: aliceblue; 
+  font-size: 11pt;
+}
+
+#eject {
+    height: 1.6vw; 
+    margin-left: 17vw;
+    position: absolute; right: 5%; top: 40%;
+    border: 2px solid white;
+    padding: 0.4vw;
+    border-radius: 4px;
+}
+
+img {
+  max-height: 15vw;
+}
+
+.draggable {
+  position: absolute;
+  cursor: grab;
+  user-select: none;
+}
+
+.draggable img {
+  pointer-events: none; 
+  /* Ensures the div handles dragging, not the <img> */
+}
+
+/* this part is also quite important they need a start position else it wont work
+you can do this with the nth-child pseudo class this .draggable:nth-child(1) means the first item with the class draggable */
+.draggable:nth-child(1) { 
+  left: 5vw; top: 10vh; 
+}
+.draggable:nth-child(2) { 
+  left: 12vw; top: 12vh; 
+}
+.draggable:nth-child(3) { 
+  left: 32vw; top: 50vh; 
+}
+.draggable:nth-child(4) { 
+  left: 13vw; top: 40vh; 
+}
+.draggable:nth-child(5) { 
+  left: 58vw; top: 6vh; 
+}
+.draggable:nth-child(6) { 
+  left: 25vw; top: 43vh; 
+}
+.draggable:nth-child(7) { 
+  left: 37vw; top: 60vh; 
+}
+.draggable:nth-child(8) { 
+  left: 18vw; top: 80vh; 
+}
+.draggable:nth-child(9) { 
+  left: 65vw; top: 80vh; 
+}
+.draggable:nth-child(10) { 
+  left: 4vw; top: 88vh; 
+}
+.draggable:nth-child(11) { 
+  left: 55vw; top: 60vh; 
+}
+.draggable:nth-child(12) { 
+  left: 15vw; top: 60vh; 
+}
+.draggable:nth-child(13) { 
+  left: 80vw; top: 73vh; 
+}
+.draggable:nth-child(14) { 
+  left: 84vw; top: 20vh; 
+}
+.draggable:nth-child(15) { 
+  left: 69vw; top: 96vh; 
+}
+.draggable:nth-child(16) { 
+  left: 15vw; top: 80vh; 
+}
+.draggable:nth-child(17) { 
+  left: 45vw; top: 90vh; 
+}
+.draggable:nth-child(18) { 
+  left: 70vw; top: 60vh; 
+}
+.draggable:nth-child(19) { 
+  left: 35vw; top: 18vh; 
+}
+.draggable:nth-child(20) { 
+  left: 55vw; top: 90vh; 
+}

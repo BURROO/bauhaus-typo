@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<base href="/websites/pz/soph_warming/">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>members</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/smoothness/jquery-ui.css">
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+</head>
+
+<body>
+  <div class="paper-overlay"></div>
+
+  <div>
+    <img id="header" src="IMG/HEADER.png" alt="Header">
+  </div>
+
+  <div class="description">
+    <p id="indexText">
+      this is the official bot/bug/dog fanwebsite<br>
+      learn about the members, how they came to be!<br>
+      be a part of this cozy fandom!
+    </p>
+  </div>
+  
+  <div id="reveal-content" class="initial-hidden">
+    <div class="global-overlay">
+      <div class="overlay-cursors">
+        <div class="cursor-container">
+          <div class="cursor-item">
+            <img src="IMG/CURSOR/BOT%20CUR.png" alt="Bot Cursor">
+            <div class="textbubble"><b>THIS IS MY BAND</b></div>
+          </div>
+          <div class="cursor-item">
+            <img src="IMG/CURSOR/BUG%20CUR.png" alt="Bug Cursor">
+            <div class="textbubble"><u>a bit invasive isn't it</u></div>
+          </div>
+          <div class="cursor-item">
+            <img src="IMG/CURSOR/DOG%20CUR.png" alt="Dog Cursor">
+            <div class="textbubble"><i>I am happy to be here</i></div>
+          </div>
+          <div class="cursor-item">
+            <a href="space.html">
+              <img src="IMG/CURSOR/_!_ CURSOR.png" alt="Special Cursor">
+            </a>
+            <div class="textbubble"><s>i have no role really</s></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="main">
+      <img id="border" src="IMG/BODER.png" alt="Border">
+      <button id="us-button" class="us-button" type="button">THIS IS THEM</button>
+      <div class="textbubble">click to get their origin story</div>
+      <div id="member-buttons" class="member-buttons-row hidden">
+        <button class="member-btn member-btn-compact" data-member="BOT">BOT</button>
+        <button class="member-btn member-btn-compact" data-member="BUG">BUG</button>
+        <button class="member-btn member-btn-compact" data-member="DOG">DOG</button>
+        <button class="member-btn member-btn-compact" data-member="QMARK">?!?!</button>
+      </div>
+    </div>
+
+    <div class="nav-container">
+      <div class="paper pink">        
+        <a class="subpage" class="btn" href="lyrics.html"><p>check out<br>their lyrics</p></a>
+        <div class="tape-section"></div>
+        <div class="tape-section"></div>
+      </div>
+      <div class="paper blue">
+        <div class="top-tape"></div>
+        <a class="subpage" href="members.html"><p>about this project</p></a>
+      </div>
+    </div>
+  </div>  
+
+  <button id="switch-lineup" class="switch-lineup">click to change the lineup</button>
+
+  <div class="overlay-lineup">
+    <div class="lineup-container lineup1 active">
+      <div class="lineup-item">
+        <img src="IMG/LUISE/happybot.png" alt="happybot">
+        <div class="textbubble"><b>drag me on stage</b></div>
+      </div>
+      <div class="lineup-item">
+        <img src="IMG/DOG IDL.png" alt="idldog">
+        <div class="textbubble"><i>drag me on stage</i></div>
+      </div>
+      <div class="lineup-item">
+        <img src="IMG/LUISE/standardlyricist.png" alt="standardlyricist">
+        <div class="textbubble"><s>drag me on stage</s></div>
+      </div>
+      <div class="lineup-item">
+        <img src="IMG/LUISE/standard bug.png" alt="standardbug">
+        <div class="textbubble"><u>drag me on stage</u></div>
+      </div>
+    </div>
+
+    <div class="lineup-container lineup2">
+      <div class="lineup-item">
+        <img src="IMG/LUISE/standardbot.png" alt="standardbot">
+        <div class="textbubble"><b>drag me on stage</b></div>
+      </div>
+      <div class="lineup-item">
+        <img src="IMG/LUISE/prettydog.png" alt="prettydog">
+        <div class="textbubble"><i>drag me on stage</i></div>
+      </div>
+      <div class="lineup-item">
+        <img src="IMG/ANGRY _.png" alt="angrylyricist">
+        <div class="textbubble"><s>drag me on stage</s></div>
+      </div>
+      <div class="lineup-item">
+        <img src="IMG/BUG PHOTO.png" alt="photobug">
+        <div class="textbubble"><u>drag me on stage</u></div>
+      </div>
+    </div>
+
+    <div class="lineup-container lineup3">
+      <div class="lineup-item">
+        <img src="IMG/BOT CHEER.png" alt="cheerbot">
+        <div class="textbubble"><b>drag me on stage</b></div>
+      </div>
+      <div class="lineup-item">
+        <img src="IMG/LUISE/standarddog.png" alt="standarddog">
+        <div class="textbubble"><i>drag me on stage</i></div>
+      </div>
+      <div class="lineup-item">
+        <img src="IMG/LUISE/lyricist.png" alt="lyricist">
+        <div class="textbubble"><s>drag me on stage</s></div>
+      </div>
+      <div class="lineup-item">
+        <img src="IMG/LUISE/prettybug.png" alt="prettybug">
+        <div class="textbubble"><u>drag me on stage</u></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="stage-container">
+    <img class="stagebackdrop" src="IMG/STAGE/stagebackdrop.png" alt="stage backdrop">
+    <img class="crowd" src="IMG/STAGE/crowd.png" alt="crowd" draggable="false">
+  </div>  
+
+  <aside id="member-sidebar" class="member-sidebar hidden">
+    <div class="member-col hidden" data-member="BOT">
+      <h3>BOT</h3>
+      <div id="typedtextBOT"></div>
+    </div>
+    <div class="member-col hidden" data-member="BUG">
+      <h3>BUG</h3>
+      <div id="typedtextBUG"></div>
+    </div>
+    <div class="member-col hidden" data-member="DOG">
+      <h3>DOG</h3>
+      <div id="typedtextDOG"></div>
+    </div>
+    <div class="member-col hidden" data-member="QMARK">
+      <h3>?!?</h3>
+      <div id="typedtextQMARK"></div>
+    </div>
+  </aside>
+
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+  <script src="scripts.js"></script>
+</body>
+</html>

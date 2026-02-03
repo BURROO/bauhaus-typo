@@ -1,0 +1,390 @@
+@import url('https://fonts.googleapis.com/css2?family=Beth+Ellen&family=Borel&family=Caveat:wght@400..700&family=Homemade+Apple&family=Miniver&family=Playwrite+HR:wght@100..400&family=Rock+Salt&display=swap');
+
+body {
+    background-color: rgb(255, 0, 195);
+    font-family: MSCHFSansMono, monospace, Arial, Helvetica, sans-serif;
+    overflow-x: hidden;
+}
+
+
+ /*-----------------TITOLO----------------*/
+
+.titlewrap { width: 100vw; 
+    /* cursor: pointer;  */
+}
+#title {
+    font-size: 350%;
+    color: white;
+    position: fixed;
+    line-height: 3vw;
+    z-index: 10;
+}
+#titlehover {
+    position: fixed;
+    opacity: 0;
+    width: 50%;
+    z-index: 9;
+}
+.titlewrap:hover #titlehover { opacity: 1; }
+.titlewrap:hover #title { opacity: 0; }
+
+
+
+
+ /*-----------------CATEGORIE----------------*/
+
+
+#categoryList {
+    position: fixed;
+    top: 15%;
+    margin-left: 3%;
+    font-weight: bold;
+    font-size: 25px;
+    line-height: 25px;
+    width: 490px;
+    z-index: 20;
+    margin-top: 50px;
+}
+
+#papers,
+#illegible {
+    transform: rotate(4deg);
+}
+
+#drawings {
+    transform: rotate(-3deg);
+}
+
+#icons,
+#browsing {
+    transform: rotate(-2deg);
+}
+
+#maximalist,
+#collages {
+    transform: translate(3deg);
+}
+
+
+.category { cursor: pointer;  /* transition: 0.2s;  */}
+.category:hover {
+    color: black;
+    background-color: white;
+    width: fit-content;
+    /* padding: 0 10px; */
+}
+
+#maximalist:hover,
+#papers:hover,
+#icons:hover {
+ font-size: 20px;
+}
+
+
+
+/* OVERLAYS & TABS */
+
+.category-overlay {
+    display: none; /* Gestito da JS */
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none; /* Cruciale: permette di cliccare attraverso il div */
+    z-index: 100;
+}
+
+.gallery img, .extra-assets img {
+    pointer-events: auto; /* Riattiva il click sulle immagini */
+    position: absolute;
+    transform-origin: center center;
+    width: 450px;
+    cursor: pointer;
+}
+
+/* Posizionamento iniziale Tab */
+.gallery { position: absolute; top: 200px; left: 40%; }
+
+/* Draggable Assets */
+.draggable-asset {
+    width: 120px !important;
+    position:absolute;
+    transform-origin: center center;
+    border: 1px dashed transparent;
+    z-index: 100;
+    cursor: grab;
+    transform-origin: center center;
+    /* Rendi il bordo di selezione invisibile di default */
+    outline: 2px solid transparent; 
+    transition: outline 0.2s;
+}
+
+/* Impedisce il trascinamento predefinito dell'immagine del browser */
+.draggable-asset {
+    touch-action: none;
+    user-select: none;
+    -webkit-user-drag: none;
+}
+
+/* Visual feedback durante il ridimensionamento */
+.can-get-bigger {
+    outline: 2px dashed #88ff00;
+}
+
+/* Quando trasciniamo, mostriamo un bordo per capire che è attiva */
+.ui-draggable-dragging {
+    outline: 1px dashed white;
+    z-index: 1000;
+}
+
+/* Le maniglie per il resizable di jQuery UI */
+.ui-resizable-handle {
+    z-index: 2000 !important; /* Assicura che le maniglie siano sopra tutto */
+    background: white;
+    border: 1px solid black;
+    width: 12px;
+    height: 12px;
+}
+
+
+.tab-img{
+    border: 1px solid black;
+    box-shadow: black;
+    z-index: 200;
+}
+
+/* Le immagini devono poter essere cliccate */
+.tab-img, .draggable-asset {
+    pointer-events: auto !important; 
+    position: absolute;
+    z-index: 110;
+}
+
+/*--------------STILE DELL'HOVERING SUL TESTO---------------*/
+    .category:hover{
+        color: rgb(0, 0, 0);
+        background-color: rgb(255, 255, 255);
+        width: 400px;
+      
+    }
+    #maximalist:hover{
+        font-family: 'playwriteHR';
+        font-optical-sizing: auto;
+        font-weight: 200;
+        font-style: normal;
+        transform: rotate(5deg);
+    }
+    #papers:hover{
+        font-family:'Times New Roman', Times, serif;
+        font-weight: 400;
+        padding-left: 36px;
+        font-style: normal;
+        transform:scaleX(1.2)
+    }
+    #icons:hover{
+        font-family:fantasy;
+        font-weight: 400;
+        font-style: normal;
+        letter-spacing: 3px;
+    }
+    #drawings:hover{
+        font-family:'playwriteVNGuides';
+        /* font-family: "Miniver", cursive; */
+        transform: skewX(20deg);
+        font-weight: 400;
+        font-style: normal;
+    }
+    #ornaments:hover{
+        font-family:cursive;
+        font-weight: 400;
+        font-style: normal;
+    }
+    #collages:hover{
+        font-family: 'MagazineLetterByBrntlbrnl-Regular';
+        /*font-family: "Playwrite NO Guides", cursive;
+        position: fixed;*/
+        font-weight: 700px;
+        
+        font-style: normal;
+    }
+    #illegible:hover{
+        font-family: 'Mess_Light';
+        font-weight: 400;
+    }
+    #browsing:hover{
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    /* font-family: "Homemade Apple", cursive; */
+    font-weight: 400;
+    transform:skew(10deg, 5deg);
+    font-style: normal;
+    }
+
+
+button{
+        font-size: large;
+        font-family:MSCHFSansMono,monospace,Arial,Helvetica,sans-serif; 
+        font-size:20px;
+        line-height:3vw;
+        background-color: rgb(255, 255, 255);
+        margin: 1px solid black;
+        z-index: 101;
+        gap: 200px;
+        border-radius: 20%; 
+        
+        
+    }    
+
+.star {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    pointer-events: none;
+    transform: translate(-0%, -0%);
+    animation: fade 0.1s ease-in-out; /*oppure forward*/
+    }
+
+
+/* STELLINE & DOWNLOAD AREA */
+.star {
+    position: absolute;
+    width: 30px;
+    pointer-events: none;
+    z-index: 999;
+}
+
+
+/* FOOTER */
+.hover-target { position: fixed; bottom: 10px; left: 20px; cursor: help; }
+
+
+
+#stellina { width: 45px; }
+.footer {
+    position: absolute;
+  top: calc(10% + 10px); 
+  left: calc(30% + 20px); 
+
+   
+    background: #88ff00;
+    padding: 3px;
+    padding-bottom: 10px;
+    font-size: 10px;
+    line-height: 10px;
+    opacity: 0;
+    transition: 0.3s;
+    width: 230px;
+    height: 30px;
+}
+.hover-target:hover .footer { opacity: 1; }
+
+
+
+#maximalist1,
+#papers1,
+#icons1,
+#drawings1,
+#ornaments1,
+#collages1,
+#illegible1,
+#browsing1 {
+    transform: rotate(5deg);
+}
+
+#maximalist2,
+#papers2,
+#icons2,
+#drawings2,
+#ornaments2,
+#collages2,
+#illegible2,
+#browsing2 {
+    transform: rotate(-5deg);
+}
+
+#maximalist3,
+#papers3,
+#icons3,
+#drawings3,
+#ornaments3,
+#collages3,
+#illegible3,
+#browsing3 {
+    transform: rotate(8deg);
+}
+
+
+
+#canvas {
+    position: fixed;
+    right: 20px;
+    top: 20px;
+    width: 595px;
+    height: 842px;
+    /* border: 1px solid black; */
+    pointer-events: none;
+    z-index: 1; 
+    overflow: hidden; /* Importante: taglia le immagini fuori dal foglio */
+    pointer-events: auto !important; /* Deve ricevere i click per le immagini dentro */
+    z-index: 5;
+    /* box-shadow: 0 0 20px rgba(0,0,0,0.5); */
+}
+
+
+.canvas {
+  
+  /* width: 210mm;
+  height: 297mm; */
+  background: white;
+  margin: 20px;
+  
+}
+
+.draggable-asset {
+  position: absolute; /* Fondamentale per il posizionamento relativo al canvas */
+  transform-origin: center center;
+  cursor: grab;
+  user-select: none;
+  touch-action: none;
+  
+}
+
+
+
+/* .draggable-asset.selected {
+  outline: 2px solid #0077ff;
+} */
+
+.draggable-asset:active {
+  cursor: grabbing;
+}
+
+/* Print: only canvas */
+@media print {
+  body * { display: none !important; }
+  .canvas, .canvas * {
+    display: block !important;
+  }
+}
+
+
+.letter{
+    width: 2px;
+}
+
+
+
+/* Classe per attivare il cursore a matita */
+.drawing-mode {
+    cursor: url('SOURCES/img/star.PNG'), crosshair !important;
+}
+
+/* Assicuriamoci che il canvas possa ricevere input quando serve */
+#canvas.active {
+    pointer-events: auto !important;
+    
+}
+
+
+
+
+
+

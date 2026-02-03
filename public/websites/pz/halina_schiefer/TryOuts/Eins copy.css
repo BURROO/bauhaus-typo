@@ -1,0 +1,107 @@
+/* body{
+margin: 0;
+
+cursor: url('img/cursorherz2.png'), 4 4, auto;
+height: 100vh;
+   
+background-image: url("Img/StarsBackground.jpg")
+
+
+}
+
+
+.image-wrapper{
+  
+
+  position:relative;
+  height:auto;
+  width: 40%;
+  left: 670px;
+  top: 420px;
+}
+
+
+
+
+.Lichtan .Lichtaus{
+  opacity: 0;
+  animation: showImage 0s ease-in 3s forwards; 
+
+}
+
+@keyframes showImage{
+  to{
+    opacity: 1;
+  }
+} 
+
+.Lichtan{
+
+position:absolute;
+height: auto;
+width: 5em;
+opacity: 0;
+
+
+transform: translate(-50%, -50%);
+
+transition: opacity 0.3s ease;
+
+
+
+
+
+} */
+
+
+/* .Lichtaus{ */
+/* border: 1pt purple solid; */
+  /* height: auto;
+  width: 5em;
+  position: absolute; */
+  /* left: 570px;
+  top: 300px ; */
+  
+  
+/*    
+   
+  transform: translate(-50%, -50%);
+
+  transition:opacity 0.3s ease;
+
+} 
+
+.image-wrapper:hover .Lichtaus{
+  opacity:0;
+}
+
+.image-wrapper:hover .Lichtan{
+  opacity:1;
+}
+
+#bulb {
+  width: 100vw;
+  height: 100vh;
+  padding: 0 0;
+  position: fixed;
+  top:0;
+  text-align: center;
+  background-image: url("Img/StarsBackground.jpg");
+  background-repeat: no-repeat; 
+  
+  
+}
+ */
+
+
+
+
+
+
+
+
+
+
+
+
+
