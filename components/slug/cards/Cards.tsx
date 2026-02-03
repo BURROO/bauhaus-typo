@@ -52,7 +52,6 @@ const Cards = ({ item }: Props) => {
                     />
                 )}
             </div>
-                    
             
             {view === "inside" && <ButtonWrapper>
                 <Button
