@@ -42,7 +42,7 @@ next-env.d.ts
 
 
 # Videos
-*.mp4
-*.mov
+# *.mp4
+# *.mov
 *.zip
 *.ZIP
