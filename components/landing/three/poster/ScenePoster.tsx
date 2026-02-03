@@ -89,7 +89,8 @@ function ScenePosterInner({
   });
 
 
-  const isMetallic = item.COURSE === "Bauhaus Master Lectures"
+  const isMetallic = item.COURSE === "Bauhaus Master Lectures" || item.COURSE === "Bauhaus Inhouse"
+
 
   const metallness = (isMetallic: boolean, index: number) => {
     
@@ -113,7 +114,7 @@ function ScenePosterInner({
     }
   }
 
-  const layerMaterials = useMemo(() => {
+  const layerMaterialsFront = useMemo(() => {
     return frontTextures.map((txt, i) => {
       return new THREE.MeshPhysicalMaterial({
         map: txt,
@@ -129,14 +130,56 @@ function ScenePosterInner({
     });
 }, [frontTextures]);
 
+  const layerMaterialsBack = useMemo(() => {
+    return backTextures.map((txt, i) => {
+
+      txt.wrapS = THREE.RepeatWrapping;
+      txt.repeat.x = -1;
+      txt.offset.x = 1;
+      txt.wrapT = THREE.RepeatWrapping;
+      // txt.repeat.x = -1;
+      txt.repeat.y = -1;
+      txt.offset.y = 1;
+      // txt.repeat.x = -1;
+      // txt.offset.x = 1;
+
+      const tex = new THREE.MeshPhysicalMaterial({
+        map: txt,
+        side: THREE.DoubleSide,
+        ...metallness(isMetallic, i),
+        normalScale: new THREE.Vector2(
+          // 1 + i * 0.2,
+          // 1 + i * 0.2
+          (i+1) * 0.02,
+          (i+1) * 0.02
+        ),
+        
+      });
+
+
+      // if(tex !== null && tex !== null){
+
+      //   // tex.map.wrapS = THREE.RepeatWrapping;
+      //   // tex.map.repeat.x = -1;
+      //   // tex.map.offset.x = 1;
+      //     tex.wrapT = new THREE.RepeatWrapping;
+      //     tex.repeat.y = -1;
+      //     tex.offset.y = 1;
+      // }
+
+      return tex
+    });
+}, [backTextures]);
+
   let rolled = false
   let folded = false
 
   if(item?.COURSE === "Bauhaus Master Lectures") rolled = true
-  if(item?.COURSE === "Introduction Typography") folded = true
+  if(item?.COURSE === "Bauhaus Inhouse") rolled = true
+  // if(item?.COURSE === "Introduction Typography") folded = true
 
 
-  console.log("folded", folded, item?.COURSE)
+  // console.log("folded", folded, item?.COURSE)
 
 
   const geometry = useMemo(() => {
@@ -290,13 +333,25 @@ function ScenePosterInner({
 if (!frontTextures[0]) return null;
           
   return (
-    <group>
-      {layerMaterials.map((mat, i) => (
+    <group >
+      {layerMaterialsFront.map((mat, i) => (
         <mesh
           key={i}
           geometry={geometry}
           position={[0, 0, i * 0.0002]} // tiny depth separation
           // rotation={[0, Math.PI, 0]}
+          castShadow
+          receiveShadow
+        >
+          <primitive attach="material" object={mat} />
+        </mesh>
+      ))}
+      {layerMaterialsBack.map((mat, i) => (
+        <mesh
+          key={i}
+          geometry={geometry}
+          position={[0, 0, -i * 0.0002]} // tiny depth separation
+          rotation={[0, 0, 0]}
           castShadow
           receiveShadow
         >

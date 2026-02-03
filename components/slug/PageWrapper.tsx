@@ -71,7 +71,7 @@ const PageWrapper = ({ item }: Props) => {
         }
     }, [view])
 
-    const mousePos = useMousePos({}, isHovered)
+    const {mousePos} = useMousePos({}, isHovered)
 
 
     const type = getType(item)

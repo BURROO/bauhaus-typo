@@ -5,6 +5,7 @@ import fs from "fs";
 import path from "path";
 import Papa from "papaparse";
 import {  TypeProject } from "@/types/project-type";
+import { Suspense } from "react";
 
 
 export default function Home() {
@@ -38,10 +39,12 @@ export default function Home() {
 
 
   return (
+    <Suspense fallback={null}>
     <div className={styles.page}>
       <main className={styles.main}>
         <List dataStudents={sortedData} dataCourses={dataCourses}/>
       </main>
     </div>
+    </Suspense>
   );
 }

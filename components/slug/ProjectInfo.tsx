@@ -32,14 +32,14 @@ const ProjectInfo = ({ project }:Props) => {
             className={styles.projectInfoInner} 
 
             onClick={() => setIsOpen(!isOpen)}
-            onMouseEnter={() => setIsOpen(true)}
-            onMouseLeave={() => setIsOpen(false)}
             style={{
                 paddingBottom: height,
             }}
             >
                 <div
                 className={styles.header} 
+                onMouseEnter={() => setIsOpen(true)}
+                onMouseLeave={() => setIsOpen(false)}
                 style={{ 
                     height
                     // height: isOpen ? "30vh" : rowHeight || 0

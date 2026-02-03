@@ -14,7 +14,7 @@ const Layout = ({ children }: Props) => {
 
     const [isPreloaded, setIsPreloaded] = useState(false)
 
-    if(!isPreloaded) return <Preloader onDone={() => setIsPreloaded(true)}/>
+    // if(!isPreloaded) return <Preloader onDone={() => setIsPreloaded(true)}/>
 
     return (
         <>
@@ -37,6 +37,7 @@ const Layout = ({ children }: Props) => {
             <ContextMenuProvider>
                 {children}
             </ContextMenuProvider>
+            {!isPreloaded && <Preloader onDone={() => setIsPreloaded(true)}/>}
         </>
     )
 }

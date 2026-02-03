@@ -95,11 +95,12 @@ const Overlay = ({
                     />
                 }
                 {type === "POSTER" && 
+                <group scale={1.5}>
                     <ScenePoster
                     type="orbit"
                     item={activeProject || null}
                     onClick={() => {}}
-                    />
+                    /></group>
                 }
                 {type === "CARD GAME" && 
                     <SceneCard

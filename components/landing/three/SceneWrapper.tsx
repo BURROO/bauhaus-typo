@@ -85,15 +85,15 @@ const SceneWrapper = ({
             <rectAreaLight
             width={4}
             height={2}
-            intensity={3}
-            position={[-2, 1, 2]}
+            intensity={1}
+            position={[-2, 2, 2]}
             lookAt={[0, 0, 0]}
             />
             <rectAreaLight
             width={4}
             height={2}
-            intensity={3}
-            position={[2, -1, -2]}
+            intensity={1}
+            position={[2, -2, -2]}
             lookAt={[0, 0, 0]}
             />
         </Canvas>

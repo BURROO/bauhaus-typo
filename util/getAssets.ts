@@ -49,12 +49,13 @@ export const getAssetShowcase = ({ item }: Props) => {
 
 export const getAssetWebsite = ({ item }: Props) => {
 
+    // console.log(item)
     const name = sanitizeForUrl(item.NAME)?.split("-").join("_")
     const subFulter = courseShort[item.COURSE]?.toLocaleLowerCase()
 
     const src = `/websites/${subFulter}/${name}/index.html` 
 
-    console.log(src)
+    console.log(name, subFulter, src)
 
     const websiteFound = Object.values(websites).find(a => a === src)
 

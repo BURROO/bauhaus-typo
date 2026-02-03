@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import styles from './Background.module.css'
+import { useMousePos } from '../hook/useMousePos';
 
 interface Props{
     text: string;
@@ -61,6 +62,8 @@ const Background = ({ text, dir }: Props) => {
         })
     }, [])
 
+    const {relPos} = useMousePos({}, true)
+
 
     // if(!isInactive) return;
 
@@ -71,10 +74,13 @@ const Background = ({ text, dir }: Props) => {
         >
             <div 
             // className={styles.backgroundWrapper}
+            // className={`${styles.backgroundWrapper} `}
             className={`${styles.backgroundWrapper} ${animate ? styles.animate : ""}`}
              style={{
+                display: isInactive ? "" : "none",
                 animationDirection: dir === 1 ? 'normal' : 'reverse',
-                animationDuration: `${text.length * (isInactive ? 2000 : 4000)}ms`
+                animationDuration: `${text.length * (isInactive ? 2000 : 4000)}ms`,
+                // transform: relPos ? `translateX(${-relPos.x * 100}%)` : ""
             }}
             >
                {text}{text}

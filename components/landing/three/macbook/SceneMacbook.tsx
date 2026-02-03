@@ -78,17 +78,23 @@ export default function SceneMacbook({
       {/* FRONT */}
       <MacbookInstance
         ref={frontRef}
-        position={[0, 0, screensOfst]}
+        position={[0, 0, 0]}
         src={src}
       />
 
+      {/* FRONT */}
+      {/* <MacbookInstance
+        ref={frontRef}
+        position={[0, 0, screensOfst]}
+        src={src}
+      /> */}
       {/* BACK (always mounted) */}
-      <MacbookInstance
+      {/* <MacbookInstance
         ref={backRef}
         position={[0, 0, -screensOfst]}
         rotation={[0, Math.PI, 0]}
         src={src}
-      />
+      /> */}
     </group>
   )
 }

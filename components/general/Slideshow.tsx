@@ -40,13 +40,15 @@ const Slideshow = ({
         setActiveSlide((activeSlide - 1 + slides.length) % slides.length)
     }
 
-    const fullScreen = item.COURSE === "Bauhaus Master Lectures"
+    const fullScreen = 
+        item.COURSE === "Bauhaus Master Lectures" ||
+        item.COURSE === "Bauhaus Inhouse"
 
 
     const [hoverText, setHoverText ] = useState<string|null>(null)
 
 
-    const mousePos = useMousePos({}, !!hoverText)
+    const {mousePos} = useMousePos({}, !!hoverText)
     // useEffect(() => {
 
 
@@ -59,7 +61,15 @@ const Slideshow = ({
     return (
         <>
             <div className={`${styles.slideshow} ${fullScreen ? styles.fullScreen : ''}`}>
-                <div className={styles.wrapper} style={{
+                <div 
+                className={styles.wrapper} 
+                onMouseOver={() => {
+                    setHoverText(null)
+                }}
+                // onMouseMove={() => {
+                //     setHoverText(null)
+                // }}
+                style={{
                     transform: `translateX(${-activeSlide * 100}vw)`
                 }}>
                     {
@@ -88,6 +98,9 @@ const Slideshow = ({
                     <div
                     className={styles.goLeft}
                     onClick={() => goPrev()}
+                    onMouseOver={() => {
+                        setHoverText('Look at previous')
+                    }}
                     onMouseEnter={() => {
                         setHoverText('Look at previous')
                     }}
@@ -100,7 +113,11 @@ const Slideshow = ({
                     <div 
                     className={styles.goRight} 
                     onClick={() => goNext()} 
-                      onMouseEnter={() => {
+                
+                    onMouseOver={() => {
+                        setHoverText('Look at next')
+                    }}
+                    onMouseEnter={() => {
                         setHoverText('Look at next')
                     }}
                     onMouseLeave={() => {

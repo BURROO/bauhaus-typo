@@ -74,6 +74,8 @@ export const fileDataIO = {
         ],
         back: [
             { metalness: 0 },
+            { metalness: 0 },
+            { metalness: 0 },
         ],
     },
     'first_year': {
@@ -97,6 +99,8 @@ export const fileDataIO = {
             { metalness: 0 },
         ],
         back: [
+            { metalness: 0 },
+            { metalness: 0 },
             { metalness: 0 },
         ],
     },
