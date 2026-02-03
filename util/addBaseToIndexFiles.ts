@@ -34,6 +34,9 @@ const handleDir = (root: string) => {
   }
 };
 
+
+
+
 handleDir(root_pz)
 handleDir(root_tt)
 
