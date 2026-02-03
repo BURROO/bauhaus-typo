@@ -54,6 +54,8 @@ export const getAssetWebsite = ({ item }: Props) => {
 
     const src = `/websites/${subFulter}/${name}/index.html` 
 
+    console.log(src)
+
     const websiteFound = Object.values(websites).find(a => a === src)
 
     return websiteFound ? src : null
