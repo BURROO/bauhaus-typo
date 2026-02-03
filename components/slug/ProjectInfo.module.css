@@ -52,15 +52,19 @@
 
 .projectInfo ul{
   display: grid;
-  grid-template-columns: 2fr 2fr 1fr 1fr 1fr;
+  /* grid-template-columns: 2fr 2fr 1fr 1fr 1fr; */
+  grid-template-columns: 2fr 2fr 1fr 1fr 2fr 2fr 1fr;
   list-style: none;
   text-transform: uppercase;
-  font-family: "UfficioMono-Bold";
+  /* font-family: "UfficioMono-Normal"; */
   width: 100vw;
 }
 .projectInfo ul li,
 .projectInfo p{
-  font-family: "UfficioMono-Bold";
+  /* font-family: "UfficioMono-Bold"; */
+  font-family: "UfficioMono-Normal";
+  /* font-family: "UfficioMono-Bold";
+  letter-spacing: -0.05rem; */
   color: black;
 }
 
@@ -68,6 +72,7 @@
 
   .projectInfo ul{
     grid-template-columns: 2fr 2fr 69px;
+    grid-template-columns: 2fr 2fr 2fr 1fr;
   }
   .projectInfo ul > li:nth-child(3){ display: none }
   .projectInfo ul > li:nth-child(4){ display: none }

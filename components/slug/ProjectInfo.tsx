@@ -20,6 +20,9 @@ const ProjectInfo = ({ project }:Props) => {
 
     const { rowHeight } = useContext(ContextMenu)
 
+
+    const height = (project.NAME.split(', ')?.length || 1) * (rowHeight || 0)
+
     return (
         <div 
         className={styles.projectInfo} 
@@ -29,21 +32,23 @@ const ProjectInfo = ({ project }:Props) => {
             className={styles.projectInfoInner} 
 
             onClick={() => setIsOpen(!isOpen)}
+            onMouseEnter={() => setIsOpen(true)}
+            onMouseLeave={() => setIsOpen(false)}
             style={{
-                paddingBottom: rowHeight || 0,
+                paddingBottom: height,
             }}
             >
                 <div
                 className={styles.header} 
                 style={{ 
-                    height: rowHeight || 0
+                    height
                     // height: isOpen ? "30vh" : rowHeight || 0
                 }}>
                     <ul style={{ display: "grid", fontSize }}>
-                        <li style={{ fontSize }}>{project.NAME}</li>
+                        <li style={{ fontSize }} dangerouslySetInnerHTML={{__html: project.NAME.split(', ').join("<br/>")}}/>
                         <li style={{ fontSize }}>{project.TITLE}</li>
-                        {/* <li style={{ fontSize }}>{project.MEDIUM}</li>
-                        <li style={{ fontSize }}>{project.FORMAT}</li> */}
+                        <li style={{ fontSize }}>{project.MEDIUM}</li>
+                        <li style={{ fontSize }}>{project.FORMAT}</li>
                         <li style={{ fontSize }}>{project.COURSE}</li>
                         <li style={{ fontSize }}>{project.SUPERVISION}</li>
                         <li style={{ fontSize }}>{project.ID}</li>
@@ -67,9 +72,14 @@ const ProjectInfo = ({ project }:Props) => {
                         fontSize: fontSize || '',
                    
                     }}>
-                            <p>{project["DEUTSCH"]}</p>
+                            <p style={{
+                                fontSize: fontSize || '',
+                        
+                            }}>{project["DEUTSCH"]}</p>
                             <br/>
-                            <p>{project["ENGLISH"]}</p>
+                            <p style={{
+                                fontSize: fontSize || '',
+                            }}>{project["ENGLISH"]}</p>
                         </div>
                     </div>
 

@@ -36,6 +36,7 @@
   top: -4vh;
   padding-bottom: 30px;
   font-family: "UfficioMono-Bold";
+  letter-spacing: -0.05rem;
   color: white;
   line-height: 0.95;
   animation: marquee 16s infinite linear;
