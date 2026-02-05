@@ -1,0 +1,1 @@
+// This file is deprecated to avoid conflicts. Logic has been moved to controls.js.

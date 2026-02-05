@@ -1,0 +1,968 @@
+@font-face {
+    font-family: "ABCFavorit-Regular";
+    src: url("ABCFavorit-Regular.otf") format("opentype");
+    font-weight: normal;
+    font-style: normal;
+}
+
+:root {
+    --base-color: #ff0000;
+    --neutral-white: #ffffff;
+}
+
+html, body {
+    height: 100%;
+    font-family: "ABCFavorit-Regular", Arial, Helvetica, sans-serif;
+    color: var(--neutral-white);
+    overflow-x: hidden;
+}
+
+body {
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
+    margin: 0;
+    padding: 30px;
+    padding-bottom: 0;
+}
+
+/* ---------------- HEADER ---------------- */
+.header {
+    position: fixed;
+    top: 30px;
+    right: 30px;
+    display: flex;
+    gap: 0;
+    z-index: 1000;
+}
+
+.header:has(.ui-button:hover) {
+    z-index: 100000;
+}
+
+/* CSS Buttons */
+.ui-button {
+    width: 210px;
+    height: 60px;
+    background: transparent;
+    color: white;
+    border-radius: 16px;
+    border: none;
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    justify-content: left;
+    cursor: pointer;
+    font-size: 36px;
+    font-weight: normal;
+    z-index: 1000;
+    position: relative;
+    isolation: isolate;
+}
+
+.ui-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: #B3B3B3;
+    border-radius: 16px;
+    z-index: -1;
+    transition: opacity 0.2s;
+}
+
+.ui-button:hover {
+    outline: 2px solid #007AFF;
+    outline-offset: 15px;
+    z-index: 100000 !important;
+    position: relative;
+}
+
+.ui-button:hover .tooltip {
+    opacity: 1 !important;
+    transition: none;
+}
+
+/* Tooltip */
+.ui-button .tooltip {
+    position: absolute;
+    top: calc(100% + 30px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: white;
+    color: var(--base-color);
+    padding: 7.5px 15px;
+    border-radius: 8px;
+    font-size: 16px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s;
+    z-index: 1001;
+}
+
+/* Hide tooltip when font modal is active */
+.font-modal.active ~ .header .ui-button .tooltip {
+    display: none;
+}
+
+/* Buttons Seite */
+.side-controls {
+    position: fixed;
+    left: 30px;
+    bottom: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    z-index: 2000;
+}
+
+.side-controls .ui-button {
+    margin: 0;
+}
+
+/* Tooltips für side-controls - rechts positioniert */
+.side-controls .ui-button .tooltip {
+    top: 50%;
+    left: calc(100% + 30px);
+    transform: translateY(-50%);
+}
+
+/* Write Textarea */
+.write-textarea {
+    background: #B3B3B3;
+    border: none;
+    border-radius: 16px;
+    padding: 15px;
+    font-size: 36px;
+    font-weight: normal;
+    font-family: "ABCFavorit-Regular", Arial, Helvetica, sans-serif;
+    color: white;
+    resize: none;
+    overflow: hidden;
+    z-index: 100000;
+    box-sizing: border-box;
+    outline: 2px solid #007AFF;
+    outline-offset: 15px;
+    position: relative;
+}
+
+.write-textarea::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+/* SVG Buttons */
+.Invert-Button, .Outline-Button, .Colorwheel-Button, .Home-Button {
+    background: transparent;
+    cursor: pointer;
+    border: none;
+    position: relative;
+}
+
+.Invert-Button .bg-1, .Outline-Button .bg-2, .Colorwheel-Button .bg-3, .Home-Button .bg-4 {
+    width: 60px;
+    height: 60px;
+}
+
+/* Normal mode button colors */
+.Invert-Button .bg-1 path {
+    fill: white;
+}
+
+.Outline-Button .bg-2 path {
+    stroke: white;
+}
+
+.Home-Button .bg-4 path {
+    fill: white;
+}
+
+/* Tooltips for footer buttons */
+.Invert-Button .tooltip,
+.Outline-Button .tooltip,
+.Colorwheel-Button .tooltip,
+.Home-Button .tooltip {
+    position: absolute;
+    bottom: calc(100% + 15px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: white;
+    color: var(--base-color);
+    padding: 7.5px 15px;
+    border-radius: 8px;
+    font-size: 16px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s;
+    z-index: 1001;
+}
+
+.Invert-Button:hover,
+.Outline-Button:hover,
+.Colorwheel-Button:hover,
+.Home-Button:hover,
+.Help-Button:hover {
+    transform: scale(1.08);
+}
+
+.Invert-Button:hover .tooltip,
+.Outline-Button:hover .tooltip,
+.Colorwheel-Button:hover .tooltip,
+.Home-Button:hover .tooltip,
+.Help-Button:hover .tooltip {
+    opacity: 1 !important;
+    transition: none;
+}
+
+/* ---------------- FONT DROPDOWN ---------------- */
+.font-modal {
+    display: none;
+    position: fixed;
+    z-index: 5000;
+}
+
+.font-modal.active {
+    display: block;
+}
+
+.font-modal-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    isolation: isolate;
+}
+
+.font-modal-content h2 {
+    display: none;
+}
+
+.font-options {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.font-option {
+    width: 210px;
+    height: 60px;
+    background: #B3B3B3;
+    color: white;
+    border-radius: 16px;
+    border: none;
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    justify-content: left;
+    cursor: pointer;
+    font-size: 36px;
+    font-weight: normal;
+    margin: 0;
+    position: relative;
+    z-index: 1;
+    isolation: isolate;
+}
+
+.font-option:hover {
+    outline: 2px solid #007AFF;
+    outline-offset: 15px;
+    z-index: 100000;
+}
+
+.close-modal {
+    display: none;
+}
+
+/* ---------------- FOOTER ---------------- */
+footer {
+    display: flex;
+    gap: 30px;
+    position: fixed;
+    right: 30px;
+    bottom: 30px;
+    z-index: 1000;
+}
+
+/* Help Button */
+/*Help*/
+.Help-Button {
+    background: transparent;
+    cursor: pointer;
+    border: none;
+    position: relative;
+    display: inline-block;
+}
+
+.Help-Button .bg-5 {
+    width: 60px;
+    height: 60px;
+    display: block;
+}
+
+.help-glyph {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: "ABCFavorit-Regular", Arial, Helvetica, sans-serif;
+    font-size: 36px;
+    font-weight: normal;
+    color: white;
+    line-height: 1;
+    pointer-events: none;
+    margin-top: 2px;
+}
+
+.Help-Button .bg-5 path {
+    stroke: white;
+}
+
+/* Tooltip */
+.Help-Button .tooltip {
+    position: absolute;
+    bottom: calc(100% + 15px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: white;
+    color: var(--base-color);
+    padding: 7.5px 15px;
+    border-radius: 8px;
+    font-size: 16px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s;
+    z-index: 1001;
+}
+
+.Help-Button:hover .tooltip {
+    opacity: 1 !important;
+    transition: none;
+}
+
+/* ---------------- INTERFACE WRAPPER ---------------- */
+.interface-wrapper {
+    width: 100vw;
+    height: auto;
+    margin: 0;
+    padding-top: 90px;
+    position: relative;
+    overflow: visible;
+    flex: 1;
+}
+
+/* ---------------- CARD ---------------- */
+.card {
+    width: 100vw;
+    height: 1024px;
+    margin: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.card-title {
+    top: 0;
+    left: 15px;
+    position: absolute;
+    display: flex;
+    width: fit-content;
+    height: 60px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+
+    color: white;
+
+    font-family: "ABCFavorit-Regular", Arial, Helvetica, sans-serif;
+    font-size: 36px;
+    font-style: normal;
+    font-weight: normal;
+    line-height: normal;
+}
+
+.card-description {
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    padding: 15px;
+    border-radius: 16px;
+    color: white;
+    background: #B3B3B3;
+    font-family: "ABCFavorit-Regular", Arial, Helvetica, sans-serif;
+    font-size: 16px;
+    font-weight: normal;
+    max-width: 345px;
+    height: auto;
+    z-index: 10;
+    pointer-events: auto;
+
+    outline: 2px solid #007AFF;
+    outline-offset: var(--outline-offset, 15px);
+}
+
+.close-description {
+    position: absolute;
+    top: calc(var(--outline-offset, 15px) * -1 - 8px);
+    right: calc(var(--outline-offset, 15px) * -1 - 8px);
+    width: 16px;
+    height: 16px;
+    background: #B3B3B3;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 16px;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    z-index: 11;
+    pointer-events: auto;
+}
+
+.close-description:hover {
+    opacity: 0.5;
+}
+
+
+.card svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+.card-1 {
+    left: 0;
+    z-index: 3;
+}
+
+.card-1 path {
+    fill: var(--base-color);
+}
+
+/* ---------------- TEXTBLOCK (Skalierende Textbox) ---------------- */
+.textblock {
+    position: absolute;
+    top: 150px;
+    left: 100px;
+    width: 400px;
+    height: 300px;
+    z-index: 10;
+    cursor: grab;
+    padding: 15px;
+    --outline-offset: 15px;
+}
+
+.textblock:active {
+    cursor: grabbing;
+}
+
+/* Drag zone - invisible layer for grabbing */
+.textblock-drag-zone {
+    position: absolute;
+    top: calc(var(--outline-offset, 15px) * -1);
+    left: calc(var(--outline-offset, 15px) * -1);
+    right: calc(var(--outline-offset, 15px) * -1);
+    bottom: calc(var(--outline-offset, 15px) * -1);
+    cursor: grab;
+    z-index: 1;
+    pointer-events: auto;
+}
+
+.textblock-clip {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: white;
+    border-radius: 16px;
+    border: none;
+    box-sizing: border-box;
+    cursor: grab;
+    padding: 15px;
+    transition: outline 0.2s ease;
+}
+
+.textblock-clip:active {
+    cursor: grabbing;
+}
+
+/* Blue border appears around white area when editing */
+.textblock-clip:has(.textblock-text:focus) {
+    outline: 2px solid #007AFF;
+    outline-offset: var(--outline-offset, 15px);
+}
+
+.textblock-text {
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    border: none;
+    outline: none;
+    resize: none;
+    font-family: "ABCFavorit-Regular", Arial, Helvetica, sans-serif;
+    font-size: 48px;
+    color: var(--base-color);
+    padding: 0;
+    box-sizing: border-box;
+    cursor: text;
+    overflow-y: auto;
+    line-height: 1.2;
+}
+
+/* Hide Scrollbar */
+.textblock-text::-webkit-scrollbar {
+    display: none;
+}
+
+.textblock-text {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+}
+
+.textblock-text::placeholder {
+    color: #B3B3B3;
+}
+
+/* Resize Handles - only visible when active */
+.resize-handle {
+    position: absolute;
+    background: #B3B3B3;
+    border: none;
+    opacity: 0;
+    transition: opacity 0.2s;
+    z-index: 5;
+    pointer-events: auto;
+}
+
+.textblock.is-active .resize-handle {
+    opacity: 1;
+}
+
+/* Corner Handles */
+.resize-handle.corner {
+    width: 16px;
+    height: 16px;
+    border-radius: 3px;
+}
+
+.resize-handle.corner.tl {
+    top: -8px;
+    left: -8px;
+    cursor: nwse-resize;
+}
+
+.resize-handle.corner.tr {
+    top: -8px;
+    right: -8px;
+    cursor: nesw-resize;
+}
+
+.resize-handle.corner.br {
+    bottom: -8px;
+    right: -8px;
+    cursor: nwse-resize;
+}
+
+.resize-handle.corner.bl {
+    bottom: -8px;
+    left: -8px;
+    cursor: nesw-resize;
+}
+
+/* Edge Handles */
+.resize-handle.edge {
+    width: 16px;
+    height: 16px;
+    border-radius: 3px;
+    background: #B3B3B3;
+    border: none;
+}
+
+.resize-handle.edge.t {
+    top: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    cursor: ns-resize;
+}
+
+.resize-handle.edge.r {
+    right: -8px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: ew-resize;
+}
+
+.resize-handle.edge.b {
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    cursor: ns-resize;
+}
+
+.resize-handle.edge.l {
+    left: -8px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: ew-resize;
+}
+
+/* Size Info */
+.textblock-info {
+    position: absolute;
+    bottom: 30px;
+    right: 30px;
+    display: flex;
+    gap: 7.5px;
+    font-size: 16px;
+    font-weight: normal;
+    z-index: 10;
+    pointer-events: none;
+}
+
+.textblock-info span {
+    background: var(--base-color);
+    color: white;
+    padding: 7.5px;
+    border-radius: 8px;
+    height: 16px;
+    width: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ---------------- OUTLINE MODE ---------------- */
+.outline-mode .card-1 svg {
+    overflow: visible;
+}
+
+.outline-mode .card-1 svg path {
+    fill: white;
+    stroke: var(--base-color);
+    stroke-width: 2px;
+    vector-effect: non-scaling-stroke;
+}
+
+html.outline-mode,
+body.outline-mode {
+    background: white;
+}
+
+.outline-mode .card-1 .card-title {
+    -webkit-text-fill-color: transparent;
+    -webkit-text-stroke-width: 2px;
+    -webkit-text-stroke-color: var(--base-color);
+}
+
+.outline-mode .textblock-clip {
+    background: transparent;
+    border: 2px solid var(--base-color);
+}
+
+.outline-mode .textblock-text {
+    -webkit-text-fill-color: transparent;
+    -webkit-text-stroke-width: 2px;
+    -webkit-text-stroke-color: var(--base-color);
+}
+
+.outline-mode .resize-handle.corner,
+.outline-mode .resize-handle.edge {
+    background: transparent;
+    border: 2px solid var(--base-color);
+}
+
+.outline-mode .textblock-info span {
+    background: transparent;
+    color: var(--base-color);
+    border: 2px solid var(--base-color);
+}
+
+/* Tooltip in outline mode */
+.outline-mode .tooltip {
+    background: transparent;
+    color: var(--base-color);
+    outline: 2px solid var(--base-color);
+}
+
+/*Help Button*/
+.outline-mode .bg-5 path {
+    stroke: var(--base-color);
+}
+
+.outline-mode .help-glyph {
+    -webkit-text-fill-color: transparent;
+    -webkit-text-stroke-width: 2px;
+    -webkit-text-stroke-color: var(--base-color);
+}
+
+/*Outline Button - only for outline-normal, not outline-outline*/
+.outline-mode .outline-normal path {
+    stroke: var(--base-color);
+}
+
+/* Outline-outline button in outline mode: red fill, no stroke */
+.outline-mode .outline-outline path {
+    stroke: none !important;
+    fill: var(--base-color) !important;
+}
+
+.outline-mode .bg-1 path {
+    fill: var(--base-color);
+}
+
+/*Colorwheel Button*/
+.outline-mode .bg-3 path {
+    fill: var(--base-color);
+}
+
+.outline-mode .bg-4 path {
+    fill: var(--base-color);
+}
+
+/* Toggle SVGs */
+    .help-normal, .home-normal, .outline-normal, .invert-normal, .colorwheel-normal {
+    display: block;
+}
+
+    .help-outline,.home-outline, .outline-outline, .invert-outline, .colorwheel-outline, .colorwheel-invert {
+    display: none;
+}
+
+    .outline-mode .help-normal, .outline-mode .home-normal, .outline-mode .Outline-Button .outline-normal, .outline-mode .invert-normal, .outline-mode .colorwheel-normal {
+    display: none;
+}
+
+    .outline-mode .help-outline,.outline-mode .home-outline, .outline-mode .Outline-Button .outline-outline, .outline-mode .invert-outline, .outline-mode .colorwheel-outline {
+    display: block !important;
+}
+
+    .outline-mode .colorwheel-invert{
+    display: none;
+}
+
+/* ---------------- INVERT MODE ---------------- */
+.is-inverted .card-1 svg {
+    overflow: visible;
+}
+
+.is-inverted .card-1 svg path {
+    fill: white;
+}
+
+html.is-inverted {
+    background: var(--base-color);
+}
+
+.is-inverted .card-1 .card-title {
+    -webkit-text-fill-color: var(--base-color);
+}
+
+.is-inverted .textblock-clip {
+    background: var(--base-color);
+}
+
+.is-inverted .textblock-text {
+    color: white;
+}
+
+.is-inverted .textblock-text::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.is-inverted .resize-handle.corner {
+    background: #B3B3B3 ;
+}
+
+.is-inverted .textblock-info span{
+    background: white;
+    color: var(--base-color);
+}
+
+/* Tooltip */
+.is-inverted .tooltip {
+    background: var(--base-color);
+    -webkit-text-fill-color: white;  
+}
+
+/*Help Button*/
+.is-inverted .bg-5 path {
+    stroke: var(--base-color);
+}
+
+.is-inverted .help-glyph {
+    -webkit-text-fill-color: var(--base-color);
+}
+
+.is-inverted .bg-1 path {
+    fill: var(--base-color);
+}
+
+/*Outline Button*/
+.is-inverted .bg-2 path {
+    stroke: var(--base-color);
+}
+
+.is-inverted .bg-4 path {
+    fill: var(--base-color);
+}
+
+.is-inverted .colorwheel-normal, .is-inverted .colorwheel-outline {
+    display: none;
+}
+
+.is-inverted .colorwheel-invert {
+    display: block !important;
+}
+
+/* ---------------- COMBINATION: OUTLINE + INVERT ---------------- */
+html.outline-mode.is-inverted .card-1 svg path {
+    fill: var(--base-color); /*evtl. zu transparent ändern?*/
+    stroke: white;
+    stroke-width: 2px;
+    vector-effect: non-scaling-stroke;
+}
+
+html.outline-mode.is-inverted,
+body.outline-mode.is-inverted {
+    background: var(--base-color);
+}
+
+.outline-mode.is-inverted .card-1 .card-title {
+    -webkit-text-fill-color: transparent;
+    -webkit-text-stroke-color: white;
+}
+.outline-mode.is-inverted .card-1 .card-title {
+    -webkit-text-fill-color: transparent;
+    -webkit-text-stroke-width: 2px;
+    -webkit-text-stroke-color: white;
+}
+
+.outline-mode.is-inverted .textblock-clip {
+    background: transparent;
+    border: 2px solid white;
+}
+
+.outline-mode.is-inverted .textblock-text {
+    -webkit-text-fill-color: transparent;
+    -webkit-text-stroke-width: 2px;
+    -webkit-text-stroke-color: white;
+    color: transparent;
+    /*filter: drop-shadow(1px 1px 0 white) drop-shadow(-1px -1px 0 white) drop-shadow(1px -1px 0 white) drop-shadow(-1px 1px 0 white)*/
+}
+
+.outline-mode.is-inverted .resize-handle.corner,
+.outline-mode.is-inverted .resize-handle.edge {
+    background: transparent;
+    border: 2px solid white;
+}
+
+.outline-mode.is-inverted .textblock-info span {
+    background: transparent;
+    color: white;
+    border: 2px solid white;
+}
+
+/* Tooltip in outline + invert mode */
+.outline-mode.is-inverted .tooltip {
+    background: transparent;
+    color: white;
+    outline: 2px solid white;
+}
+
+/*Help Button*/
+.outline-mode.is-inverted .bg-5 path {
+    stroke: white;
+}
+
+.outline-mode.is-inverted .help-glyph {
+    -webkit-text-fill-color: transparent;
+    -webkit-text-stroke-width: 2px;
+    -webkit-text-stroke-color: white;
+}
+
+.outline-mode.is-inverted .bg-1 path {
+    fill: white;
+    stroke: none;
+}
+
+/* Outline button in outline+invert mode - only for outline-normal */
+.outline-mode.is-inverted .outline-normal path {
+    stroke: white;
+}
+
+/* Outline-outline button in outline+invert mode: white fill */
+.outline-mode.is-inverted .outline-outline path {
+    stroke: none !important;
+    fill: white !important;
+}
+
+.outline-mode.is-inverted .bg-3 path {
+    fill: white;
+}
+
+.outline-mode.is-inverted .bg-4 path {
+    fill: white;
+    stroke: none;
+}
+
+.outline-mode.is-inverted .home-normal {
+    display: none !important;
+}
+
+.outline-mode.is-inverted .home-outline {
+    display: block !important;
+}
+
+.outline-mode.is-inverted .invert-normal {
+    display: none !important;
+}
+
+.outline-mode.is-inverted .invert-outline {
+    display: block !important;
+}
+
+.outline-mode.is-inverted .outline-normal {
+    display: none !important;
+}
+
+.outline-mode.is-inverted .outline-outline {
+    display: block !important;
+}
+
+.outline-mode.is-inverted .colorwheel-normal {
+    display: none !important;
+}
+
+.outline-mode.is-inverted .colorwheel-outline {
+    display: block !important;
+}
+
+.outline-mode.is-inverted .colorwheel-invert {
+    display: none !important;
+}
+
+/* ---------------- MOBILE ---------------- */
+@media (max-width: 600px) {
+    .header {
+        position: static;
+        margin-bottom: 30px;
+    }
+
+    .interface-wrapper {
+        width: 100%;
+        margin: 30px 0;
+    }
+
+    .card {
+        position: static;
+        width: 100%;
+        margin-bottom: 30px;
+    }
+}

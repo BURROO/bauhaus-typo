@@ -1,0 +1,221 @@
+.archive-img-wrap .archive-delete-bar {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s, background-color 0.25s, color 0.25s, transform 0.25s;
+}
+.archive-img-wrap:hover .archive-delete-bar,
+.archive-img-wrap:focus-within .archive-delete-bar {
+  opacity: 1;
+  pointer-events: auto;
+}
+/* Archive delete bar overlay, styled like #canvas-rectangle */
+.archive-img-wrap {
+  position: relative;
+  width: 100%;
+  display: block;
+}
+
+.archive-delete-bar {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 14px;
+  background: #f1f1f1;
+  color: #000000;
+  font-family: 'Source Serif 4', serif;
+  font-size:14px;
+  line-height: 14px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  text-decoration: none;
+  cursor: pointer;
+  z-index: 2;
+  transform: translateY(-50%) rotate(0deg);
+  transition: background-color 0.25s, color 0.25s, transform 0.25s;
+  opacity: 0.96;
+  pointer-events: auto;
+  box-shadow: none;
+  padding: 0;
+}
+
+.archive-delete-bar:hover {
+  background:#ff1a1a;
+  color: #fff;
+  transform: translateY(-50%) rotate(8deg);
+}
+/* Overlay delete action on image */
+.archive-img-wrap {
+  position: relative;
+  width: 100%;
+  display: block;
+}
+
+.archive-img-wrap .archive-delete-link {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(0deg);
+  z-index: 2;
+  color: #c00;
+  font-family: 'Source Serif 4', serif;
+  font-size: 2rem;
+  font-weight: 500;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  text-decoration: none;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s, transform 0.25s;
+}
+
+.archive-img-wrap:hover .archive-delete-link,
+.archive-img-wrap:focus-within .archive-delete-link {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.archive-img-wrap .archive-delete-link:hover {
+  transform: translate(-50%, -50%) rotate(-8deg);
+}
+
+/* Archive top bar text hover motion */
+.archive-topbar-link {
+  transition: transform 0.2s ease;
+}
+.archive-topbar-link:hover {
+  transform: rotate(-8deg);
+}
+
+/* Archive view specific styles (optional, minimal) */
+/* Archive grid styling based on reference screenshot */
+#archiveGrid {
+  background: #ffffff;
+  width: 100%;
+  max-width: 1600px;
+  margin: 2px auto 0 auto;
+  padding: 0 40px;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  column-gap: 20px;
+  row-gap: 20px;
+  box-sizing: border-box;
+}
+
+/* item should fill the grid column */
+#archiveGrid .archive-item {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  background: none;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* big thumbnail, only border around image, no card */
+#archiveGrid .archive-item img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 3 / 4;
+  object-fit: contain;
+  border: 2px solid #222;
+  display: block;
+  max-width: none;
+}
+
+/* big timestamp like reference */
+#archiveGrid .archive-item .archive-timestamp {
+  margin: 12px 0 8px 0;
+  font-family: 'Source Serif 4', serif;
+  font-size: 18px;
+  line-height: 1.2;
+  color: #222;
+  font-weight: 400;
+}
+
+/* delete link */
+#archiveGrid .archive-item .archive-delete-link {
+  font-family: 'Source Serif 4', serif;
+  font-size: 16px;
+  color: #c00;
+  text-decoration: none;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  margin-left: 8px;
+  font-weight: 400;
+}
+
+html, body {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Remove centering or max-width from any parent containers if present */
+
+#archiveGrid{
+  width: 100%;
+  max-width: 1460px;          /* kannst du lassen */
+  margin: 24px auto 0;
+  padding-left: var(--page-pad-x);
+  padding-right: var(--page-pad-x);
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  column-gap: 20px;
+  row-gap: 20px;
+  box-sizing: border-box;
+}
+
+#archiveGrid .archive-item img {
+  width: 100%;
+  height: auto;
+  border: 1px solid #000000;
+  border-radius: 0;
+  display: block;
+  object-fit: contain;          /* oder contain, wenn du nichts abschneiden willst */
+  aspect-ratio: 3 / 4;        /* optional: eher hochkant wie dein Referenz */
+  max-width: none;            /* WICHTIG */
+}
+
+#archiveGrid .archive-item .archive-timestamp {
+  font-size: 14px;
+  font-family: 'Source Serif 4', serif;
+  color: #000000;
+  text-align: left;
+  margin-bottom: 8px;
+  margin-top: 0;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+}
+
+#archiveGrid .archive-item .archive-delete-link {
+  font-size: 14px;
+  font-family: 'Source Serif 4', serif;
+  color: #ff3f28;
+  text-align: left;
+  margin: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  padding: 0;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  line-height: 1.2;
+  transition: color 0.2s;
+  outline: none;
+}
+#archiveGrid .archive-item .archive-delete-link:hover {
+  color: #ff3f28;
+  text-decoration: none;
+}

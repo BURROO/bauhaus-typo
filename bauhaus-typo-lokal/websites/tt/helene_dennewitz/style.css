@@ -1,0 +1,547 @@
+/* Fonts */
+@font-face {
+  font-family: "Erika Mono";
+  src: url("G2ErikaMono-Bold.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Erika Bold";
+  src: url("G2Erika-Bold.ttf") format("truetype");
+}
+
+
+/* Reset / Base */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Erika Mono";
+  font-size: 18px;
+  color: rgb(44, 41, 41);
+}
+
+*::-webkit-scrollbar{
+    display: none;
+}
+
+/* Headings */
+h2 {
+  font-size: 30px;
+  color: rgb(44, 41, 41);
+  font-family: "Erika Mono";
+  padding-top: 0;
+  padding-bottom: 0;
+  margin-left: -6px;
+  padding-left: 0;
+  padding-bottom: 15px;
+}
+
+/* Layout */
+#container {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  height: 100vh;
+  width: 100vw;
+}
+
+/* Main / Preview area */
+#main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  background: #ffffff;
+  overflow: hidden;
+  padding-right: 260px;
+}
+
+/* Pinned-preview sidebar on the right of #main */
+#pinned-sidebar {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 180px;                 /* adjust width as desired */
+  padding: 12px;
+  box-sizing: border-box;
+  background: #fff;
+  /* border-left: 1px solid rgba(44,41,41);
+  border-bottom: 1px solid rgba(44,41,41); */
+  overflow-y: auto;             /* become scrollable when many pinned previews */
+  display: flex;
+  flex-direction: column;       /* one column, each pinned preview is one row */
+  gap: 12px;
+  align-items: stretch;       /* make pinned previews fill sidebar width */
+  z-index: 10000;
+
+  --pinned-scale-collapsed: 0.4;   /* visual size when not hovered */
+  --pinned-transition: 200ms;       /* animation duration */
+
+  transform-origin: right top;   /* collapse toward the right edge (less overlap) */
+  transform: scale(var(--pinned-scale-collapsed));
+  transition: transform var(--pinned-transition) ease;
+  will-change: transform;
+  /* keep pointer events and scrolling active while scaled */
+  pointer-events: auto;
+}
+
+/* expand smoothly on hover */
+#pinned-sidebar:hover {
+  transform: scale(1);
+}
+
+/* keep internal layout stable while scaling (optional slight smoothing) */
+#pinned-sidebar .pinned-card,
+#pinned-sidebar .thumb-wrapper,
+#pinned-sidebar .thumb-wrapper > * {
+  transition: transform var(--pinned-transition) ease;
+}
+
+/* pinned-sidebar thumbnail layout */
+#pinned-sidebar .pinned-card.sidebar-item {
+  flex: 0 0 210px;        /* fixed row height */
+  height: 210px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  padding: 6px 0;
+  overflow: scroll;
+}
+
+/* wrapper that enforces the exact preview aspect ratio */
+#pinned-sidebar .pinned-card.sidebar-item .thumb-wrapper {
+  width: calc(100% - 12px);   /* leave small inner gutter */
+  aspect-ratio: 1 / 1.414;    /* same ratio as #preview */
+  max-height: 100%;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+  display: block;
+  border: 1px solid rgba(44, 41, 41, 0.3);
+}
+
+/* cloned preview inside wrapper: positioned and transformed by JS */
+#pinned-sidebar .pinned-card.sidebar-item .thumb-wrapper .thumb-clone {
+  position: absolute !important;
+  left: 50% !important;
+  top: 50% !important;
+  transform-origin: center center !important;
+  pointer-events: none !important;
+  box-sizing: border-box !important;
+  will-change: transform;
+}
+
+/* Aside */
+#aside {
+  background: rgb(255, 255, 255);
+  border-right: 1px solid rgb(44, 41, 41);
+  padding: 20px;
+  overflow-y: auto;
+  position: relative;
+}
+
+/* Preview box: horizontally centered within #main via CSS using left:50% + translateX(-50%) */
+#main #preview {
+  align-self: center;
+  width: 600px;
+  aspect-ratio: 1 / 1.414;
+  background: #fff;
+  overflow: hidden;
+  transform-origin: top left;
+  z-index: 1;
+  position: absolute; /* absolute inside #main (which is relative) */
+  left: 50%;
+  transform: translateX(-50%);
+  top: 75px; /* default vertical offset; can be moved vertically with JS */
+  touch-action: none; /* allow pointer-based dragging without passive touch scrolling */
+}
+
+#preview input[type="date"],
+#preview input.flatpickr-input,
+#preview .date,
+#preview .date-display {
+  font-family: "Helvetica", sans-serif;
+  font-weight: 700;
+  font-size: inherit;
+  line-height: inherit;
+}
+
+#main #preview.active-preview {
+  outline: 1px solid rgba(44, 41, 41);
+  z-index: 100000;
+}
+
+/* Inputs / Textareas — keep the previous visual (full-width line spanning aside) */
+#aside input,
+#aside textarea {
+  display: block;
+  margin-top: 0;
+  margin-bottom: 0;
+  padding: 0px 14px;
+  padding-top: 3px;
+  padding-left: 14px;;
+  width: calc(100% + 40px); /* visually span aside padding */
+  margin-left: -20px;        /* compensate aside padding */
+  font-size: 18px;
+  color: rgb(44, 41, 41);
+  border: none;
+  border-bottom: 1px solid rgba(44, 41, 41);
+  background: transparent;
+  min-height: 75px; /* ensure inputs are taller */
+  line-height: 1.2;
+  box-sizing: border-box;
+  text-align: left;
+  resize: none;
+}
+
+/* Specific date input overrides (fix padding syntax) */
+#aside input#date.flatpickr-input,
+#aside input#date {
+  background: #ffffff !important;
+  color: rgb(44, 41, 41) !important;
+  border: none;
+  border-bottom: 1px solid rgba(44, 41, 41);
+  border-top: 1px solid rgba(44, 41, 41);
+  background: transparent;
+  padding: 6px 16px;
+  padding-top: 3px;
+  width: calc(100% + 40px);
+  margin-left: -20px;
+  box-sizing: border-box;
+  min-height: 50px !important;
+}
+
+/* Text fields selection visual */
+#text-fields textarea.selected {
+  background: rgba(44, 41, 41, 0.06);
+  border-left: 3px solid rgba(44, 41, 41, 0.12);
+  outline: none;
+}
+
+/* Cursor for textareas list */
+#text-fields textarea {
+  cursor: text;
+}
+
+/* Buttons: base then special cases */
+#aside button {
+  margin: 5px;
+  max-width: 300px;
+  background-color: white;
+  color: rgb(44, 41, 41);
+  border: 1px solid rgb(44, 41, 41);
+  height: 30px;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 6px 12px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 0;
+}
+
+/* Small square add/delete buttons keep previous look (width kept small via !important) */
+#btn-add,
+#btn-delete {
+  width: 35px !important;
+  height: 44px;
+  margin: 12px auto;
+  background: rgb(44, 41, 41);
+  color: #fff;
+  border: 1px solid rgb(44, 41, 41);
+  cursor: pointer;
+  font-size: 14px;
+}
+
+/* Hover state */
+#aside button:hover {
+  background-color: rgba(44, 41, 41, 0.06);
+}
+
+/* Focus removal for inputs (keeps accessible alternatives up to you) */
+#aside input:focus,
+#aside textarea:focus,
+#aside input.flatpickr-input:focus {
+  outline: none;
+  box-shadow: none;
+  -webkit-appearance: none;
+}
+
+/* Flatpickr range caps (half-circles) recolored and sized to match UI */
+.flatpickr-day.startRange::before,
+.flatpickr-day.endRange::after {
+  background: rgba(44, 41, 41, 0.4) !important;
+  border-radius: 50% !important;
+  width: 50% !important;
+  height: 100% !important;
+}
+
+/* Flatpickr selected / in-range styling */
+.flatpickr-day.selected,
+.flatpickr-day.startRange,
+.flatpickr-day.endRange {
+  background: rgba(44, 41, 41, 0.4) !important;
+  color: rgb(44, 41, 41) !important;
+  border-radius: 1px !important;
+}
+
+.flatpickr-day.inRange {
+  background: rgba(44, 41, 41, 0.12) !important;
+  color: inherit !important;
+  border-radius: 0 !important;
+}
+
+.flatpickr-day:hover,
+.flatpickr-day:focus {
+  background: rgba(44, 41, 41, 0.08) !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Text module sizing / measurement */
+.text-block {
+  font-family: "Helvetica", sans-serif;
+  font-weight: bold;
+  position: absolute;
+  word-wrap: break-word;
+  white-space: normal;
+  overflow-wrap: break-word;
+  line-height: 1.05;
+  box-sizing: border-box;
+}
+
+.text-block,
+.repeat-text {
+  color: rgb(44, 41, 41);
+  mix-blend-mode: difference;
+}
+
+
+/* Custom alert dialog styles */
+#custom-alert-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.32);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 200000;
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+}
+#custom-alert-overlay.show { display: flex; }
+
+#custom-alert {
+  width: min(520px, calc(100% - 48px));
+  background: #fff;
+  color: rgb(44, 41, 41);
+  border-radius: 1px;
+  padding: 18px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.18);
+  border: 1px solid rgba(44, 41, 41, 0.06);
+  font-family: "Erika Mono", monospace;
+  box-sizing: border-box;
+}
+#custom-alert .alert-title {
+  font-family: "Erika Mono", monospace;
+  font-weight: 700;
+  font-size: 16px;
+  margin-bottom: 6px;
+}
+#custom-alert .alert-body {
+  font-size: 14px;
+  line-height: 1.35;
+  margin-bottom: 14px;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+#custom-alert .alert-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+#custom-alert .alert-btn {
+  min-width: 86px;
+  padding: 8px 14px;
+  border: 1px solid rgba(44, 41, 41, 0.08);
+  background: transparent;
+  color: rgb(44, 41, 41);
+  cursor: pointer;
+  font-size: 14px;
+}
+#custom-alert .alert-btn.primary {
+  background: rgb(255, 0, 0);
+  color: #fff;
+  border-color: rgba(255, 0, 0, 0.14);
+}
+/* Responsive */
+@media (max-width: 900px) {
+  #container { grid-template-columns: 260px 1fr; }
+  #main #preview { width: 260px; height: 390px; }
+   #main { padding-right: 200px; }
+  #pinned-sidebar { width: 200px; }
+}
+
+/* Controls alignment — preserve original visual offsets but keep rules grouped */
+.aside-controls {
+  display: flex;
+  gap: 5px;
+  justify-content: flex-end;
+  align-items: center;
+  width: calc(100% + 40px);
+  margin-left: -25px;
+  box-sizing: border-box;
+  margin-top: 6px;
+  line-height: 1;
+}
+
+.aside-controls #btn-add span,
+.aside-controls #btn-delete span {
+  display: grid;
+  place-items: center;
+  font-size: 20px; 
+  padding-bottom: 2px;
+  /* line-height: 1;
+  height: 1em;
+  transform: translateY(-0.04em); */
+}
+
+.aside-actions {
+  position: absolute;
+  left: 50%;
+  bottom: 20px;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 100px;
+  z-index: 200000; /* must be > #preview.active-preview (100000) */
+  pointer-events: auto;
+  background-color: transparent;
+}
+
+/* make sure individual buttons can stack above container and accept z-index */
+.aside-actions #btn-pin,
+.aside-actions #btn-generate {
+  position: relative;
+  z-index: 200001;
+}
+
+
+/* preserve per-button margin rule used before */
+.aside-actions #btn-pin,
+.aside-actions #btn-generate { margin: 0; }
+
+/* reuse existing generate button styling (keeps your red button) */
+#btn-generate {
+  background-color: rgb(255, 0, 0) !important;
+  color: #fff !important;
+  border: 1px solid red !important;
+  height: 40px; 
+  width: 102px;
+  font-size: 20px; 
+  cursor: pointer; 
+}
+#btn-generate:hover {
+  background-color: rgba(255, 0, 0, 0.8) !important;
+  border: 1px solid rgba(255, 0, 0) !important;
+}
+
+/* optional: pin button visual parity */
+#btn-pin {
+  background-color: rgba(255, 255, 255, 0.8);
+  color: rgb(44, 41, 41);
+  border: 1px solid rgb(44, 41, 41, 0.8);
+  height: 40px;
+  width: 102px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+#btn-pin:hover {
+  background-color: rgba(44, 41, 41, 0.08) !important; 
+  border: 1px solid rgb(44, 41, 41) !important;
+}
+
+/* place Archive button bottom-right of the main preview area */
+#main #btn-archive {
+  position: absolute;
+  right: 5px;
+  bottom: 5px;
+  z-index: 250000;          /* above other controls / preview */
+  background: transparent;
+  border: none;
+  color: rgb(44, 41, 41);
+  font-size: 14px;
+  cursor: pointer;
+  padding: 8px 12px;
+  text-decoration: underline;
+  display: inline-block;
+  box-sizing: border-box;
+}
+
+#btn-archive:hover,
+#btn-back:hover {
+  transform: rotate(360deg);
+  transition: transform 500ms ease;
+}
+
+/* small-screen tweak */
+@media (max-width: 900px) {
+  #main #btn-archive,
+  .main-controls #btn-archive {
+    right: 12px;
+    bottom: 12px;
+    font-size: 13px;
+    padding: 6px 10px;
+  }
+}
+
+#footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: 12000;
+  background: #ffffff; 
+  padding: 12px 20px;
+  box-sizing: border-box;
+}
+#footer {
+  font-size: 9px;
+}
+
+#footer * {
+  font-size: inherit;
+}
+
+/* button wiggle animation (used on click / pointerdown / keyboard) */
+:root {
+  --wiggle-duration: 20ms;
+  --wiggle-iterations: 7;
+  --wiggle-ease: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes wiggle {
+  0%   { transform: translateX(0) rotate(0); }
+  15%  { transform: translateX(-4px) rotate(-2deg); }
+  30%  { transform: translateX(4px)  rotate(2deg); }
+  45%  { transform: translateX(-3px) rotate(-1.2deg); }
+  60%  { transform: translateX(3px)  rotate(1deg); }
+  75%  { transform: translateX(-2px) rotate(-0.6deg); }
+  100% { transform: translateX(0) rotate(0); }
+}
+
+/* apply wiggle while the class is present */
+button.wiggle {
+  will-change: transform;
+  animation-name: wiggle;
+  animation-duration: var(--wiggle-duration);
+  animation-timing-function: var(--wiggle-ease);
+  animation-iteration-count: var(--wiggle-iterations);
+  animation-fill-mode: both;
+}
+
+.layer-container {
+  isolation: isolate;
+}

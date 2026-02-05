@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<base href="/websites/tt/difei_song/">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FlockType</title>
+    <link rel="icon" type="image/svg+xml" href="INTERFACE/birdLOGO.svg">
+    <link rel="mask-icon" href="INTERFACE/birdLOGO.svg" color="#000000">
+    <link rel="apple-touch-icon" href="INTERFACE/birdLOGO.svg">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+        <!-- SVG defs for goo filter (hidden). To enable, add `class="use-goo"` to <body> or apply via JS. -->
+        <svg xmlns="http://www.w3.org/2000/svg" style="position: absolute; width: 0; height: 0;">
+            <defs>
+                <!-- this goo filter is the secret sauce -->
+                <filter id="goo">
+                    <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur" />
+                    <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 19 -9" result="goo" />
+                </filter>
+            </defs>
+        </svg>
+    <div class="page">
+        <header class="header">
+            <div class="header-col header-left">
+                <select id="fontSelector" style="width: calc(12.5vw - 20px - 2.5px); padding: 5px; font-size: var(--labelFontSize); border: 5px solid #000; background-color: transparent; color: #000; text-align: center; appearance: none; -webkit-appearance: none; height: 40px;">
+                    <option value="">Choose Font</option>
+                </select>
+                <button id="movementModeBtn" style="width: calc(12.5vw - 20px - 2.5px); padding: 5px; font-size: var(--labelFontSize); border: 5px solid #000; background-color: transparent; color: #000; height: 40px;">Movement: Grid</button>
+                <button id="backgroundToggleBtn" style="width: calc(12.5vw - 20px - 2.5px); padding: 5px; font-size: var(--labelFontSize); border: 5px solid #000; background-color: transparent; color: #000; height: 40px;">Background: On</button>
+            </div>
+
+            <div class="header-col header-center">
+                <div class="center-header-top">
+                    <h1 id="pageTitle">FlockType</h1>
+                    <div class="text-input-container">
+                        <textarea id="textInput" placeholder="Type here:" rows="2" style="width: 100%;"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="header-col header-right">
+                <div class="export-buttons">
+                    <button id="recordToggleBtn" style="width: calc(12.5vw - 20px - 2.5px); padding: 5px; font-size: var(--labelFontSize); border: 5px solid #000; background-color: transparent; color: #000; height: 40px;">Record MP4</button>
+                    <button id="exportSvgBtn" style="width: calc(12.5vw - 20px - 2.5px); padding: 5px; font-size: var(--labelFontSize); border: 5px solid #000; background-color: transparent; color: #000; height: 40px;">Export SVG</button>
+                </div>
+            </div>
+        </header>
+
+        <main class="main">
+            <div class="canvas-wrapper">
+                <canvas id="canvas"></canvas>
+            </div>
+        </main>
+
+        <!-- Image upload modal -->
+        <div id="imageUploadModal" style="display:none; position: fixed; inset: 0; background: rgba(0,0,0,0.45); align-items: center; justify-content: center; z-index: 9999;">
+            <div style="background: #fff; border: 4px solid #000; padding: 18px 20px; width: min(420px, 90vw); box-shadow: 12px 12px 0 #000;">
+                <h3 style="margin-top: 0;">Upload Image</h3>
+                <p style="margin: 8px 0 14px;">Choose an image and it will be converted to pixel birds using the current Resolution slider.</p>
+                <div style="display:flex; gap:10px; align-items:center;">
+                    <input type="file" id="imageFileInputModal" accept="image/*" style="flex:1;">
+                    <button id="imageUploadConfirm" style="padding: 8px 14px; border: 3px solid #000; background: #000; color: #fff;">Convert</button>
+                    <button id="imageUploadCancel" style="padding: 8px 14px; border: 3px solid #000; background: #fff; color: #000;">Cancel</button>
+                </div>
+                <div id="imageUploadStatus" style="margin-top:10px; font-size: 0.9em; color: #555;"></div>
+            </div>
+        </div>
+
+        <!-- Font upload modal -->
+        <div id="fontUploadModal" style="display:none; position: fixed; inset: 0; background: rgba(0,0,0,0.45); align-items: center; justify-content: center; z-index: 9999;">
+            <div style="background: #fff; border: 4px solid #000; padding: 18px 20px; width: min(420px, 90vw); box-shadow: 12px 12px 0 #000;">
+                <h3 style="margin-top: 0;">Upload Font</h3>
+                <p style="margin: 8px 0 14px;">Choose a font file (.ttf/.otf/.woff/.woff2) and it will be parsed into pixel glyphs at the current Resolution.</p>
+                <div style="display:flex; gap:10px; align-items:center;">
+                    <input type="file" id="fontFileModal" accept=".ttf,.otf,.woff,.woff2" style="flex:1;">
+                    <button id="fontUploadConfirm" style="padding: 8px 14px; border: 3px solid #000; background: #000; color: #fff;">Parse</button>
+                    <button id="fontUploadCancel" style="padding: 8px 14px; border: 3px solid #000; background: #fff; color: #000;">Cancel</button>
+                </div>
+                <div id="fontUploadStatus" style="margin-top:10px; font-size: 0.9em; color: #555;"></div>
+            </div>
+        </div>
+
+        <footer class="footer controls-bottom">
+            <div class="controls-section">
+                <h3>Boids Behavior</h3>
+                <div class="section-grid grid-2x2">
+                    <div class="param-slider">
+                        <label>Separation</label>
+                        <input type="range" id="sepSlider" min="0" max="3" value="1" step="0.1" class="param-range">
+                    </div>
+                    <div class="param-slider">
+                        <label>Cohesion</label>
+                        <input type="range" id="cohSlider" min="0" max="3" value="1" step="0.1" class="param-range">
+                    </div>
+                    <div class="param-slider">
+                        <label>Alignment</label>
+                        <input type="range" id="aliSlider" min="0" max="3" value="1" step="0.1" class="param-range">
+                    </div>
+                    <div class="param-slider">
+                        <label>Homing Period</label>
+                        <input type="range" id="homingPeriodSlider" min="2" max="60" value="10" step="1" class="param-range">
+                    </div>
+                </div>
+            </div>
+
+            <div class="controls-section">
+                <h3>Bird Appearance</h3>
+                <div class="section-grid grid-2x2">
+                    <div class="param-slider">
+                        <label>Resolution</label>
+                        <input type="range" id="resolutionSlider" min="5" max="50" value="10" class="param-range">
+                    </div>
+                    <div class="param-slider">
+                        <label>Offset</label>
+                        <input type="range" id="birdOffsetSlider" min="0" max="20" step="0.1" value="0" class="param-range">
+                    </div>
+                    <div class="param-slider">
+                        <label>Bird Size</label>
+                        <input type="range" id="birdSizeSlider" min="0.3" max="3.0" value="1" step="0.05" class="param-range">
+                    </div>
+                    <div class="param-slider">
+                        <label>Gooey</label>
+                        <input type="range" id="gooBlurSlider" min="0" max="5" step="0.1" value="0" class="param-range">
+                    </div>
+                </div>
+            </div>
+
+            <div class="controls-section">
+                <h3>Bird Shapes</h3>
+                <div class="section-grid grid-2x6" id="shapeButtonsContainer">
+                    <!-- SVG shapes will be rendered here via JavaScript -->
+                    <input type="file" id="svgFile" accept=".svg" style="display:none;">
+                </div>
+            </div>
+
+            <div class="controls-section">
+                <h3>Control</h3>
+                <div class="playback-controls">
+                    <div class="section-grid grid-2x2">
+                        <div class="param-slider">
+                            <label>Sound</label>
+                            <input type="range" id="soundVolume" min="0" max="100" value="0" class="param-range">
+                        </div>
+                        <div class="param-slider">
+                            <label>Speed</label>
+                            <input type="range" id="speedMultiplierSlider" min="0.1" max="3.0" value="1.0" step="0.1" class="param-range">
+                        </div>
+                        <div class="playback-buttons">
+                            <button id="prevFrameBtn" title="Previous Frame"><img src="INTERFACE/SVG/prevFrameBtn.svg" alt="Previous"></button>
+                            <button id="refreshBtn" title="Refresh"><img src="INTERFACE/SVG/refreshBtn.svg" alt="Refresh"></button>
+                            <button id="playBtn" title="Play"><img src="INTERFACE/SVG/playBtn.svg" alt="Play"></button>
+                            <button id="pauseBtn" title="Pause"><img src="INTERFACE/SVG/pauseBtn.svg" alt="Pause"></button>
+                            <button id="nextFrameBtn" title="Next Frame"><img src="INTERFACE/SVG/nextFrameBtn.svg" alt="Next"></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+        <!-- Hidden elements for status display -->
+        <div style="display: none;">
+            <div id="fontStatus"></div>
+            <div id="phaseLabel"></div>
+            <div id="svgStatus"></div>
+            <input type="file" id="imageFileInput" accept="image/*" style="display:none;">
+            <input type="file" id="fontFile" accept=".ttf,.otf,.woff,.woff2" style="display:none;">
+
+            <div class="control-value" id="resolutionValue">10</div>
+            <div class="control-value" id="resolutionValue2">10</div>
+            <div class="control-value" id="sepValue">1</div>
+            <div class="control-value" id="aliValue">1</div>
+            <div class="control-value" id="cohValue">1</div>
+            <div class="control-value" id="birdSizeValue">1</div>
+            <div class="control-value" id="birdOffsetValue">0.0</div>
+            <div class="control-value" id="homeStrengthValue">0.060</div>
+            <div class="control-value" id="homingPeriodValue">10s</div>
+            <div class="control-value" id="speedMultiplierValue">1.00x</div>
+            <div class="control-value" id="gooBlurValue">0.0</div>
+
+            <button id="soundToggleBtn" style="display:none;">Sound: ON</button>
+            <button id="feedingBtn" style="display:none;">Spawn Food</button>
+            <button id="svgUseBtn" style="display:none;">Use Uploaded SVG</button>
+            <input type="range" id="homeStrengthSlider" min="0.000" max="10.000" value="0.060" step="0.001" style="display:none;">
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="config.js"></script>
+    <script src="glyphs.js"></script>
+    <script src="bird.js"></script>
+    <script src="utils.js"></script>
+    <script src="renderer.js"></script>
+    <script type="module" src="ffmpeg-wrapper.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

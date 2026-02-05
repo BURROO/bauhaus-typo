@@ -1,0 +1,137 @@
+@font-face {
+  font-family: "BradfordLLEdu-Light";
+  src: url("fonts/BradfordLLEdu-Light.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+  font-family: "BradfordLLEdu-Light"; font-weight: lighter;
+  background: none;
+  color: blue;
+  font-size: 16px;
+}
+
+.viewport {
+  height: 99vh;
+  width: 99vw;
+  display: grid;
+  place-items: center;
+  position: relative;
+}
+
+.stack {
+  position: relative;
+  width: min(960px, 92vw);
+  height: min(560px, 76vh);
+}
+
+.line {
+  margin: 0;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  font-size: 3rem;
+
+  background: none;
+
+  line-height: 1;
+  width: 70vw;
+  text-align: center;
+}
+
+a {
+  text-decoration: none;
+  color: blue;
+}
+
+.line.is-visible {
+  opacity: 1;
+}
+
+.final-image {
+  /* width: min(320px, 60vw); */
+  /* height: auto; */
+  height: 10vh;
+  width: auto;
+  font-size: 0;
+}
+
+
+
+
+/* P O E M */
+
+h2 {
+  text-decoration: none;
+  font-family: "BradfordLLEdu-Light"; font-weight: lighter;
+  letter-spacing: 1pt;
+  font-size:1rem;
+  margin-bottom: 15px;
+  color: red;
+  text-decoration: none;
+  z-index: 1;
+}
+
+
+
+#table {
+	display: table;
+	width: 100%;
+	height: 100%;
+  background: none;
+
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 99vh;
+  width: 99vw;
+  z-index: 1;
+
+}
+
+
+
+#centeralign {
+	display: table-cell;
+	vertical-align: middle;
+}
+
+
+.text-total-link-1 {
+  text-decoration: none;
+}
+
+#table,
+#centeralign {
+  animation: none !important;
+}
+
+
+#centeralign {
+  position: relative;  
+}
+
+#centeralign h2 {
+  position: absolute;
+  left: 50%;
+  top: 99%;
+  transform: translate(-50%, -50%);
+  margin: 0;
+
+  opacity: 0;
+  pointer-events: none;
+  white-space: nowrap;
+
+  transition: opacity 100ms ease;
+}
+
+#centeralign h2.is-active {
+  opacity: 1;
+}

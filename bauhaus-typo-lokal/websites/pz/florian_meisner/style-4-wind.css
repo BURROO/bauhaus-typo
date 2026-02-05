@@ -1,0 +1,181 @@
+body {
+  height: 100vh;
+  margin: 5px;
+  color: blue;
+  background-color: white;
+  font-family: "BradfordLLEdu-Light";
+  font-weight: normal;
+  text-decoration: none;
+}
+
+
+@font-face {
+  font-family: "BradfordLLEdu-Light";
+  src: url("fonts/BradfordLLEdu-Light.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+
+
+
+.headline-1-background {
+  font-family: "BradfordLLEdu-Light"; font-weight: lighter;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 99vh;
+  width: 99vw;
+  /* border: 1px solid red; */
+  
+
+  animation-iteration-count: infinite; /* Endlosschleife */
+  animation-direction: alternate; /* Hin- und Her-Animation */
+}
+
+
+/* h1 Flex-Spalte */
+.headline-1-background h1{
+  font-family: "BradfordLLEdu-Light"; font-weight: lighter;
+  position: relative;   
+  margin: 0;
+  height: 100%;
+  width: 100%;
+  
+}
+
+.headline-1-background .line{
+  font-family: "BradfordLLEdu-Light"; font-weight: lighter;
+  position: absolute;   
+  color: blue;
+  font-size: 1rem;
+  line-height: 1rem;
+  max-width: 100vw;      
+  /* border: solid red 1px; */
+}
+
+/*  Ausrichtung */
+.line1 { top: 2%; left: 9%; }
+.line2 { top: 7%; right: 27%; }
+.line3 { top: 17%; left: 30%; }
+.line4 { top: 22%; left: 10%; }
+.line5 { top: 34%; left: 15%; }
+.line6 { top: 40%; right: 18%; }
+.line7 { top: 61%; left: 30%;}
+.line8 { top: 70%; left: 10%; }
+.line9 { top: 78%; left: 5%; }
+.line10 { top: 87%; right: 8%; }
+.line11 { top: 96%; right: 18%; }
+
+
+/* .indent-1 { margin-left: 40%; }
+.indent-2 { margin-left: 10%; } */
+
+
+@keyframes breiteAnpassen {
+  from { width: 100%; }
+  to { width: 45%; }
+}
+
+.headline-1-background {
+  animation-name: breiteAnpassen;
+  animation-duration: 100s;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+
+
+
+
+/* P O E M */
+
+h2 {
+  text-decoration: none;
+  font-family: "BradfordLLEdu-Light"; font-weight: lighter;
+  letter-spacing: 1pt;
+  font-size: 1rem;
+  margin-bottom: 15px;
+  color: black;
+  text-decoration: none;
+  z-index: 1;
+}
+
+
+
+#table {
+	display: table;
+	width: 100%;
+	height: 100%;
+  background: none;
+
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 99vh;
+  width: 99vw;
+  z-index: 1;
+
+}
+
+
+
+#centeralign {
+	display: table-cell;
+	vertical-align: middle;
+}
+
+
+.text-total-link-1 {
+  text-decoration: none;
+}
+
+#table,
+#centeralign {
+  animation: none !important;
+}
+
+
+/* Wrap area that holds the h2s stays centered  */
+#centeralign {
+  position: relative;   
+}
+
+/* Put both h2s in the same exact position */
+#centeralign h2 {
+  font-family: "BradfordLLEdu-Light"; font-weight: lighter;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  margin: 0;
+  opacity: 0;
+  pointer-events: none;
+  white-space: nowrap; 
+}
+
+
+
+
+/* Bounce Stone */
+.bounce {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
+  background: transparent; 
+}
+
+.stone {
+  position: absolute;
+  width: 10vw;          /* Größe anpassen */
+  height: auto;
+  left: 0;
+  top: 0;
+  will-change: transform;
+  user-select: none;
+  -webkit-user-drag: none;
+  pointer-events: none;  
+  z-index: 20;
+}

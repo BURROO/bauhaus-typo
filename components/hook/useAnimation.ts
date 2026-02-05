@@ -51,7 +51,17 @@ export const useAnimation = ({
                     g.rotation.z =
                         baseRot.current[i].z +
                         time * item.speed +
-                        i * item.ofstPerItem
+                        (i*131.121992) * item.ofstPerItem * 0.1
+
+                    g.rotation.x =
+                        baseRot.current[i].z +
+                        time * item.speed +
+                        i * item.ofstPerItem * 0.007
+
+                    const scale = 0.2 + (Math.sin(time + i)+1)/2 * 0.6
+                    // const scale = 0.2 + (Math.sin(i)+1)/2 * 0.6
+                    // g.scale = Math.sin(time + i)
+                    g.scale.set(scale, scale, scale)
                 }
             })
         })

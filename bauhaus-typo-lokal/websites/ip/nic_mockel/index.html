@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brutalist Product Catalog</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --vw21: calc((100vw - 15px) / 21);
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #ffffff;
+            color: #000000;
+            font-family: 'Almarai', sans-serif;
+            font-size: 9pt;
+            line-height: 7pt;  /* instead of 7pt */
+            overflow-x: hidden;
+        } 
+
+        .container {
+            position: relative;
+            width: 100%;
+            min-height: 100vh; 
+            padding-right: calc(var(--vw21) * 7);
+
+        }
+
+        /* Top Section with Dense Text */
+        .top-section {
+            position: relative;
+            padding: 0;
+            margin: 0;
+            margin-bottom: 65px;
+            text-align: justify;
+            font-weight: normal;
+            letter-spacing: 0;
+            transform: scaleY(1.45);
+            transform-origin: top left;
+            max-width: calc(var(--vw21) * 14);
+        }
+
+        .top-section p {
+            margin: 0;
+            padding: 0;
+        }
+
+        .top-section p::before {
+            content: "";
+            float: left;
+            width: calc(var(--vw21) * 1.03);
+            height: calc(3 * 2pt * 1.45);
+        }
+
+        .top-section strong {
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        /* Logo in top-left corner */
+        .corner-logo {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: calc(var(--vw21) * 1);
+            height: auto;
+            z-index: 10;
+        }
+
+        /* Black Column on Right */
+        .black-column {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: calc(var(--vw21) * 7);
+            height: 100vh;
+            background: #000000;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .black-bar-image {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            transform: scale(3.75);
+            transform-origin: bottom left;
+            width: 124.8px;
+            height: 180.0px;
+            background-image: url('row1 1.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+        }
+
+        /* Navigation at bottom of black bar */
+        .black-bar-nav {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: auto;
+            font-family: 'Almarai', sans-serif;
+            font-size: 9pt;
+            line-height: 7pt;
+            font-weight: normal;
+            letter-spacing: 0;
+        }
+
+        .black-bar-nav a {
+            position: absolute;
+            bottom: 0;
+            color: #ffffff;
+            text-decoration: none;
+            padding: 0;
+            margin: 0;
+            text-transform: lowercase;
+            white-space: nowrap;
+            transform: scaleY(1.25);
+            transform-origin: bottom left;
+        }
+
+        .black-bar-nav a:nth-child(1) {
+            left: calc(var(--vw21) * 4);
+        }
+
+        .black-bar-nav a:nth-child(2) {
+            left: calc(var(--vw21) * 5);
+        }
+
+        .black-bar-nav a:nth-child(3) {
+            left: auto;
+            right: 0;
+            transform-origin: bottom right;
+        }
+
+        .black-bar-nav a:hover {
+            color: #6699FF;
+        }
+
+        /* CIN number display */
+        .cin-display {
+            position: absolute;
+            bottom: 0;
+            left: calc(var(--vw21) * 3);
+            color: #ffffff;
+            font-family: 'Almarai', sans-serif;
+            font-size: 9pt;
+            line-height: 7pt;
+            font-weight: normal;
+            transform: scaleY(1.25);
+            transform-origin: bottom left;
+        }
+
+        /* Navigation arrows */
+        .nav-arrows {
+            position: fixed;
+            right: 0;
+            left: auto;
+            top: 50vh;  /* Vertical middle of screen */
+            transform: translateY(-150%);  /* Center the arrows themselves */
+            /* To move up: change translateY to negative value like translateY(-100px) */
+            /* To move down: change translateY to positive value like translateY(100px) */
+            display: flex;
+            gap: 2px;  /* Change this value to adjust space between arrows */
+            z-index: 10;
+        }
+
+        .nav-arrows button {
+            background: none;
+            border: none;
+            color: #ffffff;
+            font-size: 16px;
+            cursor: pointer;
+            padding: 0;
+            font-family: 'Almarai', sans-serif;
+        }
+
+        .nav-arrows button:hover {
+            color: #6699FF;
+        }
+
+        /* Product Table */
+        .product-table {
+            width: calc(var(--vw21) * 14);
+            table-layout: fixed;
+            border-collapse: collapse;
+            margin-top: 0;
+            position: relative;
+            z-index: 2;
+        }
+
+	.product-table tbody tr {
+    	    height: 188px; 
+	}
+
+        .product-table th {
+            font-family: 'Almarai', sans-serif;
+            font-weight: bold;
+            font-size: 9pt;
+            line-height: 7pt;
+            text-align: left;
+            vertical-align: bottom;
+            text-transform: uppercase;
+            color: #000000;
+            border: 1px solid #000000;
+            padding: 13px 6px 0px 0px;
+            transform: scaleY(1.45) translateY(1.5px);
+            transform-origin: bottom left;
+        }
+
+        .product-table td {
+            font-family: 'Almarai', sans-serif;
+            font-weight: normal;
+            font-size: 9pt;
+            line-height: 7pt;
+            text-align: left;
+            vertical-align: bottom;
+            color: #000000;
+            border: 1px solid #000000;
+            transform: scaleY(1.25);
+            transform-origin: bottom left;
+        }
+
+        .product-table td.details {
+            white-space: pre;
+            vertical-align: bottom;
+            text-align: left;
+	    line-height: 7pt;
+	    padding-top: 84px;
+	    transform: scaleY(1.25);
+	    tab-size: 7;
+            position: relative;
+        }
+
+        .product-table td.col-p2 {
+            white-space: normal;
+        }
+
+        .product-table td.col-p2 .sizing-row {
+            position: relative;
+            margin: 0;
+            padding: 0;
+            line-height: 7pt;
+            height: 7pt;
+        }
+
+        .product-table td.col-p2 .sizing-row span:nth-child(1) {
+            position: absolute;
+            left: calc(var(--vw21) * 11 - var(--vw21) * 11);
+        }
+
+        .product-table td.col-p2 .sizing-row span:nth-child(2) {
+            position: absolute;
+            left: calc(var(--vw21) * 12 - var(--vw21) * 11);
+        }
+
+        .product-table td.col-p2 .sizing-row span:nth-child(3) {
+            position: absolute;
+            left: calc(var(--vw21) * 13 - var(--vw21) * 11);
+        }
+
+        .product-table td a {
+            color: #0000FF;
+            text-decoration: none;
+            word-break: break-all;
+        }
+
+        .product-table td img {
+            display: block;
+            vertical-align: bottom;
+	    transform: scaleY(0.8);
+	    transform-origin: bottom left;
+        }
+
+        .product-table .col-number {
+            width: calc(var(--vw21) * 1);
+            min-width: calc(var(--vw21) * 1);
+            max-width: calc(var(--vw21) * 1);
+            text-align: left;
+        }
+
+        .product-table .col-name {
+            width: calc(var(--vw21) * 3);
+            min-width: calc(var(--vw21) * 3);
+            max-width: calc(var(--vw21) * 3);
+        }
+
+        .product-table .col-details {
+            width: calc(var(--vw21) * 3);
+            min-width: calc(var(--vw21) * 3);
+            max-width: calc(var(--vw21) * 3);
+        }
+
+        .product-table .col-link {
+            width: calc(var(--vw21) * 2);
+            min-width: calc(var(--vw21) * 2);
+            max-width: calc(var(--vw21) * 2);
+        }
+
+        .product-table .col-p1 {
+            width: calc(var(--vw21) * 2);
+            min-width: calc(var(--vw21) * 2);
+            max-width: calc(var(--vw21) * 2);
+        }
+
+        .product-table .col-p2 {
+            width: calc(var(--vw21) * 3);
+            min-width: calc(var(--vw21) * 3);
+            max-width: calc(var(--vw21) * 3);
+        }
+
+        .image-small {
+            width: 124.8px;
+            height: 180.0px;
+
+        }
+
+        .image-wide {
+            width: 220.0px;
+            height: 180.0px;
+        }
+
+	.product-table td.col-p1,
+        .product-table td.col-p2 {
+            vertical-align: bottom;
+            padding-bottom: 0;
+	    padding-top: 6px; 
+	    max-height: 130px;    
+        }
+	
+	/*
+	.product-table tbody tr:first-child td.col-p1,
+	.product-table tbody tr:first-child td.col-p2 {
+   	   background-color: yellow !important;
+   	   padding-top: 42px !important;
+	}
+	*/
+		
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Logo in top-left corner -->
+        <img src="cinlogo2.png" alt="CIN Logo" class="corner-logo">
+
+        <!-- Navigation arrows -->
+        <div class="nav-arrows">
+            <button id="prevBtn">&lt;</button>
+            <button id="nextBtn">&gt;</button>
+        </div>
+
+        <!-- Black Column on Right Side -->
+        <div class="black-column">
+            <div class="black-bar-image"></div>
+            <div class="cin-display">002</div>
+            <nav class="black-bar-nav">
+                <a href="archive.html">archive</a>
+                <a href="https://www.instagram.com" target="_blank">instagram</a>
+                <a href="imprint.html">legal notice</a>
+            </nav>
+        </div>
+
+        <!-- Top Dense Text Section -->
+        <div class="top-section">
+            <p>To all those looking for a concept or something to understand. There's nothing to understand. This here is pure emotion. This one is here to be felt. This one is a pure brutalistic scream. Lets here it. U might feel unconfatble listen to ti, you might fall in love with its puraty. You might not perceive it as a scream. You might like me to shut the fuck up. And i,m here to tell you everything is right. I don´t care what you well , but i hope it effects u, in a intense way. Lets find out. Trust beyond logic. The light is in u not on u. Lets design the invasable qualities of garments, weight, how it feels on while wearing it etc.I decide quikly, I act without apology. I do not explain myself. I´m not a slave to emotions, I act before I feel ready. I refuse to have a lesser opion about myself. Im important. Im important. Im important. U important. We important. Don't take advice from nonbeliefers. I,m the greenlight Fuck argueing. The goal isn´t to become the best abller on a technical level rather to become the one with the most swag. Cause Swag is influenze and influenze is power. Sometimes u have to breeth fresh air into projects to get back that euphoria that keeps u going. There is always a second author call him funktionsalism or time. Know u want to be – derive what u have to eat. Look closely if you´re current enviroment is the appropriate food. Rules aren´t final they have a lifetime. Cutting ties with society helps u to unprogramm. I want to destroys bodies like cubism doeas. Lean into what u fee, follow hints of excitement. In the journey u gane all the tools so u have them when u reach the top of the mountain. I want to harm visual mediocrity. The character of the thing i m working one needs to be developed to an extreme. The truth lies in your good days, So do decisions on good days. Knowing enough about an object to think you´re right and not enough about an object to think you´re wrong. Bad taste is vulgar. Avoid the trap of love cause then u are afread to loos it. Fear controls u. My work in three words: cheeky, immature, outrageous. My work in three words part two: Cheeky immature daring. The superpower is in removing the fear. I want to harm visual standards and mediocrity. I want to be visual violence, I want to violence unspoken visual rueIies and standards emerging and established through algorithm. We all follow one priciple: u are what u eat. I want to eat different. I´m constently aspiring for moments where i turn the page and not knowing whats on the other side. Something more brutal, something more tender, something more whatever. I want to give a fuck. Heres my FUCK U. I want to harm visual standards and mediocrity. I´m here to share my truth in my life, which manifests in the way i speak, think, and the tangible products that come into being. The World cloud be disected into tho types of man those who think they can and those who think they can not. Both are right.</p>
+        </div>
+
+        <!-- Product Table -->
+        <table class="product-table">
+            <thead>
+                <tr>
+                    <th class="col-number">CIN</th>
+                    <th class="col-name">PRODUCTNAME</th>
+                    <th class="col-details">PRODUCTDETAILS</th>
+                    <th class="col-link">PURCHASELINK</th>
+                    <th class="col-p1">P1</th>
+                    <th class="col-p2">sizing</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- ROW 1 -->
+                <tr>
+                    <td class="col-number">002</td>
+                    <td class="col-name">shoulder pad zipper</td>
+                    <td class="col-details details">fixed <span style="position: absolute; left: calc(var(--vw21) * 5 - var(--vw21) * 4);">shoulderpads</span>
+shell <span style="position: absolute; left: calc(var(--vw21) * 5 - var(--vw21) * 4);">sweat</span> 
+lining <span style="position: absolute; left: calc(var(--vw21) * 5 - var(--vw21) * 4);">jersey</span>
+grafics <span style="position: absolute; left: calc(var(--vw21) * 5 - var(--vw21) * 4);">polyflex</span> 
+detail <span style="position: absolute; left: calc(var(--vw21) * 5 - var(--vw21) * 4);">sunfaded</span></td>
+                    <td class="col-link"><a href="https://www.instagram.com/p/DRlzlXhjE0Y/?img_index=1">https://www.insta<br>gram.com/p/DRlzlXhjE<br>0Y/?img_index=1</a></td>
+                    <td class="col-p1">
+                        <!-- REPLACE WITH: row2picf.png/jpg -->
+                        <img src="row2picf.png" alt="Product 002 P1" class="image-small">
+                    </td>
+                    <td class="col-p2 details">
+                        <div class="sizing-row"><span>body</span><span>lenght</span><span>0,80cm</span></div>
+                        <div class="sizing-row"><span>chest</span><span>width</span><span>0,70cm</span></div>
+                        <div class="sizing-row"><span>sleeve</span><span>length</span><span>0,70cm</span></div>
+                        <div class="sizing-row"><span>model</span><span>size</span><span>1,80cm</span></div>
+                    </td>
+                </tr>
+
+                <!-- ROW 2 -->
+                <tr>
+                    <td class="col-number">001</td>
+                    <td class="col-name">black faded hoodie</td>
+                    <td class="col-details details">shell <span style="position: absolute; left: calc(var(--vw21) * 5 - var(--vw21) * 4);">cotton</span>
+detail <span style="position: absolute; left: calc(var(--vw21) * 5 - var(--vw21) * 4);">sunfaded</span>
+detail <span style="position: absolute; left: calc(var(--vw21) * 5 - var(--vw21) * 4);">distressed</span>
+</td>
+                    <td class="col-link"><a href="https://www.instagram.com/p/DRlzlXhjE0Y/?img_index=1">https://www.insta<br>gram.com/p/DRlzlXhjE<br>0Y/?img_index=1</a></td>
+                    <td class="col-p1">
+                        <!-- REPLACE WITH: row1picf.png/jpg -->
+                        <img src="row1picf.png" alt="Product 001 P1" class="image-small">
+                    </td>
+                    <td class="col-p2 details">
+                        <div class="sizing-row"><span>body</span><span>lenght</span><span>0,80cm</span></div>
+                        <div class="sizing-row"><span>chest</span><span>width</span><span>0,70cm</span></div>
+                        <div class="sizing-row"><span>sleeve</span><span>length</span><span>0,90cm</span></div>
+                        <div class="sizing-row"><span>model</span><span>size</span><span>1,80cm</span></div>
+                    </td>
+                </tr>
+
+                <!-- ROW 3 -->
+                <tr>
+                    <td class="col-number">003</td>
+                    <td class="col-name">grafic longsleeve</td>
+                    <td class="col-details details">shell <span style="position: absolute; left: calc(var(--vw21) * 5 - var(--vw21) * 4);">jersey</span>
+grafics <span style="position: absolute; left: calc(var(--vw21) * 5 - var(--vw21) * 4);">screenprint</span>
+detail <span style="position: absolute; left: calc(var(--vw21) * 5 - var(--vw21) * 4);">rawedge</span> 
+</td>
+                    <td class="col-link"><a href="https://www.instagram.com/p/DRlzlXhjE0Y/?img_index=1">https://www.insta<br>gram.com/p/DRlzlXhjE<br>0Y/?img_index=1</a></td>
+                    <td class="col-p1">
+                        <!-- REPLACE WITH: row3picf.png/jpg -->
+                        <img src="row3picf.png" alt="Product 003 P1" class="image-small">
+                    </td>
+                    <td class="col-p2 details">
+                        <div class="sizing-row"><span>body</span><span>lenght</span><span>0,80cm</span></div>
+                        <div class="sizing-row"><span>chest</span><span>width</span><span>0,80cm</span></div>
+                        <div class="sizing-row"><span>sleeve</span><span>length</span><span>0,90cm</span></div>
+                        <div class="sizing-row"><span>model</span><span>size</span><span>1,80cm</span></div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        const blackImage = document.querySelector('.black-bar-image');
+        const cinDisplay = document.querySelector('.cin-display');
+        const thead = document.querySelector('.product-table thead');
+        const row1 = document.querySelector('.product-table tbody tr:nth-child(1)');
+        const row2 = document.querySelector('.product-table tbody tr:nth-child(2)');
+        const row3 = document.querySelector('.product-table tbody tr:nth-child(3)');
+        const row1Img = row1.querySelector('td.col-p1 img');
+        const row2Img = row2.querySelector('td.col-p1 img');
+        const row3Img = row3.querySelector('td.col-p1 img');
+
+        function setImage(src) {
+            blackImage.style.backgroundImage = `url('${src}')`;
+        }
+
+        function setCinNumber(num) {
+            cinDisplay.textContent = num;
+        }
+
+        thead.addEventListener('mouseenter', () => {
+            setImage('row1 1.png');
+            setCinNumber('002');
+        });
+        row1.addEventListener('mouseenter', () => {
+            setImage('row1 1.png');
+            row1Img.src = 'row2picb.png';
+            setCinNumber('002');
+        });
+        row1.addEventListener('mouseleave', () => {
+            row1Img.src = 'row2picf.png';
+        });
+        row2.addEventListener('mouseenter', () => {
+            setImage('row2 1.png');
+            row2Img.src = 'row1picb.png';
+            setCinNumber('001');
+        });
+        row2.addEventListener('mouseleave', () => {
+            row2Img.src = 'row1picf.png';
+        });
+        row3.addEventListener('mouseenter', () => {
+            setImage('row3 1.png');
+            row3Img.src = 'row3picb.png';
+            setCinNumber('003');
+        });
+        row3.addEventListener('mouseleave', () => {
+            row3Img.src = 'row3picf.png';
+        });
+
+        // Arrow navigation
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        let currentImageIndex = 0;
+        let currentSequence = 'row1';
+        const imageSequences = {
+            row1: ['row1 1.png', 'row1 2.png', 'row1 3.png', 'row1 4.png', 'row1 5.png', 'row1 6.png', 'row1 7.png', 'row1 8.png'],
+            row2: ['row2 1.png', 'row2 2.png', 'row2 3.png', 'row2 4.png', 'row2 5.png', 'row2 6.png', 'row2 7.png', 'row2 8.png'],
+            row3: ['row3 1.png', 'row3 2.png', 'row3 3.png', 'row3 4.png', 'row3 5.png', 'row3 6.png', 'row3 7.png', 'row3 8.png']
+        };
+
+        row1.addEventListener('mouseenter', () => {
+            currentSequence = 'row1';
+            currentImageIndex = 0;
+        });
+
+        row2.addEventListener('mouseenter', () => {
+            currentSequence = 'row2';
+            currentImageIndex = 0;
+        });
+
+        row3.addEventListener('mouseenter', () => {
+            currentSequence = 'row3';
+            currentImageIndex = 0;
+        });
+
+        nextBtn.addEventListener('click', () => {
+            const sequence = imageSequences[currentSequence];
+            currentImageIndex = (currentImageIndex + 1) % sequence.length;
+            setImage(sequence[currentImageIndex]);
+        });
+
+        prevBtn.addEventListener('click', () => {
+            const sequence = imageSequences[currentSequence];
+            currentImageIndex = (currentImageIndex - 1 + sequence.length) % sequence.length;
+            setImage(sequence[currentImageIndex]);
+        });
+    </script>
+</body>
+</html>

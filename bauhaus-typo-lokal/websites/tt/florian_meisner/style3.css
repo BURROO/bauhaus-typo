@@ -1,0 +1,290 @@
+@font-face {
+  font-family: "ABCDiatypeMono";
+  src: url("fonts/ABCDiatypeMonoEdu-Regular.woff") format("woff"),
+       url("fonts/ABCDiatypeMonoEdu-Regular.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "ABCDiatypeMono", monospace;
+  height: 100vh;
+  background: white;
+  overflow: hidden;
+}
+
+html {
+  height: 100%;
+  overflow: hidden;
+}
+
+
+/* ––––––––INFO LOOP–––––––– */
+
+.info-loop span {
+  color: black;
+  text-decoration: none;
+}
+
+.info-loop {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: #EEEEEE;
+
+    font-size: 6.25rem;
+    font-weight: 100;
+    text-transform: uppercase;
+    padding-block: 8px;
+    overflow: hidden;
+    user-select: none;
+
+    --gap: 20px;
+    display: flex;
+    gap: var(--gap);
+
+    height: 100px;
+    align-items: center;
+    z-index: 2;
+    position: relative;
+
+}
+
+.info-loop {
+    cursor: pointer;
+}
+
+.info-loop.is-hidden {
+    display: none;
+}
+
+.info-loop-start {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: auto;
+    color: black;
+    z-index: 2;
+    font-size: inherit;
+    line-height: 1;
+    background: transparent;
+}
+/* ––––––––INFO LOOP–––––––– */
+.info-loop-track {
+    display: flex;
+    width: max-content;
+    animation: scroll 35s linear infinite;
+    height: 100%;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+}
+
+.info-loop:hover .info-loop-track {
+    animation-play-state: paused;
+    opacity: 0;
+}
+
+.info-loop:hover .info-loop-start {
+    opacity: 1;
+}
+
+.info-loop ul {
+    list-style: none;
+    flex-shrink: 0;
+    min-width: max-content;
+    display: flex;
+    align-items: center;
+    gap: var(--gap);
+
+    padding-right: var(--gap);
+}
+
+
+@keyframes scroll {
+    to {
+        transform: translateX(-50%);
+    }
+}
+
+
+.info-loop-1 .info-loop-span {
+    font-weight: 100;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+#layout {
+  display: flex;
+  height: 100vh;
+  position: absolute;
+  inset: 0;
+}
+
+/* Canvas Bereich */
+#canvas-container {
+  flex-grow: 1;
+  background: white;
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  position: relative;
+  height: 100%;
+  cursor: none;
+}
+
+canvas {
+  width: 100%;
+  height: 100%;
+  background-color: white;
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+#print-cursor {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 42px;
+  height: var(--cursor-height, 120px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  opacity: 0;
+  z-index: 2;
+}
+
+#print-cursor.is-visible {
+  opacity: 1;
+}
+
+#canvas-container.is-button-hover #print-cursor {
+  opacity: 0;
+}
+
+.cursor-tip {
+  width: 42px;
+  height: 5px;
+  display: block;
+}
+
+.cursor-line {
+  width: 1px;
+  flex: 1;
+  background: black;
+}
+
+/* Icon Buttons */
+.icon-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 84px;
+  height: 84px;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  z-index: 2;
+  box-shadow: none;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.icon-button,
+.preset-button {
+  cursor: pointer;
+}
+
+.icon-button img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.icon-button--top-right {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 2;
+}
+
+/* Bottom bar */
+#bottom-bar {
+  position: absolute;
+  left: 20px;
+  right: 20px;
+  bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  pointer-events: none;
+  z-index: 2;
+}
+
+#bottom-bar .icon-button,
+#bottom-bar #preset-bar {
+  pointer-events: auto;
+}
+
+/* Preset bar */
+#preset-bar {
+  display: flex;
+  gap: 14px;
+  padding: 6px 10px;
+  background: none;
+  align-items: center;
+  z-index: 2;
+}
+
+.preset-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 84px;
+  height: 84px;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  box-shadow: none;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.preset-button img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  transition: transform 120ms ease;
+}
+
+/* .preset-button.is-active {
+  outline: 2px solid blue;
+  outline-offset: 2px;
+} */
+
+.preset-button.is-active img,
+.preset-button:hover img {
+  transform: scale(1.5);
+}

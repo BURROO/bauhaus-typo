@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_2" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 35.38 35.38">
+  <g id="toggle">
+    <g>
+      <rect x="14.16" width="7.07" height="7.07"/>
+      <rect x="28.3" width="7.08" height="7.07"/>
+      <rect x="7.08" y="7.07" width="7.08" height="7.07"/>
+      <rect x="14.16" y="7.07" width="7.07" height="7.07"/>
+      <rect x="28.3" y="7.07" width="7.08" height="7.07"/>
+      <rect y="14.15" width="7.08" height="7.08"/>
+      <rect x="7.08" y="14.15" width="7.08" height="7.08"/>
+      <rect x="14.16" y="14.15" width="7.07" height="7.08"/>
+      <rect x="28.3" y="14.15" width="7.08" height="7.08"/>
+      <rect x="7.08" y="21.23" width="7.08" height="7.08"/>
+      <rect x="14.16" y="21.23" width="7.07" height="7.08"/>
+      <rect x="28.3" y="21.23" width="7.08" height="7.08"/>
+      <rect x="14.16" y="28.3" width="7.07" height="7.07"/>
+      <rect x="28.3" y="28.3" width="7.08" height="7.07"/>
+    </g>
+  </g>
+</svg>

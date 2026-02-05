@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <link rel="stylesheet" href="VAL.css">
+  <title>AlbumCoverCollection</title>
+
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+ </head>
+
+
+ 
+<body>
+    
+ <div class="box">
+
+<div class="draggable"><img src="bilder/Collage/1del.png"></div>
+<div class="draggable"><img src="bilder/Collage/2del.png"></div>
+<div class="draggable"><img src="bilder/Collage/3del.png"></div>
+<div class="draggable"><img src="bilder/Collage/4del.png"></div>
+<div class="draggable"><img src="bilder/Collage/5del.png"></div>
+<div class="draggable"><img src="bilder/Collage/6del.png"></div>
+<div class="draggable"><img src="bilder/Collage/7del.png"></div>
+<div class="draggable"><img src="bilder/Collage/8del.png"></div>
+<div class="draggable"><img src="bilder/Collage/9del.png"></div>
+<div class="draggable"><img src="bilder/Collage/10del.png"></div>
+<div class="draggable"><img src="bilder/Collage/11del.png"></div>
+<div class="draggable"><img src="bilder/Collage/12del.png"></div>
+<div class="draggable"><img src="bilder/Collage/13del.png"></div>
+<div class="draggable"><img src="bilder/Collage/14del.png"></div>
+<div class="draggable"><img src="bilder/Collage/15del.png"></div>
+<div class="draggable"><img src="bilder/Collage/16del.png"></div>
+<div class="draggable"><img src="bilder/Collage/17del.png"></div>
+<div class="draggable"><img src="bilder/Collage/18del.png"></div>
+<div class="draggable"><img src="bilder/Collage/19del.png"></div>
+<div class="draggable"><img src="bilder/Collage/20del.png"></div>
+
+</div> 
+   
+
+<script>
+
+// wait until HTML document is fully loaded
+document.addEventListener('DOMContentLoaded', () => {
+
+  // select all elements with the class draggable
+  const draggables = document.querySelectorAll('.draggable');
+
+  // this variable will store the element that is currently being dragged
+  let activeEl = null;
+
+  // these variables store the distance between the mouse pointer and the top-left corner of the dragged element
+  let startX = 0;
+  let startY = 0;
+
+  // these store the element’s new position while dragging
+  let currentX = 0;
+  let currentY = 0;
+
+  // do this vor every draggable
+  draggables.forEach((el) => {
+
+    // listen for a mouse button press on the element
+    el.addEventListener('mousedown', e => {
+
+      // prevent some browser’s default image drag behavior, “ghost image” that follows the cursor
+      e.preventDefault();
+
+      // mark active element
+      activeEl = el;
+
+      // calculate where the mouse is inside element, prevents element from jumping
+      startX = e.clientX - el.offsetLeft;
+      startY = e.clientY - el.offsetTop;
+
+      // bring the dragged element above all others
+      el.style.zIndex = 1000;
+
+      // change the cursor to indicate dragging, we have to do this here instead of css 
+      el.style.cursor = 'grabbing';
+    });
+  });
+
+  // listen for mouse movement anywhere on the page
+  document.addEventListener('mousemove', e => {
+
+    // if no element is being dragged, do nothing
+    if (!activeEl) return;
+
+    // calculate  new position of the element based on the mouse position minus the initial offset
+    currentX = e.clientX - startX;
+    currentY = e.clientY - startY;
+
+    // move element by updating its css position
+    activeEl.style.left = `${currentX}px`;
+    activeEl.style.top  = `${currentY}px`;
+  });
+
+  // listen for when the mouse button is released
+  document.addEventListener('mouseup', () => {
+
+    // if nothing is being dragged, do nothing
+    if (!activeEl) return;
+
+    // restore the cursor appearance
+    activeEl.style.cursor = 'grab';
+
+    // reset the z-index so normal stacking resumes
+    activeEl.style.zIndex = '';
+
+    // clear the active element this stops the dragging
+    activeEl = null;
+  });
+
+});
+</script>
+
+
+</script>
+
+
+
+
+
+       <div class="rectangle">
+        <div style="display: flex; margin:auto">
+            <img src="bilder/valley_water_the_flowers_pray_for_a_garden.jpg.webp" style="max-height: 5.7vw; margin-left: 5%; margin-top: 0.15vw; border-radius: 4px;"> 
+             <p style="margin-left: 2vw; margin-top: 2vw; font-size: calc(6px + 0.6vw);"> 
+                    <span style="color: rgb(149, 6, 128);"> 
+                        Now playing:
+                    </span>  
+                Herdges
+            </p>
+            <img src="bilder/Lång_Musikknappar.png" style="height: 6vw; margin-left: 4.7vw; max-width: 100vm;">
+            <a href="../index.html"> <img src="bilder/eject.png" id="eject">
+        </div>
+    </div>  
+
+
+
+</body>
+</html>

@@ -1,0 +1,149 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: "BradfordLLTrialEdu-Light";
+    font-weight: normal;
+    font-size: 18px;
+    line-height: 1.5;
+    color: black;
+    background-color: white;
+    padding: 10px 10px 10px 0px;
+}
+
+@font-face {
+  font-family: "BradfordLLEdu-Light";
+  src: url("fonts/BradfordLLEdu-Light.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+.text-loop-link {
+    color: black ;
+    text-decoration: none;
+}
+
+.text-loop-1 {
+    position: absolute;
+    top: 99%;
+    transform: translateY(-50%);
+
+    font-size: 1rem;
+    font-family: "BradfordLLEdu-Light"; font-weight: lighter;
+    padding-block: 8px;
+    overflow: hidden;
+    user-select: none;
+
+    --gap: 20px;
+    display: flex;
+    gap: var(--gap);
+
+    height: 5%;
+
+}
+
+.text-loop-1 ul {
+    list-style: none;
+    flex-shrink: 0;
+    min-width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--gap);
+
+    /* background-color: white; */
+
+
+    animation: scroll 100s linear infinite;
+}
+
+
+
+
+@keyframes scroll {
+    to {
+        transform: translateX(calc(-100% - var(--gap)));
+    }
+}
+
+
+.text-loop-1 .loop-poem {
+    font-weight: 100;
+}
+
+
+.text-loop-2 ul {
+    font-size: 1rem;
+    font-family: "BradfordLLEdu-Light"; font-weight: lighter;
+    list-style: none;
+    flex-shrink: 0;
+    min-width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--gap);
+
+    /* background-color: white; */
+    color: blue;
+    z-index: -2;
+
+
+    animation: scroll 700s linear infinite;
+}
+
+
+
+.text-loop-2 .loop-poem {
+    font-weight: 100;
+}
+
+
+
+
+.text-loop-2 {
+    position: absolute;
+    top: 1%;
+    transform: translateY(-50%);
+
+    font-size: 1rem;
+    padding-block: 8px;
+    overflow: hidden;
+    user-select: none;
+
+    --gap: 20px;
+    display: flex;
+    gap: var(--gap);
+
+    height: 20%;
+    z-index: -20;
+}
+
+
+
+.items {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 2;
+}
+
+.item {
+    position: absolute;
+    padding: 1px;
+    width: 25px;
+    height: 20px;
+    background: none;
+    overflow: hidden;
+}
+
+.item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+
+}

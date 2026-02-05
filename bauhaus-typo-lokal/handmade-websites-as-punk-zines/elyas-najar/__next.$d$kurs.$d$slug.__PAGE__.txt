@@ -1,0 +1,7 @@
+1:"$Sreact.fragment"
+2:I[11252,["/_next/static/chunks/2a75df4fe4477d49.js","/_next/static/chunks/538cb1fdc28a53d5.js"],"default"]
+3:I[97367,["/_next/static/chunks/ff1a16fafef87110.js","/_next/static/chunks/0b082245f106d665.js"],"OutletBoundary"]
+4:"$Sreact.suspense"
+:HL["/_next/static/chunks/8573e0353eabe17a.css","style"]
+0:{"buildId":"grUTsSBcmkYzlUsFWd7QP","rsc":["$","$1","c",{"children":[["$","$L2",null,{"item":{"NR":"13","DATE":"25/26","NAME":"Elyas Najar","TITLE":"Diaries of a Sober Stoner","MEDIUM":"Website","FORMAT":"1920 × 1080 PX","COURSE":"Handmade Websites as Punk Zines","SUPERVISION":"Hjördis Lyn Behncken, Insa Deist","ID":"PZ/EN/13","DEUTSCH":"Diaries of Sober Stoner ist eine interaktive Horror Geschichte die sich mit Konsum und Realitäts verschiebung beschäftigt. Und sich dabei aus der klassischen Zine Ästhetik bedient, um einen Handgemachten Eindruck zu erschaffen.","ENGLISH":"Diaries of a sober stoner is an interactive Horror story that talks about the struggles of addiction and Shifting realities. It uses the classical Zine aesthetic to create a DIY feel."}}],[["$","link","0",{"rel":"stylesheet","href":"/_next/static/chunks/8573e0353eabe17a.css","precedence":"next"}],["$","script","script-0",{"src":"/_next/static/chunks/538cb1fdc28a53d5.js","async":true}]],["$","$L3",null,{"children":["$","$4",null,{"name":"Next.MetadataOutlet","children":"$@5"}]}]]}],"loading":null,"isPartial":false}
+5:null

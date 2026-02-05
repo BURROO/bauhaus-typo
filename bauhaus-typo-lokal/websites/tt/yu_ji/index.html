@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <base href="/websites/tt/yu_ji/">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Riff | TypeTool</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" type="image/svg+xml" href="icon.svg">
+    <style>
+        /* 基础样式 */
+        html, body {
+            margin: 0; padding: 0; width: 100%; height: 100%;
+            overflow: hidden; transition: background-color 0.5s ease, color 0.5s ease;
+        }
+        body {
+            background-color: #FFFFFF; display: flex; flex-direction: column;
+            justify-content: space-between; --text-color: #000000; color: #000000;
+        }
+        body.dark-mode {
+            background-color: #000000 !important; --text-color: #FFFFFF; color: #FFFFFF;
+        }
+
+        /* 导航栏 */
+        .global-nav {
+            position: fixed; top: 0; left: 0; width: 100%; z-index: 10000;
+            padding: 20px; display: flex; gap: 10px; justify-content: flex-end; pointer-events: none;
+        }
+        .global-nav a, .theme-btn { pointer-events: auto; }
+        .theme-btn {
+            width: 38px; height: 38px; border-radius: 50%;
+            border: 1px solid #000000; background: linear-gradient(to right, #FFFFFF 50%, #000000 50%);
+            cursor: pointer; transition: transform 0.2s ease, background 0.5s ease;
+        }
+        body.dark-mode .theme-btn { background: linear-gradient(to right, #000000 50%, #FFFFFF 50%); border-color: #FFFFFF; }
+
+        /* 内容布局 */
+        .description-section {
+            padding-top: 20px; padding-left: 20px; padding-right: 20px;
+            width: 100%; max-width: 100%; position: relative; z-index: 2;
+            display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 42px; 
+        }
+
+        /* 1. 说明文字 (Medium 字体) */
+        .description-text {
+            font-family: 'IBM Plex Mono Medium', monospace; 
+            font-weight: 500;
+            color: #000000; 
+            font-size: 12px !important; 
+            line-height: 18px !important; 
+            margin: 0; 
+            text-align: left;
+        }
+        
+        body.dark-mode .description-text {
+            color: #FFFFFF;
+        }
+
+        /* 2. 署名文字 (Medium 字体) */
+        .credit-text {
+            font-family: 'IBM Plex Mono Medium', monospace !important;
+            font-weight: 500 !important;
+            font-size: 12px !important; 
+            line-height: 18px !important;
+            color: #000000 !important; 
+            margin-top: 16px !important; 
+            display: block;
+        }
+        
+        body.dark-mode .credit-text {
+            color: #FFFFFF !important;
+        }
+
+        /* 3. 强制内部标签继承字体样式 */
+        .credit-text span, 
+        .credit-text a {
+            font-family: inherit !important; 
+            font-size: inherit !important;   
+            font-weight: inherit !important; 
+            color: inherit !important; 
+        }
+
+        .credit-link {
+            text-decoration: none;
+            border-bottom: 1.2px solid #000000;
+        }
+        body.dark-mode .credit-link {
+            border-bottom-color: #FFFFFF;
+        }
+        .credit-link:hover { color: #4DDE39 !important; border-bottom-color: #4DDE39; }
+        
+        /* 底部视频区域 */
+        .visual-grid {
+            display: flex; width: 100%; height: 70vh; align-items: flex-end;
+            position: absolute; bottom: 0; z-index: 1; overflow: hidden; 
+        }
+       .grid-track {
+            display: flex; height: 100%; width: max-content; gap: 25px; 
+            will-change: transform; transform: translate3d(0, 0, 0); 
+            backface-visibility: hidden; perspective: 1000px;
+        }
+        .video-block { height: 100%; flex: 0 0 auto; width: auto; }
+        .video-block video { height: 100%; width: auto; display: block; border-radius: 20px; }
+        
+        /* 方形容器居中修复 (对第4个 blue.mp4 有效) */
+        .square-block {
+            height: 100%; 
+            aspect-ratio: 1 / 1; 
+            background-color: #000000; 
+            flex: 0 0 auto; 
+            border-radius: 20px; 
+            overflow: hidden; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .scroll-btn {
+            position: absolute; right: 20px; bottom: 50%; transform: translateY(50%);
+            width: 50px; height: 50px; border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.3); backdrop-filter: blur(8px);
+            border: 1px solid rgba(0, 0, 0, 0.1); cursor: pointer; z-index: 10;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .arrow-icon {
+            width: 16px; height: 16px; border-top: 2px solid #000; border-right: 2px solid #000;
+            transform: rotate(45deg); margin-left: -4px;
+        }
+        body.dark-mode .arrow-icon { border-color: #FFFFFF; }
+        body.dark-mode .scroll-btn { background-color: rgba(255, 255, 255, 0.15); border-color: rgba(255, 255, 255, 0.3); }
+
+        /* 第3个视频修正 (保持透明) */
+        .grid-track > :nth-child(3) { display: block !important; flex: 0 0 auto !important; background-color: transparent; }
+        .grid-track > :nth-child(3) video { height: 100% !important; width: auto !important; transform: none !important; border-radius: 20px !important; }
+        
+        #preset-panel { border-radius: 30px !important; }
+        @media (max-width: 900px) {
+            .description-section { grid-template-columns: 1fr; gap: 20px; padding-top: 80px; }
+            html, body { overflow-y: auto; height: auto; }
+            .visual-grid { position: relative; height: 40vh; } 
+        }
+
+        /* 👇👇👇 背景粒子画布 & SVG 容器 👇👇👇 */
+        #riff-canvas {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 9000; /* 顶层覆盖 */
+            pointer-events: none; /* 穿透点击 */
+            mix-blend-mode: difference; /* 差值效果 */
+        }
+
+        #source-svg-container {
+            position: absolute; width: 0; height: 0; overflow: hidden; opacity: 0; pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="riff-canvas"></canvas>
+
+    <div id="source-svg-container">
+        <svg id="_图层_1" data-name="图层 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1130.63 554.39">
+          <circle cx="4.74" cy="25.55" r="4.74"/>
+          <circle cx="99.07" cy="4.74" r="4.74"/>
+          <circle cx="168.93" cy="40.63" r="4.74"/>
+          <circle cx="194.74" cy="154.65" r="4.74"/>
+          <circle cx="168.95" cy="264.29" r="4.74"/>
+          <circle cx="99.36" cy="300.98" r="4.74"/>
+          <circle cx="110.19" cy="393.47" r="4.74"/>
+          <circle cx="168.38" cy="423.55" r="4.74"/>
+          <circle cx="190.83" cy="521.95" r="4.74"/>
+          <circle cx="250.01" cy="549.64" r="4.74"/>
+          <circle cx="4.74" cy="153.75" r="4.74"/>
+          <circle cx="4.74" cy="281.66" r="4.74"/>
+          <circle cx="4.74" cy="407.19" r="4.74"/>
+          <circle cx="4.74" cy="535.81" r="4.74"/>
+          <circle cx="390.39" cy="25.55" r="4.74"/>
+          <circle cx="390.39" cy="153.75" r="4.74"/>
+          <circle cx="390.39" cy="281.66" r="4.74"/>
+          <circle cx="390.39" cy="407.19" r="4.74"/>
+          <circle cx="390.39" cy="535.81" r="4.74"/>
+          <circle cx="596.96" cy="25.55" r="4.74"/>
+          <circle cx="596.96" cy="153.75" r="4.74"/>
+          <circle cx="596.96" cy="281.66" r="4.74"/>
+          <circle cx="691.21" cy="25.55" r="4.74"/>
+          <circle cx="691.21" cy="281.66" r="4.74"/>
+          <circle cx="772.18" cy="25.55" r="4.74"/>
+          <circle cx="772.18" cy="281.66" r="4.74"/>
+          <circle cx="596.96" cy="407.19" r="4.74"/>
+          <circle cx="596.96" cy="535.81" r="4.74"/>
+          <circle cx="950.67" cy="25.55" r="4.74"/>
+          <circle cx="950.67" cy="153.75" r="4.74"/>
+          <circle cx="950.67" cy="281.66" r="4.74"/>
+          <circle cx="1044.92" cy="25.55" r="4.74"/>
+          <circle cx="1044.92" cy="281.66" r="4.74"/>
+          <circle cx="1125.89" cy="25.55" r="4.74"/>
+          <circle cx="1125.89" cy="281.66" r="4.74"/>
+          <circle cx="950.67" cy="407.19" r="4.74"/>
+          <circle cx="950.67" cy="535.81" r="4.74"/>
+        </svg>
+    </div>
+
+    <nav class="global-nav">
+        <a href="index.html" class="active">ABOUT</a> 
+        <a href="tool.html">TYPETOOL</a>
+        <button id="themeToggle" class="theme-btn" title="Toggle Background Color"></button>
+    </nav>
+
+    <section class="description-section">
+        <div>
+            <p class="description-text">
+                “Riff” is a variable typetool based on continuous change. Emerging from a single underlying structure, it moves, stretches, and folds across multiple dimensions—like musical improvisation: repetitive, yet never exactly the same. Rather than forming fixed states, the type exists in constant transition, shaped by ongoing variation. Each adjustment generates new echoes between structure and rhythm, allowing the letters to breathe, flow, and transform over time.
+            </p>
+            <p class="credit-text">
+                <span class="credit-label">Type Tool / Web Design</span> / <a href="https://www.instagram.com/yjjj___" target="_blank" class="credit-link">Yu Ji</a>
+            </p>
+        </div>
+        <div>
+            <p class="description-text">
+                These shifts unfold gradually, revealing subtle differences within repetition and emphasizing process over outcome. Through varying degrees of freedom and subtle color gradients, the same skeletal form is continuously re-explored, producing a wide spectrum of typographic expressions. Form, motion, and color operate together as interdependent parameters, responding to one another in a dynamic system.
+            </p>
+        </div>
+        <div></div>
+    </section>
+
+    <section class="visual-grid" id="visualGrid">
+        <div class="grid-track" id="gridTrack">
+            <div class="video-block"><video src="./3_3.mp4" autoplay loop muted playsinline preload="auto"></video></div>
+            <div class="video-block"><video src="./2_33.mp4" autoplay loop muted playsinline preload="auto"></video></div>
+            <div class="video-block"><video src="./555.mp4" autoplay loop muted playsinline preload="auto"></video></div>
+            <div class="square-block"><video src="./blue.mp4" autoplay loop muted playsinline preload="auto" style="height:100%;width:100%;object-fit:contain;"></video></div>
+        </div>
+        <button class="scroll-btn" id="scrollBtn"><div class="arrow-icon"></div></button>
+    </section>
+
+    <script>
+        const themeBtn = document.getElementById('themeToggle');
+        themeBtn.addEventListener('click', () => { document.body.classList.toggle('dark-mode'); });
+        const scrollBtn = document.getElementById('scrollBtn');
+        const gridTrack = document.getElementById('gridTrack');
+        const GAP = 32, AUTO_SPEED = 0.8, EASE = 0.05; 
+        let singleSetWidth = 0, currentPos = 0, targetPos = 0;
+
+        window.addEventListener('load', () => {
+            const items = Array.from(gridTrack.children);
+            items.forEach(item => {
+                singleSetWidth += item.getBoundingClientRect().width + GAP;
+                gridTrack.appendChild(item.cloneNode(true));
+            });
+            render();
+        });
+
+        function render() {
+            targetPos += AUTO_SPEED;
+            currentPos += (targetPos - currentPos) * EASE;
+            if (currentPos >= singleSetWidth) { currentPos -= singleSetWidth; targetPos -= singleSetWidth; }
+            gridTrack.style.transform = `translate3d(-${currentPos}px, 0, 0)`;
+            requestAnimationFrame(render);
+        }
+        scrollBtn.addEventListener('click', () => { targetPos += 500; });
+    </script>
+    
+    <script>
+    // ==========================================
+    // Riff 粒子特效 (飞入动画 + 交互悬停 + 0.05 挤压)
+    // ==========================================
+    (function() {
+        const canvas = document.getElementById('riff-canvas');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        let particles = [];
+        
+        // 🚀 核心控制变量
+        let currentRatio = 0.05; // 初始状态为 0.05
+        let targetRatio = 0.05;  // 目标状态也是 0.05
+        
+        // 常量设置
+        const OFFSET_Y = 20;    // 距离顶部的距离 (px)
+        const LERP_SPEED = 0.1; // 交互动画平滑度
+
+        class Particle {
+            constructor(finalX, relativeY, r) {
+                this.finalX = finalX;       // 最终 X 目标
+                this.relativeY = relativeY; // 最终 Y 结构
+                this.size = r;
+
+                // 🚀 飞入动画：初始位置随机
+                this.x = Math.random() * window.innerWidth;
+                this.y = Math.random() * window.innerHeight; 
+
+                // 入场飞行的速度 (数值越小越慢且平滑)
+                this.ease = 0.05; 
+            }
+
+            update() {
+                // 1. 计算这一帧的目标位置 (Target Position)
+                // X 的目标就是 SVG 里的位置
+                const destX = this.finalX;
+                
+                // Y 的目标受鼠标悬停 (currentRatio) 影响，这就是为什么它能动
+                const destY = this.relativeY * currentRatio + OFFSET_Y;
+
+                // 2. 缓动飞向目标 (Current Position -> Target Position)
+                // 这行代码同时负责“入场动画”和“悬停动画”
+                this.x += (destX - this.x) * this.ease;
+                this.y += (destY - this.y) * this.ease;
+            }
+
+            draw() {
+                ctx.fillStyle = '#FFFFFF'; 
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function init() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+            particles = [];
+
+            const container = document.getElementById('source-svg-container');
+            const svgElement = container.querySelector('svg');
+            if (!svgElement) return;
+
+            let svgW = 1920, svgH = 1080;
+            if (svgElement.viewBox.baseVal && svgElement.viewBox.baseVal.width > 0) {
+                svgW = svgElement.viewBox.baseVal.width;
+                svgH = svgElement.viewBox.baseVal.height;
+            } else if (svgElement.width.baseVal && svgElement.width.baseVal.value > 0) {
+                svgW = svgElement.width.baseVal.value;
+                svgH = svgElement.height.baseVal.value;
+            }
+
+            // 1. 水平缩放：宽度占屏幕 98%
+            const scaleX = (width / svgW) * 0.98;
+            const offsetX = (width - svgW * scaleX) / 2;
+            
+            const shapes = svgElement.querySelectorAll('circle, rect, path, ellipse, polygon');
+
+            shapes.forEach(shape => {
+                const bbox = shape.getBBox();
+                const svgX = bbox.x + bbox.width / 2;
+                const svgY = bbox.y + bbox.height / 2;
+                
+                // 计算目标 X 坐标
+                const finalX = svgX * scaleX + offsetX;
+                
+                // 计算相对 Y 坐标 (基准高度)
+                const relativeY = svgY * scaleX; 
+                
+                // 粒子大小
+                let screenSize = (bbox.width / 2) * scaleX * 0.6;
+                screenSize = Math.max(1.5, screenSize); 
+
+                particles.push(new Particle(finalX, relativeY, screenSize));
+            });
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+            
+            // 更新悬停比例 (让 currentRatio 追赶 targetRatio)
+            currentRatio += (targetRatio - currentRatio) * LERP_SPEED;
+
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            requestAnimationFrame(animate);
+        }
+
+        // 🖱️ 鼠标监听
+        window.addEventListener('mousemove', (e) => {
+            // 如果鼠标在屏幕高度的前 35% 区域
+            if (e.clientY < window.innerHeight * 0.35) {
+                targetRatio = 1.0; // 展开
+            } else {
+                targetRatio = 0.05; // 收缩
+            }
+        });
+
+        window.addEventListener('resize', init);
+
+        setTimeout(() => {
+            init();
+            animate();
+        }, 100);
+    })();
+    </script>
+</body>
+</html>

@@ -1,0 +1,1690 @@
+@font-face {
+  font-family: "latitude";
+  src: url("fonts/Latitude-Regular.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "latitude";
+  src: url("fonts/Latitude-Bold.otf") format("opentype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body, * {
+  cursor: none !important; /* System-Cursor immer aus */
+}
+
+body {
+  width: 100vw;
+  height: 100vh;
+  font-family: latitude, sans-serif;
+  background: #fff;
+  overflow: hidden;
+}
+
+
+
+/* Fake Cursor */
+#fake-cursor {
+  position: fixed;
+  left: 0;
+  top: 0;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 2147483647; /* unter clean */
+}
+
+.cursor-star {
+  width: 17px;
+  height: 17px;
+}
+
+.star-fill {
+  fill: black;
+  stroke: none;
+  transition: fill 120ms ease, stroke 120ms ease;
+}
+
+#fake-cursor.outline .star-fill {
+  fill: none;
+  stroke: black;
+  stroke-width: 9;
+  stroke-linejoin: round;
+}
+
+.cursor-spinner {
+  position: absolute;
+  width: 15px;
+  height: 15px;
+  border: 3px solid rgba(0, 0, 0, 0.25);
+  border-top-color: black;
+  border-radius: 50%;
+  display: none;
+}
+
+#fake-cursor.loading .cursor-star {
+  display: none;
+}
+
+#fake-cursor.loading .cursor-spinner {
+  display: block;
+  animation: spin 3000ms linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+
+
+/* layout*/
+.wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  pointer-events: auto;
+}
+
+#canvas {
+  pointer-events: none;
+  z-index: 1;
+}
+
+.textblock {
+  position: absolute;
+  text-transform: lowercase;
+  white-space: nowrap;
+}
+
+.line { line-height: 1.4; }
+
+.line.title {
+  pointer-events: auto;
+  color: #9a9a9a;
+  cursor: none !important; /* system cursor bleibt aus */
+  transition: color 2000ms ease-out;
+}
+
+.line.title a,
+.line.title a:visited,
+.line.title a:active {
+  color: inherit;
+  text-decoration: none;
+}
+
+.line.title:hover {
+  color: #000;
+  transition: color 80ms ease-in;
+}
+
+.line.hidden span {
+  opacity: 0;
+  transition: opacity 7000ms ease-out;
+  pointer-events: auto;
+}
+
+.line.hidden span:hover {
+  opacity: 0.85;
+  transition: opacity 80ms ease-in;
+}
+
+/* clean-button*/
+
+
+
+/* Clean Button: absolut oberste Ebene */
+#clean-button {
+  position: fixed !important;
+  left: 0;
+  top: 0;
+  z-index: 2147483647 !important;
+  isolation: isolate !important;
+  pointer-events: auto !important;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Clean Label styling */
+.star-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  user-select: none;
+}
+
+/* verstecktes input */
+.star-label .star {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  margin: 0;
+  padding: 0;
+}
+
+/* Sterne links/rechts */
+.star-label input.star + span::before,
+.star-label input.star + span::after {
+  content: "★";
+  font-size: 16px;
+  color: inherit;
+  display: inline-block;
+  width: 13px;
+  text-align: center;
+  margin-right: 6px;
+}
+
+.star-label input.star + span::after {
+  margin-right: 0;
+  margin-left: 6px;
+}
+
+.star-label span {
+  font-size: 16px;
+  font-family: "latitude", sans-serif;
+  color: #00ff00;
+}
+
+/* Damit Clean immer "klickbar" bleibt (aber Cursor bleibt unsichtbar) */
+#clean-button,
+#clean-button * {
+  pointer-events: auto !important;
+}
+
+
+#clean-button {
+  position: fixed !important;
+  z-index: 2147483647 !important;
+  isolation: isolate !important;
+  filter: none !important;
+}
+
+/* Immer gut klickbar (auch auf Touch) */
+#clean-button.dvd-clean{
+  /* Responsive Typo + Padding */
+  font-size: clamp(12px, 1.6vw, 18px) !important;
+  padding: clamp(8px, 1.2vw, 12px) clamp(10px, 1.6vw, 16px) !important;
+
+  /* Button darf nicht winzig werden */
+  min-height: 44px; /* iOS/Android tap target */
+  min-width: 44px;
+
+  border-radius: clamp(12px, 2vw, 16px) !important;
+
+  /* Touch feeling */
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Text/Stars skalieren sauber mit */
+#clean-button.dvd-clean span,
+#clean-button.dvd-clean .star-label span{
+  font-size: inherit !important;
+}
+
+/* Optional: Sterne etwas kleiner auf sehr kleinen Screens */
+@media (max-width: 420px){
+  .star-label input.star + span::before,
+  .star-label input.star + span::after{
+    font-size: 14px;
+    width: 11px;
+    margin-right: 5px;
+  }
+
+  .star-label input.star + span::after{
+    margin-left: 5px;
+  }
+}
+
+
+#clean-button.dvd-clean span {
+  font-size: inherit !important;
+}
+
+#clean-button.dvd-clean:hover {
+  box-shadow:
+    0 0 22px rgba(255, 255, 255, 0.8),
+    0 0 46px rgba(255, 255, 255, 0.55);
+}
+
+/* Unsichtbarer Touch-Puffer um den Button */
+#clean-button.dvd-clean::before{
+  content:"";
+  position:absolute;
+  inset:-10px;           /* erweitert Hitbox */
+  border-radius: inherit;
+  pointer-events: auto;  /* wichtig */
+}
+
+
+/*cookies*/
+#doorhanger {
+  position: fixed;
+  top: -300px;
+  left: 256px;
+  z-index: 99999;
+  pointer-events: auto;
+  width: 300px;
+}
+
+.popup-img {
+  position: fixed;
+  width: 160px;
+  height: auto;
+  z-index: 999999;
+  pointer-events: auto;
+  animation: popup-in 280ms ease-out forwards;
+}
+
+@keyframes popup-in {
+  from { transform: scale(0.6) rotate(-6deg); opacity: 0; }
+  to   { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+
+
+
+/* // flirting crimes// */
+.textblock.one { top: 50%; left: 75%; }
+.textblock.one .line:nth-child(2) { transform: translateX(6px); }
+.textblock.one .line:nth-child(3) { transform: translateX(14px); }
+
+
+/* =========================
+   FLIRTING CRIMES – HEARTS (CLEAN)
+   ========================= */
+
+#global-stars{
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  overflow: hidden;
+  opacity: 0;
+  transition: opacity 180ms ease;
+}
+#global-stars.on{ opacity: 1; }
+
+#global-stars .star{
+  position: absolute;
+  width: var(--s, 10px);
+  height: var(--s, 10px);
+  opacity: 0.20;
+  pointer-events: none;
+  transform: translate3d(0,0,0);
+  animation:
+    twinkle var(--tw, 2200ms) steps(2) infinite;
+}
+
+.star{
+  filter: blur(0.7px);
+  position: absolute;
+  transition: filter 120ms linear;
+}
+.star::before,
+.star::after{
+  content:"";
+  position:absolute;
+  left:50%;
+  top:50%;
+  transform: translate(-50%,-50%);
+  background: rgba(248, 0, 91, 0.95);
+  border-radius: 999px;
+  z-index: 2;
+  box-shadow:
+    0 0 6px  rgba(248, 0, 91, 0.95),
+    0 0 14px rgba(255, 9, 99, 0.75),
+    0 0 28px rgba(255, 19, 106, 0.55),
+    0 0 50px rgba(255, 120, 170, 0.25);
+}
+#global-stars .star::before{ width:2px; height:100%; }
+#global-stars .star::after{ width:100%; height:2px; }
+
+@keyframes twinkle{
+  0%   { opacity: 0.08; filter: brightness(1); }
+  22%  { opacity: 1; filter: brightness(3.2) saturate(1.3); }
+  26%  { opacity: 0.15; }
+  58%  { opacity: 1; filter: brightness(3.8) saturate(1.4); }
+  62%  { opacity: 0.18; }
+  100% { opacity: 0.08; filter: brightness(1); }
+}
+
+/* --- HEART WRAP --- */
+.fc-heart-wrap{
+  position: fixed;
+  top: -200px;
+  left: 0;                 /* neutral */
+  z-index: 999999;
+  pointer-events: auto;
+  will-change: transform;
+  transform: none;         /* KEIN translateX */
+}
+
+
+/* Heart image responsive */
+.falling-heart{
+  width: clamp(140px, 26vw, 360px);
+  height: auto;
+  display: block;
+  user-select: none;
+  -webkit-user-drag: none;
+  pointer-events: none;
+}
+
+/* Label */
+.fc-heart-wrap .falling-heart-label{
+  position: absolute;
+  left: 50%;
+  top: 46%;
+  transform: translate(-50%, -50%);
+  width: fit-content;
+  max-width: clamp(140px, 38vw, 260px);
+
+  padding: 6px 8px;
+  border-radius: 14px;
+
+  font-family: latitude, sans-serif;
+  font-size: clamp(11px, 2.6vw, 14px);
+  line-height: 1.15;
+  text-align: center;
+
+  white-space: normal;
+  word-break: break-word;
+
+  background: #fff;
+  color: #111;
+
+  box-shadow:
+    0 0 14px rgba(255,255,255,0.95),
+    0 0 32px rgba(255,255,255,1),
+    0 8px 20px rgba(255,255,255,1);
+
+  pointer-events: none;
+}
+
+
+@keyframes fc-fall {
+  0% {
+    transform: translate3d(0, 0, 0) rotate(var(--r, 0deg));
+  }
+  100% {
+    transform: translate3d(0, calc(100vh + 320px), 0)
+               rotate(calc(var(--r, 0deg) + 10deg));
+  }
+}
+
+
+
+
+/*popup*/
+.fake-window {
+  position: fixed;
+  pointer-events: auto;
+  z-index: 999999; /* default */
+}
+
+.fake-window .titlebar {
+  position: relative;
+}
+
+.fake-window .titlebar .close {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 18px;
+  line-height: 1;
+  user-select: none;
+}
+  
+
+
+/* // out of sync// */
+.textblock.two { top: 30%; right: 15%; }
+.textblock.two .line:nth-child(2) { transform: translateX(14px); }
+.textblock.two .line:nth-child(3) { transform: translateX(0px); }
+
+.teleport-hide {
+  opacity: 0 !important;
+  transform: scale(0.92) !important;
+  transition: opacity 35ms linear, transform 35ms linear;
+}
+
+.teleport-show {
+  opacity: 1 !important;
+  transition: opacity 45ms linear;
+}
+
+
+
+/* // betrayal captcha// */
+.textblock.three { top: 15%; left: 5%; }
+.textblock.three .line:nth-child(2) { transform: translateX(8px); }
+.textblock.three .line:nth-child(3) { transform: translateX(14px); }
+.textblock.three .line:nth-child(4) { transform: translateX(8px); }
+.textblock.three .line:nth-child(5) { transform: translateX(18px); }
+
+.fake-window.betrayal-window {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 420px;
+  max-width: 92vw;
+  height: auto;
+}
+
+.fake-window.betrayal-window .content{
+  padding: 14px;
+  max-height: 70vh;
+  overflow: auto;
+
+  background: #f2f2f2;
+  color: #111;
+
+  border: 1px solid #bdbdbd;
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,0.6),
+    0 8px 20px rgba(0,0,0,0.25);
+}
+
+.betrayal-overtitle {
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #777;
+  margin-bottom: 8px;
+}
+
+.betrayal-title {
+  font-size: 18px;
+  margin-bottom: 10px;
+  color: #111;
+}
+
+.betrayal-hint {
+  font-size: 13px;
+  color: #666;
+  line-height: 1.35;
+  margin-bottom: 12px;
+}
+
+.betrayal-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 7px;
+  background: #879796;
+  padding: 8px;
+  border: 1px solid #bbb;
+}
+
+.betrayal-tile {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  background: #e9e9e9;
+  border: 1px solid rgba(0,0,0,0.15);
+  user-select: none;
+}
+
+.betrayal-tile img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.betrayal-tile.selected {
+  outline: 3px solid #000;
+  outline-offset: -3px;
+}
+
+.betrayal-tile::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 140ms ease;
+  background: rgba(0,0,0,0.22);
+}
+
+.betrayal-tile:hover::after { opacity: 1; }
+.betrayal-tile.selected::after { opacity: 1; background: rgba(0,0,0,0.32); }
+
+.betrayal-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.betrayal-status {
+  font-size: 12px;
+  color: #666;
+}
+
+.betrayal-btn {
+  border: 1px solid #111;
+  background: #111;
+  color: #fff;
+  padding: 8px 10px;
+  border-radius: 10px;
+  font-size: 12px;
+}
+
+.betrayal-btn.ghost {
+  background: transparent;
+  color: #111;
+}
+
+
+
+/*printers*/
+.textblock.four  { top: 45%; left: 14%; }
+.textblock.four .line:nth-child(2) { transform: translateX(8px); }
+.textblock.four .line:nth-child(3) { transform: translateX(14px); }
+.textblock.four .line:nth-child(4) { transform: translateX(8px); }
+.textblock.four .line:nth-child(5) { transform: translateX(18px); }
+
+
+.fake-window{
+  background: #f2f2f2;
+  border: 1px solid #9a9a9a;
+
+  box-shadow:
+    0 1px 0 rgba(255,255,255,0.8) inset,   /* obere Lichtkante */
+    0 8px 18px rgba(0,0,0,0.28);           /* Fensterschatten */
+}
+
+
+.fake-window.printer-poll-window { 
+  position: fixed; 
+  height: auto;
+ /* vorher: left:120px; top:600px; width:340px; */
+  left: 6.25vw;
+  top: 55.56vh;
+  width: clamp(260px, 17.7vw, 340px);
+  transform: none;
+}
+
+.fake-window.printer-poll-window .content {
+  padding: 20px 24px;
+  font-family: latitude, sans-serif;
+  font-size: 14px;
+  line-height: 1.4;
+  color: #000;
+  background: url("img/printer_pile_01.jpg") center / cover no-repeat;
+}
+
+.printer-poll .printer-option{
+  display: block;           /* ⬅️ untereinander */
+  margin-bottom: 8px;
+
+  font-size: 14px;
+  line-height: 1.35;
+  cursor: pointer;
+}
+
+.printer-poll .printer-option input{
+  margin-right: 6px;
+}
+
+/* RESULT WINDOW */
+.fake-window.printer-result-window {
+  position: fixed;
+  /* vorher: right:280px; top:160px; width:250px; height:120px; */
+  right: 14.58vw;
+  top: 14.81vh;
+  width: clamp(220px, 13.0vw, 260px);
+  height: clamp(110px, 11.1vh, 140px);
+  left: auto;
+  bottom: auto;
+  transform: none;
+
+  background: url("img/printer_pile_01.jpg") center / cover no-repeat;
+}
+
+.fake-window.printer-result-window .content {
+  padding: 20px 24px;
+}
+
+/* MANUAL / INTRO WINDOW */
+.fake-window.printer-introduction {
+  position: fixed;
+  transform: none;
+   /* vorher: left:80px; top:200px; width:250px; height:140px; */
+  left: 4.17vw;
+  top: 18.52vh;
+  width: clamp(220px, 13.0vw, 260px);
+  height: clamp(120px, 13.0vh, 170px);
+  transform: none;
+
+  background: url("img/printer_pile_01.jpg") center / cover no-repeat;
+}
+
+.fake-window.printer-introduction .content {
+  padding: 20px 24px;
+}
+
+.fake-window .titlebar{
+  height: 26px;
+  background: linear-gradient(#ededed, #dcdcdc);
+  border-bottom: 1px solid #9c9c9c;
+
+  display: flex;
+  align-items: center;
+  padding: 0 8px;
+
+  font-size: 12px;
+  color: #222;
+}
+
+/* PRINTER STEPS (1–11) */
+.fake-window.printer-step {
+  position: fixed;
+  width:  clamp(220px, 13.54vw, 300px);  /* vorher 260px */
+  height: clamp(170px, 18.52vh, 240px);  /* vorher 200px */
+
+  background: #eee;
+  border: 1px solid #555;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.35);
+
+  pointer-events: auto;
+}
+
+.fake-window.printer-step .titlebar {
+  height: 26px;
+  background: linear-gradient(#ddd, #bbb);
+  border-bottom: 1px solid #999;
+  display: flex;
+  align-items: center;
+  padding: 0 8px;
+  font-size: 13px;
+}
+
+.fake-window .titlebar {
+  position: relative;
+}
+
+.fake-window .titlebar .close {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  user-select: none;
+}
+
+.fake-window.printer-step .titlebar span {
+  color: #222;
+  user-select: none;
+}
+
+.fake-window.printer-step .content {
+  height: calc(100% - 26px);
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  display: block;          
+  background: transparent; 
+}
+
+
+.printer-step-text {
+  position: absolute;
+  left: 10px;
+  bottom: 10px;
+  color: #000;
+  border-radius: 4px;
+  font-family: latitude, sans-serif;
+  font-size: 16px;
+  line-height: 1.4;
+  padding: 20px 24px;
+  text-transform: lowercase;
+  pointer-events: none; 
+}
+
+
+.fake-window.printer-step .content img{
+  width: 100%;
+  height: 100%;
+  max-height: none;     
+  object-fit: cover;
+  display: block;
+}
+
+
+
+/* Reihe 1 */
+.step-1  { left: 42.71vw; top: 32.41vh; z-index: 30; }
+.step-2  { left: 55.73vw; top: 32.41vh; z-index: 30; }
+.step-3  { left: 68.75vw; top: 32.41vh; z-index: 30; }
+
+/* Reihe 2 (top 550px → 50.93vh) */
+.step-4  { left: 35.42vw; top: 50.93vh; z-index: 20; }
+.step-5  { left: 48.44vw; top: 50.93vh; z-index: 20; }
+.step-6  { left: 61.46vw; top: 50.93vh; z-index: 20; }
+.step-7  { left: 74.48vw; top: 50.93vh; z-index: 20; }
+
+/* Reihe 3 (top 750px → 69.44vh) */
+.step-8  { left: 35.42vw; top: 69.44vh; z-index: 30; }
+.step-9  { left: 48.44vw; top: 69.44vh; z-index: 30; }
+.step-10 { left: 61.46vw; top: 69.44vh; z-index: 30; }
+.step-11 { left: 74.48vw; top: 69.44vh; z-index: 30; }
+
+.fake-window.printer-step.step-12{
+  position: fixed;
+  width: 260px;
+  height: 200px;
+  top: 63%;
+  left: 66%;
+  transform: translate(-50%, -50%);
+  z-index: 9999999;
+  background: #000;
+  border: 1px solid #555;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.35);
+}
+
+
+.fake-window.printer-step.step-12 .content{
+  height: calc(100% - 26px);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  position: relative;
+  overflow: hidden;
+  background:#000;
+  color:#fff;
+}
+
+
+.fake-window.printer-step.step-12 .content::after{
+  content:"";
+  position:absolute;
+  inset:-20%;
+  pointer-events:none;
+  background:
+    radial-gradient(circle at 30% 30%, rgba(255,255,255,.06), transparent 40%),
+    radial-gradient(circle at 70% 60%, rgba(255,255,255,.05), transparent 42%),
+    radial-gradient(circle at 50% 90%, rgba(255,255,255,.04), transparent 45%);
+  opacity:.12;
+  filter: contrast(1.2);
+  animation: noise-drift 3.6s linear infinite;
+}
+
+/* =========================
+   PRINTER STEPS 1–12 RESPONSIVE, POSITIONS FIX
+   ========================= */
+
+/* Basis (deine width/height clamps bleiben) */
+.fake-window.printer-step{
+  position: fixed;
+
+  width:  clamp(220px, 13.54vw, 300px);
+  height: clamp(170px, 18.52vh, 240px);
+
+  transform-origin: top left;  /* wichtig: scale darf Position nicht verschieben */
+}
+
+/* ---- globaler Scale-Faktor (Default = 1) */
+:root{
+  --step-scale: 1;
+}
+
+/* kleinere Screens: alles proportional kleiner,
+   Positionen bleiben, weil origin top-left */
+@media (max-width: 1200px){
+  :root{ --step-scale: 0.92; }
+}
+@media (max-width: 900px){
+  :root{ --step-scale: 0.84; }
+}
+@media (max-width: 680px){
+  :root{ --step-scale: 0.74; }
+}
+@media (max-width: 480px){
+  :root{ --step-scale: 0.62; }
+}
+
+/* Scale auf Steps 1–11 anwenden */
+.fake-window.printer-step.step-1,
+.fake-window.printer-step.step-2,
+.fake-window.printer-step.step-3,
+.fake-window.printer-step.step-4,
+.fake-window.printer-step.step-5,
+.fake-window.printer-step.step-6,
+.fake-window.printer-step.step-7,
+.fake-window.printer-step.step-8,
+.fake-window.printer-step.step-9,
+.fake-window.printer-step.step-10,
+.fake-window.printer-step.step-11{
+  transform: scale(var(--step-scale));
+}
+
+/* THE TEXT */
+.pixel-error{
+  position: relative;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  font-size: 34px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #fff;
+  line-height: 1;
+  text-transform: lowercase;
+  font-family: latitude, sans-serif;
+
+  /* pixel vibe */
+  -webkit-font-smoothing: none;
+  font-smooth: never;
+
+  /* slight bloom like CRT */
+  text-shadow:
+    0 0 0px rgba(255,255,255,0.9),
+    0 0 8px rgba(255,255,255,0.12);
+
+  animation: crt-flicker 2.2s steps(1) infinite;
+}
+
+/* Blink underscore exactly like terminal cursor */
+.pixel-error::after{
+  content:"_";
+  margin-left: 4px;
+  animation: cursor-blink 0.85s steps(1) infinite;
+}
+
+/* 2 glitch layers that “slice” and shift horizontally */
+.pixel-error::before,
+.pixel-error span::before{
+  content: attr(data-text);
+  position:absolute;
+  left:0;
+  top:0;
+  opacity: .9;
+  pointer-events:none;
+}
+
+.pixel-error::before{
+  clip-path: inset(0 0 62% 0);
+  transform: translateX(0);
+  animation: glitch-slice-top 1.35s steps(1) infinite;
+}
+
+.pixel-error span::before{
+  clip-path: inset(62% 0 0 0);
+  transform: translateX(0);
+  opacity: .75;
+  animation: glitch-slice-bot 1.05s steps(1) infinite;
+}
+
+/* small global jitter (very subtle) */
+@keyframes crt-flicker{
+  0%   { opacity: 1; transform: translate(0,0); }
+  7%   { opacity: .92; }
+  9%   { opacity: 1; }
+  23%  { opacity: .96; transform: translate(0.5px, 0); }
+  24%  { transform: translate(0,0); }
+  51%  { opacity: .9; }
+  52%  { opacity: 1; }
+  78%  { transform: translate(-0.6px, 0.4px); }
+  79%  { transform: translate(0,0); }
+  100% { opacity: 1; }
+}
+
+@keyframes cursor-blink{
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+
+@keyframes glitch-slice-top{
+  0%   { transform: translateX(0); }
+  10%  { transform: translateX(0); }
+  11%  { transform: translateX(6px); }
+  12%  { transform: translateX(-3px); }
+  13%  { transform: translateX(0); }
+  37%  { transform: translateX(0); }
+  38%  { transform: translateX(10px); }
+  39%  { transform: translateX(0); }
+  67%  { transform: translateX(0); }
+  68%  { transform: translateX(-8px); }
+  69%  { transform: translateX(0); }
+  100% { transform: translateX(0); }
+}
+
+@keyframes glitch-slice-bot{
+  0%   { transform: translateX(0); }
+  18%  { transform: translateX(0); }
+  19%  { transform: translateX(-10px); }
+  20%  { transform: translateX(4px); }
+  21%  { transform: translateX(0); }
+  44%  { transform: translateX(0); }
+  45%  { transform: translateX(7px); }
+  46%  { transform: translateX(0); }
+  73%  { transform: translateX(0); }
+  74%  { transform: translateX(-6px); }
+  75%  { transform: translateX(0); }
+  100% { transform: translateX(0); }
+}
+
+@keyframes scan-flicker{
+  0% { opacity:.20; }
+  10% { opacity:.26; }
+  11% { opacity:.18; }
+  23% { opacity:.28; }
+  24% { opacity:.21; }
+  60% { opacity:.25; }
+  61% { opacity:.18; }
+  100%{ opacity:.22; }
+}
+
+@keyframes noise-drift{
+  0% { transform: translate(0,0); }
+  25%{ transform: translate(-2%, 1%); }
+  50%{ transform: translate(1%, -2%); }
+  75%{ transform: translate(2%, 2%); }
+  100%{ transform: translate(0,0); }
+}
+
+
+
+/* // working_title_final_final.pdf // */
+.textblock.five { top: 35%; left: 35%; }
+.textblock.five .line:nth-child(2) { transform: translateX(8px); }
+.textblock.five .line:nth-child(3) { transform: translateX(14px); }
+.textblock.five .line:nth-child(4) { transform: translateX(8px); }
+
+
+
+/* // pure connection// */
+.textblock.six { bottom: 6%; right: 8%; }
+.textblock.six .line:nth-child(2) { transform: translateX(10px); }
+.textblock.six .line:nth-child(3) { transform: translateX(14px); }
+.textblock.six .line:nth-child(4) { transform: translateX(4px); }
+.textblock.six .line:nth-child(5) { transform: translateX(8px); }
+
+
+/* // betrayal list// */
+.textblock.seven { top: 50%; left: 50%; }
+.textblock.seven .line:nth-child(2) { transform: translateX(10px); }
+.textblock.seven .line:nth-child(3) { transform: translateX(14px); }
+
+
+/* // sub scam // */
+.textblock.eight { top: 60%; left: 50%; }
+.textblock.eight .line:nth-child(2) { transform: translateX(10px); }
+.textblock.eight .line:nth-child(3) { transform: translateX(14px); }
+
+.subscam-tv {
+  position: fixed;
+  width: 520px;
+  max-width: 90vw;
+  top: 35%;
+  left: 55%;
+  transform: translate(-50%, -50%);
+  z-index: 999999;
+  pointer-events: auto;
+}
+
+.subscam-tv video {
+  position: absolute;
+  left: 18%;
+  top: 16%;
+  width: 64%;
+  height: 52%;
+  object-fit: cover;
+  z-index: 1;
+  transform: scale(1.16);
+  transform-origin: center center;
+}
+
+.subscam-tv img {
+  position: relative;
+  width: 100%;
+  height: auto;
+  display: block;
+  z-index: 2;
+  user-select: none;
+  -webkit-user-drag: none;
+  pointer-events: none;
+}
+
+
+
+
+
+/* // complaints box // */
+.textblock.nine { top: 80%; left: 30%; }
+.textblock.nine .line:nth-child(2) { transform: translateX(10px); }
+.textblock.nine .line:nth-child(3) { transform: translateX(14px); }
+
+/* ===== COMPLAINTS LOGIN WINDOW ===== */
+
+/* =========================
+   COMPLAINTS LOGIN – CLEAN
+   ========================= */
+
+.fake-window.complaints-login{
+  position: fixed;
+  width: 420px;
+  max-width: 92vw;
+  height: auto;
+
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  background: #f6f5f3;
+  border: 1px solid #9a9a9a;
+  border-radius: 12px;
+  overflow: hidden;
+
+  box-shadow:
+    0 1px 0 rgba(255,255,255,0.85) inset,
+    0 8px 20px rgba(0,0,0,0.28);
+
+  pointer-events: auto;
+}
+
+/* TITLEBAR */
+.fake-window.complaints-login .titlebar{
+  height: 30px;
+  background: linear-gradient(#f3f3f3, #e6e6e6);
+  border-bottom: 1px solid #cfcfcf;
+
+  display:flex;
+  align-items:center;
+  gap: 10px;
+  padding: 0 10px;
+
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #666;
+  user-select: none;
+}
+
+.fake-window.complaints-login .traffic{
+  display:flex;
+  gap:6px;
+}
+
+.fake-window.complaints-login .dot{
+  width:11px;
+  height:11px;
+  border-radius:999px;
+}
+
+/* CONTENT */
+.fake-window.complaints-login .content{
+  padding: 20px 22px 24px;
+  background: #f6f5f3;
+  color: #111;
+}
+
+/* HEADLINE */
+.complaints-login-head{
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #777;
+  margin-bottom: 26px;
+}
+
+/* FORM – GRID, GROßER ROW GAP */
+.complaints-login-form{
+  display: grid;
+  grid-template-columns: max-content 1fr auto;
+  align-items: center;
+
+  row-gap: 36px;     /* 🔥 bewusst groß */
+  column-gap: 18px;
+}
+
+/* LABELS */
+.complaints-login-form label{
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #666;
+  white-space: nowrap;
+}
+
+/* INPUTS */
+.complaints-login-form input{
+  height: 32px;
+  padding: 0 10px;
+
+  border-radius: 8px;
+  border: 1px solid rgba(0,0,0,0.18);
+  background: rgba(255,255,255,0.9);
+
+  font-family: latitude, sans-serif;
+  font-size: 14px;
+  color: #111;
+
+  outline: none;
+}
+
+.complaints-login-form input:focus{
+  border-color: rgba(0,0,0,0.35);
+  box-shadow: 0 0 0 3px rgba(0,0,0,0.06);
+}
+
+/* LOGIN BUTTON */
+.complaints-login-form button{
+  height: 30px;
+  padding: 0 12px;
+
+  border-radius: 8px;
+  border: 1px solid rgba(0,0,0,0.35);
+  background: #e9e9e9;
+
+  font-family: latitude, sans-serif;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+/* BUTTON NUR IN ERSTER ZEILE */
+.complaints-login-form button{
+  grid-row: 1;
+}
+
+/* FOOTER TEXT */
+.complaints-login-foot{
+  margin-top: 28px;
+  font-size: 12px;
+  color: #666;
+}
+
+
+/* =========================
+   COMPLAINTS LOGIN – MATCH NOTES WINDOW
+   (Paste BELOW your current login styles)
+   ========================= */
+
+.fake-window.complaints-login{
+  /* gleiche "Fenster-Hülle" wie notes */
+  background: #f6f5f3;
+  border: 1px solid #9a9a9a;
+  border-radius: 12px;
+  overflow: hidden;
+
+  box-shadow:
+    0 1px 0 rgba(255,255,255,0.8) inset,
+    0 8px 18px rgba(0,0,0,0.28);
+}
+
+/* Titlebar identisch zu complaints-notes */
+.fake-window.complaints-login .titlebar{
+  height: 30px;
+  background: linear-gradient(#f3f3f3, #e6e6e6);
+  border-bottom: 1px solid #cfcfcf;
+
+  display:flex;
+  align-items:center;
+  gap: 10px;
+  padding: 0 10px;
+
+  font-size: 12px;
+  color:#666;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+  user-select:none;
+}
+
+/* Dots minimal an notes angleichen */
+.fake-window.complaints-login .traffic{ display:flex; gap:6px; }
+.fake-window.complaints-login .dot{
+  width:11px;
+  height:11px;
+  border-radius:999px;
+}
+
+/* Content = notes-hell, nicht #111 */
+.fake-window.complaints-login .content{
+  height: calc(100% - 30px);
+  padding: 14px;
+
+  background: #f6f5f3;              /* toolbar vibe */
+  color: #111;
+
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.complaints-login-head{
+  font-size: 11px;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  color: #777;
+  opacity: .9;
+  margin-bottom: 2px;
+}
+
+/* Form Layout */
+.complaints-login-form{
+  display: flex;
+  flex-direction: column;
+  gap: 34px;
+}
+
+.complaints-login-field{
+  display: flex;
+  flex-direction: column;
+  gap: 8px;                 /* Label → Input */
+}
+
+/* Labels wie notes */
+.complaints-login-form label{
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #666;
+}
+
+
+
+.complaints-login-field input:focus{
+  border-color: rgba(0,0,0,0.35);
+  box-shadow: 0 0 0 3px rgba(0,0,0,0.06);
+}
+
+/* Actions */
+.complaints-login-actions{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  margin-top: 6px;
+}
+
+.complaints-login-actions .notes-btn{
+  height: 34px;
+}
+
+/* Inputs: Paper + feine Border */
+.complaints-login-form input{
+  width: 100%;
+  height: 38px;
+
+  padding: 0 12px;
+  border-radius: 10px;
+
+  border: 1px solid rgba(0,0,0,0.12);
+  background: rgba(255,255,255,0.85);
+
+  outline: none;
+
+  font-family: latitude, sans-serif;
+  font-size: 14px;
+  color: #111;
+}
+
+/* Focus wie notes (subtil) */
+.complaints-login-form input:focus{
+  border-color: rgba(0,0,0,0.22);
+  box-shadow: 0 0 0 3px rgba(0,0,0,0.06);
+}
+
+.fake-window.complaints-login .complaints-login-form{
+  display: grid;
+  grid-template-columns: max-content 1fr auto; /* label | input | button */
+  gap: 28px 12px !important;
+}
+
+.fake-window.complaints-login .cl-label:nth-of-type(2),
+.fake-window.complaints-login .cl-input:nth-of-type(2){
+  grid-column: 1 / 3; /* password label+input über volle Breite */
+}
+
+
+/* Buttons: exakt notes-btn wiederverwenden */
+.complaints-login-actions{
+  display:flex;
+  align-items:center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+.complaints-login-actions .notes-btn{
+  /* du hast notes-btn schon definiert – nur sicherstellen: */
+  height: 34px;
+}
+
+/* "Secondary link" passend */
+.complaints-login-actions .login-link{
+  font-size: 12px;
+  color: #666;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(0,0,0,0.18);
+  padding-bottom: 1px;
+}
+
+.complaints-login-actions .login-link:hover{
+  color:#111;
+  border-bottom-color: rgba(0,0,0,0.35);
+}
+
+/* Optional: kleine Infozeile unten */
+.complaints-login-foot{
+  margin-top: auto;
+  font-size: 11px;
+  color: #777;
+  line-height: 1.35;
+  opacity: .9;
+}
+
+
+
+/* =========================
+   COMPLAINTS NOTES WINDOW
+   ========================= */
+
+.fake-window.complaints-notes{
+  position: fixed;
+  width: 520px;
+  max-width: 92vw;
+  height: 420px;
+
+  top: 52%;
+  left: 58%;
+  transform: translate(-50%, -50%);
+
+  background: #f6f5f3;
+  border-radius: 12px;
+  overflow: hidden;
+
+  pointer-events: auto;
+  z-index: 999999;
+}
+
+/* titlebar */
+.fake-window.complaints-notes .titlebar{
+  height: 30px;
+  background: linear-gradient(#f3f3f3, #e6e6e6);
+  border-bottom: 1px solid #cfcfcf;
+
+  display:flex;
+  align-items:center;
+  gap: 10px;
+  padding: 0 10px;
+}
+
+.fake-window.complaints-notes .traffic{
+  display:flex;
+  gap:6px;
+}
+
+.fake-window.complaints-notes .dot{
+  width:11px;
+  height:11px;
+  border-radius:999px;
+}
+.fake-window.complaints-notes .dot.red{ background:#ff5f57; }
+.fake-window.complaints-notes .dot.yellow{ background:#febc2e; }
+.fake-window.complaints-notes .dot.green{ background:#28c840; }
+
+.fake-window.complaints-notes .title{
+  font-size:12px;
+  color:#666;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+  user-select:none;
+}
+
+/* layout */
+.fake-window.complaints-notes .content{
+  height: calc(100% - 30px);
+  display:grid;
+  grid-template-columns: 170px 1fr;
+}
+
+/* sidebar */
+.complaints-notes-sidebar{
+  background:#f0efed;
+  border-right:1px solid #dbdbdb;
+  padding:10px;
+  font-size:12px;
+  color:#666;
+  overflow-y: auto;     /* vertikal scrollbar */
+  overflow-x: hidden;
+}
+
+.complaints-notes-sidebar .label{
+  font-size:11px;
+  letter-spacing:0.10em;
+  text-transform:uppercase;
+  opacity:0.75;
+  margin-bottom:10px;
+}
+
+.complaints-notes-item{
+  background: rgba(255,255,255,0.7);
+  border:1px solid rgba(0,0,0,0.08);
+  border-radius:10px;
+  padding:10px;
+  margin-bottom:8px;
+}
+
+.complaints-notes-item .name{
+  font-size:12px;
+  color:#222;
+  margin-bottom:4px;
+}
+
+.complaints-notes-item .preview{
+  font-size:11px;
+  color:#777;
+  line-height:1.25;
+}
+
+.complaints-notes-item .meta{
+  margin-top:6px;
+  font-size:10px;
+  color:#9a9a9a;
+}
+
+
+/* main */
+.complaints-notes-main{
+  display:flex;
+  flex-direction:column;
+  height:100%;
+}
+
+/* toolbar */
+.complaints-notes-toolbar{
+  height: 38px;
+  padding: 0 12px;
+
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+
+  border-bottom:1px solid #e1e1e1;
+  background:#fbfaf8;
+}
+
+.complaints-notes-toolbar .left{
+  display:flex;
+  align-items:center;
+  min-width:0;
+}
+
+#complaints-note-title{
+  font-size:12px;
+  color:#666;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+
+  text-align:left;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+#complaints-note-sub{
+  display:none; /* draft weg */
+}
+
+.complaints-notes-toolbar .right{
+  display:flex;
+  align-items:center;
+}
+
+.notes-btn{
+  font-size:12px;
+  padding:6px 10px;
+  border-radius:10px;
+
+  border:1px solid rgba(0,0,0,0.12);
+  background:rgba(255,255,255,0.85);
+
+  cursor:pointer;
+  font-family: latitude, sans-serif;
+  font-size: 12px;          /* gleich wie Toolbar */
+  letter-spacing: 0.02em;  /* optional, wirkt ruhiger */
+}
+
+.notes-btn.primary{
+  background:#111;
+  color:#fff;
+  border-color:#111;
+}
+
+/* editor */
+.complaints-notes-editor{
+  flex:1;
+  padding:14px;
+  background:#fffefc7d;
+}
+
+.complaints-notes-editor textarea{
+  width:100%;
+  height:100%;
+  resize:none;
+  border:none;
+  outline:none;
+  background:transparent;
+
+  font-family: latitude, sans-serif;
+  font-size:14px;
+  line-height:1.45;
+  color:#111;
+}
+
+/* Titel soll sich wie ein echtes Feld verhalten */
+.note-title-input{
+  width: 100%;
+  border: none;
+  outline: none;
+  background: transparent;
+
+  font-family: latitude, sans-serif;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #666;
+
+  padding: 0;           /* damit er exakt sitzt */
+  margin: 0;
+  line-height: 1;       /* wichtig für vertikale Ausrichtung */
+}
+
+/* =========================
+   NOTES – EDITOR BACKGROUND
+   ========================= */
+
+.fake-window.complaints-notes .complaints-notes-editor{
+  flex: 1;
+  padding: 14px;
+
+  
+  background:  url("img/complaints_deko.png") center / cover no-repeat;
+
+  position: relative;
+  background-size: 95%;
+}
+
+/* =========================
+   EMERGENCY FIX – SUBMIT CLICK
+   ========================= */
+
+/* Toolbar MUSS über allem liegen */
+.fake-window.complaints-notes .complaints-notes-toolbar{
+  position: relative !important;
+  z-index: 1000 !important;
+}
+
+/* Editor darf NIEMALS Klicks abfangen */
+.fake-window.complaints-notes .complaints-notes-editor{
+  position: relative;
+  z-index: 1 !important;
+}
+
+/* Submit Button: letzte Instanz */
+.fake-window.complaints-notes #complaints-submit{
+  position: relative !important;
+  z-index: 2000 !important;
+  pointer-events: auto !important;
+  cursor: pointer !important;
+}
+
+
+/* ===== LOGIN HARD OVERRIDE (LAST IN FILE) ===== */
+.fake-window.complaints-login form.complaints-login-form{
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 34px !important;          /* <- großer Abstand zwischen Feldern */
+  align-items: stretch !important;
+}
+
+/* jedes Feld als Block */
+.fake-window.complaints-login .complaints-login-field{
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 8px !important;           /* Label -> Input */
+}
+
+/* Labels/Inputs dürfen nicht inline "zusammenkleben" */
+.fake-window.complaints-login .complaints-login-field label,
+.fake-window.complaints-login .complaints-login-field input{
+  display: block !important;
+  width: 100% !important;
+}
+
+/* Button nach unten, nicht in eine Zeile ziehen */
+.fake-window.complaints-login .complaints-login-actions{
+  display: flex !important;
+  justify-content: flex-end !important;
+  gap: 10px !important;
+}
+
+/* LOGIN TITLEBAR – Titel links ausrichten */
+.fake-window.complaints-login .titlebar{
+  display: flex;
+  align-items: center;
+}
+
+/* Traffic links lassen */
+.fake-window.complaints-login .titlebar .traffic{
+  flex-shrink: 0;
+}
+
+/* Titel explizit links, nicht zentriert */
+.fake-window.complaints-login .titlebar .title{
+  margin-left: 6px;     /* Abstand zu den Dots */
+  margin-right: auto;  /* schiebt alles andere nach rechts */
+  text-align: left;
+}

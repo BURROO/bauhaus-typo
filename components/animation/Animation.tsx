@@ -60,11 +60,11 @@ const Animation = ({
       }}
     >
         <ScreenWrapper autoRotateSpeed={3} type="orbit" camSettings={orbitCam}>
-            <group key={selectedCourse} scale={scale}>
-                {selectedCourse === 'TT' && <AnimationWebsite key={selectedCourse} radius={radius} data={data.filter((d) => d.COURSE === 'Transcoding Typography')} animation={animation} />}
-                {selectedCourse === 'OM' && <AnimationBook key={selectedCourse} radius={radius} data={data.filter((d) => d.COURSE === 'In Order Of Meaning ')} animation={animation} />}
-                {selectedCourse === 'PZ' && <AnimationWebsite key={selectedCourse} radius={radius} data={data.filter((d) => d.COURSE === 'Handmade Websites as Punk Zines')} animation={animation} />}
-            </group>
+          <group key={selectedCourse} scale={scale}>
+            {selectedCourse === 'TT' && <AnimationWebsite key={selectedCourse} radius={radius} data={data.filter((d) => d.COURSE === 'Transcoding Typography')} animation={animation} />}
+            {selectedCourse === 'OM' && <AnimationBook key={selectedCourse} radius={radius} data={data.filter((d) => d.COURSE === 'In Order Of Meaning ')} animation={animation} />}
+            {selectedCourse === 'PZ' && <AnimationWebsite key={selectedCourse} radius={radius} data={data.filter((d) => d.COURSE === 'Handmade Websites as Punk Zines')} animation={animation} />}
+          </group>
         </ScreenWrapper>
         <AnimationSettings
         selectedCourse={selectedCourse}

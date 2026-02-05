@@ -1,0 +1,198 @@
+
+  html, body {
+  scrollbar-width: none;      /* Firefox */
+  -ms-overflow-style: none;   /* IE / Edge legacy */
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  display: none;              /* Chrome / Safari */
+}
+body {
+ font-family:'Courier New', Courier, monospace;
+ font-size: 1vw;
+ background-image: url(images/paper/WebsiteBGpaper.jpg);
+ background-color: black;
+ background-size: 96%;
+ background-repeat: repeat;
+ background-position: center center;
+ background-attachment: fixed;
+}
+h1{
+ position: relative;
+ top:10%;
+ left:5%;
+ transform: rotate(-5deg);
+ z-index: 900;
+}
+.highlight-white {
+ background-color: white;
+ color:black;
+ padding:0 2%;
+}
+.highlight-white:hover{
+ background-color:magenta;
+ color:white;
+ padding:0 2%;
+}
+    
+.catring{
+ position:absolute;
+ top:10%;
+ left:15%;
+ display:flex;
+}
+.song{
+ position:absolute;
+ top:48%;
+ left:27.5%;
+ font-family:Comic Sans MS;
+ font-size: 1.1vw;
+ color:magenta;
+}
+.tutorial{
+ position: absolute;
+ top:39%;
+ left:19%;
+ width:30%;
+ height:53%;
+ font-size: 1.1vw;
+ overflow: auto;
+}
+.step1{
+ position: relative;
+ left:10%;
+ top:2%;
+ width:35%;
+ transform: rotate(5deg);
+}
+.step2{
+ position: relative;
+ left:40%;
+ top:2%;
+ width:35%;
+}
+.step3{
+ position: relative;
+ left:5%;
+ top:2%;
+ width:35%;
+ transform: rotate(-3deg);
+}
+.step4{
+ position: relative;
+ left:10%;
+ width:35%;
+ transform: rotate(-3deg);
+}
+.step5{
+ position: relative;
+ left:35%;
+ top:2%;
+ width:35%;
+ transform: rotate(10deg);
+}
+.step6{
+ position: relative;
+ left:25%;
+ top:1%;
+ width:35%;
+ transform: rotate(4deg);
+}
+.step7{
+ position: relative;
+ left:45%;
+ width:35%;
+}
+.step8{
+ position: relative;
+ left:42%;
+ width:35%;
+ transform: rotate(-4deg);
+}
+.step9{
+ position: relative;
+ left:25%;
+ width:35%;
+ transform: rotate(5deg);
+}
+.step10{
+ position: relative;
+ left:10%;
+ width:35%;
+}
+.step11{
+ position: relative;
+ left:35%;
+ width:35%;
+ transform: rotate(-10deg);
+} 
+.checklist{
+ position:absolute;
+ top:15%;
+ left:54%;
+}
+.game{
+ position:absolute;
+ top:26%;
+ left:57%;
+ font-size: 1.4vw;
+ background-color: magenta;
+ color:white;
+ animation: swing 1.5s ease-in-out infinite;
+ transform-origin: center;
+}
+ @keyframes swing {
+  0%   { transform: rotate(0deg); }
+  20%  { transform: rotate(4deg); }
+  40%  { transform: rotate(-3deg); }
+  60%  { transform: rotate(3deg); }
+  80%  { transform: rotate(-2deg); }
+  100% { transform: rotate(0deg); }
+}
+.interact{
+ position:relative;
+ top:26vh;
+ left:52%;
+ width:30%;
+}
+.ring {
+  position: relative;
+  height: 10vw; /* gives a reference height */
+}
+.draggable {
+  position: absolute;
+  width: 5vw;
+  cursor: grab;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+.ring .draggable:nth-child(1) {
+  right: 0;
+  top: -11vh;
+}
+.ring .draggable:nth-child(2) {
+  right: 0;
+  top: -22vh;
+}
+.ring .draggable:nth-child(3) {
+  right: 0;
+  top: -33vh;
+}
+.ring .draggable:nth-child(4) {
+  right: 0;
+  top: -44vh;
+}
+.ring .draggable:nth-child(5) {
+  right: 0;
+  top: -55vh;
+}
+.draggable:active {
+  cursor: grabbing;
+}
+
+ #finished{
+ position:fixed;
+ bottom:2%;
+ right:2%;
+}

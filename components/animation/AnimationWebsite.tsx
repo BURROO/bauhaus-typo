@@ -29,12 +29,17 @@ const AnimationWebsite = ({ data, animation, radius }: Props) => {
             const count = data.length
             const angle = (i / count) * Math.PI * 2
             const x = Math.cos(angle) * radius
+            // const y = Math.cos(angle) * radius
+            const y = 0
             const z = Math.sin(angle) * radius
+
+            // const scale = Math.sin(angle)
 
             return (
             <group
-            position={[x, 0, z]}
-            rotation={[0,0,Math.PI]}
+            position={[x, y, z]}
+            // rotation={[0,0,Math.PI]}
+            // scale={0.65}
             scale={0.65}
             key={i}
             ref={(el) => (groupRefs.current[i] = el!)}

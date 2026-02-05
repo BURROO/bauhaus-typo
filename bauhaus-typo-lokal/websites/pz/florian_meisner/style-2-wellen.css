@@ -1,0 +1,194 @@
+body {
+    font-family: "BradfordLLEdu-Light"; font-weight: lighter;
+    font-weight: normal;
+    margin: 0px;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+html {
+font-size: 16px;
+}
+  
+@font-face {
+  font-family: "BradfordLLEdu-Light";
+  src: url("fonts/BradfordLLEdu-Light.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+.poem-fixed {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center; 
+    gap: 10px;
+}
+
+
+.poem-fixed span {
+    font-size: 1rem;
+    color: black;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+.Poem-Waves span {
+    display: block;
+    color: blue;
+}
+
+
+
+.container-wavy-text {
+    position: absolute;
+    inset: 0;
+    /* border: solid red 1px; */
+}
+
+
+
+
+
+.Poem-Waves span {
+    display: inline-block;
+    text-decoration: none;
+    text-align: left;
+    color: blue;
+ 
+}
+
+
+
+.wavy-text span {
+    text-decoration: none;
+    display: inline-block;
+    font-size: 2rem;
+    animation: wave 4s ease-in-out infinite;
+    color: blue;
+}
+
+
+
+.wavy-text span:nth-child(1) {
+    animation-delay: 0s;
+}
+
+.wavy-text span:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.wavy-text span:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+.wavy-text span:nth-child(4) {
+    animation-delay: 0.6s;
+}
+
+.wavy-text span:nth-child(5) {
+    animation-delay: 0.8s;
+}
+
+.wavy-text span:nth-child(6) {
+    animation-delay: 1.0s;
+}
+
+.wavy-text span:nth-child(7) {
+    animation-delay: 1.2s;
+}
+
+.wavy-text span:nth-child(8) {
+    animation-delay: 1.4s;
+}
+
+.wavy-text span:nth-child(9) {
+    animation-delay: 1.6s;
+}
+
+.wavy-text span:nth-child(10) {
+    animation-delay: 1.8s;
+}
+
+.wavy-text span:nth-child(11) {
+    animation-delay: 2.0s;
+}
+
+.wavy-text span:nth-child(12) {
+    animation-delay: 2.2s;
+}
+
+.wavy-text span:nth-child(13) {
+    animation-delay: 2.4s;
+}
+
+.wavy-text span:nth-child(14) {
+    animation-delay: 2.6s;
+}
+
+
+
+@keyframes wave {
+    0%, 100% {
+        transform: translateX(0);
+    }
+
+    20% {
+        transform: translateX(20px);
+    }
+
+    40% {
+        transform: translateX(10px);
+    }
+
+    60% {
+        transform: translateX(20px);
+    }
+
+    80% {
+        transform: translateX(60px);
+    }
+    
+}
+
+
+
+
+.stone-1-fix {
+    background: transparent;
+    position: fixed;
+
+    top: 85%;
+    left: 51%;
+    transform: translate(-50%, -50%);
+    rotate: -3deg;
+
+    width: 80vw;
+    height: 80vh;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    z-index: -5;
+}
+
+.stone-1-fix img {
+    height: 2vw;
+    position: relative;
+}
+

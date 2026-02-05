@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Spawtify - Web Player</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <style>
+            body {
+ font-family:'Courier New', Courier, monospace;
+ font-size: 1vw;}
+            h1{
+             position: absolute;
+             left:2%;
+             width:50%;
+             font-family:'Courier New', Courier, monospace;
+             font-size:3vw;
+             font-style:italic;
+             animation: blink 1s infinite;
+     }
+     @keyframes blink {
+  0%   {opacity:0}
+  50%  {opacity:1}
+  100%  {opacity:0}
+     }
+              .highlight-white {
+      background-color: white;
+      color:magenta;
+      padding:0 2%;
+     }
+      .highlight-white:hover{
+      background-color:magenta;
+      color:white;
+      padding:0 2%;
+    }
+    .explain{
+        position:absolute;
+        top:15%;
+        left:6%;
+        width:10vw;
+    }
+    .introduce{
+        position:absolute;
+        top:70%;
+        left:82%;
+        width:10vw;
+        text-align: right;
+    }
+          video{
+             position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 60vw;
+  max-width: 1000px;
+  height: auto;
+          }
+          img{
+            position:absolute;
+            left:3%;
+            bottom:7%;
+          }
+          #finished{
+            position:absolute;
+            right:8%;
+            top:10%;
+            scale:1.3;
+          }
+          button{
+            background-color:magenta;
+            color:white;
+            border-radius: 20px;
+            cursor: pointer;
+            border-color: mediumorchid;
+          }
+        </style>
+    </head>
+    <body>
+        <h1><span class="highlight-white"><u><b>
+        Oops! we are offline!
+        </b></u></span></h1>
+        <video 
+        src="images/paper/paperrings.mov" 
+        controls
+        autoplay
+        loop
+        playsinline>
+    </video>
+    <img src="images/paper/music.png" width=15%>
+    <div id="finished">
+          <a href="paper.html">
+             <button>🔙 to tutorial</button>
+          </a>
+    </div>
+    <div class="explain">
+        <p><span class="highlight-white">
+            "Unfortunately the school has not allowed us 
+            to have internet on the Macs we're presenting on.":(
+        </span></p>
+    </div>
+     <div class="introduce">
+        <p><span class="highlight-white">
+            👈 This is how this page would look like--<br>if we have an internet connection:3
+        </span></p>
+    </body>
+</html>

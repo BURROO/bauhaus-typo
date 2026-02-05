@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IMPRINT PRINT</title>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/p5.min.js"></script>
+  <link rel="stylesheet" href="style3.css">
+  <link rel="icon" type="image/png" href="assets/TT-Handjet-Printer.png">
+</head>
+<body>
+
+<div class="info-loop">
+   <div class="info-loop-track">
+     <ul>
+        <li>
+          <span class="info-loop-span">-></span>
+          <span class="info-loop-span">press and hold or douple click to start printing</span>
+          <span class="info-loop-span"><- -></span>
+          <span class="info-loop-span">press and hold or douple click to start printing</span>
+          <span class="info-loop-span"><- -></span>
+          <span class="info-loop-span">press and hold or douple click to start printing</span>
+          <span class="info-loop-span"><- -></span>
+          <span class="info-loop-span">press and hold or douple click to start printing</span>
+          <span class="info-loop-span"><-</span>
+        </li>
+     </ul>
+     <ul aria-hidden="true">
+        <li>
+          <span class="info-loop-span">-></span>
+          <span class="info-loop-span">press and hold or douple click to start printing</span>
+          <span class="info-loop-span"><- -></span>
+          <span class="info-loop-span">press and hold or douple click to start printing</span>
+          <span class="info-loop-span"><- -></span>
+          <span class="info-loop-span">press and hold or douple click to start printing</span>
+          <span class="info-loop-span"><- -></span>
+          <span class="info-loop-span">press and hold or douple click to start printing</span>
+          <span class="info-loop-span"><-</span>
+        </li>
+     </ul>
+   </div>
+   <div class="info-loop-start" aria-hidden="true">->START<-</div>
+
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const loop = document.querySelector(".info-loop");
+    if (!loop) return;
+
+    const start = loop.querySelector(".info-loop-start");
+    const storageKey = "infoLoopSeen";
+    const canvasContainer = document.getElementById("canvas-container");
+
+    const hideLoop = () => {
+      loop.classList.add("is-hidden");
+      localStorage.setItem(storageKey, "true");
+    };
+
+    if (localStorage.getItem(storageKey) === "true") {
+      loop.classList.add("is-hidden");
+      return;
+    }
+
+    (start || loop).addEventListener("click", hideLoop);
+    if (canvasContainer) {
+      canvasContainer.addEventListener("click", hideLoop);
+    }
+  });
+</script>
+
+<div id="layout">
+
+
+  <div id="canvas-container">
+    <div id="print-cursor" aria-hidden="true">
+      <svg class="cursor-tip cursor-tip--top" viewBox="0 0 42 5" aria-hidden="true">
+        <polygon points="21.5,5 23.8868,0 18.1132,0" fill="black" stroke="black" stroke-width="1" vector-effect="non-scaling-stroke"></polygon>
+      </svg>
+      <span class="cursor-line"></span>
+      <svg class="cursor-tip cursor-tip--bottom" viewBox="0 0 42 5" aria-hidden="true">
+        <polygon points="21.5,0 18.1132,5 23.8868,5" fill="black" stroke="black" stroke-width="1" vector-effect="non-scaling-stroke"></polygon>
+      </svg>
+    </div>
+    <button id="resetButton" class="icon-button icon-button--top-right" aria-label="Canvas zurücksetzen">
+      <img src="assets/TT-Buttons-close-5.svg" alt="">
+    </button>
+
+    <div id="bottom-bar" aria-label="Druckleiste">
+      <button id="backButton" class="icon-button" aria-label="Zurück zu Stufe 1">
+        <img src="assets/TT-Arrow-3.svg" alt="">
+      </button>
+
+    <div id="preset-bar" aria-label="Druckvoreinstellungen">
+      <button class="preset-button" data-nozzle-count="40" data-nozzle-spacing="2" data-jitter-strength="0.4" aria-label="Can">
+        <img src="assets/TT-Can.png" alt="Can">
+      </button>
+      <button class="preset-button" data-nozzle-count="55" data-nozzle-spacing="3" data-jitter-strength="0.55" aria-label="Cardboard">
+        <img src="assets/TT-Cardboard.png" alt="Cardboard">
+      </button>
+      <button class="preset-button" data-nozzle-count="75" data-nozzle-spacing="2" data-jitter-strength="0.8" aria-label="Fabric">
+        <img src="assets/TT-Fabric.png" alt="Fabric">
+      </button>
+      <button class="preset-button" data-nozzle-count="95" data-nozzle-spacing="4" data-jitter-strength="0.3" aria-label="Stone">
+        <img src="assets/TT-Stone.png" alt="Stone">
+      </button>
+      <button class="preset-button" data-nozzle-count="30" data-nozzle-spacing="1.5" data-jitter-strength="0.2" aria-label="Wood">
+        <img src="assets/TT-Wood.png" alt="Wood">
+      </button>
+      <button class="preset-button" data-randomize="true" aria-label="Fire">
+        <img src="assets/TT-Fire.png" alt="Fire">
+      </button>
+    </div>
+
+      <button id="exportButton" class="icon-button" aria-label="Als PNG speichern">
+        <img src="assets/TT-Buttons-download-3.svg" alt="">
+      </button>
+    </div>
+  </div>
+
+</div>
+
+<script src="script2.js"></script>
+</body>
+
+<script src="./script-info-loop.js"></script>
+
+</html>

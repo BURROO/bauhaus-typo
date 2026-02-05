@@ -41,8 +41,6 @@
     
 // ];
 
-const synth = new Tone.Synth().toDestination();
-
 const svgCategories = {
     icons: [
         "./iconsrichtig/square1.svg",
@@ -279,76 +277,6 @@ const objectLayer = document.getElementById("object-layer");
 const preview = document.getElementById("preview");
 
 let activeSVG = null;
-
-//TONE JS SOUND
-document.body.addEventListener("click", async () => {
-    await Tone.start();
-    console.log("Audio ready");
-}, { once: true });
-
-
-let clickPlayer;
-let audioReady = false;
-
-async function initAudio() {
-    if (audioReady) return;
-
-    await Tone.start();
-
-    clickPlayer = new Tone.Player({
-        url: "mouse-click1.mp3",
-        volume: -6
-    }).toDestination();
-
-    audioReady = true;
-}
-
-function playClick() {
-    if (!audioReady || !clickPlayer) return;
-    clickPlayer.start();
-}
-
-//BUTTON SOUNDS
-
-document.getElementById("export-png").addEventListener("click", async () => {
-    await initAudio();
-    playClick();
-});
-
-document.getElementById("clear-canvas").addEventListener("click", async () => {
-    await initAudio();
-    playClick();
-});
-
-document.getElementById("backgrounds").addEventListener("click", async () => {
-    await initAudio();
-    playClick();
-});
-
-document.getElementById("toggle-svg-color").addEventListener("click", async () => {
-    await initAudio();
-    playClick();
-});
-
-document.getElementById("category-prev").addEventListener("click", async () => {
-    await initAudio();
-    playClick();
-});
-
-document.getElementById("category-next").addEventListener("click", async () => {
-    await initAudio();
-    playClick();
-});
-
-document.getElementById("control-scale").addEventListener("input", async () => {
-    await initAudio();
-    playClick();
-});
-
-document.getElementById("control-rotate").addEventListener("input", async () => {
-    await initAudio();
-    playClick();
-});
 
 //CATEGORIES SVGS
 function renderSVGCategory() {

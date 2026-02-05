@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Riff | TypeTool</title>
+    <link rel="stylesheet" href="styles.css">
+    <script type="text/javascript" src="vendor/lodash.js"></script>
+    <link rel="icon" type="image/svg+xml" href="icon.svg">
+    
+    <style>
+        /* 给 html 标签添加过渡，让反相过程更丝滑 */
+        html {
+            transition: filter 0.5s ease;
+            background-color: #FFFFFF; /* 确保有底色，否则反相可能无效 */
+        }
+
+        /* 激活这个类名时，全页颜色反转 */
+        html.invert-mode {
+            filter: invert(1);
+        }
+
+        /* (可选) 如果你不希望图片被反相，可以取消下面代码的注释 */
+        /* html.invert-mode img {
+            filter: invert(1); 
+        } 
+        */
+    </style>
+</head>
+<body>
+    <nav class="global-nav">
+        <a href="index.html">ABOUT</a>
+        <a href="tool.html" class="active">TYPETOOL</a>
+        <button id="themeToggle" class="theme-btn" title="Toggle Invert Mode"></button>
+    </nav>
+
+    <div id="container">
+        <aside>
+            <div id="controls"></div> </aside>
+
+        <main id="main">
+            <section id="typing" contenteditable="false">
+                <svg viewBox="0 0 1000 1000" id="svg-text"></svg>
+            </section>
+
+            <div id="preset-panel">
+                <div class="preset-header">Presets</div>
+                <div id="preset-buttons"></div>
+            </div>
+        </main>
+    </div>
+
+    <script type="text/javascript" src="scripts/font.js"></script>
+    <script type="text/javascript" src="scripts/renderPixel.js"></script>
+    <script type="text/javascript" src="scripts/script.js"></script>
+    <script type="text/javascript" src="scripts/controls.js"></script>
+    <script type="text/javascript" src="scripts/presets.js"></script>
+
+  <script>
+        // 👇👇👇 修改了这里的逻辑 👇👇👇
+        const themeBtn = document.getElementById('themeToggle');
+        
+        themeBtn.addEventListener('click', () => {
+            // 不再切换 dark-mode 类，而是切换 html 标签上的 invert-mode 类
+            // 这样能利用 CSS 滤镜瞬间反转整个页面的颜色
+            document.documentElement.classList.toggle('invert-mode');
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Ebene_1" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 841.89 1190.55">
+  <!-- Generator: Adobe Illustrator 30.1.0, SVG Export Plug-In . SVG Version: 2.1.1 Build 136)  -->
+  <defs>
+    <style>
+      .st0 {
+        fill: #010101;
+      }
+    </style>
+  </defs>
+  <path class="st0" d="M420.94,433.02C105.24,117.31,0,117.31,0,433.02V12.08c315.71,315.71,420.94,315.71,420.94,0v420.94Z"/>
+  <path class="st0" d="M420.94,12.08c116.29,0,210.47,47.36,210.47,105.24s-94.19,105.24-210.47,105.24v210.47c232.57,0,420.94-94.19,420.94-210.47S653.52,12.08,420.94,12.08Z"/>
+  <circle class="st0" cx="173.83" cy="445.1" r="157.73"/>
+  <rect class="st0" x="512.77" y="351.08" width="127.53" height="539.17" transform="translate(-249.24 809.63) rotate(-60)"/>
+  <path class="st0" d="M420.94,600.21c-116.29,0-210.47,66.41-210.47,147.59,0,81.17,94.19,147.59,210.47,147.59v295.17C188.37,1190.55,0,1058.46,0,895.38c0-163.08,188.37-295.17,420.94-295.17Z"/>
+  <rect class="st0" x="420.95" y="678.99" width="127.53" height="511.57"/>
+  <rect class="st0" x="594.68" y="678.99" width="43.62" height="511.57"/>
+  <rect class="st0" x="684.49" y="678.99" width="43.62" height="511.57"/>
+  <rect class="st0" x="769.11" y="678.99" width="43.62" height="511.57"/>
+</svg>
