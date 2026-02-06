@@ -628,7 +628,7 @@ document.addEventListener("DOMContentLoaded", () => {
     tv.className = "subscam-tv clickable";
     tv.innerHTML = `
       <video loop playsinline>
-        <source src="video/sub_scam_fernseher.mp4" type="video/mp4">
+        <source src="video/sub_scam_fernseher.webm" type="video/webm">
       </video>
       <img src="img/fernseher_01.png" alt="tv">
     `;
