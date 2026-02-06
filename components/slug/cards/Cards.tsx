@@ -47,7 +47,7 @@ const Cards = ({ item }: Props) => {
                 )}
                 {view === "inside" && (
                     <Slideshow
-                    isBook={true}
+                    isBook={false}
                     item={item}
                     />
                 )}
