@@ -632,7 +632,6 @@ document.addEventListener("DOMContentLoaded", () => {
       </video>
       <img src="img/fernseher_01.png" alt="tv">
     `;
-
     document.body.appendChild(tv);
     allPopups.push(tv);
 
