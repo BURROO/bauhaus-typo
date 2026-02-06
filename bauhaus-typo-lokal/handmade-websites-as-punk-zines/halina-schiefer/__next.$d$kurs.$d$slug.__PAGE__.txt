@@ -1,7 +1,0 @@
-1:"$Sreact.fragment"
-2:I[11252,["/_next/static/chunks/2a75df4fe4477d49.js","/_next/static/chunks/538cb1fdc28a53d5.js"],"default"]
-3:I[97367,["/_next/static/chunks/ff1a16fafef87110.js","/_next/static/chunks/0b082245f106d665.js"],"OutletBoundary"]
-4:"$Sreact.suspense"
-:HL["/_next/static/chunks/8573e0353eabe17a.css","style"]
-0:{"buildId":"grUTsSBcmkYzlUsFWd7QP","rsc":["$","$1","c",{"children":[["$","$L2",null,{"item":{"NR":"14","DATE":"25/26","NAME":"Halina Schiefer","TITLE":"Lezbian Loveletters","MEDIUM":"Website","FORMAT":"1920 × 1080 PX","COURSE":"Handmade Websites as Punk Zines","SUPERVISION":"Hjördis Lyn Behncken, Insa Deist","ID":"PZ/HS/14","DEUTSCH":"Lesbian Loveletters ist ein Ort, an dem all die vergessenen Gedanken und Gefühle, aufgeschrieben, verschickt und konserviert werden. Für alle Liebesbriefe die noch nicht verschickt wurden. Und für alle die vorbeigucken wollen um selbst eine Botschft zu erhalten<3","ENGLISH":"Lesbian Loveletters is a space, where all of your forgotten thoughts and feelings, can be written down, can be send and conserved. For all of the letters which have never been send. And for all of those who have always wanted to receive a loveletter<3just take a peak!"}}],[["$","link","0",{"rel":"stylesheet","href":"/_next/static/chunks/8573e0353eabe17a.css","precedence":"next"}],["$","script","script-0",{"src":"/_next/static/chunks/538cb1fdc28a53d5.js","async":true}]],["$","$L3",null,{"children":["$","$4",null,{"name":"Next.MetadataOutlet","children":"$@5"}]}]]}],"loading":null,"isPartial":false}
-5:null

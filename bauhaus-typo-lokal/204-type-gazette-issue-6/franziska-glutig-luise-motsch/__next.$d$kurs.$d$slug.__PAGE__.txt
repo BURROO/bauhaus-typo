@@ -1,7 +1,0 @@
-1:"$Sreact.fragment"
-2:I[11252,["/_next/static/chunks/2a75df4fe4477d49.js","/_next/static/chunks/538cb1fdc28a53d5.js"],"default"]
-3:I[97367,["/_next/static/chunks/ff1a16fafef87110.js","/_next/static/chunks/0b082245f106d665.js"],"OutletBoundary"]
-4:"$Sreact.suspense"
-:HL["/_next/static/chunks/8573e0353eabe17a.css","style"]
-0:{"buildId":"grUTsSBcmkYzlUsFWd7QP","rsc":["$","$1","c",{"children":[["$","$L2",null,{"item":{"NR":"1","DATE":"25/26","NAME":"Franziska Glutig, Luise Motsch","TITLE":"204 Type-Gazette Issue 6","MEDIUM":"Publication","FORMAT":"170 × 415 MM","COURSE":"204 Type-Gazette Issue 6","SUPERVISION":"Marcel Saidov","ID":"TG/01","DEUTSCH":"Die 204 Type-Gazette ist die jährliche Publikation des Fachbereichs Typografie und Schriftgestaltung der Bauhaus-Universität Weimar, in der die von Studierenden im vergangenen Semester entworfenen Schriften vorgestellt werden.","ENGLISH":"204 Type-Gazette is the annual publication of the Bauhaus-Universität Weimar, which presents the typefaces designed by students during the past semester of the department Typography and Type Design."}}],[["$","link","0",{"rel":"stylesheet","href":"/_next/static/chunks/8573e0353eabe17a.css","precedence":"next"}],["$","script","script-0",{"src":"/_next/static/chunks/538cb1fdc28a53d5.js","async":true}]],["$","$L3",null,{"children":["$","$4",null,{"name":"Next.MetadataOutlet","children":"$@5"}]}]]}],"loading":null,"isPartial":false}
-5:null

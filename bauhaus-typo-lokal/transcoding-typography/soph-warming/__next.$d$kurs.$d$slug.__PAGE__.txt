@@ -1,7 +1,0 @@
-1:"$Sreact.fragment"
-2:I[11252,["/_next/static/chunks/2a75df4fe4477d49.js","/_next/static/chunks/538cb1fdc28a53d5.js"],"default"]
-3:I[97367,["/_next/static/chunks/ff1a16fafef87110.js","/_next/static/chunks/0b082245f106d665.js"],"OutletBoundary"]
-4:"$Sreact.suspense"
-:HL["/_next/static/chunks/8573e0353eabe17a.css","style"]
-0:{"buildId":"grUTsSBcmkYzlUsFWd7QP","rsc":["$","$1","c",{"children":[["$","$L2",null,{"item":{"NR":"45","DATE":"25/26","NAME":"Soph Warming","TITLE":"things i wish i said","MEDIUM":"Webtool","FORMAT":"1920 × 1080 PX","COURSE":"Transcoding Typography","SUPERVISION":"Philipp Koller","ID":"TT/SW/45","DEUTSCH":"things i wish i said ist ein typographisches Tool, das alles was ungesagt geblieben ist für dich verschlüsselt. In mehreren Schritten werden drei eingegebene Sätze durch Noise verzerrt. Am Ende bleibt eine nur eine Form. Und damit ist hoffentlich alles gesagt.","ENGLISH":"things i wish i said is a typographical tool, which will encrypt everything you left unsaid for you. In multiple steps the three sentences you have chosen will get distorted. What remains is but a shape. And that should leave nothing unsaid."}}],[["$","link","0",{"rel":"stylesheet","href":"/_next/static/chunks/8573e0353eabe17a.css","precedence":"next"}],["$","script","script-0",{"src":"/_next/static/chunks/538cb1fdc28a53d5.js","async":true}]],["$","$L3",null,{"children":["$","$4",null,{"name":"Next.MetadataOutlet","children":"$@5"}]}]]}],"loading":null,"isPartial":false}
-5:null

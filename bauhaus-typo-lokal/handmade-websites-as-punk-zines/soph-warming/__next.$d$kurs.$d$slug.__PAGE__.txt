@@ -1,7 +1,0 @@
-1:"$Sreact.fragment"
-2:I[11252,["/_next/static/chunks/2a75df4fe4477d49.js","/_next/static/chunks/538cb1fdc28a53d5.js"],"default"]
-3:I[97367,["/_next/static/chunks/ff1a16fafef87110.js","/_next/static/chunks/0b082245f106d665.js"],"OutletBoundary"]
-4:"$Sreact.suspense"
-:HL["/_next/static/chunks/8573e0353eabe17a.css","style"]
-0:{"buildId":"grUTsSBcmkYzlUsFWd7QP","rsc":["$","$1","c",{"children":[["$","$L2",null,{"item":{"NR":"17","DATE":"25/26","NAME":"Soph Warming","TITLE":"BOT/BUG/DOG.","MEDIUM":"Website","FORMAT":"1920 × 1080 PX","COURSE":"Handmade Websites as Punk Zines","SUPERVISION":"Hjördis Lyn Behncken, Insa Deist","ID":"PZ/SW/17","DEUTSCH":"BOT/BUG/DOG. Eine Band, die gar nicht existiert. Und trotzdem hat sie eine Fanwebsite. Und dazu mischen sich auch alle Bandmember ständig noch ein, und schreiben selbst ihre Gedanken zueinander öffentlich auf ihrer Fanpage. Eine kleine Story übers Musik machen und Songs schreiben.","ENGLISH":"BOT/BUG/DOG. A band that actually doesn't exist. And still. They have a fanwebsite of their own. The bandmember also have their part to tell, and won't stop spilling details about each other publically on their own fanpage. A short story about writing songs and making music."}}],[["$","link","0",{"rel":"stylesheet","href":"/_next/static/chunks/8573e0353eabe17a.css","precedence":"next"}],["$","script","script-0",{"src":"/_next/static/chunks/538cb1fdc28a53d5.js","async":true}]],["$","$L3",null,{"children":["$","$4",null,{"name":"Next.MetadataOutlet","children":"$@5"}]}]]}],"loading":null,"isPartial":false}
-5:null
