@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>make.a.pizza</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+     <style>
+        html, body {
+  scrollbar-width: none;      /* Firefox */
+  -ms-overflow-style: none;   /* IE / Edge legacy */
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  display: none;              /* Chrome / Safari */
+}
+     body {
+      font-family:'Courier New', Courier, monospace;
+      font-size: 1vw;
+      background-image: url(images/pizza/websiteBGpizza.JPG);
+      background-size: 103%;
+      background-repeat: repeat;
+      background-position: center center;
+      background-attachment: fixed;
+     }
+
+     .highlight-white {
+      background-color: white;
+      color:black;
+      padding:0 2%;
+     }
+      .highlight-white:hover{
+      background-color:rgb(177, 79, 34);
+      color:white;
+      padding:0 2%;
+    }
+    
+     h1{
+      position: absolute;
+      top:3%;
+      left:5%;
+      transform: rotate(-5deg);
+      width:60%;
+      z-index: 900;
+     }
+     h2{
+      position:absolute;
+      top:10%;
+      left:25%;
+      font-size: 1vw;
+      width:30%;
+      transform: rotate(-2deg);
+      z-index: 900;
+     }
+    .recipe{
+      position: absolute;
+      top:14%;
+      left:19%;
+      width:30%;
+      height:72%;
+      font-size: 1.1vw;
+      overflow: auto;
+     }
+    .step1{
+      position: relative;
+      left:10%;
+      width:78%;
+      transform: rotate(-3deg);
+    }
+    .step2{
+      position: relative;
+      left:5%;
+      width:70%;
+      transform: rotate(2deg);
+    }
+    .step3{
+      position: relative;
+      left:5%;
+      width:78%;
+    }
+    .step4{
+      position: relative;
+      left:3%;
+      width:78%;
+      transform: rotate(3deg);
+    }
+    .step5{
+      position: relative;
+      left:8%;
+      width:78%;
+      transform: rotate(-1deg);
+    }
+    .step6{
+      position: relative;
+      left:0%;
+      width:80%;
+      transform: rotate(2deg);
+    }
+    .step7{
+      position: relative;
+      left:0%;
+      width:88%;
+      transform: rotate(-1deg);
+    }
+    .step8{
+      position: relative;
+      left:3%;
+      width:78%;
+      transform: rotate(-2deg);
+    }
+    .checklist{
+      position:absolute;
+      top:12%;
+      left:53%;
+      width:30%;
+    }
+     .chef{
+      position:relative;
+      left:70%;
+      animation: mymove 2s infinite;
+     }
+     @keyframes mymove {
+  0%   {top: 20px;}
+  50%  {top: 40px;}
+  100%  {top: 20px;}
+     }
+
+     #finished{
+      position:fixed;
+      bottom:2%;
+      right:2%;
+    }
+    .reminder{
+        position:absolute;
+        top:51%;
+        left:58%;
+        text-align:center;
+        border: solid 1px red;
+        animation: blink 1s infinite;
+        width:17vw;
+        height:39vh;
+    }
+    @keyframes blink {
+  0%   { opacity: 1; }
+  50%  { opacity: 0; }
+  100% { opacity: 1; }
+    }
+    .appetit{
+        display:flex;
+        align-items: center;
+        gap:5%;
+    }
+
+     </style>
+    </head>
+    <body>
+        <h1><span class="highlight-white">
+        I'm craving for some pizza... <br> and you?
+        </span></h1>
+
+        <h2><span class="highlight-white">
+        Yes this is actually a pizza recipe.
+        </span></h2>
+
+        <div class="recipe">
+
+         <p><b><span class="highlight-white">[The Night Before]</span></b></p>
+
+         <div class="step1"> 
+           <details>
+            <summary class="highlight-white">
+            <b>🍕STEP 1: </b><i>Mix the dough</i><br><br></summary>
+            <span class="highlight-white">
+            Before going to bed, mix the flour, water, and yeast together.<br>
+            Add a small amount of olive oil and stir until no dry flour remains. <br>
+            No kneading is required.<br>
+            </span><br>
+           </details>
+         </div>
+         <br>
+         <div class="step2"> 
+           <details>
+            <summary class="highlight-white">
+            <b>🍕STEP 2: </b><i>Rest & stretch</i><br><br></summary>
+            <span class="highlight-white">
+            Let the dough rest for 30 minutes, then perform one stretch-and-fold.<br>
+            </span><br>
+           </details>
+         </div>
+         <br>
+         <div class="step3"> 
+           <details>
+            <summary class="highlight-white">
+            <b>🍕STEP 3: </b><i>Cold fermentation</i><br><br></summary>
+            <span class="highlight-white">
+            Cover the dough and place it in the refrigerator to cold-ferment overnight.<br>
+            </span><br>
+            <img src="images/pizza/beforenight.jpg" style="width:16vw;">
+           </details>
+         </div>
+         <br>
+         <p><b><span class="highlight-white">[The Next Morning]</span></b></p>
+         <div class="step4"> 
+           <details>
+            <summary class="highlight-white">
+            <b>🍕STEP 4: </b><i>Shape the dough</i><br><br></summary>
+            <span class="highlight-white">
+            Take the dough out of the fridge, turn it onto a floured surface,
+            and gently shape it into a round disc. <br>Don’t worry about being perfect.<br>
+            </span><br>
+            <img src="images/pizza/step4_pizza.jpg" style="width:16vw;">
+           </details>
+         </div>
+         <br>
+         <div class="step5"> 
+           <details>
+            <summary class="highlight-white">
+            <b>🍕STEP 5: </b><i>Preheat the oven</i><br><br></summary>
+            <span class="highlight-white">
+            Preheat the oven to 230°C with the baking tray inside for 15 minutes.<br>
+            </span><br>
+           </details>
+         </div>
+         <br>
+         <div class="step6"> 
+           <details>
+            <summary class="highlight-white">
+            <b>🍕STEP 6: </b><i>First bake</i><br><br></summary>
+            <span class="highlight-white">
+            Brush a layer of sauce onto the pizza base. 
+            Place it in the oven and bake at 230°C for 5 minutes.<br>
+            </span><br>
+            <img src="images/pizza/step6_pizza.jpg" style="width:16vw;">
+           </details>
+         </div>
+         <br>
+         <div class="step7"> 
+           <details>
+            <summary class="highlight-white">
+            <b>🍕STEP 7: </b><i>Add toppings & bake again</i><br><br></summary>
+            <span class="highlight-white">
+            Remove the pizza, sprinkle on cheese and corn (anything you like),
+            then return it to the oven and bake for another 5 minutes.<br>
+            </span><br>
+            <img src="images/pizza/step7_pizza.jpg" style="width:16vw;">
+           </details>
+         </div>
+         <br>
+         <div class="step8"> 
+           <details>
+            <summary class="highlight-white">
+            <b>🍕STEP 8: </b><i>Finish & season</i><br><br></summary>
+            <span class="highlight-white">
+            Once baked, optionally grind a little rose salt on top 
+            and sprinkle with some seaweed flakes for extra flavor.<br>
+            </span><br>
+            <img src="images/pizza/step8_pizza.jpg" style="width:16vw;">
+           </details>
+         </div>
+         <br>
+         <div class="appetit">
+           <img src="images/pizza/final_pizza.jpg" style="width:16vw;">
+           <div>
+            <p><b><span class="highlight-white">
+                This is <br> the final look!<br><br>
+                Bon Appetit!~^^~</span></b></p><br>
+            <img src="images/pizza/pizzaenjoyer.jpg" style="width:10vw;">
+           </div>
+         </div>
+
+        </div>
+
+        <div class="checklist"> <b><span class="highlight-white">
+            * things you will need:<br><br>
+            <input type="checkbox"> 150g bread flour<br>
+            <input type="checkbox"> 120g water<br>
+            <input type="checkbox"> 1.5g dry yeast<br>
+            <input type="checkbox"> 1g salt<br>
+            <input type="checkbox"> 5g olive oil<br><br>
+            ** Toppings<br><br>
+            <input type="checkbox"> pizza sauce or any sauce you like<br>
+            <input type="checkbox"> anything you like (this recipe used corn)<br>
+            <input type="checkbox"> Mozzarella cheese<br>
+            <input type="checkbox"> rose salt(*optional)<br>
+            <input type="checkbox"> seaweed flakes(*optional)<br><br>
+            <u>*** p.s.no need to be precise - <br> feel free to eyeball everything</u>
+          </span></b>
+        </div>
+
+        <img src="images/pizza/chefcat.png" class="chef" width="25%">
+
+        <div class="reminder">
+            <p><span class="highlight-white"><i>⚠️Friendly Reminder:⚠️</i><br><br>
+            keep the pizza away <br>FROM THE CAT!!</span></p>
+            <img src="images/pizza/pizzaeater.png" width="90%">
+        </div>
+
+        <div id="finished">
+         <p><span class="highlight-white"><i><b>
+              🐱finished?</b></i></span></p>
+          <a href="index.html">
+             <button>🔙 to start page</button>
+          </a><br>
+            <button id="surpriseButton">🎲a random new tutorial</button>
+
+            <script>
+            const pages = [
+            "book.html",
+            "paper.html",
+            "clay.html",
+            "plant.html",
+            "perfume.html",
+            "aluminum.html"
+            ];
+            document.getElementById("surpriseButton").addEventListener("click", () => {
+             const randomIndex = Math.floor(Math.random() * pages.length);
+             const randomPage = pages[randomIndex];
+             window.location.href = randomPage;
+            });
+
+            </script>
+        </div>
+    </body>
+</html>
