@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>LezbianLoveletters — Beiträge</title>
+  <link rel="stylesheet" href="default.css">
+  <link rel="stylesheet" href="Input.css">
+  <link rel="icon" type="image/x-icon" href="Img/favicon.ico">
+</head>
+<body>
+
+  <div>
+    <a href="index.html">
+      <img src="Img/GoBack.png" id="HerzZurueck" alt="Zurueck">
+    </a>
+  </div>
+
+  <main class="contrib-container" aria-labelledby="contrib-heading">
+    <h1 id="contrib-heading">Deine Beiträge</h1>
+
+    <form id="contribForm" class="contrib-form" aria-describedby="contrib-desc">
+      <div id="contrib-desc" class="visually-hidden">Verfasse einen Beitrag und klicke auf "Absenden". Dein Beitrag wird hier unten angezeigt und lokal im Browser gespeichert.</div>
+
+      <label for="contribName" class="label">Name (optional)</label>
+      <input id="contribName" name="name" type="text" placeholder="Dein Name (oder leer lassen)" maxlength="60" />
+
+      <label for="contribText" class="label">Beitrag</label>
+      <textarea id="contribText" name="text" rows="6" placeholder="Schreibe hier deinen Beitrag..." required maxlength="2000"></textarea>
+
+      <div class="form-actions">
+        <button type="submit" class="btn-primary">Absenden</button>
+        <button type="button" id="clearAllBtn" class="btn-secondary">Alle entfernen</button>
+      </div>
+    </form>
+
+    <section class="submissions-section" aria-live="polite" aria-label="Eingereichte Beiträge">
+      <h2 class="submissions-title">Beiträge</h2>
+      <div id="emptyHint" class="empty-hint">Noch keine Beiträge. Sei der Erste!</div>
+      <div id="submissions" class="submissions-list"></div>
+    </section>
+  </main>
+
+
+
+<script>
+(function () {
+  const STORAGE_KEY = 'sechs_submissions_v1';
+
+  // Elements
+  const form = document.getElementById('contribForm');
+  const nameInput = document.getElementById('contribName');
+  const textInput = document.getElementById('contribText');
+  const submissionsEl = document.getElementById('submissions');
+  const clearAllBtn = document.getElementById('clearAllBtn');
+  const emptyHint = document.getElementById('emptyHint');
+
+  // Load saved submissions from localStorage
+  function loadSubmissions() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return [];
+      return JSON.parse(raw);
+    } catch (e) {
+      console.warn('Could not parse saved submissions', e);
+      return [];
+    }
+  }
+
+  // Save submissions
+  function saveSubmissions(list) {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
+    } catch (e) {
+      console.error('Failed to save submissions', e);
+    }
+  }
+
+  // Create unique id
+  function makeId() {
+    return Date.now().toString(36) + '-' + Math.random().toString(36).slice(2,9);
+  }
+
+  // Render the submissions list
+  function render() {
+    const list = loadSubmissions();
+    submissionsEl.innerHTML = '';
+    if (!list.length) {
+      emptyHint.style.display = '';
+      return;
+    }
+    emptyHint.style.display = 'none';
+
+    // newest first
+    const items = list.slice().reverse();
+    items.forEach(item => {
+      const card = document.createElement('article');
+      card.className = 'submission-card';
+      card.setAttribute('data-id', item.id);
+
+      const header = document.createElement('div');
+      header.className = 'submission-header';
+
+      const who = document.createElement('strong');
+      who.className = 'submission-who';
+      who.textContent = item.name ? item.name : 'Anonym';
+
+      const time = document.createElement('time');
+      time.className = 'submission-time';
+      time.dateTime = item.created;
+      time.textContent = (new Date(item.created)).toLocaleString();
+
+      header.appendChild(who);
+      header.appendChild(time);
+
+      const body = document.createElement('div');
+      body.className = 'submission-body';
+      // Use textContent to avoid XSS
+      body.textContent = item.text;
+
+      const actions = document.createElement('div');
+      actions.className = 'submission-actions';
+
+      const deleteBtn = document.createElement('button');
+      deleteBtn.className = 'btn-remove';
+      deleteBtn.type = 'button';
+      deleteBtn.textContent = 'Löschen';
+      deleteBtn.addEventListener('click', () => removeSubmission(item.id));
+
+      actions.appendChild(deleteBtn);
+
+      card.appendChild(header);
+      card.appendChild(body);
+      card.appendChild(actions);
+
+      submissionsEl.appendChild(card);
+    });
+  }
+
+  // Add a new submission
+  function addSubmission(name, text) {
+    const list = loadSubmissions();
+    const entry = {
+      id: makeId(),
+      name: name ? name.trim() : '',
+      text: text.trim(),
+      created: new Date().toISOString()
+    };
+    list.push(entry);
+    saveSubmissions(list);
+    render();
+  }
+
+  // Remove by id
+  function removeSubmission(id) {
+    let list = loadSubmissions();
+    list = list.filter(i => i.id !== id);
+    saveSubmissions(list);
+    render();
+  }
+
+  // Clear all (with confirmation)
+  function clearAll() {
+    if (!confirm('Alle Beiträge wirklich entfernen? Das kann nicht rückgängig gemacht werden.')) return;
+    localStorage.removeItem(STORAGE_KEY);
+    render();
+  }
+
+  // Form submit handler
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const name = nameInput.value;
+    const text = textInput.value;
+    if (!text.trim()) return;
+    addSubmission(name, text);
+    textInput.value = '';
+    // optionally keep name filled for convenience
+    // nameInput.value = '';
+    // focus textarea for next input
+    textInput.focus();
+  });
+
+  clearAllBtn.addEventListener('click', clearAll);
+
+  // initial render
+  render();
+})();
+</script>
+
+
+</body>
+</html>
