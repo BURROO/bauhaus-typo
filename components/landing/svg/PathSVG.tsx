@@ -13,11 +13,11 @@ const PathSVG = ({ svgPath, gradientId, maskId }: Props) => {
             fill={`url(#${gradientId})`}
             mask={`url(#${maskId})`}
             />
-            <path
+            {/* <path
             d={svgPath}
             filter={`url(#screenPrintEffect)`}
             fill="rgba(240,240,240,0.2)"
-            />
+            /> */}
         </>
     )
 }

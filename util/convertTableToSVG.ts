@@ -87,6 +87,15 @@ const columns: {
     ]
 }
 
+export const defRows: { [key: string]: number } = {
+    "0": 2,
+    "1": 4,
+    "2": 2,
+    "3": 2,
+    "18": 2,
+    "22": 2,
+}
+
 
 interface Props{
     data: TypeProject[];
@@ -141,7 +150,10 @@ export const convertTableToSVG = ({ data, screenWidth, screenHeight, rowHeight, 
             const defRows: { [key: string]: number } = {
                 "0": 2,
                 "1": 4,
-                "2": 2
+                "2": 2,
+                "3": 2,
+                "18": 2,
+                "22": 2,
             }
 
             const rowCount = defRows[i.toString()] || 1

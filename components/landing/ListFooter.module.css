@@ -21,7 +21,8 @@
   outline: none;
   border: none;
   background: white;
-  
+  background-color: var(--gray);
+  color: black;
 
 }
 
@@ -29,6 +30,7 @@
   display: flex; 
   align-items: center;
   color: white;
+  color: var(--gray);
 }
 
 .tag{

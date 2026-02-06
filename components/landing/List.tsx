@@ -153,7 +153,7 @@ const List = ({ dataStudents, dataCourses}: Props) => {
                 }
                 <div className={styles.footer}>
                     <ListFooter
-                    height={rowHeight*4}
+                    height={rowHeight*2}
                     setFilter={(filter) => {
                         updateFilter(filter)
                     }}

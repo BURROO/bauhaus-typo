@@ -1,5 +1,7 @@
 import {TypeCoursesNames } from '@/types/project-type';
 import styles from './ListFooter.module.css'
+import { useContext } from 'react';
+import { ContextMenu } from '../context/ContextMenu';
 
 
 // interface Sorting {
@@ -28,6 +30,9 @@ const ListFooter = ({
 }: Props) => {
 
 
+    const { fontSize } = useContext(ContextMenu)
+
+
     const filterOptions: { short: 'TT' | 'OM' | 'PZ' | 'TG'; name: TypeCoursesNames }[] = [
         { short: "TT", name: "Transcoding Typography" }, 
         { short: "OM", name: "In Order Of Meaning" }, 
@@ -39,11 +44,20 @@ const ListFooter = ({
     return (
         <div
         className={styles.footer}
-        style={{ height }}
+        style={{ 
+            height,
+            fontSize: fontSize || ''
+         }}
         >
             <div>
                 <label>
-                Search: <input type="text" onChange={(e) => setSearchTerm(e.currentTarget.value)}></input>
+                Search: <input
+                style={{
+                    fontSize: fontSize || ''
+                }}
+                 type="text" 
+                 onChange={(e) => setSearchTerm(e.currentTarget.value)}
+                 ></input>
                 </label>
             </div>
             <div style={{ display: "flex"}}>

@@ -10,6 +10,7 @@ import TextSVG from "./TextSVG";
 import ListRowSVG from "./ListRowSVG";
 import DefFiltersSVG from "./DefFiltersSVG";
 import PathSVG from "./PathSVG";
+import { getTotalLinesForListOfPojects } from "@/util/handleNameSplitting";
 
 // const gray = `rgba(200,200,200, 0.97)`;
 const gray = `rgb(200,200,200)`;
@@ -147,7 +148,10 @@ const ListSVG = ({
 
 
     // const courseInfo: TypeCourse|null = dataCourses.find(k => k.COURSE === filter) || null
+    const rowCOunt = getTotalLinesForListOfPojects({ projects: (renderData).map(r => r[0].data) })
 
+    console.log("renderData", renderData)
+    console.log("rowCOunt", rowCOunt)
 
     return (
         <div
@@ -312,17 +316,21 @@ const ListSVG = ({
                                 onMouseLeave={() => setActiveIndex(null)}
                                 // onClick={() => {}}
                                 >
-                                    <a
+                                    {/* <a
                                     aria-label={`Link to ${row[0]?.data.NAME}`}
                                     href={url}
                                     onClick={(e) => {
                                         e.preventDefault()
                                         router.push(url)
                                     }}
-                                    >
+                                    > */}
                                         <rect
+                                        aria-label={`Link to ${row[0]?.data.NAME}`}
+                                        onClick={(e) => {
+                                            e.preventDefault()
+                                            router.push(url)
+                                        }}
                                         x={0}
-                                        // y={row[0].y-row[0].height}
                                         y={row[0].y}
                                         width={screenWidth}
                                         height={row[0].height}
@@ -331,21 +339,25 @@ const ListSVG = ({
                                             cursor: "pointer"
                                         }}
                                         />
-                                    </a>
+                                    {/* </a> */}
                                 </g>
                             )
                         })
                     }
                     </g>
                     {/* Filöter info */}
-                    {filter !== "" && <g transform={`translate(${0} ${renderData.length * rowHeight-1})`}>
+                    {filter !== "" && <g data-filter="true" transform={`translate(${0} ${rowCOunt * rowHeight - 2
+                    })`}>
                         <rect 
                         x={0}
                         y={0}
                         width={screenWidth}
-                        height={screenHeight - renderData.length * rowHeight}
+                        height={screenHeight - (rowCOunt * rowHeight) + 2}
                         fill={`url(#${gradientId})`}
-                        mask={`url(#${maskFilterId})`}
+                        // mask={`url(#${maskFilterId})`}
+                        // fill={`url(#${gradientId})`}
+                        // mask={`url(#${maskId})`}
+                        // fill="red"
                         />
                     </g>}
                 </g>

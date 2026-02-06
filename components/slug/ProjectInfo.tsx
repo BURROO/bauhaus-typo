@@ -5,6 +5,7 @@ import { useContext, useState } from 'react'
 import { ContextMenu } from '../context/ContextMenu'
 import ListSVGOneRow from '../landing/svg/ListSVGOneRow'
 import ButtonLink from '../general/ButtonLink'
+import { getTitleAsArray, handleNameSplitting } from '@/util/handleNameSplitting'
 
 interface Props{
     project: TypeProject
@@ -20,14 +21,22 @@ const ProjectInfo = ({ project }:Props) => {
 
     const { rowHeight } = useContext(ContextMenu)
 
+    // const nameLength = project.NAME.split(', ')?.length || 1
 
-    const height = (project.NAME.split(', ')?.length || 1) * (rowHeight || 0)
+    // const customLength = project.NAME.match(/james Bru|Ossian/ig) ? 2 : null
+    // const titleSplit = customLength || project.TITLE.split(': ')?.length || 1
+    // const length = Math.max(nameLength, titleSplit)
+
+    // const height = length * (rowHeight || 0)
+
+
+    const { height } = handleNameSplitting({ project, rowHeight })
+
+
+    const titleArray = getTitleAsArray(project.TITLE)
 
     return (
-        <div 
-        className={styles.projectInfo} 
-        // style={{ display: "flex", flexDirection: "column"}}
-        >
+        <div className={styles.projectInfo} >
             <div 
             className={styles.projectInfoInner} 
 
@@ -46,7 +55,10 @@ const ProjectInfo = ({ project }:Props) => {
                 }}>
                     <ul style={{ display: "grid", fontSize }}>
                         <li style={{ fontSize }} dangerouslySetInnerHTML={{__html: project.NAME.split(', ').join("<br/>")}}/>
-                        <li style={{ fontSize }}>{project.TITLE}</li>
+                        <li style={{ fontSize }}>
+                            {titleArray.map((frag, i) => <div key={i}>{frag}</div>)}
+                            {/* {project.TITLE} */}
+                        </li>
                         <li style={{ fontSize }}>{project.MEDIUM}</li>
                         <li style={{ fontSize }}>{project.FORMAT}</li>
                         <li style={{ fontSize }}>{project.COURSE}</li>

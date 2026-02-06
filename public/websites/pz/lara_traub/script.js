@@ -1,6 +1,4 @@
-// =========================
-// GLOBALS
-// =========================
+/*globals*/
 console.log("JS FILE LOADED");
 
 let allPopups = [];
@@ -11,13 +9,11 @@ let hanger_pos = 256;
 let hanger_width = 0;
 let hanger_height = 0;
 
-// teleport globals
+
 let teleportTimer = null;
 let teleportOn = false;
 
-// =========================
-// DOORHANGER
-// =========================
+/*cookie*/
 function show_doorhanger() {
   hanger = document.getElementById("doorhanger");
   if (!hanger) return;
@@ -82,34 +78,10 @@ function on_mouse_move(e) {
 
 window.addEventListener("load", show_doorhanger);
 
-// =========================
-// FAKE CURSOR (nur EIN System)
-// =========================
-document.addEventListener("DOMContentLoaded", () => {
-  fakeCursor = document.getElementById("fake-cursor");
-  if (!fakeCursor) return;
 
-  document.addEventListener("mousemove", (e) => {
-    fakeCursor.style.left = e.clientX + "px";
-    fakeCursor.style.top  = e.clientY + "px";
 
-    if (fakeCursor.classList.contains("loading")) return;
 
-    const el = document.elementFromPoint(e.clientX, e.clientY);
-    if (!el) return;
-
-    const isClickable = !!el.closest(
-      ".fc-heart-wrap, .clickable, a, button, input, .popup-img, .line.title, #checkbox-container, [data-clickable]"
-    );
-
-    fakeCursor.classList.toggle("outline", isClickable);
-    fakeCursor.classList.toggle("filled", !isClickable);
-  });
-});
-
-// =========================
-// WORKING TITLES
-// =========================
+/*working titles*/
 document.addEventListener("DOMContentLoaded", () => {
   const trigger = document.getElementById("working-title");
   if (!trigger) return;
@@ -186,9 +158,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
-// =========================
-// PURE CONNECTION → LOADING CURSOR
-// =========================
+/*pure connection*/
 document.addEventListener("DOMContentLoaded", () => {
   const pure = document.getElementById("pure-connection");
   const fc = document.getElementById("fake-cursor");
@@ -201,34 +171,100 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
-// =========================
-// PRINTERS
-// =========================
-const printerSteps = [
-  { title: "printer ragebait", text: "step 1: open the print file.", img: "img/drucker_error-02.jpg" },
-  { title: "printer ragebait", text: "step 2: click »print«.", img: "img/drucker_error-03.jpg" },
-  { title: "printer ragebait", text: "step 3: wait. nothing is happening yet. this is expected.", img: "img/drucker_error-04.jpg" },
-  { title: "printer ragebait", text: "step 4: document does not exist.", img: "img/drucker_error-05.jpg" },
-  { title: "printer ragebait", text: "step 5: try again in disbelief.", img: "img/drucker_error-06.jpg" },
-  { title: "printer ragebait", text: "step 6: printer not found.", img: "img/drucker_error-07.jpg" },
-  { title: "printer ragebait", text: "step 7: searching for printer.", img: "img/drucker_error-08.jpg" },
-  { title: "printer ragebait", text: "step 8: printer was there.", img: "img/drucker_error-09.jpg" },
-  { title: "printer ragebait", text: "step 9: the document cannot be found. it was open a second ago.", img: "img/drucker_error-10.jpg" },
-  { title: "printer ragebait", text: "step 10: click print.", img: "img/drucker_error-11.jpg" },
-  { title: "printer ragebait", text: "step 11: hope.( mandatory )", img: "img/drucker_error-12.jpg" },
-  { title: "printer ragebait", final: true }
-];
+
+/*printer ragebait*/
+(function () {
+  if (window.__printer_ready__) return;
+  window.__printer_ready__ = true;
+
+  const printerSteps = [
+    { title: "printer ragebait", text: "step 1: open the print file.", img: "img/drucker_error-02.jpg" },
+    { title: "printer ragebait", text: "step 2: click »print«.", img: "img/drucker_error-03.jpg" },
+    { title: "printer ragebait", text: "step 3: wait. nothing is happening yet. this is expected.", img: "img/drucker_error-04.jpg" },
+    { title: "printer ragebait", text: "step 4: document does not exist.", img: "img/drucker_error-05.jpg" },
+    { title: "printer ragebait", text: "step 5: try again in disbelief.", img: "img/drucker_error-06.jpg" },
+    { title: "printer ragebait", text: "step 6: printer not found.", img: "img/drucker_error-07.jpg" },
+    { title: "printer ragebait", text: "step 7: searching for printer.", img: "img/drucker_error-08.jpg" },
+    { title: "printer ragebait", text: "step 8: printer was there.", img: "img/drucker_error-09.jpg" },
+    { title: "printer ragebait", text: "step 9: the document cannot be found. it was open a second ago.", img: "img/drucker_error-10.jpg" },
+    { title: "printer ragebait", text: "step 10: click print.", img: "img/drucker_error-11.jpg" },
+    { title: "printer ragebait", text: "step 11: hope.( mandatory )", img: "img/drucker_error-12.jpg" },
+    { title: "printer ragebait", final: true }
+  ];
+
+ 
+  function trackPopup(win) {
+    if (Array.isArray(window.allPopups)) window.allPopups.push(win);
+  }
+
+  function untrackPopup(win) {
+    if (!Array.isArray(window.allPopups)) return;
+    const i = window.allPopups.indexOf(win);
+    if (i > -1) window.allPopups.splice(i, 1);
+  }
+
+  function removePopup(win) {
+    if (!win) return;
+    win.remove();
+    untrackPopup(win);
+  }
+
+  function rand(min, max) {
+    return Math.random() * (max - min) + min;
+  }
+
+  function clamp(v, min, max) {
+    return Math.max(min, Math.min(max, v));
+  }
+
+function spawnStep12Error() {
+  const win = document.createElement("div");
+  win.className = "fake-window printer-step step-12 clickable";
+
+  const x = clamp(rand(20, window.innerWidth - 20), 20, window.innerWidth - 20);
+  const y = clamp(rand(80, window.innerHeight - 40), 80, window.innerHeight - 40);
+
+  win.style.left = x + "px";
+  win.style.top = y + "px";
+  win.style.transform = "translate(-50%, -50%)";
+
+  win.innerHTML = `
+    <div class="titlebar">
+      <span>printer ragebait</span>
+      <span class="close clickable">×</span>
+    </div>
+    <div class="content">
+      <p class="pixel-error" data-text="error"><span data-text="error">error</span></p>
+    </div>
+  `;
+
+  document.body.appendChild(win);
+  trackPopup(win);
+
+  win.querySelector(".close")?.addEventListener("click", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    removePopup(win);
+  });
+}
+
+function spawnStep12Burst(count = 16) {
+  for (let i = 0; i < count; i++) {
+    setTimeout(() => spawnStep12Error(), i * 20);
+  }
+}
 
 function openPrinterStep(index) {
   const step = printerSteps[index];
   if (!step) return;
 
-  const isFinal = !!step.final;
+  if (step.final) {
+    spawnStep12Burst(20); 
+    return;
+  }
 
   const win = document.createElement("div");
-  win.className = isFinal
-    ? "fake-window printer-step step-12 clickable"
-    : `fake-window printer-step step-${index + 1} clickable`;
+  win.className = `fake-window printer-step step-${index + 1} clickable`;
 
   win.innerHTML = `
     <div class="titlebar">
@@ -236,152 +272,179 @@ function openPrinterStep(index) {
       <span class="close clickable">×</span>
     </div>
     <div class="content">
-      ${isFinal
-        ? `<p class="pixel-error" data-text="error">error</p>`
-        : `
-          <img src="${step.img}" alt="" draggable="false">
-          <div class="printer-step-text">${step.text}</div>
-        `
-      }
+      <img src="${step.img}" alt="" draggable="false">
+      <div class="printer-step-text">${step.text}</div>
     </div>
   `;
 
   document.body.appendChild(win);
-  allPopups.push(win);
+  trackPopup(win);
+
+  win.querySelector(".close")?.addEventListener("click", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    removePopup(win);
+  });
 
   win.addEventListener("click", (e) => {
     if (e.target.closest(".close")) return;
     e.stopPropagation();
-    if (!isFinal) openPrinterStep(index + 1);
+    openPrinterStep(index + 1);
   });
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-  const trigger = document.getElementById("printer-ragebait");
-  if (!trigger) return;
+  function openPrinterIntroduction() {
+    const win = document.createElement("div");
+    win.className = "fake-window printer-introduction";
 
-  trigger.addEventListener("click", (e) => {
-    e.stopPropagation();
-    openPrinterPoll();
-  });
-});
+    win.innerHTML = `
+      <div class="titlebar">
+        <span>printer ragebait</span>
+        <span class="close clickable" aria-label="close">×</span>
+      </div>
+      <div class="content">
+        <h3>still here?</h3>
+        <p>then kindly go read the damn printing manual.<br>( it will not help )</p>
+      </div>
+    `;
 
-function openPrinterPoll() {
-  const win = document.createElement("div");
-  win.className = "fake-window printer-poll-window clickable";
+    document.body.appendChild(win);
+    trackPopup(win);
 
-  win.innerHTML = `
-    <div class="titlebar">
-      <span>printer ragebait</span>
-      <span class="close clickable">×</span>
-    </div>
-
-    <div class="content printer-poll">
-      <h3>why did the printer fail this time?</h3>
-
-      <label class="printer-option clickable" data-answer="paper">
-        <input type="radio" name="printer"> paper jam ( there is no paper )
-      </label>
-
-      <label class="printer-option clickable" data-answer="ink">
-        <input type="radio" name="printer"> ink empty ( it was full yesterday )
-      </label>
-
-      <label class="printer-option clickable" data-answer="driver">
-        <input type="radio" name="printer"> driver issue ( i did nothing )
-      </label>
-
-      <label class="printer-option clickable" data-answer="fear">
-        <input type="radio" name="printer"> printer sensed fear
-      </label>
-
-      <div class="printer-result">( choose wisely )</div>
-    </div>
-  `;
-
-  document.body.appendChild(win);
-  allPopups.push(win);
-
-  win.querySelectorAll(".printer-option").forEach(option => {
-    option.addEventListener("click", (e) => {
+    win.querySelector(".close")?.addEventListener("click", (e) => {
+      e.preventDefault();
       e.stopPropagation();
-      openPrinterResult(option.dataset.answer);
+      removePopup(win);
+    });
+
+    win.querySelector(".content")?.addEventListener("click", (e) => {
+      e.stopPropagation();
+      openPrinterStep(0);
+    });
+  }
+
+  function openPrinterResult(answer) {
+    const win = document.createElement("div");
+    win.className = "fake-window printer-result-window";
+
+    const correct = answer === "fear";
+
+    win.innerHTML = `
+      <div class="titlebar">
+        <span>printer ragebait</span>
+        <span class="close clickable" aria-label="close">×</span>
+      </div>
+      <div class="content">
+        <h3>${correct ? "correct" : "wrong"}</h3>
+        <p>${correct ? "the printer sensed weakness." : "the printer sensed weakness anyway."}</p>
+      </div>
+    `;
+
+    document.body.appendChild(win);
+    trackPopup(win);
+
+    win.querySelector(".close")?.addEventListener("click", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      openPrinterIntroduction();
+    });
+
+    win.addEventListener("click", (e) => {
+      if (e.target.closest(".close")) return;
+      e.stopPropagation();
+    });
+  }
+
+  function openPrinterPoll() {
+    const win = document.createElement("div");
+    win.className = "fake-window printer-poll-window";
+
+    win.innerHTML = `
+      <div class="titlebar">
+        <span>printer ragebait</span>
+        <span class="close clickable" aria-label="close">×</span>
+      </div>
+
+      <div class="content printer-poll">
+        <h3>why did the printer fail this time?</h3>
+
+        <label class="printer-option" data-answer="paper">
+          <input type="radio" name="printer_poll" value="paper">
+          paper jam ( there is no paper )
+        </label>
+
+        <label class="printer-option" data-answer="ink">
+          <input type="radio" name="printer_poll" value="ink">
+          ink empty ( it was full yesterday )
+        </label>
+
+        <label class="printer-option" data-answer="driver">
+          <input type="radio" name="printer_poll" value="driver">
+          driver issue ( i did nothing )
+        </label>
+
+        <label class="printer-option" data-answer="fear">
+          <input type="radio" name="printer_poll" value="fear">
+          printer sensed fear
+        </label>
+
+        <div class="printer-result">( choose wisely )</div>
+      </div>
+    `;
+
+    document.body.appendChild(win);
+    trackPopup(win);
+
+    win.querySelector(".close")?.addEventListener("click", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      removePopup(win);
+    });
+
+    win.querySelectorAll(".printer-option").forEach((label) => {
+      label.addEventListener("click", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        const input = label.querySelector("input[type='radio']");
+        if (input) input.checked = true;
+        openPrinterResult(label.dataset.answer);
+      });
+    });
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const trigger = document.getElementById("printer-ragebait");
+    if (!trigger) return;
+
+    trigger.addEventListener("click", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      openPrinterPoll();
     });
   });
-}
 
-function openPrinterResult(answer) {
-  const win = document.createElement("div");
-  win.className = "fake-window printer-result-window clickable";
+/*global close*/
+  document.addEventListener("click", (e) => {
+    const close = e.target.closest(".fake-window .close");
+    if (!close) return;
+    if (close.classList.contains("close-deco")) return;
 
-  const isCorrect = answer === "fear";
+    const win = close.closest(".fake-window");
+    if (!win) return;
 
-  win.innerHTML = `
-    <div class="titlebar">
-      <span>printer ragebait</span>
-      <span class="close clickable">×</span>
-    </div>
-    <div class="content">
-      <h3>${isCorrect ? "correct" : "wrong"}</h3>
-      <p>${isCorrect ? "the printer sensed weakness." : "the printer sensed weakness anyway."}</p>
-    </div>
-  `;
+    if (win.classList.contains("printer-result-window")) return;
 
-  document.body.appendChild(win);
-  allPopups.push(win);
-
-  win.querySelector(".close").addEventListener("click", (e) => {
+    e.preventDefault();
     e.stopPropagation();
-    openPrinterIntroduction();
+    removePopup(win);
   });
-}
 
-function openPrinterIntroduction() {
-  const win = document.createElement("div");
-  win.className = "fake-window printer-introduction clickable";
+  window.openPrinterPoll = openPrinterPoll;
+  window.openPrinterStep = openPrinterStep;
+})();
 
-  win.innerHTML = `
-    <div class="titlebar">
-      <span>printer ragebait</span>
-      <span class="close clickable">×</span>
-    </div>
-    <div class="content">
-      <h3>still here?</h3>
-      <p>then kindly go read the damn printing manual.<br>(it will not help)</p>
-      <p style="margin-top:10px;font-size:12px;opacity:0.75;"></p>
-    </div>
-  `;
 
-  document.body.appendChild(win);
-  allPopups.push(win);
-
-  win.addEventListener("click", (e) => {
-    if (e.target.closest(".close")) return;
-    e.stopPropagation();
-    openPrinterStep(0);
-  });
-}
-
-// Global close (remove + untrack)
-document.addEventListener("click", (e) => {
-  const close = e.target.closest(".fake-window .close");
-  if (!close) return;
-  if (close.classList.contains("close-deco")) return;
-
-  e.preventDefault();
-  e.stopPropagation();
-
-  const win = close.closest(".fake-window");
-  if (!win) return;
-
-  win.remove();
-  const i = allPopups.indexOf(win);
-  if (i > -1) allPopups.splice(i, 1);
-});
-
-// =========================
-// BETRAYAL CAPTCHA
-// =========================
+/*betrayal captcha*/
 document.addEventListener("DOMContentLoaded", () => {
   const trigger = document.getElementById("betrayal-captcha");
   if (!trigger) return;
@@ -424,11 +487,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     win.innerHTML = `
       <div class="titlebar">
-        <span>betrayal verification</span>
+        <span>betrayal captcha</span>
         <span class="close clickable">×</span>
       </div>
       <div class="content">
-        <div class="betrayal-overtitle">category</div>
+        <div class="betrayal-overtitle">verification</div>
         <div class="betrayal-title">select all images with potential for betrayal</div>
         <div class="betrayal-hint" id="betrayal-hint">click everything that feels like betrayal</div>
         <div class="betrayal-grid" id="betrayal-grid"></div>
@@ -549,9 +612,8 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
-// =========================
-// SUB SCAM – VIDEO HINTER TV
-// =========================
+
+/*sub scam*/
 document.addEventListener("DOMContentLoaded", () => {
   const trigger = document.getElementById("sub-scam");
   if (!trigger) return;
@@ -566,7 +628,7 @@ document.addEventListener("DOMContentLoaded", () => {
     tv.className = "subscam-tv clickable";
     tv.innerHTML = `
       <video loop playsinline>
-        <source src="video/sub_scam_fernseher.webm" type="video/webm">
+        <source src="video/sub_scam_fernseher.mp4" type="video/mp4">
       </video>
       <img src="img/fernseher_01.png" alt="tv">
     `;
@@ -585,9 +647,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
-// =========================
-// TELEPORT (SAFE: zerstört keine transforms von DVD/Hearts)
-// =========================
+
 function rand(min, max) { return Math.random() * (max - min) + min; }
 function clamp(v, min, max) { return Math.max(min, Math.min(max, v)); }
 
@@ -602,7 +662,6 @@ function getMovables() {
 }
 
 function teleportElement(el) {
-  // NIE anfassen:
   if (el.id === "clean-button") return;
   if (el.classList.contains("dvd-clean")) return;
   if (el.classList.contains("fc-heart-wrap")) return;
@@ -625,7 +684,6 @@ function teleportElement(el) {
     el.style.right = "auto";
     el.style.bottom = "auto";
 
-    // nur "Fenster/Popups", nicht allgemeine transforms killen
     if (el.classList.contains("fake-window") || el.classList.contains("popup-img")) {
       el.style.transform = "none";
     }
@@ -654,9 +712,7 @@ function stopTeleporting() {
   teleportTimer = null;
 }
 
-// =========================
-// OUT OF SYNC → CHAOS MODE
-// =========================
+/*out of sync*/
 document.addEventListener("DOMContentLoaded", () => {
   const chaos = document.getElementById("out-of-sync");
   if (!chaos) return;
@@ -698,15 +754,8 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
-// =========================
-// FLIRTING CRIMES (komplett)
-// =========================
-// =========================
-// FLIRTING CRIMES – HEARTS (responsive, robust)
-// uses: img/herz.png
-// trigger: #flirting-crimes
-// optional stars layer: #global-stars (your existing CSS for stars can stay)
-// =========================
+
+/*flirting crimes*/
 if (!window.__fc_init__) {
   window.__fc_init__ = true;
 
@@ -723,7 +772,6 @@ if (!window.__fc_init__) {
 
   const heartQueue = [];
 
-  // --- helpers ---
   function tset(fn, ms) {
     const id = setTimeout(fn, ms);
     flirting.timers.push(id);
@@ -748,7 +796,6 @@ if (!window.__fc_init__) {
     return Math.max(min, Math.min(max, v));
   }
 
-  // --- stars (optional, safe) ---
   function spawnGlobalStars(count = 110) {
     const layer = document.getElementById("global-stars");
     if (!layer) return;
@@ -789,7 +836,6 @@ if (!window.__fc_init__) {
     }
   }
 
-  // --- lane math (responsive) ---
   const MARGIN = 24;
 
   function lanesSignature() {
@@ -797,7 +843,6 @@ if (!window.__fc_init__) {
   }
 
   function measureHeartWidthPx() {
-    // create hidden img with your real asset to measure actual width at current CSS
     const tmpWrap = document.createElement("div");
     tmpWrap.style.position = "fixed";
     tmpWrap.style.left = "-9999px";
@@ -823,8 +868,6 @@ if (!window.__fc_init__) {
   }
 
   function laneGapPx() {
-    // nice spacing across sizes
-    // (bigger screens -> larger gap)
     return clamp(Math.round(window.innerWidth * 0.05), 26, 120);
   }
 
@@ -861,7 +904,6 @@ if (!window.__fc_init__) {
     const now = Date.now();
     const lanes = flirting.lanes;
 
-    // find a free lane, else use the soonest one
     let lane = lanes.find((l) => l.busyUntil <= now);
     if (!lane) {
       lane = lanes.reduce((best, l) => (l.busyUntil < best.busyUntil ? l : best), lanes[0]);
@@ -873,9 +915,7 @@ if (!window.__fc_init__) {
     return { x: lane.x, wait };
   }
 
-  // --- spawn heart ---
   function spawnHeartNow(text) {
-    // duration between 7–12s feels good
     const dur = 7 + Math.random() * 5;
     const durMs = dur * 1000;
 
@@ -893,12 +933,10 @@ if (!window.__fc_init__) {
       wrap.className = "fc-heart-wrap clickable";
       wrap.dataset.fc = "1";
 
-      // IMPORTANT: fixed coordinates (stable on large screens)
       wrap.style.position = "fixed";
       wrap.style.left = x + "px";
       wrap.style.top = "-180px";
 
-      // animation via your CSS @keyframes fc-fall
       wrap.style.animationName = "fc-fall";
       wrap.style.animationDuration = `${dur}s`;
       wrap.style.animationTimingFunction = "linear";
@@ -924,14 +962,12 @@ if (!window.__fc_init__) {
 
       document.body.appendChild(wrap);
 
-      // track so Clean can remove safely
       if (typeof allPopups !== "undefined" && Array.isArray(allPopups)) {
         allPopups.push(wrap);
       }
 
       flirting.activeHearts++;
 
-      // click = pause briefly (optional)
       const PAUSE_MS = 2600;
       wrap.addEventListener("click", (e) => {
         e.stopPropagation();
@@ -945,7 +981,6 @@ if (!window.__fc_init__) {
         }, PAUSE_MS);
       });
 
-      // cleanup
       tset(() => {
         if (document.body.contains(wrap)) wrap.remove();
         flirting.activeHearts--;
@@ -957,7 +992,6 @@ if (!window.__fc_init__) {
     else doSpawn();
   }
 
-  // --- queue pump ---
   function pumpQueue() {
     if (flirting.queueBusy) return;
     flirting.queueBusy = true;
@@ -986,7 +1020,6 @@ if (!window.__fc_init__) {
     flirting.runWantsStop = true;
   }
 
-  // --- public clear for Clean button ---
   function clearFlirtingCrimes() {
     clearAllTimers();
     heartQueue.length = 0;
@@ -997,13 +1030,11 @@ if (!window.__fc_init__) {
     flirting.runWantsStop = false;
     stopGlobalStars();
 
-    // remove only our spawned nodes
     document.querySelectorAll('[data-fc="1"]').forEach((el) => el.remove());
   }
 
   window.clearFlirtingCrimes = clearFlirtingCrimes;
 
-  // --- init trigger ---
   document.addEventListener("DOMContentLoaded", () => {
     const trigger = document.getElementById("flirting-crimes");
     if (!trigger) return;
@@ -1046,9 +1077,7 @@ if (!window.__fc_init__) {
 }
 
 
-// =========================
-// CLEAN (einziger Handler)
-// =========================
+/*clean*/
 document.addEventListener("DOMContentLoaded", () => {
   const cleanBtn = document.getElementById("clean-button");
   if (!cleanBtn) return;
@@ -1058,22 +1087,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
     stopTeleporting();
 
-    // tracked popups
     allPopups.forEach(p => p?.remove?.());
     allPopups.length = 0;
 
-    // flirting clean (wenn vorhanden)
     if (typeof window.clearFlirtingCrimes === "function") {
       window.clearFlirtingCrimes();
     } else {
       document.querySelectorAll('[data-fc="1"]').forEach(el => el.remove());
     }
+
+    clearPrinterRagebait();
   });
 });
 
-// =========================
-// CLEAN BUTTON DVD (robust init)
-// =========================
+
 if (!window.__dvd_clean_init__) {
   window.__dvd_clean_init__ = true;
 
@@ -1176,9 +1203,18 @@ if (!window.__dvd_clean_init__) {
   });
 }
 
-// =========================
-// COMPLAINTS (Login + Notes)
-// =========================
+function clearPrinterRagebait() {
+
+  document.querySelectorAll(
+    ".printer-poll-window, " +
+    ".printer-result-window, " +
+    ".printer-introduction, " +
+    ".fake-window.printer-step"
+  ).forEach(el => el.remove());
+
+}
+
+/*complaints box*/
 (function () {
   if (window.__complaints_ready__) return;
   window.__complaints_ready__ = true;
@@ -1221,7 +1257,6 @@ if (!window.__dvd_clean_init__) {
     return b ? b.slice(0, 32) : "untitled complaint";
   }
 
-  // ---------- LOGIN WINDOW ----------
   function loginWindow() {
     const w = document.createElement("div");
     w.className = "fake-window complaints-login clickable";
@@ -1234,7 +1269,6 @@ if (!window.__dvd_clean_init__) {
           <span class="dot green"></span>
         </div>
         <div class="title">login</div>
-        <span class="close clickable" aria-label="close">×</span>
       </div>
 
       <div class="content">
@@ -1251,13 +1285,9 @@ if (!window.__dvd_clean_init__) {
             <input id="cl-pass" type="password" value="••••••••••••••" readonly>
           </div>
 
-          <div class="complaints-login-actions">
-            <button type="button" class="notes-btn primary login-btn clickable">login</button>
-          </div>
-        </form>
-
-        <div class="complaints-login-foot">please log in.</div>
-      </div>
+        <div class="complaints-login-actions">
+  <button type="button" class="notes-btn primary login-btn clickable">login</button>
+</div>
     `;
 
     return w;
@@ -1268,8 +1298,7 @@ if (!window.__dvd_clean_init__) {
     document.body.appendChild(w);
     allPopups.push(w);
 
-    // schließen: roter dot ODER x
-    const close = w.querySelector(".dot.red, .close");
+    const close = w.querySelector(".dot.red");
     if (close) {
       close.addEventListener("click", (e) => {
         e.preventDefault();
@@ -1280,7 +1309,6 @@ if (!window.__dvd_clean_init__) {
       });
     }
 
-    // login -> notes
     const loginBtn = w.querySelector(".login-btn");
     if (loginBtn) {
       loginBtn.addEventListener("click", (e) => {
@@ -1291,13 +1319,11 @@ if (!window.__dvd_clean_init__) {
         const i = allPopups.indexOf(w);
         if (i > -1) allPopups.splice(i, 1);
 
-        // nächster tick: robust gegen globale click-handler
         setTimeout(() => openNotes(), 0);
       });
     }
   }
 
-  // ---------- NOTES WINDOW ----------
   function notesWindow() {
     const w = document.createElement("div");
     w.className = "fake-window complaints-notes clickable";
@@ -1321,7 +1347,7 @@ if (!window.__dvd_clean_init__) {
             <button class="notes-btn primary clickable">submit</button>
           </div>
           <div class="complaints-notes-editor">
-            <textarea placeholder="type your complaint… (the system is listening. allegedly.)"></textarea>
+            <textarea placeholder="type your complaint… ( the system is listening. allegedly. )"></textarea>
           </div>
         </div>
       </div>`;
@@ -1410,7 +1436,6 @@ if (!window.__dvd_clean_init__) {
     fresh(w);
   }
 
-  // ---------- TRIGGER ----------
   document.addEventListener("click", (e) => {
     const t = e.target.closest("#complaints-box");
     if (!t) return;
@@ -1419,3 +1444,84 @@ if (!window.__dvd_clean_init__) {
     openLogin();
   });
 })();
+
+
+/* fake cursor */
+document.addEventListener("DOMContentLoaded", () => {
+  fakeCursor = document.getElementById("fake-cursor");
+  if (!fakeCursor) return;
+
+  document.addEventListener("mousemove", (e) => {
+    fakeCursor.style.left = e.clientX + "px";
+    fakeCursor.style.top  = e.clientY + "px";
+
+    if (fakeCursor.classList.contains("loading")) return;
+
+    const el = document.elementFromPoint(e.clientX, e.clientY);
+    if (!el) return;
+
+    const inLogin         = el.closest(".complaints-login");
+    const inNotes         = el.closest(".complaints-notes");
+    const inPrinterPoll   = el.closest(".printer-poll-window");
+    const inPrinterResult = el.closest(".printer-result-window");
+    const inPrinterIntro  = el.closest(".printer-introduction");
+    const inPrinterStep   = el.closest(".fake-window.printer-step:not(.step-12)");
+    const inBetrayal      = el.closest(".betrayal-window");
+
+    let isClickable = false;
+
+    if (inLogin) {
+      isClickable = !!el.closest(
+        ".complaints-login .login-btn, " +
+        ".complaints-login .dot.red, " +
+        ".complaints-login #cl-user, " +
+        ".complaints-login #cl-pass"
+      );
+    }
+    else if (inNotes) {
+      isClickable = !!el.closest(
+        ".complaints-notes .complaints-notes-item, " +
+        ".complaints-notes textarea, " +
+        ".complaints-notes .note-title-input, " +
+        ".complaints-notes .dot.red, " +
+        ".complaints-notes .complaints-notes-toolbar .notes-btn.primary"
+      );
+    }
+    else if (inPrinterPoll) {
+      isClickable = !!el.closest(".printer-poll-window input[type='radio']");
+    }
+    else if (inPrinterResult) {
+      isClickable = !!el.closest(".printer-result-window .close");
+    }
+    else if (inPrinterIntro) {
+      const inContent = !!el.closest(".printer-introduction .content");
+      const onClose   = !!el.closest(".printer-introduction .close");
+      isClickable = inContent && !onClose;
+    }
+    else if (inPrinterStep) {
+      isClickable = !!el.closest(".fake-window.printer-step:not(.step-12) .content");
+    }
+    else if (inBetrayal) {
+      isClickable = !!el.closest(
+        ".betrayal-window .betrayal-tile, " +
+        ".betrayal-window .close, " +
+        ".betrayal-window #betrayal-clear, " +
+        ".betrayal-window #betrayal-next"
+      );
+    }
+    else {
+      const title = el.closest(".line.title");
+      const isBetrayalList = !!el.closest(".textblock.seven");
+
+      isClickable =
+        !!el.closest(".fc-heart-wrap, .clickable, a, button, input, .popup-img, #checkbox-container, [data-clickable]")
+        || (title && !isBetrayalList);
+    }
+
+    fakeCursor.classList.toggle("outline", isClickable);
+    fakeCursor.classList.toggle("filled", !isClickable);
+  });
+});
+
+
+

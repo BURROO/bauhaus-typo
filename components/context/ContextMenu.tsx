@@ -50,7 +50,7 @@ export const ContextMenuProvider = ({
   // const divider = screenHeight !== null ? Math.floor( screenHeight / 15) :  1
   // const projectCount = 46
   // const projectCount = 43
-  const projectCount = 45
+  const projectCount = 46
   const header = 1
   const footer = 3
   const multiLineRows = 5
