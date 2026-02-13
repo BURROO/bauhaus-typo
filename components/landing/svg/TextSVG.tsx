@@ -127,22 +127,6 @@ const TextSVG = ({
 
     return <TextContainer text={text} position={position} fill={fill || "black"} index={0}/>
 
-    // return (<>
-    //     <text
-    //     style={{
-    //         textTransform: "uppercase",
-    //         fontSize,
-    //         background: "red"
-    //     }}
-    //     x={position.x}
-    //     y={position.y+height*2-fontSize*1.5}
-    //     fontSize={fontSize}
-    //     fontWeight="bold"
-    //     fill={fill || "black"}
-    //     >
-    //         {text}
-    //     </text>
-    // </>)
 }
 
 export default TextSVG

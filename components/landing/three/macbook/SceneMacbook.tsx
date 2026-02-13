@@ -117,8 +117,8 @@ const MacbookInstance = forwardRef<THREE.Group, MacbookInstanceProps>(
         {/* Video only updates source */}
         {src && <VideoPlane
           src={src}
-          position={[0, 0.04, -0.081]}
-          rotate={[0, 0, 0]}
+          position={[0, 0.04, -0.0822]}
+          rotate={[0.005, 0, 0]}
           size={[0.23, 0.135]}
         />}
       </group>

@@ -61,18 +61,24 @@ const ListFooter = ({
                 </label>
             </div>
             <div style={{ display: "flex"}}>
-                <span>Filter:</span>
-                {
-                    filterOptions.map((course, i, allCourses) => (
-                        <span 
-                        onClick={(() => setFilter(course.name === filter ? "" : course.name))}
-                        key={i}
-                        className={`${styles.tag} ${course.name === filter ? styles.active : ''}`}
-                        >
-                            {course.name !== filter ? course.short : course.name}
-                        </span>
-                    ))
-                }    
+                <div style={{ display: "flex"}}> 
+                    <span>Course:</span>
+                    {
+                        filterOptions.map((course, i, allCourses) => (
+                            <span 
+                            onClick={(() => setFilter(course.name === filter ? "" : course.name))}
+                            key={i}
+                            className={`${styles.tag} ${course.name === filter ? styles.active : ''}`}
+                            >
+                                {course.name !== filter ? course.short : course.name}
+                            </span>
+                        ))
+                    }    
+                </div>
+                <div>
+                    <button>About</button>
+                    <button>Imprint</button>
+                </div>
             </div>
         </div>
 

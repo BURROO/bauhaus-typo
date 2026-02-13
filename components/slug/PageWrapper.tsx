@@ -17,6 +17,7 @@ import { ContextMenu } from "../context/ContextMenu";
 import Button from "../general/Button";
 import { getAssetWebsite } from "@/util/getAssets";
 import { useMousePos } from "../hook/useMousePos";
+import BackgroundSVG from "../landing/svg/BackgroundSVG";
 // import Cards from "./cards/Cards";
 
 const Book = dynamic(
@@ -85,6 +86,9 @@ const PageWrapper = ({ item }: Props) => {
 
     return (
         <div className={styles.page}>
+            <div style={{ position: "absolute", left: 0, top: 0,  zIndex: 0, width: `100%`, height: `100%`}}>
+                <BackgroundSVG />
+            </div>
             <main className={styles.main}>
                 <div className={styles.wrapper} style={{
                     borderRadius: isHovered ? 5 : 0,
@@ -103,7 +107,13 @@ const PageWrapper = ({ item }: Props) => {
                 hasWebsite &&
                 mousePos && 
                 view === 'outside' &&
-                <div style={{ position: 'fixed', left: mousePos?.x+ 20, top: mousePos.y - 20, pointerEvents: "none"}} key={view}>
+                <div style={{ 
+                    position: 'fixed',
+                    left: mousePos?.x+ 20, 
+                    top: mousePos.y - 20, 
+                    pointerEvents: "none", 
+                    zIndex: 2
+                }} key={view}>
                     <Button 
                     text={buttonText} 
                     onClick={() => {

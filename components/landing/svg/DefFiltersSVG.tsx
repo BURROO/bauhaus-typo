@@ -28,12 +28,12 @@ const DefFiltersSVG = ({ gradientId }: Props) => {
                     y2="0"
                     gradientTransform={`rotate(25 ${screenWidth / 2} ${screenHeight / 2})`}
                     >
-                        <stop offset="0%" stopColor="rgb(190,190,190)"/>
-                        <stop offset="45%" stopColor="rgb(150, 150, 150)"/>
-                        <stop offset="50%" stopColor="rgb(180,180,180)"/>
-                        <stop offset="100%" stopColor="rgb(190,190,190)"/>
-{/* 
-                        <animateTransform
+                        <stop offset="0%" stopColor="rgb(182,182,182)"/>
+                        <stop offset="30%" stopColor="rgb(150, 150, 150)"/>
+                        <stop offset="70%" stopColor="rgb(180,180,180)"/>
+                        <stop offset="100%" stopColor="rgb(182,182,182)"/>
+
+                        {/* <animateTransform
                         attributeName="gradientTransform"
                         type="translate"
                         additive="sum"

@@ -76,53 +76,53 @@ const List = ({ dataStudents, dataCourses}: Props) => {
         setFilter(f)
     }, [searchParams])
 
-    useEffect(() => {
+    // useEffect(() => {
 
-        const handleScroll = (e: any) => {
+    //     const handleScroll = (e: any) => {
 
-            const scrollInc = e.deltaY
+    //         const scrollInc = e.deltaY
 
-            const itemsToRemove = 1 + Math.floor(Math.abs(scrollInc)/10)
+    //         const itemsToRemove = 1 + Math.floor(Math.abs(scrollInc)/10)
 
-            scrollPos.current = scrollInc+scrollPos.current
+    //         scrollPos.current = scrollInc+scrollPos.current
 
-            const newOfst = ofst > 1000 ? 0 : ofst+Math.floor((Math.abs(scrollInc)/10))
+    //         const newOfst = ofst > 1000 ? 0 : ofst+Math.floor((Math.abs(scrollInc)/10))
 
-            setOfst(newOfst)
+    //         setOfst(newOfst)
 
-            if(refContainer.current){
+    //         if(refContainer.current){
 
-                if(scrollPos.current >= itemHeight){
+    //             if(scrollPos.current >= itemHeight){
 
-                    scrollPos.current = 0
-                    setFirstIndex((firstIndex+itemsToRemove) % dataStudents.length)
+    //                 scrollPos.current = 0
+    //                 setFirstIndex((firstIndex+itemsToRemove) % dataStudents.length)
 
-                }else if(scrollPos.current <= -itemHeight){
+    //             }else if(scrollPos.current <= -itemHeight){
 
-                    scrollPos.current = 0
-                    setFirstIndex((firstIndex-itemsToRemove) % dataStudents.length)
+    //                 scrollPos.current = 0
+    //                 setFirstIndex((firstIndex-itemsToRemove) % dataStudents.length)
                     
-                }else{
+    //             }else{
 
-                    // scrollPos.current = 0
-                }
-                // refContainer.current.scrollTop += 200
-            }
+    //                 // scrollPos.current = 0
+    //             }
+    //             // refContainer.current.scrollTop += 200
+    //         }
 
-            // 
-            e.preventDefault()
-        }
+    //         // 
+    //         e.preventDefault()
+    //     }
 
-        window.addEventListener('wheel', handleScroll, { 
-            passive: false
-        })
+    //     window.addEventListener('wheel', handleScroll, { 
+    //         passive: false
+    //     })
 
-        return () => {
+    //     return () => {
 
-            window.removeEventListener('wheel', handleScroll)
-        }
+    //         window.removeEventListener('wheel', handleScroll)
+    //     }
 
-    }, [ofst])
+    // }, [ofst])
 
 
     // const courseInfo: TypeCourse|null = dataCourses.find(k => k.COURSE === filter) || null

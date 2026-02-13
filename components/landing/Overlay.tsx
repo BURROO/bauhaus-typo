@@ -75,7 +75,7 @@ const Overlay = ({
         style={{ 
             height : rowHeight ? rowHeight*25+2 : 0,
             paddingBottom: rowHeight ? rowHeight*3 : 0,
-            // visibility: activeIndex === null ? 'hidden' : 'visible',
+            visibility: activeIndex === null ? 'hidden' : 'visible',
         }}
         >
             <SceneWrapper camSettings={orbitCam} autoRotateSpeed={6} type={"orbit"}>

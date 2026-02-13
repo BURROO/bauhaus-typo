@@ -97,9 +97,13 @@ const ListSVG = ({
 
                 const data = d[0]?.data
 
-                const found = Object.values(data).find(value => value && value.toString().match(new RegExp(filter, 'ig')))
+                // const found = Object.values(data).find(value => value && value.toString().match(new RegExp(filter, 'ig')))
+                const foundName = data.NAME.toString().match(new RegExp(filter, 'ig'))
+                const foundCourse = data.COURSE.toString().match(new RegExp(filter, 'ig'))
+                const foundSupervision = data.SUPERVISION.toString().match(new RegExp(filter, 'ig'))
+                const foundMedium = data.MEDIUM.toString().match(new RegExp(filter, 'ig'))
 
-                return found
+                return foundName || foundCourse || foundSupervision || foundMedium
             })
             .filter(d => {
 
@@ -115,7 +119,8 @@ const ListSVG = ({
             })
             setRenderedData(adjustYtoOrder([...newOrder]))
         }else{
-            setRenderedData(adjustYtoOrder([...newOrder, ...newOrder]))
+            setRenderedData(adjustYtoOrder([...newOrder]))
+            // setRenderedData(adjustYtoOrder([...newOrder, ...newOrder]))
 
         }
 

@@ -35,6 +35,7 @@ const Poster = ({ item }: Props) => {
                     type={"interact"}
                     autoRotateSpeed={0}
                     >
+                        <ambientLight intensity={0.4} />
                         <ScenePosterWrapper
                         onClick={() => setView('inside')}
                         type="interact"
@@ -52,10 +53,10 @@ const Poster = ({ item }: Props) => {
             </div>
             {view === "inside" && <ButtonWrapper>
                 <Button
-                // onClick={() => setView(view === "outside" ? "inside" : "outside")}
-                // text={`Look at ${view === "outside" ? "Slideshow" : "Poster"}`}
-                onClick={() => setView("inside")}
-                text={`Look at Slideshow`}
+                onClick={() => setView(view !== "inside" ? "inside" : "outside")}
+                text={`Look at ${view !== "inside" ? `Look at Slideshow` : `Look at Poster`}`}
+                // onClick={() => setView("inside")}
+                // text={`Look at Slideshow`}
                 />
             </ButtonWrapper>}
         </>

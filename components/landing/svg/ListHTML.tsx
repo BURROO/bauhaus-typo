@@ -114,7 +114,8 @@ const ListSVG = ({
             })
             setRenderedData(adjustYtoOrder([...newOrder]))
         }else{
-            setRenderedData(adjustYtoOrder([...newOrder, ...newOrder]))
+            // setRenderedData(adjustYtoOrder([...newOrder, ...newOrder]))
+            setRenderedData(adjustYtoOrder([...newOrder]))
 
         }
 

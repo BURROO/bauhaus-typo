@@ -36,6 +36,7 @@ const Book = ({ item }: Props) => {
                     type={"interact"}
                     autoRotateSpeed={0}
                     >
+                        <ambientLight intensity={1.9} />
                         <SceneBook
                         visible={true}
                         item={item}
@@ -55,7 +56,8 @@ const Book = ({ item }: Props) => {
             {view === "inside" && <ButtonWrapper>
                 <Button
                 onClick={() => setView(view === "inside" ? "outside" : "inside")}
-                text={`Look ${view === "inside" ? "outside" : "inside"}`}
+                // text={`Look ${view === "inside" ? "outside" : "inside"}`}
+                text={`Close Slideshow`}
                 />
             </ButtonWrapper>}
         </>

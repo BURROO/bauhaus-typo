@@ -47,16 +47,7 @@ const Slideshow = ({
 
     const [hoverText, setHoverText ] = useState<string|null>(null)
 
-
     const {mousePos} = useMousePos({}, !!hoverText)
-    // useEffect(() => {
-
-
-    //     if(mousePos)
-
-    //     setHoverText()
-    // }, [mousePos])
-
 
     return (
         <>
@@ -94,37 +85,44 @@ const Slideshow = ({
                         ))
                     }
                 </div>
-                {activeSlide > 0 && (
+                {/* {activeSlide > 0 && ( */}
                     <div
                     className={styles.goLeft}
-                    onClick={() => goPrev()}
+                    onClick={() => {
+                        goPrev()
+                        setHoverText(activeSlide > 0 ? 'Look at previous' : 'Look at last spread')
+                    }}
                     onMouseOver={() => {
-                        setHoverText('Look at previous')
+                        setHoverText(activeSlide > 0 ? 'Look at previous' : 'Look at last spread')
                     }}
                     onMouseEnter={() => {
-                        setHoverText('Look at previous')
+                        // setHoverText('Look at previous')
+                        setHoverText(activeSlide > 0 ? 'Look at previous' : 'Look at last spread')
                     }}
                     onMouseLeave={() => {
                         setHoverText(null)
                     }}
                     />
-                )}
-                {activeSlide < slides.length-1 && (
+                {/* )} */}
+                {/* {activeSlide < slides.length-1 && ( */}
                     <div 
                     className={styles.goRight} 
-                    onClick={() => goNext()} 
+                    onClick={() => {
+                        goNext()
+                        setHoverText(activeSlide < slides.length-1 ? 'Look at next' : 'Look at first spread')
+                    }} 
                 
                     onMouseOver={() => {
-                        setHoverText('Look at next')
+                        setHoverText(activeSlide < slides.length-1 ? 'Look at next' : 'Look at first spread')
                     }}
                     onMouseEnter={() => {
-                        setHoverText('Look at next')
+                        setHoverText(activeSlide < slides.length-1 ? 'Look at next' : 'Look at first spread')
                     }}
                     onMouseLeave={() => {
                         setHoverText(null)
                     }}
                     />
-                )}
+                {/* )} */}
             </div>
             {
                 mousePos &&

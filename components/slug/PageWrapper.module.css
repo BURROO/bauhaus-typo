@@ -1,7 +1,14 @@
 
+
+.page{
+  background: var(--gray);
+  /* background: red; */
+  height: 100lvh;
+}
+
 .main{
   padding: 10px;
-  background: black;
+  /* background: black; */
   color: white;
   height: 100lvh;
   /* position: relative; */
@@ -10,6 +17,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 0;
+  z-index: 1;
 }
 
 
@@ -25,7 +34,7 @@
 .overlay{
   position: absolute;
   z-index: 1;
-  background: rgb(20,20,20);
+  /* background: rgb(20,20,20); */
   color: black;
   background-color: cyan;
   /* background: rgb(255,0, 0); */

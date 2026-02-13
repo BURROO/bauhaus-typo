@@ -19,7 +19,7 @@ export const getTitleAsArray = (title : string) => {
     if(title.toLowerCase().match('a visual diss')){
         return ['A visual Dissection of', 'the Ok-Sign']
     }else if(title.toLowerCase().match('typo bal')){
-        return ['Typo Balla(nce):', 'Charming Ligature']
+        return ['Typo Balla(nce)', 'Charming Ligature']
     }else if(title.toLowerCase().match('durch foto')){
         return ['Durch Fotografie', 'keine Einsichten']
     }else{

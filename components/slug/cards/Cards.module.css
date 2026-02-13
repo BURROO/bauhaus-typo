@@ -5,7 +5,7 @@
   height: 100vh;
   /* background: rgb(100,100,100);
   background: black; */
-  background: var(--gray);
+  /* background: var(--gray); */
   /* background: white; */
   display: flex;
   align-items: center;
