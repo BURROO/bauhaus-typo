@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 // import { saveAs } from 'file-saver'
 import { saveAs } from "file-saver";
 import { TypeProject } from "@/types/project-type";
+import { getProjectTitle } from "@/util/sanitizeForUrl";
 // import { FFmpeg } from "@ffmpeg/ffmpeg";
 // import { fetchFile } from "@ffmpeg/util";
 
@@ -13,7 +14,8 @@ import { TypeProject } from "@/types/project-type";
 const WARMUP_FRAMES = 40; // usually 10–20 is enough
 
 const FrameExporter = ({
-  totalFrames = 240,
+//   totalFrames = 240,
+  totalFrames = 80,
   radius = 6 / 1.5,
   goNext,
   currentProject
@@ -23,6 +25,8 @@ const FrameExporter = ({
   goNext: () => void;
   currentProject: TypeProject|null
 }) => {
+
+    
     const { gl, camera, scene } = useThree();
     // const frame = useRef(0);     
     const frame = useRef(-WARMUP_FRAMES);
@@ -59,7 +63,6 @@ const FrameExporter = ({
     //     if (frame.current === totalFrames) {
     //     zip.current.generateAsync({ type: "blob" }).then((blob) => {
     //         saveAs(blob, `${currentProject?.TITLE}.zip`);
-    //         console.log("PNG sequence exported");
     //         goNext()
     //     });
     //     }
@@ -120,7 +123,10 @@ const FrameExporter = ({
 
         if (frame.current === totalFrames) {
             zip.current.generateAsync({ type: "blob" }).then((blob) => {
-                saveAs(blob, `${currentProject?.TITLE}.zip`);
+
+                const title = currentProject && getProjectTitle(currentProject )
+
+                saveAs(blob, `${title}.zip`);
                 goNext();
             });
         }

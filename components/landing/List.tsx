@@ -11,6 +11,7 @@ import ListCourse from './ListCourse';
 import Background from './Background';
 import ListSVG from './svg/ListSVG';
 import { useSearchParams, useRouter } from 'next/navigation';
+import OverlayNew from './OverlayNew';
 
 interface Props {
     dataStudents: TypeProject[];
@@ -141,7 +142,8 @@ const List = ({ dataStudents, dataCourses}: Props) => {
                 className={styles.scrollWrapperInner}
                 />
             
-                <Overlay dataStudents={dataStudents} autoRotateSpeed={2}/>
+                {/* <Overlay dataStudents={dataStudents} autoRotateSpeed={2}/> */}
+                <OverlayNew dataStudents={dataStudents} autoRotateSpeed={2}/>
                 {
                     screenHeight && rowHeight && filter !== "" &&
                     <ListCourse

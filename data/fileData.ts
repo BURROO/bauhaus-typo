@@ -111,7 +111,7 @@ export const fileDataIO = {
     },
     'august_guccione': {
         // dir: `/images/ip/content`,
-        count: 3,
+        count: 2,
         fileType: 'JPG'
     },
     'ossian_osborne': {

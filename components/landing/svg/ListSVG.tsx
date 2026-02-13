@@ -155,8 +155,6 @@ const ListSVG = ({
     // const courseInfo: TypeCourse|null = dataCourses.find(k => k.COURSE === filter) || null
     const rowCOunt = getTotalLinesForListOfPojects({ projects: (renderData).map(r => r[0].data) })
 
-    console.log("renderData", renderData)
-    console.log("rowCOunt", rowCOunt)
 
     return (
         <div

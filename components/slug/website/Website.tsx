@@ -110,7 +110,8 @@ const Website = ({ item }: Props) => {
                     <SceneWrapper camSettings={interactCam} type="interact" autoRotateSpeed={5}>
                         <SceneMacbook
                             item={item}
-                            isDouble={false}
+                            // isDouble={false}
+                            isDouble={true}
                             type="interact"
                             visible
                             // onClick={() => setView(view === 'iframe' ? 'video' : 'iframe')}

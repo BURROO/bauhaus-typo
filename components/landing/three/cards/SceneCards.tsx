@@ -28,10 +28,6 @@ export default function SceneCard({
 
   // const cards = useMemo(() => getAssetCards({ item }), [item])
 
-  // // console.log("cards", cards)
-  // const cardsWithTextures = useTexture([
-  //   ...cards
-  // ])
   
   return (
     <group
@@ -183,7 +179,6 @@ function CardBox({ item }: { item: TypeProject }) {
 
 // function Card({ item }: { item: any }) {
 
-//   console.log("item", item)
 //   const textureUrl = item?.src ?? item?.image
 //   const texture = useTexture(textureUrl)
 

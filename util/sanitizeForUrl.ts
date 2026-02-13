@@ -29,6 +29,12 @@ export const getUrlFromProject = (item: TypeProject) => {
 }
 
 
+export const getProjectTitle = (item: TypeProject) => {
+    const title = sanitizeForUrl(item?.TITLE)
+    return title
+}
+
+
 export const getType = (item: TypeProject): "WEBSITE"|"PUBLICATION"|"POSTER"|"SLIDESHOW"|"CARD GAME" => {
 
 

@@ -42,7 +42,8 @@ const Slideshow = ({
 
     const fullScreen = 
         item.COURSE === "Bauhaus Master Lectures" ||
-        item.COURSE === "Bauhaus Inhouse"
+        item.COURSE === "Bauhaus Inhouse" ||
+        item.NAME === "August Guccione"
 
 
     const [hoverText, setHoverText ] = useState<string|null>(null)

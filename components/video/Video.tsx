@@ -55,13 +55,10 @@ const Video = ({
         zoom: 17
     }
 
-    // console.log(activeProject, activeIndex)
-    // console.log(type)
 
 
     const [isExporting, setIsExporting] = useState(false)
 
-    console.log("isExporting", isExporting)
 
     return (
         <div 
@@ -85,7 +82,6 @@ const Video = ({
                     style={{ background: activeIndex === i ? "cyan" : ""}}
                     key={i} onClick={() => {
                         
-                        console.log(i, student.index)
                         setActiveIndex(i)
                         // 
                     }}>{student.index} {student.NAME}</button>
@@ -106,10 +102,8 @@ const Video = ({
 
                     setActiveIndex(null)
 
-                    console.log("turn off")
 
                     setTimeout(() => {
-                    console.log("go to next:", prevIndex)
                         setActiveIndex((prevIndex||0)+1)
                     }, 400)
                     

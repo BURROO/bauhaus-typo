@@ -38,6 +38,7 @@ const Cards = ({ item }: Props) => {
                     type={"interact"}
                     autoRotateSpeed={0}
                     >
+                        <ambientLight intensity={1.9} />
                         <SceneCard
                         visible={true}
                         item={item}

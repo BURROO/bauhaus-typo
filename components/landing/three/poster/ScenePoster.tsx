@@ -179,7 +179,6 @@ function ScenePosterInner({
   // if(item?.COURSE === "Introduction Typography") folded = true
 
 
-  // console.log("folded", folded, item?.COURSE)
 
 
   const geometry = useMemo(() => {

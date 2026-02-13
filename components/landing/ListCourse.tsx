@@ -28,7 +28,6 @@ const ListCourse = ({ course, dataStudents }: Props) => {
     //     // const titleLength = data.TITLE.split(':').length
     //     // const nameLength = data.NAME.split(',').length
 
-    //     // console.log(data.TITLE, "titleLength ", titleLength)
         
     //     // const length = Math.max(titleLength, nameLength)
 
