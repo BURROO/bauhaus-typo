@@ -164,7 +164,7 @@ const List = ({ dataStudents, dataCourses}: Props) => {
                     setSearchTerm={setSearchTerm}
                     />
                 </div>
-                {/* <div 
+                <div 
                 style={{ 
                     position: "fixed", 
                     zIndex: -1,
@@ -173,9 +173,9 @@ const List = ({ dataStudents, dataCourses}: Props) => {
                     right: 0,
                     bottom: 0,
                 }}>
-                    <Background text={"Bauhaus Typography"} dir={1}/>
-                    <Background text={"EXHIBITION"} dir={-1}/>
-                </div> */}
+                    <Background text={"Bauhaus Typography "} dir={1}/>
+                    <Background text={"EXHIBITION 25/26 "} dir={-1}/>
+                </div>
             </div>
             <ListSVG
             dataStudents={dataStudents}

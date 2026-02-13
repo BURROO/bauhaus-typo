@@ -7,12 +7,14 @@ export function preloadAssets(
 ): Promise<void> {
 
   // Only include assets that are in a folder called "cover" or "showcase"
-  const filteredAssets = assets.filter(src => /\/(cover|showcase)\//i.test(src))
+  const filteredAssets = assets.filter(src => /\/(preview)\//i.test(src))
+  console.log("filteredAssets", filteredAssets)
 
   let loaded = 0
   const total = filteredAssets.length
 
   const update = () => {
+    console.log("loaded ", loaded)
     loaded++
     onProgress?.(loaded / total)
   }
@@ -30,6 +32,7 @@ export function preloadAssets(
 
       // VIDEO
       else if (src.match(/\.(webm|mp4)$/i)) {
+  console.log("src", src)
         const video = document.createElement('video')
         video.src = src
         video.preload = 'auto'

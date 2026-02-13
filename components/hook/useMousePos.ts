@@ -22,22 +22,22 @@ export const useMousePos = ({}, condition: boolean) => {
             setRelPos(relPos)
         }
 
-        if(condition){
-            window.addEventListener("mousemove", handleMousePos)
-        }else{
+        // if(condition){
+        window.addEventListener("mousemove", handleMousePos)
+        // }else{
+        //     setMousePos(null)
+        //     setRelPos(null)
+        //     window.removeEventListener("mousemove", handleMousePos)
+        // }
+
+        return () => {
+
             setMousePos(null)
             setRelPos(null)
             window.removeEventListener("mousemove", handleMousePos)
         }
-
-            return () => {
     
-                setMousePos(null)
-                setRelPos(null)
-                window.removeEventListener("mousemove", handleMousePos)
-            }
-    
-    }, [condition])
+    }, [])
 
     return { mousePos, relPos }
 }

@@ -72,12 +72,15 @@ const PageWrapper = ({ item }: Props) => {
         }
     }, [view])
 
-    const {mousePos} = useMousePos({}, isHovered)
+    // const { mousePos } = useMousePos({}, isHovered)
+    const { mousePos } = useMousePos({}, true)
 
 
     const type = getType(item)
 
-    const buttonText = type === 'WEBSITE' ? 'Open Website' : 'Open Slideshow'
+    const buttonText = type === 'WEBSITE' ? 
+       ( isHovered ? 'Open Website' : 'Click & Drag') : 
+       ( isHovered ? 'Open Slideshow' : 'Click & Drag')
 
 
     const hasWebsite =  useMemo(() => (type === 'WEBSITE' && !getAssetWebsite({ item })) ? false : true,[item])
@@ -102,7 +105,7 @@ const PageWrapper = ({ item }: Props) => {
                 </div>
             </main>
             <ProjectInfo project={item} />
-
+                {/* <div style={{ position: "fixed", background: "red"}} >{mousePos?.x}</div> */}
             {
                 hasWebsite &&
                 mousePos && 

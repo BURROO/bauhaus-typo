@@ -357,10 +357,6 @@ const ListSVG = ({
                         width={screenWidth}
                         height={screenHeight - (rowCOunt * rowHeight) + 2}
                         fill={`url(#${gradientId})`}
-                        // mask={`url(#${maskFilterId})`}
-                        // fill={`url(#${gradientId})`}
-                        // mask={`url(#${maskId})`}
-                        // fill="red"
                         />
                     </g>}
                 </g>

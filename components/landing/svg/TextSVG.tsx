@@ -46,25 +46,7 @@ const TextSVG = ({
             <>
                 {
                     nameArray.map((name, i) => (
-                    // text.split(/,|:/ig).map((name, i) => (
 
-                        // <text
-                        // key={i}
-                        // style={{
-                        //     textTransform: "uppercase",
-                        //     fontSize,
-                        //     background: "red"
-                        // }}
-                        // x={position.x}
-                        // // y={position.y}
-                        // y={position.y+height*2-fontSize*1.5+i*height}
-                        // // y={position.y-fontSize*1.8+fontSize*0.3}
-                        // fontSize={fontSize}
-                        // fontWeight="bold"
-                        // fill={fill || "black"}
-                        // >
-                        //     {name}
-                        // </text>
                         <TextContainer key={i} text={name} position={position} fill={fill || "black"} index={i} />
                     ))
                 }
@@ -102,23 +84,7 @@ const TextSVG = ({
                     // text.split(/,|:/ig).map((name, i) => (
 
                         <TextContainer key={i} text={name + (i === 0 && all.length > 1 ? ':' : '')} position={position} fill={fill || "black"} index={i}/>
-                        // <text
-                        // key={i}
-                        // style={{
-                        //     textTransform: "uppercase",
-                        //     fontSize,
-                        //     background: "red"
-                        // }}
-                        // x={position.x}
-                        // // y={position.y}
-                        // y={position.y+height*2-fontSize*1.5+i*height}
-                        // // y={position.y-fontSize*1.8+fontSize*0.3}
-                        // fontSize={fontSize}
-                        // fontWeight="bold"
-                        // fill={fill || "black"}
-                        // >
-                        //     {name}
-                        // </text>
+                  
                     ))
                 }
             </>
@@ -149,7 +115,7 @@ const TextContainer = ({ text, position, fill, index }: { text: string; position
         style={{
             textTransform: "uppercase",
             fontSize,
-            background: "red"
+            // background: "red"
         }}
         x={position.x}
         // y={position.y+height*2-fontSize*1.5}
