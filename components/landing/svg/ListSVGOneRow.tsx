@@ -43,7 +43,8 @@ const ListSVGOneRow = ({
             screenHeight, 
             screenWidth, 
             rowHeight,
-            activeIndex: -1
+            activeIndex: -1,
+            filter: ""
         })
 
 

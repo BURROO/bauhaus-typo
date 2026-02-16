@@ -46,7 +46,6 @@ const columns: {
             fill: false,
         }
     ],
-
     'medium': [
         {
             col: 2/7,
@@ -96,18 +95,23 @@ export const defRows: { [key: string]: number } = {
     "22": 2,
 }
 
-
 interface Props{
     data: TypeProject[];
     screenWidth: number|null;
     screenHeight: number|null;
     rowHeight: number|null;
     activeIndex: null|number;
+    filter: string;
 }
 
-
-
-export const convertTableToSVG = ({ data, screenWidth, screenHeight, rowHeight, activeIndex }: Props): TypeProjectForSVG[][] => {
+export const convertTableToSVG = ({
+    data,
+    screenWidth,
+    screenHeight,
+    rowHeight,
+    activeIndex,
+    filter
+}: Props): TypeProjectForSVG[][] => {
 
     if(screenWidth === null || screenHeight === null || rowHeight === null) return []
 
@@ -115,11 +119,24 @@ export const convertTableToSVG = ({ data, screenWidth, screenHeight, rowHeight, 
 
     const screenType = screenWidth > 1300 ? 'large' : screenWidth < 800 ? 'small' : 'medium'
 
-    let colsActive = columns[screenType].map(() => false)
+    let colsActive = columns[screenType].map((_, i) => {
+        
+
+        if(filter != ''){
+
+            if(screenType === "large" && i === 2) return true
+            if(screenType === "large" && i === 4) return true
+            if(screenType === "large" && i === 5) return true
+
+        }
+        return false
+    })
 
     const padding = 0
     // const padding = 12
     const rowWidth = screenWidth-padding*2
+
+    // console.log("data", data)
 
     data.forEach((item: TypeProject, i, all) => {
         
@@ -156,7 +173,8 @@ export const convertTableToSVG = ({ data, screenWidth, screenHeight, rowHeight, 
                 "22": 2,
             }
 
-            const rowCount = defRows[i.toString()] || 1
+            const rowCount = defRows[item.index] || 1
+            // const rowCount = defRows[i.toString()] || 1
             const height = rowHeight * rowCount
 
             // @ts-ignore

@@ -2,5 +2,6 @@
 
 .main a:hover{
     background: gainsboro;
-
+    font-family: 'UfficioMono-Bold';
+    color: var(--gray)
 }

@@ -36,25 +36,28 @@ const List = ({ dataStudents, dataCourses}: Props) => {
         rowHeight,
      } = useContext(ContextMenu)
 
-    const scrollPos = useRef(2000)
-    const [ofst, setOfst] = useState(0)
+    // const scrollPos = useRef(2000)
+    // const [ofst, setOfst] = useState(0)
     const refContainer = useRef<HTMLDivElement>(null)
 
-    // 
-    // 
-    const [sorting, setSorting ] = useState<Sorting>({
-        column: 'Name',
-        direction: 'asc'
-    })
+    // const [sorting, setSorting ] = useState<Sorting>({
+    //     column: 'Name',
+    //     direction: 'asc'
+    // })
 
     // 
     const [searchTerm, setSearchTerm ] = useState("")
 
-    const itemHeight = 60
 
-    const [firstIndex, setFirstIndex] = useState(0)
+    // const [firstIndex, setFirstIndex] = useState(0)
 
     const [filter, setFilter ] = useState('')
+
+
+    const updateSearch = (searchTerm: string) => {
+        setFilter("");
+        setSearchTerm(searchTerm)
+    }
 
         // Update URL when filter changes
     const updateFilter = (newFilter: string) => {
@@ -161,7 +164,7 @@ const List = ({ dataStudents, dataCourses}: Props) => {
                     }}
                     filter={filter}
                     // setSorting={setSorting}
-                    setSearchTerm={setSearchTerm}
+                    setSearchTerm={updateSearch}
                     />
                 </div>
                 <div 
@@ -179,10 +182,10 @@ const List = ({ dataStudents, dataCourses}: Props) => {
             </div>
             <ListSVG
             dataStudents={dataStudents}
-            dataCourses={dataCourses}
+            // dataCourses={dataCourses}
             filter={filter}
             searchTerm={searchTerm}
-            firstIndex={firstIndex}
+            // firstIndex={firstIndex}
             />
        </>
     )

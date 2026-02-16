@@ -1,5 +1,4 @@
 import styles from "./page.module.css";
-import List from "@/components/landing/List";
 
 import fs from "fs";
 import path from "path";
@@ -10,7 +9,7 @@ import Link from "next/link";
 import { getAssetCover, getAssetShowcase, getAssetSlideShow, getAssetWebsite } from "@/util/getAssets";
 
 
-export default function Home() {
+export default function Checklist() {
 
   const filePathStudents = path.join(process.cwd(), "public/bauhaus-typo-studis.csv");
 

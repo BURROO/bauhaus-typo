@@ -19,31 +19,20 @@ const Background = ({ text, dir }: Props) => {
 
 
         const handleActivity = () => {
-
             // Handle activity logic
             setIsInactive(false)
-            // 
-            // clearTimeout(timeout)
-
-            // timeout = setTimeout(() => {
-
-            //     setIsInactive(true)
-
-            // }, 5000)
         }
-        const mouseOut = () => {
 
+        const mouseOut = () => {
             // Handle activity logic
             setIsInactive(true)
             // 
             clearTimeout(timeout)
-
         }
 
         window.addEventListener("mousemove", handleActivity)
         window.addEventListener("wheel", handleActivity)
         document.addEventListener("mouseleave", mouseOut)
-
 
         return () => {
 
@@ -62,11 +51,7 @@ const Background = ({ text, dir }: Props) => {
         })
     }, [])
 
-    const {relPos} = useMousePos({}, true)
-
-
-    // if(!isInactive) return;
-
+    // const {relPos} = useMousePos({}, true)
 
     return (
         <div

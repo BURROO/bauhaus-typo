@@ -1,6 +1,6 @@
 import { useContext, useEffect, useMemo, useRef, useState } from "react"
 import { ContextMenu } from "../../context/ContextMenu"
-import { TypeCourse, TypeProject } from "@/types/project-type"
+import { TypeCourse, TypeProject, TypeProjectForSVG } from "@/types/project-type"
 import { adjustYtoOrder, convertAreaToSVG, convertTableToSVG } from "@/util/convertTableToSVG";
 import { cloneDeep } from 'lodash'
 import { getUrlFromProject } from "@/util/sanitizeForUrl";
@@ -24,10 +24,10 @@ export const txtLeftOfst = 2
 
 interface Props {
     dataStudents: TypeProject[];
-    dataCourses: TypeCourse[];
+    // dataCourses: TypeCourse[];
     filter: string;
     searchTerm: string;
-    firstIndex: number;
+    // firstIndex: number;
     // setActiveIndex: (valie: number|null) => void;
     // activeIndex: null|number;
 }
@@ -35,10 +35,10 @@ interface Props {
 
 const ListSVG = ({
     dataStudents,
-    dataCourses,
+    // dataCourses,
     filter,
     searchTerm,
-    firstIndex,
+    // firstIndex,
     // setActiveIndex,
     // activeIndex
 }: Props) => {
@@ -56,21 +56,23 @@ const ListSVG = ({
 
     const originalOrder = useMemo(() => {
 
-        
+        console.log("retrigger og order")
+
         const textToRender = convertTableToSVG({ 
             data: [...dataStudents], 
             screenHeight, 
             screenWidth, 
             rowHeight,
-            activeIndex
+            activeIndex,
+            filter
         })
 
-
-
         return textToRender
-    }, [dataStudents, screenHeight, screenWidth, rowHeight, activeIndex])
+    }, [
+        // dataStudents, screenHeight, screenWidth, rowHeight, activeIndex
+    ])
 
-    const [renderData, setRenderedData ] = useState(originalOrder)
+    const [renderData, setRenderedData ] = useState<TypeProjectForSVG[][]>(originalOrder)
 
 
     const refContainer = useRef<HTMLDivElement>(null)
@@ -80,73 +82,124 @@ const ListSVG = ({
 
         // 
 
-        let newOrder = [
-            ...cloneDeep(originalOrder).slice(firstIndex, originalOrder.length),
-            ...cloneDeep(originalOrder).slice(0, firstIndex)
-        ]
+        // let newOrder = originalOrder
+
+        const filteredStudents = dataStudents
+        .filter(d => {
+
+            if(filter === "") return true
+
+            const data = d
+
+            // const found = Object.values(data).find(value => value && value.toString().match(new RegExp(filter, 'ig')))
+            const foundName = data.NAME.toString().match(new RegExp(filter, 'ig'))
+            const foundCourse = data.COURSE.toString().match(new RegExp(filter, 'ig'))
+            const foundSupervision = data.SUPERVISION.toString().match(new RegExp(filter, 'ig'))
+            const foundMedium = data.MEDIUM.toString().match(new RegExp(filter, 'ig'))
+
+            return foundName || foundCourse || foundSupervision || foundMedium
+        })
+        .filter(d => {
+
+            if(searchTerm === "") return true
 
 
+            const data = d
 
-        if(filter !== "" || searchTerm !== ''){
-            newOrder = newOrder
-            .filter(d => {
-
+            const found = Object.values(data).find(value => value && value.toString().match(new RegExp(searchTerm, 'ig')))
 
 
-                if(filter === "") return true
-
-                const data = d[0]?.data
-
-                // const found = Object.values(data).find(value => value && value.toString().match(new RegExp(filter, 'ig')))
-                const foundName = data.NAME.toString().match(new RegExp(filter, 'ig'))
-                const foundCourse = data.COURSE.toString().match(new RegExp(filter, 'ig'))
-                const foundSupervision = data.SUPERVISION.toString().match(new RegExp(filter, 'ig'))
-                const foundMedium = data.MEDIUM.toString().match(new RegExp(filter, 'ig'))
-
-                return foundName || foundCourse || foundSupervision || foundMedium
-            })
-            .filter(d => {
-
-                if(searchTerm === "") return true
+            return found
+        })
+    
 
 
-                const data = d[0]?.data
+        let newOrder = convertTableToSVG({ 
+            data: [...filteredStudents], 
+            screenHeight, 
+            screenWidth, 
+            rowHeight,
+            activeIndex,
+            filter
+        })
 
-                const found = Object.values(data).find(value => value && value.toString().match(new RegExp(searchTerm, 'ig')))
 
-
-                return found
-            })
-            setRenderedData(adjustYtoOrder([...newOrder]))
+        if(newOrder == null) {
+            setRenderedData([])
+            return;
         }else{
             setRenderedData(adjustYtoOrder([...newOrder]))
-            // setRenderedData(adjustYtoOrder([...newOrder, ...newOrder]))
 
         }
+
+        // if(filter !== "" || searchTerm !== ''){
+        //     newOrder = newOrder
+        //     .filter(d => {
+
+
+
+        //         if(filter === "") return true
+
+        //         const data = d[0]?.data
+
+        //         // const found = Object.values(data).find(value => value && value.toString().match(new RegExp(filter, 'ig')))
+        //         const foundName = data.NAME.toString().match(new RegExp(filter, 'ig'))
+        //         const foundCourse = data.COURSE.toString().match(new RegExp(filter, 'ig'))
+        //         const foundSupervision = data.SUPERVISION.toString().match(new RegExp(filter, 'ig'))
+        //         const foundMedium = data.MEDIUM.toString().match(new RegExp(filter, 'ig'))
+
+        //         return foundName || foundCourse || foundSupervision || foundMedium
+        //     })
+        //     .filter(d => {
+
+        //         if(searchTerm === "") return true
+
+
+        //         const data = d[0]?.data
+
+        //         const found = Object.values(data).find(value => value && value.toString().match(new RegExp(searchTerm, 'ig')))
+
+
+        //         return found
+        //     })
+        //     setRenderedData(adjustYtoOrder([...newOrder]))
+        // }else{
+        //     setRenderedData(adjustYtoOrder([...newOrder]))
+        //     // setRenderedData(adjustYtoOrder([...newOrder, ...newOrder]))
+
+        // }
 
     // }, [filter, sorting, searchTerm, dataStudents])
 
 
    
-    }, [firstIndex, originalOrder, filter, searchTerm])
+    }, [
+        filter, 
+        searchTerm,
+        dataStudents, 
+        screenHeight,
+        screenWidth, 
+        rowHeight, 
+        activeIndex
+    ])
 
 
-
-    const {svgPath, svgActivePath } = useMemo(() => convertAreaToSVG({ textToRender: renderData }), [firstIndex, renderData, activeIndex])
+    // console.log("renderData", renderData)
+    const { svgPath, svgActivePath } = useMemo(() => convertAreaToSVG({ textToRender: renderData }), [renderData])
 
     const maskId = useMemo(
-        () => `text-mask-${firstIndex}`,
-        [firstIndex]
+        () => `text-mask`,
+        []
     )
 
     const gradientId = useMemo(
-        () => `metalGradient-${firstIndex}`,
-        [firstIndex]
+        () => `metalGradient`,
+        []
     )
 
     const maskFilterId = useMemo(
-        () => `text-mask-filter-${firstIndex}`,
-        [firstIndex]
+        () => `text-mask-filter`,
+        []
     )
 
     if(screenHeight === null || screenWidth === null || rowHeight === null) return <></>
@@ -315,7 +368,8 @@ const ListSVG = ({
                             return (
                                 <g
                                 key={i}
-                                onMouseEnter={() =>setActiveIndex(row[0].index)}
+                                // onMouseEnter={() =>setActiveIndex(row[0].index)}
+                                onMouseEnter={() =>setActiveIndex(i)}
                                 onMouseLeave={() => setActiveIndex(null)}
                                 // onClick={() => {}}
                                 >

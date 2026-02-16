@@ -62,9 +62,9 @@ const ListCourse = ({ course, dataStudents }: Props) => {
                 <div>
                     <p>{course['ENGLISH']}</p>
                 </div>
-                <div>
+                {/* <div>
                     <p>{course['DEUTSCH']}</p>
-                </div>
+                </div> */}
             </div>
         </div>
     )

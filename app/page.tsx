@@ -40,11 +40,11 @@ export default function Home() {
 
   return (
     <Suspense fallback={null}>
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <List dataStudents={sortedData} dataCourses={dataCourses}/>
-      </main>
-    </div>
+      <div className={styles.page}>
+        <main className={styles.main}>
+          <List dataStudents={sortedData} dataCourses={dataCourses}/>
+        </main>
+      </div>
     </Suspense>
   );
 }

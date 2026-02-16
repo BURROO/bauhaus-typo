@@ -13,6 +13,15 @@ export default function Preloader({ onDone }: { onDone: () => void }) {
 
 
   useEffect(() => {
+    const isMobile =
+      typeof window !== 'undefined' &&
+      (window.innerWidth < 768 || 'ontouchstart' in window)
+
+    if (isMobile) {
+      onDone()
+      return
+    }
+
     preloadAssets(assets, setProgress)
       .then(onDone)
       .catch(console.error)
@@ -34,34 +43,3 @@ export default function Preloader({ onDone }: { onDone: () => void }) {
     </div>
   )
 }
-
-// const styles = {
-//   overlay: {
-//     position: 'fixed',
-//     inset: 0,
-//     background: '#000',
-//     display: 'flex',
-//     alignItems: 'center',
-//     justifyContent: 'center',
-//     flexDirection: 'column',
-//     zIndex: 9999,
-//   },
-//   bar: {
-//     width: '50vw',
-//     height: 4,
-//     background: '#222',
-//     overflow: 'hidden',
-//   },
-//   fill: {
-//     height: '100%',
-//     background: '#fff',
-//     transformOrigin: '0 0',
-//     transition: 'transform 0.2s ease',
-//   },
-//   label: {
-//     marginTop: 12,
-//     color: '#888',
-//     fontSize: 12,
-//     fontFamily: 'monospace',
-//   },
-// } as const
