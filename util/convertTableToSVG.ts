@@ -208,7 +208,8 @@ export const convertTableToSVG = ({
             // console.log("distToActiveRow", distToActiveRow)
 
             // Check ech prev or if is also has an actvice el!!
-            const currentIndex = incIndex
+            // const currentIndex = incIndex
+            const currentIndex = i
             incIndex += 1
             const check =
                 activeIndex !== null &&
@@ -281,24 +282,6 @@ export const adjustYtoOrder = (orderedList: TypeProjectForSVG[][]) => {
                 ...col,
                 y
             }));
-
-
-        // const accHeight = all.slice(0, i).reduce((acc, item) => acc+ item[0].height, 0)
-
-
-        // return row.map(col => {
-
-        //     // const y = i * col.height
-
-        //     const y = accHeight
-
-            
-        //     return ({
-        //         ...col,
-        //         y: y,
-        //         fill: col.fill,
-        //     })
-        // })
     })
 }
 
@@ -314,8 +297,6 @@ export const convertAreaToSVG = ({ textToRender }: { textToRender: TypeProjectFo
 
 
     textToRender.forEach((row: TypeProjectForSVG[], i, all) => {
-
-
 
         row.forEach((col, k) => {
 
