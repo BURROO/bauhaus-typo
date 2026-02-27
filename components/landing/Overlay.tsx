@@ -115,16 +115,3 @@ const Overlay = ({
 }
 
 export default Overlay
-
-
-// const OverlayPoster = ({ item, autoRotateSpeed }: { item: TypeProject; autoRotateSpeed: number; }) => {
-//     // Handle
-
-//     return (
-//         <ScenePoster
-//         type="orbit"
-//         item={item}
-//         rolled={true}
-//         />
-//     )
-// }

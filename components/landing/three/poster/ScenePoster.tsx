@@ -138,8 +138,8 @@ function ScenePosterInner({
       txt.offset.x = 1;
       txt.wrapT = THREE.RepeatWrapping;
       // txt.repeat.x = -1;
-      txt.repeat.y = -1;
-      txt.offset.y = 1;
+      txt.repeat.y = 1;   // ← was -1, remove the Y flip
+      txt.offset.y = 0;   // ← was 1, reset offset
       // txt.repeat.x = -1;
       // txt.offset.x = 1;
 
@@ -188,144 +188,67 @@ function ScenePosterInner({
   },[item, width, height])
 
 
-  // useFrame((_, delta) => {
-  //   time.current += delta;
-
-  //   if(rolled){
-
-  //     const pos = geometry.attributes.position;
-  //     const halfW = width / 2;
-  //     const halfH = height / 2;
-
-  //     const amplitude = 0.018;
-  //     // const frequency = 2.2;
-  //     const frequency = 1.2;
-  //     const phase = time.current * 1.2;
-
-  //     for (let i = 0; i < pos.count; i++) {
-  //       const x = pos.getX(i);
-  //       const y = pos.getY(i);
-
-  //       // normalize
-  //       const nx = x / halfW;
-  //       const ny = y / halfH;
-
-  //       // 👉 diagonal wave
-  //       const diag = nx * 0.3 + ny * 0.6;
-     
-  //       const z =
-  //         Math.sin(diag * Math.PI * frequency + phase) *
-  //         amplitude *
-  //         Math.cos(ny * Math.PI * 0.5); // edge damping
-
-  //       pos.setZ(i, z);
-  //     }
-  //     pos.needsUpdate = true;
-  //   }
-  //   geometry.computeVertexNormals();
-  // });
-  // const FOLDS_X = 5; // vertical folds (columns)
-  // const FOLDS_Y = 1; // horizontal folds (rows)
-
   const FOLD_ANGLE = Math.PI / 2.2; // ~82°, looks like real fold
 
 
   useFrame((_, delta) => {
-  time.current += delta;
+    time.current += delta;
 
-  const pos = geometry.attributes.position;
-  const halfW = width / 2;
-  const halfH = height / 2;
+    const pos = geometry.attributes.position;
+    const halfW = width / 2;
+    const halfH = height / 2;
 
-  for (let i = 0; i < pos.count; i++) {
-    const x = pos.getX(i);
-    const y = pos.getY(i);
+    for (let i = 0; i < pos.count; i++) {
+      const x = pos.getX(i);
+      const y = pos.getY(i);
 
-    let z = 0;
+      let z = 0;
 
-    /* ======================= ROLLED ======================= */
-    if (rolled) {
-      const nx = x / halfW;
-      const ny = y / halfH;
+      /* ======================= ROLLED ======================= */
+      if (rolled) {
+        const nx = x / halfW;
+        const ny = y / halfH;
 
-      const diag = nx * 0.3 + ny * 0.6;
-      z +=
-        Math.sin(diag * Math.PI * 1.2 + time.current * 1.2) *
-        0.018 *
-        Math.cos(ny * Math.PI * 0.5);
-    }
+        const diag = nx * 0.3 + ny * 0.6;
+        z +=
+          Math.sin(diag * Math.PI * 1.2 + time.current * 1.2) *
+          0.018 *
+          Math.cos(ny * Math.PI * 0.5);
+      }
 
-    // if (folded) {
+      /* ======================= FOLDED ======================= */
+      if (folded) {
 
-    //   const FOLDS_X = 1;   // vertical folds → 6 columns
-    //   const FOLDS_Y = 5;   // horizontal fold → 2 rows
+        const foldStrength = 0.0000035        // how much it folds
+        const foldSoftness = 0.000012        // how wide the crease is
+        const foldDepth = 0.000002           // how much Z displacement
+        
+        const distToFold = x; // fold at x = 0
+        const foldDir = Math.sign(distToFold) || 1;
+        const t = Math.abs(distToFold) / halfW;
 
-    //   const FOLD_DEPTH_X = 0.0004; // vertical crease depth
-    //   const FOLD_DEPTH_Y = 0.003; // horizontal crease depth
+        // soften crease
+        const smooth = Math.exp(-t * t / foldSoftness);
 
-    //   const pos = geometry.attributes.position;
+        // bending displacement
+        z +=
+          foldDir *
+          Math.sin(t * Math.PI) *
+          foldDepth *
+          foldStrength;
 
-    //   const cols = FOLDS_X + 1;
-    //   const rows = FOLDS_Y + 1;
+        // crease indentation
+        z -= smooth * 0.006;
+      }
 
-    //   const colW = width / cols;
-    //   const rowH = height / rows;
-
-    //   for (let i = 0; i < pos.count; i++) {
-    //     const x = pos.getX(i);
-    //     const y = pos.getY(i);
-
-    //     /* ===================== segment indices ===================== */
-    //     const colIndex = Math.floor((x + width / 2) / colW);
-    //     const rowIndex = Math.floor((y + height / 2) / rowH);
-
-    //     /* ===================== linear offsets ===================== */
-    //     const zX =
-    //       ((colIndex % 2 === 0 ? 1 : -1) * FOLD_DEPTH_X);
-
-    //     const zY =
-    //       ((rowIndex % 2 === 0 ? -1 : 1) * FOLD_DEPTH_Y);
-
-    //     pos.setZ(i, zX + zY);
-    //   }
-
-    //   pos.needsUpdate = true;
-    // }
-
-
-    /* ======================= FOLDED ======================= */
-    if (folded) {
-
-      const foldStrength = 0.0000035        // how much it folds
-      const foldSoftness = 0.000012        // how wide the crease is
-      const foldDepth = 0.000002           // how much Z displacement
       
-      const distToFold = x; // fold at x = 0
-      const foldDir = Math.sign(distToFold) || 1;
-      const t = Math.abs(distToFold) / halfW;
 
-      // soften crease
-      const smooth = Math.exp(-t * t / foldSoftness);
-
-      // bending displacement
-      z +=
-        foldDir *
-        Math.sin(t * Math.PI) *
-        foldDepth *
-        foldStrength;
-
-      // crease indentation
-      z -= smooth * 0.006;
+      pos.setZ(i, z);
     }
 
-    
-
-    pos.setZ(i, z);
-  }
-
-  pos.needsUpdate = true;
-  geometry.computeVertexNormals();
-});
+    pos.needsUpdate = true;
+    geometry.computeVertexNormals();
+  });
 
 
    

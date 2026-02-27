@@ -56,7 +56,7 @@ const ListSVG = ({
 
     const originalOrder = useMemo(() => {
 
-        console.log("retrigger og order")
+        // console.log("retrigger og order")
 
         const textToRender = convertTableToSVG({ 
             data: [...dataStudents], 
@@ -364,12 +364,16 @@ const ListSVG = ({
                         renderData.map((row, i) => {
 
                             const url = getUrlFromProject(row[0].data)
+
+                            // console.log(row[0].data)
+
+                            const index = row[0].data.index
                             
                             return (
                                 <g
                                 key={i}
-                                // onMouseEnter={() =>setActiveIndex(row[0].index)}
-                                onMouseEnter={() =>setActiveIndex(i)}
+                                onMouseEnter={() =>setActiveIndex(index)}
+                                // onMouseEnter={() =>setActiveIndex(i)}
                                 onMouseLeave={() => setActiveIndex(null)}
                                 // onClick={() => {}}
                                 >

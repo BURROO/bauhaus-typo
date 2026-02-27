@@ -12,7 +12,7 @@ import { TypeCoursesNames, TypeProject, TypeProjectForSVG } from "@/types/projec
 const columns: { 
     [key: string]: { 
         col: number; 
-        text: 'NAME'|'TITLE'|'MEDIUM'|'FORMAT'|'Kurs'|'SUPERVISION'|'ID'|'COURSE'
+        text: 'NAME'|'TITLE'|'MEDIUM'|'FORMAT'|'SUPERVISION'|'ID'|'COURSE'
         fill: boolean }[]
     } = {
     'large': [
@@ -137,6 +137,7 @@ export const convertTableToSVG = ({
     const rowWidth = screenWidth-padding*2
 
     // console.log("data", data)
+    let incIndex = 0
 
     data.forEach((item: TypeProject, i, all) => {
         
@@ -194,14 +195,21 @@ export const convertTableToSVG = ({
             // if(colsActive[k]){
             //     svgPath += colSquare
             // }
+            // const activeDataRow = activeIndex !== null && 
+            //     data[activeIndex] && 
+            //     data[activeIndex][col.text]
             // @ts-ignore
-            const activeDataRow = activeIndex !== null && data[activeIndex] && data[activeIndex][col.text]
+            const foundActiveItem = data.find(row => row?.index === activeIndex)
+            const activeDataRow = 
+                foundActiveItem &&
+                foundActiveItem[col.text]
 
             // const distToActiveRow = activeIndex && activeDataRow ? activeIndex - i : -1
             // console.log("distToActiveRow", distToActiveRow)
 
             // Check ech prev or if is also has an actvice el!!
-            const currentIndex = i
+            const currentIndex = incIndex
+            incIndex += 1
             const check =
                 activeIndex !== null &&
                 (() => {
@@ -246,7 +254,7 @@ export const convertTableToSVG = ({
                 // fill: i === 0 ? false : colsActive[k],
                 fill: colsActive[k],
                 index: item.index,
-                isActive: activeIndex === i || setActiveRow || false,
+                isActive: activeIndex === item.index || setActiveRow || false,
                 data: item
             }) 
         }

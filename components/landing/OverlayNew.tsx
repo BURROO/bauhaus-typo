@@ -29,55 +29,6 @@ const OverlayNew = ({
 
     const title = activeProject && getProjectTitle(activeProject)
 
-    // console.log(title)
-    // useEffect(() => {
-    //     const video = videoRef.current
-    //     if (!video) return
-
-    //     let frame: number
-    //     const cycleMs = 4000
-    //     const startTime = performance.now()
-
-    //     let lastTime = -1
-
-
-    //     const animate = (now: number) => {
-    //         if (!video.duration) {
-    //             frame = requestAnimationFrame(animate)
-    //             return
-    //         }
-
-    //         const elapsed = now - startTime
-    //         const progress = (elapsed % cycleMs) / cycleMs
-    //         const targetTime = video.duration * progress
-
-    //         // Only seek if difference is noticeable
-    //         if (Math.abs(targetTime - lastTime) > 0.04) { 
-    //             video.currentTime = targetTime
-    //             lastTime = targetTime
-    //         }
-
-    //         frame = requestAnimationFrame(animate)
-
-    //         console.log(frame)
-    //     }
-
-    //     const handleLoaded = () => {
-    //         video.pause()
-    //         frame = requestAnimationFrame(animate)
-    //     }
-
-    //     if (video.readyState >= 1) {
-    //         handleLoaded()
-    //     } else {
-    //         video.addEventListener('loadedmetadata', handleLoaded)
-    //     }
-
-    //     return () => {
-    //         video.removeEventListener('loadedmetadata', handleLoaded)
-    //         cancelAnimationFrame(frame)
-    //     }
-    // }, [])
 
 
     useEffect(() => {
@@ -126,16 +77,3 @@ const OverlayNew = ({
 }
 
 export default OverlayNew
-
-
-// const OverlayPoster = ({ item, autoRotateSpeed }: { item: TypeProject; autoRotateSpeed: number; }) => {
-//     // Handle
-
-//     return (
-//         <ScenePoster
-//         type="orbit"
-//         item={item}
-//         rolled={true}
-//         />
-//     )
-// }
